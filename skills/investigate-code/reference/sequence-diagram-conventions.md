@@ -6,7 +6,7 @@ Use Mermaid `sequenceDiagram` syntax. Every sequence diagram follows the **seque
 
 | Pattern | Syntax |
 |---|---|
-| Participants | `actor "Name"`, `participant "Name" as "Label"`, `database "Name"` |
+| Participants | `actor "Name"`, `participant Alias as "Label"` (use `participant` for data stores too — there is no `database` keyword) |
 | Sync call | `A->>B: N: methodName(params)` (solid arrow) |
 | Async/event | `A-)B: N: eventName(data)` (open arrow) |
 | Return | `A-->>B: N: return value` (dashed arrow) |
@@ -36,7 +36,7 @@ Encode the identity path in the lifeline label so the reader always knows **whic
 - Cross-file / class: `participant Alias as "path/to/file.ts<br/>ClassName"` — **always include the file path**, it is the easiest way to locate the element.
 - Show the interface when the role is defined by one: `...<br/>OrderService : IOrderService`
 - Group ownership with an alias prefix per system/module (`OMS_*`, `ORD_*`) — Mermaid has no boundary boxes, so the prefix carries the grouping.
-- Use types semantically: `actor` = external, `participant` = service/class, `database` = store.
+- Use types semantically: `actor` = external, `participant` = service/class/store. Mermaid has no `database` lifeline keyword — `database X` is a parse error; use `participant X`.
 
 ## Message Labels
 
@@ -54,6 +54,12 @@ OrderService->>Broker: 3: publish OrderCreated<br/>notifies downstream services
 
 Self-calls: show at most **2 per lifeline**; larger internal logic moves to a `Note over` or a flowchart.
 
+## Punctuation & Validation
+
+Only `;` breaks sequence diagrams: it is a statement separator, so a `;` in message or `Note` text fails to parse. Reword to `,` or split into two messages/notes — commas are safe. (Flowchart labels are the opposite case: `;`/`,` are fine, but quote labels containing `" ( ) [ ] { } |`.)
+
+Validate before presenting: `node scripts/validate_mermaid.mjs <file>`; fix and re-run until 0 failures.
+
 ## Message Numbering
 
 Number messages sequentially for call-stack cross-referencing. Indentation in labels reflects call depth:
@@ -64,7 +70,7 @@ sequenceDiagram
     participant CTRL as "orders/controller.ts<br/>OrderController"
     participant SVC as "orders/service.ts<br/>OrderService : IOrderService"
     participant REPO as "orders/repo.ts<br/>OrderRepository"
-    database DB
+    participant DB as "Order DB"
 
     CTRL->>SVC: 1: createOrder(dto)
     SVC->>SVC: 2: validateOrder(dto)<br/>checks stock & discount

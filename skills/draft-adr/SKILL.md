@@ -117,6 +117,7 @@ ADR prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single
    - [ ] `**Chosen:**` justification references specific drivers
    - [ ] Consequences address risks and positive impacts
    - [ ] Context and target state are diagrammed
+   - [ ] Every Mermaid block validated with `scripts/validate_mermaid.mjs` (0 failures)
    - [ ] Metadata (title, owners, status) is populated
    - [ ] Every section opens with a bolded one-line takeaway (BLUF)
    - [ ] No sentence exceeds 20 words; no banned phrases (see **concise-writing**)

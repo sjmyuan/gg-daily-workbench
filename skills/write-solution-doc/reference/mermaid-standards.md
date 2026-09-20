@@ -2,24 +2,26 @@
 
 ## General
 
-- Draw all diagrams with Mermaid inside a fenced code block with `mermaid` language tag.
-- Keep diagrams focused and readable — no more than 8–12 elements per diagram.
-- Every diagram must include a brief caption/explanation in the document.
-- Support both English and Chinese labels based on user preference.
+- Draw all diagrams with Mermaid in a fenced code block tagged `mermaid`.
+- Keep diagrams focused — no more than 8–12 elements.
+- Every diagram needs a brief caption; support English or Chinese labels per user preference.
 - Always provide complete, renderable Mermaid code.
 
 ## Writing Robust Labels
 
-Most broken diagrams come from special characters in labels — a semicolon (`;`) in a description is the #1 cause. Mermaid parses `; " # ( ) [ ] { } |` as **syntax, not text**, so they can end a statement or change the shape mid-label.
+Only three patterns break diagrams (verified against the Mermaid parser):
 
-In order of preference:
-1. **Reword** — never put risky characters in a label. Replace `;` with `,` / `，` / `·` (e.g. "handles orders; manages refunds" → "handles orders, manages refunds"); drop or reword `()`; avoid `#` and `"`. Rewording is version-proof — no escaping, no parser quirks.
-2. **Quote** — when real syntax is required (API paths, method calls), wrap the text in quotes: `A["POST /orders"]`, `-->|"creates order"|`, `Rel(a, b, "charges", "HTTPS")`. Never emit unquoted text containing syntax characters.
-3. **Escape** — only inside a quoted string, use Mermaid HTML entities: `#quot;` for `"`, `#35;` for `#`, `#40;` / `#41;` for `(` / `)`, `#59;` for `;`.
-4. **Line breaks** — use `<br/>` in labels; a raw newline inside a label breaks the statement.
-5. **Self-check** — before output, scan every label for `; " # ( ) [ ] { } |`; reword or escape any hit. If a label still feels risky, shorten it and move detail to the caption.
+| Context | Breaks | Safe |
+|---|---|---|
+| Sequence message / `Note` text | `;` | `, " # ( ) [ ] { } \| &` |
+| Flowchart node / edge label (unquoted) | `" ( ) [ ] { } \|` | `; , # &` |
+| C4 label & `Rel` description | — | all |
 
-C4: `;` in C4 descriptions (`Person(c, "Customer", "Places orders; queries")`) is a common breaker — always reword the description instead of escaping.
+- **Sequence text** — never use `;` in a message or `Note`; reword to `,` or split. Commas are safe.
+- **Flowchart labels** — quote labels with `" ( ) [ ] { } \|` (`A["Save (async)"]`) or reword. `;`/`,` are safe.
+- **Escape as last resort** — inside quotes: `#quot;` `#35;` `#40;` `#41;` `#59;`.
+- **Line breaks** — use `<br/>`, never a raw newline.
+- **Validate before presenting** — `node scripts/validate_mermaid.mjs`; fix until 0 failures.
 
 ## C4 Diagrams
 
@@ -45,7 +47,7 @@ Mark external elements with the `_Ext` suffix (`System_Ext`, `Container_Ext`, `C
 
 **Connection labels**: Include protocol and endpoint — `Rel(a, b, "POST /payments", "HTTPS")`, `Rel(svc, broker, "publishes OrderConfirmed", "Kafka")`, `Rel(svc, db, "Reads/Writes", "JDBC")`.
 
-**Layout**: adjust shape/boundary density with `UpdateLayoutConfig($c4ShapeInRow="4", $c4BoundaryInRow="2")`; fine-tune with `UpdateRelStyle(from, to, $offsetX=..., $offsetY=...)`. C4 is experimental in Mermaid — stick to the element types above and re-check syntax if rendering fails.
+**Layout**: tune density with `UpdateLayoutConfig(...)` and offsets with `UpdateRelStyle(...)`. C4 is experimental — re-check syntax if rendering fails.
 
 **Example C2 (`C4Container`)**:
 ```mermaid
@@ -76,7 +78,7 @@ Use `sequenceDiagram` syntax for runtime message flows. Every sequence diagram f
 
 - `actor Name` — external actor (human or external system)
 - `participant Name as Alias` — service / component / class lifeline
-- `database Name as Alias` — data store lifeline
+- `participant Name as Alias` — service or data-store lifeline (Mermaid has no `database` keyword)
 - `->>` — synchronous request (solid arrow)
 - `-)` — asynchronous / fire-and-forget message (open arrow)
 - `-->>` — return / reply **only** (dashed arrow)
@@ -113,7 +115,7 @@ A lifeline label encodes its identity path so the reader always knows **which sy
 Rules:
 - **Always include the file path** at component or code level — it is the easiest way to locate the element.
 - Show the interface after the class (`: IOrderService`) when the role is defined by one.
-- Group participants by ownership with an **alias prefix per system** (e.g. `OMS_Controller`, `OMS_Repo`, `PS_Gateway`) — Mermaid sequence diagrams have no boundary boxes, so the alias prefix carries the grouping.
+- Group participants by ownership with an **alias prefix per system** (e.g. `OMS_Controller`) — sequence diagrams have no boundary boxes, so the prefix carries grouping.
 - Use participant types semantically: `actor` = human/external, `participant` = service/class, `database` = store.
 
 ### Message labels are the contract
@@ -172,7 +174,7 @@ sequenceDiagram
     actor Customer
     participant OMS as "Order Service"
     participant PS as "Payment Gateway (external)"
-    database DB as "Order DB"
+    participant DB as "Order DB"
 
     Customer->>OMS: POST /orders
     OMS->>PS: POST /v1/charges
@@ -225,6 +227,8 @@ stateDiagram-v2
     Paid --> Shipped
     Shipped --> [*]
 ```
+
+Full parsing needs `mermaid` + `jsdom` (`npm i --prefix scripts` once); without them the validator still runs heuristic checks.
 
 ## Updating Existing Diagrams
 

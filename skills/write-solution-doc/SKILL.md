@@ -4,78 +4,62 @@ description: Produce solution documentation with C4/sequence/flowchart diagrams,
 ---
 
 <when-to-use-this-skill>
-- User wants to document a finalized solution decision
-- User needs to create a solution architecture document
-- User wants to produce C4 diagrams (C2/C3), sequence diagrams, or flowcharts for a system
-- User needs to define API/event schemas for a solution's components
-- User wants to perform RAID analysis (Risks, Assumptions, Issues, Dependencies)
-- User wants to create a RACI matrix for solution ownership
-- User wants to compile a complete, multi-section solution document
-- User is conducting a spike investigation (via the `conduct-spike` skill) and needs a solution document or current-state findings documents compiled
+- User wants to document a finalized solution decision or architecture
+- User needs a solution architecture document
+- User wants C4 (C2/C3), sequence, or flowchart diagrams
+- User needs API or event schemas
+- User wants RAID analysis or a RACI matrix
+- User wants to compile a multi-section solution document
+- User is running a spike (via `conduct-spike`) and needs a solution or current-state findings document
 </when-to-use-this-skill>
 
 <knowledge>
-
 <solution-doc-structure>
-A complete solution document has 9 sections, produced in order: Business Context & Solution Background, System Topology (C2/C3), Interaction Details, API / Event Schema, Related Documents, External Dependencies, Maintainers, RAID Analysis, RACI Matrix. See **reference/solution-doc-structure.md** for the full section-by-section description and the Markdown template.
+9 fixed sections in canonical order and numbering, with `**Takeaway:**` under every section. Load **reference/solution-doc-structure.md** for titles, `N.M` numbering, and template.
 </solution-doc-structure>
 
 <current-state-mode>
-The same 9-section format also documents the **current state** (as-is findings docs) and supports compiling a **target-state** document from a current-state baseline. Load **reference/current-state-mode.md** when producing a current-state document or evolving a baseline as-is → to-be. When embedded in a `conduct-spike` dispatch, also load **reference/seed-input-contract.md** for the seed, return, and guard contract.
+The same format documents **current state** and evolves a baseline into **target state**; load **reference/current-state-mode.md**, or **reference/seed-input-contract.md** in a `conduct-spike` run.
 </current-state-mode>
 
 <c4-model>
-The C4 model provides a hierarchical approach to software architecture diagrams:
-- **C2 (Container Diagram)**: Shows the high-level technical building blocks — applications, data stores, microservices, etc. — and how they interact. Think "docker-compose" level.
-- **C3 (Component Diagram)**: Zooms into a single container to show its internal components and their interactions. Think "Spring components" or "React component tree" level.
-
-Draw all diagrams with Mermaid. Use Mermaid's native C4 diagram types for architecture: `C4Context` (context), `C4Container` (C2), and `C4Component` (C3), with C4-PlantUML-compatible syntax (`Person`, `System`, `Container`, `ContainerDb`, `Component`, `System_Boundary`, `Container_Boundary`, `Rel`). See **reference/mermaid-standards.md** for the full syntax and snippets.
+**C2 (Container)** = building blocks; **C3 (Component)** = one container's internals. Load **reference/mermaid-standards.md** for C4 syntax.
 </c4-model>
 
 <diagram-selection-guide>
-Choose the diagram type by scenario: runtime message passing → **sequence diagram**; business process / decision branches / data pipeline → **flowchart**; orchestration with both calls AND decisions → **both**; pure state lifecycle → **state diagram** (`stateDiagram-v2`). If the question is "who talks to whom, in what order?" → sequence; "what decisions and paths exist?" → flowchart. Accept and normalize existing diagrams from other sources. See **reference/diagram-selection-guide.md** for the full decision matrix and interop rules.
+Messages → **sequence**; process/decisions → **flowchart**; both → **both**; state lifecycle → **state diagram** (or **flowchart** when decisions dominate). Load **reference/diagram-selection-guide.md**.
 </diagram-selection-guide>
 
-<mermaid-standards>
-Mermaid diagram conventions and formatting rules for all diagram types (C4, sequence, flowchart, state diagram). Load **reference/mermaid-standards.md** for the full standards.
-</mermaid-standards>
-
 <api-design-standards>
-API and event schema design should include: **endpoint/topic name** + HTTP method (or channel/queue); **request/response or event payload schema** (JSON, Protobuf, or Avro); **authentication & authorization** (OAuth2, API Key, mTLS); **error handling** conventions (status codes, error body); **rate limiting, pagination, idempotency** where relevant; for async events: schema versioning, DLQ handling, ordering guarantees.
+Load **reference/api-design-standards.md** for contract fields and conventions.
 </api-design-standards>
 
-<raid-framework>
-RAID = **Risks** (future events that could negatively impact the solution), **Assumptions** (believed true, not yet validated), **Issues** (current problems or blockers), **Dependencies** (external factors or teams the solution relies on). Each item: ID, Category, Description, Impact (H/M/L), Probability (H/M/L, Risks only), Mitigation/Resolution, Owner. Present as a structured table.
-</raid-framework>
-
-<raci-framework>
-RACI = **R**esponsible (does the work), **A**ccountable (ultimately answerable — only ONE per task), **C**onsulted (two-way input), **I**nformed (kept up-to-date, one-way). Present as a matrix table: tasks as rows, teams/roles as columns, R/A/C/I in cells.
-</raci-framework>
-
-<bilingual-support>
-The assistant supports both English and Chinese (中文) output:
-- Detect the user's language from their initial input and respond in that language.
-- Allow the user to switch languages at any point (e.g., "请用中文输出" or "switch to English").
-- Diagram labels can be in either language based on audience preference.
-- Technical terms (API, RAID, RACI, C4, Mermaid) remain in English unless the user explicitly requests translation.
-</bilingual-support>
+<governance-frameworks>
+Load **reference/raid-raci-frameworks.md** for the RAID item schema and RACI matrix rules.
+</governance-frameworks>
 
 <concise-writing>
-All solution-doc prose follows BLUF, hard caps, atomic bullets, diagrams-and-tables-over-prose, and single-source-of-truth, plus a delete-by-default pass (~20% cut) before presenting. Details: [reference/writing-style.md](reference/writing-style.md)
+Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single source of truth, with a ~20% delete pass. See [reference/writing-style.md](reference/writing-style.md).
 </concise-writing>
 
 <context-loading-guide>
 
 | Load when | Provides | File |
 |---|---|---|
-| User wants to see a complete end-to-end solution document workflow | Full walkthrough of all capabilities producing a final solution document | [examples/full-solution-document.md](examples/full-solution-document.md) |
-| User focuses on producing C4, sequence, and flowchart diagrams | Diagram-heavy workflow with C2, C3, sequence diagram, and flowchart outputs | [examples/c4-and-interaction-diagrams.md](examples/c4-and-interaction-diagrams.md) |
-| User needs API/event contract definitions | Detailed API schema and event schema design output | [examples/api-contracts.md](examples/api-contracts.md) |
-| User needs to list related documents, external deps, and maintainers | Document-listing and dependency-tracking workflow | [examples/dependencies-and-maintainers.md](examples/dependencies-and-maintainers.md) |
-| Writing Mermaid diagrams (C4, sequence, flowchart) | Diagram syntax, formatting rules, and conventions for all diagram types | [reference/mermaid-standards.md](reference/mermaid-standards.md) |
-| Producing a current-state (as-is) document, or evolving a current-state baseline into a target-state (to-be) document | Current-state mode and baseline-input rules — diagram labeling, RAID/RACI substitution, as-is → to-be evolution | [reference/current-state-mode.md](reference/current-state-mode.md) |
-| Embedding the skill in a sub-agent dispatch (conduct-spike / solution-doc-writer) | Seed input schema, guard clause, and return contract | [reference/seed-input-contract.md](reference/seed-input-contract.md) |
-| User corrects content or new findings emerge mid-session and diagrams need to stay current | Walkthrough of **sync-diagrams** updating affected diagrams and adding new ones | [examples/diagram-sync.md](examples/diagram-sync.md) |
+| Compiling the final document | Canonical titles, numbering, template | [reference/solution-doc-structure.md](reference/solution-doc-structure.md) |
+| Writing any Mermaid diagram | Syntax, label rules, zoom levels | [reference/mermaid-standards.md](reference/mermaid-standards.md) |
+| Choosing a diagram type | Selection matrix, interop rules | [reference/diagram-selection-guide.md](reference/diagram-selection-guide.md) |
+| Defining API/event contracts | Contract fields, conventions | [reference/api-design-standards.md](reference/api-design-standards.md) |
+| Running RAID or RACI | Item schema, matrix rules | [reference/raid-raci-frameworks.md](reference/raid-raci-frameworks.md) |
+| Producing/evolving a current-state document | As-is mode, baseline-input rules | [reference/current-state-mode.md](reference/current-state-mode.md) |
+| Embedding in a sub-agent dispatch | Seed, guard, return contract | [reference/seed-input-contract.md](reference/seed-input-contract.md) |
+| Writing document prose | BLUF, caps, banned phrases | [reference/writing-style.md](reference/writing-style.md) |
+| Full end-to-end example | Final solution document | [examples/full-solution-document.md](examples/full-solution-document.md) |
+| Diagram-focused example | C2, C3, sequence, flowchart | [examples/c4-and-interaction-diagrams.md](examples/c4-and-interaction-diagrams.md) |
+| API/event contract example | REST + Kafka/Avro | [examples/api-contracts.md](examples/api-contracts.md) |
+| Deps/maintainers example | Docs, deps, ownership | [examples/dependencies-and-maintainers.md](examples/dependencies-and-maintainers.md) |
+| RAID/RACI example | Governance, ownership | [examples/raid-and-raci.md](examples/raid-and-raci.md) |
+| Diagram-sync example | Mid-session corrections | [examples/diagram-sync.md](examples/diagram-sync.md) |
 
 </context-loading-guide>
 
@@ -84,155 +68,144 @@ All solution-doc prose follows BLUF, hard caps, atomic bullets, diagrams-and-tab
 <capabilities>
 
 <clarify-business-context>
-1. Detect the user's language (English or Chinese) from their initial input and respond in that language.
-2. Ask 3–10 targeted questions, one at a time, to understand the business context and solution background.
-3. Key areas to probe:
-   - What problem does this solution solve?
-   - What alternative solutions were considered and why was this one chosen?
-   - What are the key business constraints (timeline, budget, compliance, etc.)?
-   - Who are the key stakeholders and end users?
-   - What is the scope boundary — what is explicitly in and out of scope?
-4. Wait for the user's response before asking the next question.
-5. Summarize the gathered context and ask the user to confirm before moving to the next capability.
-6. If the user provides pre-existing business context content, incorporate it directly instead of re-gathering and confirm understanding.
+1. Detect the user's language (English or Chinese) and respond in it.
+2. Ask 3–10 targeted questions, one at a time, about the business context.
+3. Probe:
+   - The problem this solution solves.
+   - Alternatives considered and why this one was chosen.
+   - Business constraints (timeline, budget, compliance).
+   - Stakeholders and end users.
+   - Scope in and out.
+4. Wait for the response before asking the next question.
+5. Summarize the context and ask the user to confirm before continuing.
+6. If the user provides existing context, incorporate it directly and confirm understanding.
 </clarify-business-context>
 
 <draw-c4-topology>
-1. Based on confirmed business context, identify the containers (C2 level) involved in the solution.
+1. From the confirmed context, identify the C2 containers involved.
 2. Ask 3–8 clarifying questions, one at a time, about:
-   - Which systems/services/applications participate in the solution.
-   - How they communicate (sync HTTP, async messaging, gRPC, etc.).
-   - External systems and users that interact with the solution.
-3. Produce a C2 Container diagram in Mermaid (`C4Container`) with a brief explanation.
-4. Ask the user to confirm the C2 diagram, then zoom into the most critical container to produce a C3 Component diagram.
-5. Produce the C3 Component diagram in Mermaid (`C4Component`) with a brief explanation.
-6. Ask the user to confirm. Offer to produce additional C3 diagrams for other containers if needed.
-7. Refine diagrams based on user feedback until confirmed.
+   - Participating systems/services/applications.
+   - Communication style (sync HTTP, async messaging, gRPC).
+   - External systems and users.
+3. Produce a C2 Container diagram (`C4Container`) with a brief explanation.
+4. On confirmation, zoom into the most critical container for a C3 diagram.
+5. Produce the C3 Component diagram (`C4Component`) with a brief explanation.
+6. Ask the user to confirm; offer additional C3 diagrams if needed.
+7. Refine from feedback until confirmed.
 </draw-c4-topology>
 
 <draw-interaction-diagrams>
-1. Based on confirmed C4 topology, identify the key interaction flows that need documenting.
-2. For each flow, consult the **diagram-selection-guide** to decide whether a sequence diagram, flowchart, or both are appropriate. If unsure, explain the trade-off and ask the user.
+1. From the confirmed topology, identify the key interaction flows.
+2. Per flow, consult **diagram-selection-guide** for sequence, flowchart, or both; if unsure, explain the trade-off and ask.
 3. Ask 3–8 clarifying questions, one at a time, about:
-   - Which scenarios/flows are most critical to document.
-   - For sequence diagrams: the exact sequence of calls/messages between components, synchronous vs. asynchronous interactions, error and edge-case flows.
-   - For flowcharts: the decision points, branching conditions, process steps, and start/end states.
-4. Produce one diagram per critical flow in Mermaid, choosing the appropriate type per the selection guide.
-5. **Sequence diagram requirements**: clearly show participants, message ordering, activation bars, and notes for important details.
-6. **Flowchart requirements**: clearly show start/stop nodes, process steps (rectangles), decision nodes (diamonds), and labeled arrows for each branch condition.
-7. Ask the user to confirm each diagram. Refine based on feedback.
+   - Which flows are most critical.
+   - Sequence diagrams: call order, sync vs async, error/edge flows.
+   - Flowcharts: decision points, branch conditions, start/end states.
+4. Produce one Mermaid diagram per critical flow.
+5. **Sequence requirements**: clear participants, message ordering, activation bars, notes.
+6. **Flowchart requirements**: start/stop nodes, process steps, decision diamonds, labeled branches.
+7. Ask the user to confirm each diagram; refine from feedback.
 </draw-interaction-diagrams>
 
 <design-api-event-schema>
-1. For each interaction identified in the sequence diagrams, define the API contract or event schema.
+1. For each interaction, define the API contract or event schema.
 2. Ask 3–8 clarifying questions, one at a time, about:
    - Preferred API style (REST, gRPC, GraphQL, async messaging).
-   - Required fields, data types, validation rules.
-   - Authentication and authorization requirements.
-   - Rate limiting, pagination, or idempotency needs.
-3. Document each API/event with: endpoint/topic, method, request schema, response schema, auth method, and error codes.
-4. For event schemas: include schema versioning strategy and dead-letter queue handling.
-5. Present schemas in structured tables or code block format.
-6. Ask the user to confirm each schema. Refine based on feedback.
+   - Required fields, types, validation.
+   - Auth requirements.
+   - Rate limiting, pagination, idempotency.
+3. Document each with endpoint/topic, method, request/response schema, auth, and error codes.
+4. Event schemas also include versioning and DLQ handling.
+5. Present schemas as tables or code blocks.
+6. Ask the user to confirm each schema; refine from feedback.
 </design-api-event-schema>
 
 <list-related-documents>
-1. Ask 2–5 questions, one at a time, to identify related documents:
-   - Design docs, RFCs, ADRs (Architecture Decision Records).
-   - External API documentation or vendor specs.
+1. Ask 2–5 questions, one at a time, about:
+   - Design docs, RFCs, ADRs.
+   - External API or vendor specs.
    - Regulatory/compliance documents.
-   - Previous solution documents for related systems.
-2. List each document with: title, type (RFC/ADR/Design/External), link or path, and a one-line description of relevance.
-3. Present as a structured table.
-4. Ask the user to confirm the list.
+   - Prior solution docs.
+2. List each with title, type (RFC/ADR/Design/External), link/path, and one-line relevance.
+3. Present as a table.
+4. Ask the user to confirm.
 </list-related-documents>
 
 <list-external-dependencies>
-1. Based on the C4 diagrams and interactions, identify all external systems/services the solution depends on.
-2. For each external dependency, ask the user to provide:
-   - System/service name and description.
-   - Owning team or organization.
-   - Primary contact person and their contact info (email, Slack, etc.).
-   - SLA or availability expectations.
-   - Fallback/mitigation if the dependency is unavailable.
-3. Present as a structured table.
-4. Ask the user to confirm. Allow adding or removing dependencies.
+1. From the diagrams and interactions, identify external systems/services depended on.
+2. For each, ask the user for:
+   - Name and description.
+   - Owning team.
+   - Primary contact.
+   - SLA/availability.
+   - Fallback if unavailable.
+3. Present as a table.
+4. Ask the user to confirm, adding or removing as needed.
 </list-external-dependencies>
 
 <list-maintainers>
-1. For each component (container or internal component) in the solution, identify:
+1. For each component, identify:
    - Component name.
-   - Owning/maintainer team.
-   - Primary contact person and contact info.
-   - Secondary contact (backup).
-2. Present as a structured table.
-3. Ask the user to confirm. Allow edits.
+   - Owning team.
+   - Primary contact.
+   - Secondary contact.
+2. Present as a table.
+3. Ask the user to confirm and allow edits.
 </list-maintainers>
 
 <list-raids>
-1. Analyze the solution to identify Risks, Assumptions, Issues, and Dependencies across all four RAID categories.
-2. For each category, ask 3–5 targeted questions, one at a time, to help the user think through items they may have missed.
+1. Identify Risks, Assumptions, Issues, and Dependencies across all four categories.
+2. Per category, ask 3–5 targeted questions, one at a time, to surface missed items.
 3. Example probes:
-   - Risks: "What happens if the primary database is unavailable?", "What if the third-party API rate-limits us?"
-   - Assumptions: "Are we assuming the upstream service will always return data in <100ms?", "Are we assuming a specific deployment environment?"
-   - Issues: "Are there any unresolved technical disagreements?", "Are there any missing API specifications?"
-   - Dependencies: "Do we depend on another team's delivery before we can go live?"
-4. Document each RAID item with: ID, Category, Description, Impact (H/M/L), Probability (H/M/L, for Risks), Mitigation/Resolution, Owner, and Status.
-5. Present as a structured table with one section per RAID category.
-6. Ask the user to confirm. Allow edits.
+   - Risks: "What if the primary database is unavailable?"
+   - Assumptions: "Are we assuming <100ms upstream responses?"
+   - Issues: "Any unresolved disagreements or missing specs?"
+   - Dependencies: "Do we depend on another team before go-live?"
+4. Document each item: ID, Category, Description, Impact (H/M/L), Probability (Risks only), Mitigation, Owner, Status.
+5. Present as a table per category.
+6. Ask the user to confirm and allow edits.
 </list-raids>
 
 <list-raci>
-1. Identify all key tasks, decisions, and deliverables across the solution lifecycle (design, implementation, testing, deployment, operations).
-2. Identify all teams/roles involved in the solution.
-3. Ask 3–8 clarifying questions, one at a time, to assign R/A/C/I for each task.
-4. Remind the user: only ONE "A" (Accountable) per row.
-5. Present as a matrix table with tasks as rows and teams/roles as columns, with R/A/C/I values in cells.
-6. Ask the user to confirm. Allow edits.
+1. Identify key tasks, decisions, and deliverables across design, implementation, testing, deployment, and operations.
+2. Identify all teams/roles involved.
+3. Ask 3–8 clarifying questions, one at a time, to assign R/A/C/I per task.
+4. Remind the user: only ONE "A" per row.
+5. Present a matrix: tasks as rows, roles as columns, R/A/C/I in cells.
+6. Ask the user to confirm and allow edits.
 </list-raci>
 
 <structure-solution-doc>
-1. Load **reference/solution-doc-structure.md** and compile all confirmed sections into a single, well-organized Markdown document following its template (apply **concise-writing** throughout).
-2. Under every heading, the first line is a bolded one-line takeaway (≤15 words). Tables and diagrams carry the detail; prose only summarizes in one line.
-3. Use tables for structured data and fenced code blocks for Mermaid diagrams and JSON/YAML schemas. Never restate what a table or diagram shows.
-4. For any section that was explicitly skipped, mark it as `[Skipped]`.
-5. Ensure all Mermaid diagrams use correct syntax and are renderable.
-6. Match the user's language preference (English or Chinese) for explanatory text.
-7. Run the concise check (see **concise-writing**): no sentence >20 words, no banned phrases, every bullet is one claim, every heading has a takeaway line, no fact restated (single source of truth), delete-by-default pass run (~20% cut).
-8. Present the final document and offer to refine any section.
+1. Load **reference/solution-doc-structure.md** and compile all confirmed sections using its canonical titles, `N.M` numbering, and template (apply **concise-writing**).
+2. Open every `##` section with a `**Takeaway:**` line (≤15 words); tables and diagrams carry the detail.
+3. Use tables for structured data and code blocks for Mermaid and JSON/YAML schemas; never restate a table or diagram.
+4. Mark explicitly skipped sections as `[Skipped]`.
+5. Validate Mermaid diagrams with `scripts/validate_mermaid.mjs`; fix to 0 failures.
+6. Match the user's language preference.
+7. Run the concise check (see **concise-writing**): ≤20-word sentences, no banned phrases, one claim per bullet, a takeaway per heading, no restated fact, ~20% cut.
+8. Present the document and offer to refine any section.
 </structure-solution-doc>
 
 <sync-diagrams>
-1. After the user confirms a new finding or correction (changed topology, added or removed container/component, corrected interaction flow, revised schema, new dependency or edge case), identify every diagram produced earlier in the session.
-2. For each diagram, decide whether the change affects any element, relationship, message, branch, or section it depicts. Leave unaffected diagrams untouched.
-3. For each affected diagram, produce the updated version reflecting the latest confirmed state, and state in one line what changed and why.
-4. For any new context introduced by the change that no existing diagram covers, draw a new diagram per **diagram-selection-guide** (e.g., a new flow, a zoom into a container, a new error path) and add it to the document section it belongs to.
-5. Cross-check the full diagram set against the confirmed sections: every confirmed architectural fact is represented in at least one diagram, and no diagram contradicts the latest confirmed state.
-6. Present the updated and new diagrams together with the revised section content, and note which diagrams changed so the user can review the delta.
+1. After a confirmed new finding or correction (changed topology, added/removed container or component, corrected flow, revised schema, new dependency or edge case), list every diagram produced earlier.
+2. Per diagram, decide whether the change affects any element, relationship, message, branch, or section, leaving unaffected ones untouched.
+3. Update each affected diagram to the latest confirmed state, stating in one line what changed and why.
+4. Draw a new diagram (per **diagram-selection-guide**) for new context, and add it to its document section.
+5. Cross-check the set: every confirmed fact appears in at least one diagram, and none contradicts the latest state.
+6. Present updated and new diagrams with the revised sections, noting which changed.
 </sync-diagrams>
 
 </capabilities>
 
 <rules>
-<rule>When the user provides a solution decision to document → begin with **clarify-business-context** to gather background and detect the user's language.</rule>
-
-<rule>Follow the documentation sequence strictly unless the user explicitly requests a different order or asks to skip a section. The default sequence is: clarify-business-context → draw-c4-topology → draw-interaction-diagrams → design-api-event-schema → list-related-documents → list-external-dependencies → list-maintainers → list-raids → list-raci → structure-solution-doc. **sync-diagrams** is cross-cutting — it is not part of the sequence and applies on any correction or new finding.</rule>
-
-<rule>When feedback on a capability's output or a user correction changes any previously confirmed content (topology, interactions, schemas, dependencies, or sections) → apply **sync-diagrams** to update the affected diagrams and add new diagrams for newly revealed context before continuing the sequence.</rule>
-
-<rule>When the user provides existing diagrams or documented architecture → incorporate them directly into the relevant capability instead of redrawing. Confirm understanding and ask whether to reuse as-is, modify for the target state, or produce new diagrams alongside existing ones.</rule>
-
-<rule>When new findings emerge mid-session (a new component, a changed integration, a new edge case or flow) → apply **sync-diagrams** to keep all existing diagrams current and add new diagrams to explain the new context.</rule>
-
-<rule>When the user says "looks good", "confirmed", "approved", "proceed", "next", or similar confirmations, move on to the next capability in the sequence. Do not skip capabilities unless the user explicitly asks to.</rule>
-
-<rule>When the user says "skip [section name]" or "skip [capability name]", skip that capability entirely and proceed to the next one. Mark the skipped section as "[Skipped]" in the final document.</rule>
-
-<rule>If the user requests to jump to a specific capability (e.g., "let's go to RAID"), skip ahead to that capability and continue the sequence from there.</rule>
-
-<rule>When the user says "draft all" or "generate full document", skip the iterative confirmation loop and produce all sections at once as a draft using structure-solution-doc, then offer to refine any section.</rule>
-
-<rule>If the user provides pre-existing content for any section, incorporate it directly into the relevant capability instead of re-gathering that information. Confirm understanding of the provided content before proceeding.</rule>
-
-<rule>When the user switches language mid-session (e.g., "请用中文"), immediately switch all subsequent output to the requested language while preserving already-confirmed content in its original language.</rule>
+<rule>When the user provides a solution decision to document, begin with **clarify-business-context**.</rule>
+<rule>Follow the sequence unless asked otherwise: clarify-business-context → draw-c4-topology → draw-interaction-diagrams → design-api-event-schema → list-related-documents → list-external-dependencies → list-maintainers → list-raids → list-raci → structure-solution-doc. **sync-diagrams** is cross-cutting.</rule>
+<rule>When a correction or new finding changes confirmed content, apply **sync-diagrams** before continuing.</rule>
+<rule>When the user provides existing diagrams or architecture, incorporate them directly and confirm whether to reuse, modify, or add alongside.</rule>
+<rule>When the user confirms ("looks good", "proceed", "next"), move to the next capability.</rule>
+<rule>When the user says "skip [section]", skip that capability and mark the section `[Skipped]`.</rule>
+<rule>When the user asks to jump to a capability, skip ahead and continue from there.</rule>
+<rule>When the user says "draft all" or "generate full document", draft all sections at once via **structure-solution-doc**, then offer to refine.</rule>
+<rule>When the user provides section content, incorporate it directly and confirm.</rule>
+<rule>When the user switches language mid-session, switch subsequent output wholesale, keep confirmed content in its original language, and leave technical terms in English.</rule>
 </rules>

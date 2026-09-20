@@ -1,0 +1,10 @@
+{
+  "name": "draft-adr-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Mermaid validation for draft-adr. Run: npm i --prefix scripts && node scripts/validate_mermaid.mjs <file>",
+  "dependencies": {
+    "jsdom": "^29.1.1",
+    "mermaid": "^12.0.0"
+  }
+}

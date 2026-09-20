@@ -56,7 +56,7 @@ C4Container
     Rel(chat_svc, s3, "File uploads/downloads", "S3 API")
 ```
 
-> **C2 Explanation**: The React SPA authenticates via Auth0 and establishes a persistent WebSocket connection to the Gateway. Messages flow: SPA → Gateway (WSS) → Redis (pub) → Chat Service (sub) → MongoDB (persist) → Redis (pub back) → Gateway → recipient SPA. The Chat Service calls User Service via gRPC for profiles and Pusher for mobile push.
+> **C2 takeaway**: SPA authenticates via Auth0 and holds a WebSocket to the Gateway; Chat Service consumes Redis pub/sub, persists to MongoDB, and calls User Service and Pusher.
 
 [...user confirms...]
 
@@ -86,7 +86,7 @@ C4Component
     }
 ```
 
-> **C3 Explanation**: The Chat Service uses goroutines with Go channels for concurrency. The Message Router fans out messages to DM Handler or Group Handler based on type. Both handlers use the Persistence Layer for MongoDB and the Notifier for push delivery. The DM Handler also calls the Profile Client (gRPC to User Service) and S3 Client for file attachments.
+> **C3 takeaway**: The Message Router fans out by message type to DM or Group Handler; both use the Persistence Layer and Notifier, and the DM Handler also calls the Profile and S3 clients.
 
 ---
 
@@ -96,7 +96,6 @@ C4Component
 - **Send DM flow** → Sequence diagram (runtime message passing between participants)
 - **Create group chat flow** → Sequence diagram (runtime message passing between participants)
 - **Message moderation workflow** → Flowchart (decision logic with branching)
-- **Group chat invite acceptance flow** → Flowchart (decision logic with multiple branches)
 
 ### Direct Message Flow (Sequence Diagrams)
 
@@ -109,10 +108,10 @@ sequenceDiagram
     %% Level: container — cross-system flow
     actor Sender as "Sender SPA"
     participant GW as "WebSocket Gateway"
-    database Redis
+    participant Redis
     participant Chat as "Chat Service"
     participant User as "User Service"
-    database Mongo as "MongoDB"
+    participant Mongo as "MongoDB"
 
     Sender->>GW: WS {"type":"dm","to":"user2","text":"Hi"}
     GW->>Redis: PUBLISH dm:events
@@ -130,7 +129,7 @@ sequenceDiagram
 sequenceDiagram
     %% Level: container — cross-system flow
     participant Chat as "Chat Service"
-    database Redis
+    participant Redis
     participant GW as "WebSocket Gateway"
     actor Recipient as "Recipient SPA"
 
@@ -140,7 +139,7 @@ sequenceDiagram
     Note right of Chat: offline recipient → POST /push via Pusher
 ```
 
-> **DM Flow**: Sender sends via WS to Gateway → published to Redis `dm:events` → Chat Service subscribes, validates, persists to MongoDB, fetches recipient profile from User Service, publishes to `dm:delivery` → Gateway pushes to recipient's WS connection. If recipient is offline, Chat Service falls back to Pusher for mobile push notification.
+> **DM takeaway**: Sender → Gateway → Redis `dm:events` → Chat Service validates/persists and publishes `dm:delivery`; offline recipients fall back to Pusher.
 
 **Group Chat Creation Flow**:
 
@@ -151,8 +150,8 @@ sequenceDiagram
     participant GW as "WebSocket Gateway"
     participant Chat as "Chat Service"
     participant User as "User Service"
-    database Mongo as "MongoDB"
-    database Redis
+    participant Mongo as "MongoDB"
+    participant Redis
 
     Creator->>GW: WS {"type":"create_group","name":"Team A","members":["u1","u2","u3"]}
     GW->>Chat: gRPC CreateGroup(req)
@@ -170,7 +169,7 @@ sequenceDiagram
     GW-->>Creator: WS {"type":"group_created","group_id":"g_abc"}
 ```
 
-> **Group Creation Flow**: Creator sends request via WS → Gateway forwards via gRPC to Chat Service → Chat Service validates, fetches member profiles in batch from User Service, persists group to MongoDB, publishes notifications to each member, and returns group_id to creator.
+> **Group creation takeaway**: Creator → Gateway → Chat Service validates, batch-fetches profiles, persists the group, notifies members, and returns the group_id.
 
 ### Message Moderation Workflow (Flowchart)
 
@@ -202,40 +201,6 @@ flowchart TD
     N -->|no| K
 ```
 
-> **Moderation Flowchart**: Every message goes through a multi-stage moderation pipeline. First, a banned-keyword check blocks obvious violations. Then, flagged users are routed to manual review. Messages with attachments undergo virus and content scanning. Only messages that pass all checks are delivered. Each rejection path includes a user notification.
+> **Moderation takeaway**: Messages pass keyword, flagged-user, and attachment scans; any rejection path notifies the sender.
 
-### Group Chat Invite Acceptance Flow (Flowchart)
-
-**The assistant recognizes this as a business workflow with multiple decision points — flowchart is appropriate.**
-
-```mermaid
-flowchart TD
-    A([Start]) --> B[User receives group invite notification]
-    B --> C{User is existing ChatFlow user?}
-    C -->|yes| D[Show invite in app]
-    D --> E{User accepts?}
-    E -->|no| F[Invite expires after 7 days]
-    F --> G([End])
-    E -->|yes| H{Group is public?}
-    H -->|yes| I[Add user to group immediately]
-    I --> J[Notify group members]
-    J --> G
-    H -->|no| K[Send request to group admin]
-    K --> L{Admin approves?}
-    L -->|yes| M[Add user to group]
-    M --> N[Notify user and group]
-    N --> G
-    L -->|no| O[Notify user: request denied]
-    O --> G
-    C -->|no| P[Send SMS/email invite with signup link]
-    P --> Q{User signs up within 7 days?}
-    Q -->|yes| R[Create account]
-    R --> S[Auto-accept invite]
-    S --> T[Add user to group]
-    T --> G
-    Q -->|no| U[Invite expires]
-    U --> G
-```
-
-> **Group Invite Flowchart**: The invite flow handles two distinct user types (existing vs. new) and two group types (public vs. private). Existing users accepting a public group invite are added immediately. Private groups require admin approval. Non-users are directed to sign up first, after which the invite is auto-accepted. All invite links expire after 7 days.
 

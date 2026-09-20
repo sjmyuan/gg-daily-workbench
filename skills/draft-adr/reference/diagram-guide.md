@@ -12,13 +12,18 @@ This guide supports the **diagram-selection** knowledge entry. Load it when actu
 
 ## Writing Robust Labels
 
-Most broken diagrams come from a semicolon (`;`) or another special character in a label. Mermaid parses `; " # ( ) [ ] { } |` as **syntax, not text**.
+Only three patterns break diagrams (verified against the Mermaid parser):
 
-- **Reword first**: never put `;` in a label — replace with `,` / `，` / `·` ("places orders; queries history" → "places orders, queries history"). Drop or reword `()`; avoid `"` and `#`.
-- **Quote when needed**: API/method text goes in quotes — `Rel(a, b, "POST /orders")`, `A["createOrder(dto)"]`.
-- **Escape as last resort** inside quotes: `#59;` for `;`, `#quot;` for `"`, `#35;` for `#`, `#40;` / `#41;` for `(` / `)`.
-- **Line breaks**: use `<br/>`, never a raw newline inside a label.
-- **Self-check**: scan every label for `; " # ( ) [ ] { } |` before output; reword or shorten any risky label. Move detail to the caption.
+| Context | Breaks | Safe |
+|---|---|---|
+| Sequence message / `Note` text | `;` | `, " # ( ) [ ] { } \| &` |
+| Flowchart node / edge label (unquoted) | `" ( ) [ ] { } \|` | `; , # &` |
+| C4 label & `Rel` description | — | all |
+
+- **Sequence text**: never use `;` in a message or `Note` — reword to `,` or split. Commas are safe.
+- **Flowchart labels**: quote labels with `" ( ) [ ] { } \|` (`A["Save (async)"]`) or reword.
+- **Line breaks**: use `<br/>`, never a raw newline.
+- **Validate before presenting**: `node scripts/validate_mermaid.mjs`; fix until 0 failures (full parsing needs `mermaid` + `jsdom` — `npm i --prefix scripts`; else heuristic checks run).
 
 ## Zooming In
 
@@ -83,7 +88,7 @@ Every sequence diagram follows the **sequence diagram contract** — one zoom le
 - **Traceable participants**: encode the identity path in the label, matching the level:
   - Cross-system: `participant OMS as "Order Service"`
   - Cross-file / class: `participant OR as "orders/repo.ts<br/>OrderRepository : IOrderRepository"`
-  - Always include the **file path** at component/code level — easiest to locate. Group ownership with an alias prefix per system (`OMS_*`, `PS_*`); use `actor` for humans/external, `database` for stores.
+  - Always include the **file path** at component/code level — easiest to locate. Group ownership with an alias prefix per system (`OMS_*`, `PS_*`); use `actor` for humans/external, `participant` for services and stores.
 - **Messages are the contract**: real API / event / method — `POST /orders`, `gRPC ReserveStock`, `createOrder(dto)`. Use `->>` for sync, `-)` for async messages, `-->>` for returns only.
 - **Events and self-calls carry a short explanation**: append `<br/>` + what it does after the actual call, so intent is readable without the schema (e.g. `publish OrderCreated<br/>notifies downstream services`).
 - **Self-calls ≤ 2 per lifeline**; larger internal logic moves to a flowchart or a `Note over`.
@@ -195,7 +200,7 @@ sequenceDiagram
     actor Customer
     participant OMS as "Order Service"
     participant PS as "Payment Gateway (external)"
-    database DB as "Order DB"
+    participant DB as "Order DB"
 
     Customer->>OMS: POST /orders
     OMS->>PS: POST /v1/charges

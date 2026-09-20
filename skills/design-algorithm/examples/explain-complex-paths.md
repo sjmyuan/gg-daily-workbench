@@ -23,11 +23,11 @@ Mermaid diagram of the transition flow:
 
 ```mermaid
 flowchart LR
-    A[nums[i] = 2] --> B[scan all j < i]
-    B --> C{nums[j] < nums[i]?}
-    C -- yes --> D[candidate = dp[j] + 1]
-    C -- no --> E[skip]
-    D --> F[dp[i] = max of candidates]
+    A["nums[i] = 2"] --> B["scan all j < i"]
+    B --> C{"nums[j] < nums[i]?"}
+    C -- yes --> D["candidate = dp[j] + 1"]
+    C -- no --> E["skip"]
+    D --> F["dp[i] = max of candidates"]
 ```
 
 **Takeaway**: `dp[i]` means "LIS ending exactly at index i". The transition extends any shorter increasing subsequence that ends with a smaller value.

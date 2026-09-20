@@ -97,7 +97,7 @@ sequenceDiagram
     participant Orch as "checkout/CheckoutOrchestrator.java"
     participant Pub as "event/EventPublisher.java : EventPublisher"
     participant Kafka as "org.springframework.kafka.core.KafkaTemplate"
-    database Broker as "Kafka (broker)"
+    participant Broker as "Kafka (broker)"
 
     Orch->>Pub: 1: publish(event)
     Pub-)Kafka: 2: send(topic, key, event)<br/>async write to the broker

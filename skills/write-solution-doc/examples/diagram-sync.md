@@ -77,7 +77,7 @@ sequenceDiagram
     %% Level: container — cross-system flow
     actor Sender as "Sender SPA"
     participant Media as "Media Service"
-    database S3 as "AWS S3 (external)"
+    participant S3 as "AWS S3 (external)"
 
     Sender->>Media: POST /upload
     Media->>Media: signUploadUrl()<br/>creates a time-limited signed URL
@@ -93,10 +93,10 @@ sequenceDiagram
     %% Level: container — cross-system flow
     actor Sender as "Sender SPA"
     participant GW as "WebSocket Gateway"
-    database Redis
+    participant Redis
     participant Chat as "Chat Service"
     participant User as "User Service"
-    database Mongo as "MongoDB"
+    participant Mongo as "MongoDB"
 
     Sender->>GW: WS {"type":"dm","to":"user2","text":"Hi","file":"signed_url"}
     GW->>Redis: PUBLISH dm:events
@@ -114,7 +114,7 @@ sequenceDiagram
 sequenceDiagram
     %% Level: container — cross-system flow
     participant Chat as "Chat Service"
-    database Redis
+    participant Redis
     participant GW as "WebSocket Gateway"
     actor Recipient as "Recipient SPA"
 
@@ -138,7 +138,7 @@ sequenceDiagram
     %% Level: container — cross-system flow
     participant Mod as "Moderation Service (external)"
     participant Chat as "Chat Service"
-    database Mongo as "MongoDB"
+    participant Mongo as "MongoDB"
     participant GW as "WebSocket Gateway"
     actor Recipient as "Recipient SPA"
 
