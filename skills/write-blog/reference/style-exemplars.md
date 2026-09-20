@@ -44,10 +44,22 @@ Apply these together with the checklist in [human-voice.md](human-voice.md):
 
 1. **Scene first**: open with a real recent event or a concrete situation the reader recognizes — never with a generic hook ("在当今……的时代").
 2. **Self-correct**: show your initial take, then the revision that experience forced on you.
-3. **Talk to the reader**: use "你 / 大家 / 你有没有遇到过……" — the piece is a conversation, not a lecture.
+3. **Address the reader, but as an argument**: use "你 / 大家 / 你有没有遇到过……" to press a point ("那么解决问题真的是第一优先级么？"), not to make small talk. The register stays a written statement, not a conversation — see [human-voice.md](human-voice.md) §7.
 4. **Idiom and plain speech**: everyday expressions and idioms ("头痛医头，脚痛医脚") are welcome; abstract management-speak is not.
 5. **End with a question or a stance**, not a wrap-up summary.
 
 ## Anti-patterns from the same blog's AI-assisted era (for contrast)
 
 The same author's 2026 posts show what to avoid: heavy bold-labeled step headings ("**发生了什么？**"), "关键点在于……", balanced tables everywhere, and an aphoristic closing line ("它们只是安静地等在执行过程中的某个角落"). Structure is useful; the *flourish* is the tell. Keep structure, drop the flourish.
+
+### The second tell: a chatty assistant register (豆包味)
+
+The *flourish* above is structural and fairly easy to spot. The other tell only appears when a draft is polished for "warmth", and it is harder to catch because it feels friendly. It sounds like a helpful assistant talking with the reader rather than a practitioner stating something:
+
+- emotional self-narration for atmosphere ("我盯着它的输出，心里越来越没底", "但我心里清楚，它不是终点")
+- debate and reassurance phrasing ("这一点它确实赢，没什么好争的", "我没有异议")
+- suspense beats before the point ("真做下来才发现，没那么简单")
+- filler openers ("说白了", "说到底", "你会发现", "这一点很关键")
+- stacked rhetorical questions ("心流是什么？……为什么等 AI 会让人这么难受？")
+
+Both are AI tells, and both are covered by the same gate. Rules, before/after pairs, and the test ("read it aloud — if it sounds like greeting, reassuring, or arguing, rewrite it as a flat statement"): [human-voice.md](human-voice.md) §7.

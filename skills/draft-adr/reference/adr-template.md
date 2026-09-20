@@ -3,7 +3,7 @@
 When producing the final ADR document, use the exact structure below. Wrap placeholders in `{{ }}` and fill them in based on the discussion with the user. Apply the concise writing rules in **reference/writing-style.md** — BLUF takeaway under every heading, caps, no banned phrases.
 
 ````markdown
-# YYYY-MM-DD-{{TITLE}}
+# {{YYYY-MM-DD}}-{{TITLE}}
 
 * Status: {{STATUS:draft | adopt | declined | superseded}}
 * Owners: [ Who started and drives the ADR ]
@@ -11,14 +11,16 @@ When producing the final ADR document, use the exact structure below. Wrap place
 
 ## Context and Problem Statement
 
-[ ≤3 sentences, SCQA: Situation → Complication → Question → Answer. Lead with the question this ADR answers. ]
+**Decision:** [ one-line takeaway — the decision question this ADR answers and its outcome — ≤15 words ]
+
+[ ≤3 sentences, SCQA: Situation → Complication → Question → Answer. Never lead with background. ]
 
 ![Context diagram: system(s) in scope, actors, and external dependencies]({{DIAGRAM:context}})
 [ Embed the C4 context diagram drawn during define-problem, plus any flowchart or sequence diagram used to zoom into the context. For architecture diagrams use C4 Models see https://c4model.com ]
 
 ## Decision Outcome
 
-**Chosen:** "[ option 1 ]" — [ 1-sentence justification tied to a specific driver, e.g. "meets KO driver #1 (ACID); best on cost & team expertise" ].
+**Chosen:** "[ Option N: <name> ]" — [ 1-sentence justification tied to a specific driver, e.g. "meets KO driver #1 (ACID); best on cost & team expertise" ].
 
 ![C4/flowchart: target state with the chosen option integrated into the context]({{DIAGRAM:solution}})
 [ Embed the target-state C4/flowchart view drawn during compile-adr. ]
@@ -49,8 +51,10 @@ When producing the final ADR document, use the exact structure below. Wrap place
 
 ## Considered Options
 
-* [ option 1 ]
-* [ option 2 ]
+Assign each option a stable label `Option N: <name>` here; reuse it verbatim in every later section.
+
+* Option 1: <name>
+* Option 2: <name>
 * ...
 
 ![Option comparison matrix: drivers × options with knock-out highlights]({{DIAGRAM:comparison-matrix}})
@@ -58,11 +62,31 @@ When producing the final ADR document, use the exact structure below. Wrap place
 
 ## Evaluation of the Options <!-- required -->
 
-### [ option 1 ]
+Repeat the block below once per option, in `Option N` order, using the option's exact `Option N: <name>` label.
 
-**Verdict:** [ 1 line: recommended / dropped + which driver decides — ≤15 words ]
+### Option N: <name>
 
-[ ≤3 short sentences: what it is, key strengths, key risks ] <!-- required -->
+#### Verdict
+
+[ one line: recommended / dropped + which driver decides — ≤15 words ]
+
+#### What it is
+
+[ one plain-language sentence — what this option is ]
+
+#### How it works
+
+[ 1–2 sentences — the mechanism, in order ]
+
+#### Pros
+
+* [ one claim per bullet — no justification ]
+* ...
+
+#### Cons
+
+* [ one claim per bullet — no justification ]
+* ...
 
 #### Tech Details <!-- optional: include when tech details were provided from a spike's code investigation -->
 
@@ -81,49 +105,6 @@ diff --git a/<file> b/<file>
 -removed line
 +added line
 ```
-
-#### Pros
-
-* [ one claim per bullet — no justification ]
-* ...
-
-#### Cons
-
-* [ one claim per bullet — no justification ]
-* ...
-
-### [ option 2 ]
-
-**Verdict:** [ 1 line: recommended / dropped + which driver decides — ≤15 words ]
-
-[ ≤3 short sentences: what it is, key strengths, key risks ] <!-- required -->
-#### Tech Details <!-- optional: include when tech details were provided from a spike's code investigation -->
-
-[ Target-state diagram(s) for this option: C4 view + sequence diagram(s) showing the flow this option changes. ]
-
-**Code changes** (grounded in the code reference — `file:line`, one git-style diff block per change):
-
-1. `file:line` symbol (confidence: verified / inferred / unverified) — [how to change it]
-
-```diff
-diff --git a/<file> b/<file>
---- a/<file>
-+++ b/<file>
-@@ -<start>,<count> +<start>,<count> @@
- context line
--removed line
-+added line
-```
-
-#### Pros
-
-* [ one claim per bullet — no justification ]
-* ...
-
-#### Cons
-
-* [ one claim per bullet — no justification ]
-* ...
 
 ## References <!-- optional -->
 ````

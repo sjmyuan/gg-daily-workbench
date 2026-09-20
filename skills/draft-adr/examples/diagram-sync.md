@@ -12,7 +12,7 @@
 - **Drivers (confirmed)**:
   - Hard: at-least-once delivery, GCP integration, team familiarity with Kafka
   - Soft: low cost, managed service
-- **Options (confirmed)**: Apache Kafka (self-hosted), Pub/Sub (GCP), RabbitMQ
+- **Options (confirmed)**: Option 1: Apache Kafka (self-hosted); Option 2: Pub/Sub (GCP); Option 3: RabbitMQ
 - **Evaluation so far**: Pub/Sub recommended; Kafka self-hosted dropped on operational cost; RabbitMQ dropped on throughput ceiling.
 
 **Diagrams already in the session**:
@@ -28,11 +28,11 @@
 > One correction — we missed a hard constraint: all message data must stay within EU data centers. And please also consider Redpanda, which the team has been prototyping.
 
 **Agent response (applies evaluate-options + sync-diagrams)**:
-> Noted — adding "EU data residency" as a hard constraint and Redpanda as a 4th option. Let me re-evaluate Redpanda against the drivers, then sync the affected diagrams.
+> Noted — adding "EU data residency" as a hard constraint and Redpanda as Option 4. Let me re-evaluate Redpanda against the drivers, then sync the affected diagrams.
 
 **Evaluation summary for Redpanda**:
 
-| Driver | Redpanda |
+| Driver | Option 4: Redpanda |
 |---|---|
 | At-least-once delivery | ✅ |
 | GCP integration | ⚠️ (runs on GCP VMs, but not a managed GCP service) |
@@ -59,7 +59,7 @@ flowchart TD
 **Agent output — updated comparison matrix + elimination tree**:
 > Updated: Redpanda added to the matrix; Pub/Sub now fails the EU data residency hard constraint and is eliminated.
 
-| Driver | Kafka (self-hosted) | Pub/Sub | RabbitMQ | Redpanda |
+| Driver | Option 1: Kafka (self-hosted) | Option 2: Pub/Sub | Option 3: RabbitMQ | Option 4: Redpanda |
 |---|---|---|---|---|
 | At-least-once delivery | ✅ | ✅ | ✅ | ✅ |
 | GCP integration | ✅ | ✅ | ✅ | ⚠️ |
@@ -70,14 +70,14 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    All["All options"] --> A["Kafka (self-hosted)"]
-    All --> B["Pub/Sub"]
-    All --> C["RabbitMQ"]
-    All --> D["Redpanda"]
+    All["All options"] --> A["Option 1: Kafka (self-hosted)"]
+    All --> B["Option 2: Pub/Sub"]
+    All --> C["Option 3: RabbitMQ"]
+    All --> D["Option 4: Redpanda"]
     B -->|"fails EU data residency"| X["Eliminated"]
     C -->|"throughput ceiling"| X
     D -->|"no managed service, partial GCP"| X
-    A -->|"passes all hard constraints"| W["Chosen: Kafka (self-hosted)"]
+    A -->|"passes all hard constraints"| W["Chosen: Option 1"]
 ```
 
 > The corrected picture now points to Kafka (self-hosted) as the recommendation, since it is the only option satisfying the new EU residency hard constraint — the recommendation flipped from Pub/Sub.

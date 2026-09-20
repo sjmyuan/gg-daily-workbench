@@ -1,29 +1,23 @@
 # Example: Database Selection for a New Microservice
 
-**Scenario**: The user is building a new order-management microservice and needs to choose a database. They have a clear problem statement and want a structured walkthrough. This example demonstrates all 5 capabilities in sequence (**define-problem** → **define-decision-drivers** → **define-considered-options** → **evaluate-options** → **compile-adr**) with a well-defined starting point.
+**Scenario**: The user is choosing a database for a new order-management microservice and wants a structured walkthrough. Demonstrates all 5 capabilities in sequence (**define-problem** → **define-decision-drivers** → **define-considered-options** → **evaluate-options** → **compile-adr**).
 
 ---
 
 ## Capability: define-problem
 
 **User input**:
-> We're building a new order-management microservice that will handle ~10K orders/day. We need to pick a database. The service needs to support complex queries on order history, ACID transactions for payment processing, and it'll run on GCP.
+> We're building a new order-management microservice handling ~10K orders/day. We need to pick a database. It needs complex queries on order history, ACID transactions for payment, and it'll run on GCP.
 
 **Agent output**:
-> Let me restate the problem to make sure I understand:
->
-> **Problem Statement**: We need to select a database for a new order-management microservice running on GCP that supports:
-> - ~10,000 orders/day (moderate throughput)
-> - Complex queries on order history (e.g., filtering by date range, status, customer)
-> - ACID transactions for payment processing
-> - Deployment on GCP
+> **Problem Statement**: Select a database for a new order-management microservice on GCP supporting ~10,000 orders/day, complex order-history queries, and ACID payment transactions.
 >
 > Does this accurately capture the problem?
 
 **User confirms**: Yes.
 
 **Agent output**:
-> Here's a C4 context diagram of the system in scope so we're aligned before moving on:
+> Here's the system context so we're aligned:
 >
 > ```mermaid
 > C4Context
@@ -38,47 +32,26 @@
 >     Rel(oms, ps, "payment processing")
 >     Rel(oms, iam, "authN / authZ")
 > ```
->
-> Let me also zoom into the order lifecycle with a flowchart, since the ACID/payment requirement lives there:
->
-> ```mermaid
-> flowchart TD
->     A([Start]) --> B[Customer places order]
->     B --> C[Validate & charge payment]
->     C --> D{Payment succeeds?}
->     D -->|yes| E[Write order with ACID transaction]
->     E --> F[Query order history]
->     F --> G([End])
->     D -->|no| H[Reject order]
->     H --> G
-> ```
 
 ---
 
 ## Capability: define-decision-drivers
 
 **User input**:
-> Main factors: team knows PostgreSQL well, we need to keep infra costs low since we're early-stage, and latency for order lookups should be under 100ms. Also we're on GCP so managed services are preferred.
+> Team knows PostgreSQL well, infra costs must stay low, order lookups under 100ms, and we're on GCP so managed services are preferred.
 
 **Agent output**:
-> Here are the decision drivers I've identified. I've separated hard constraints from soft preferences:
+> Decision drivers, split into hard constraints and soft preferences:
 >
-> **Hard Constraints (must-haves)**:
-> 1. ACID transaction support — non-negotiable for payment processing
-> 2. Query latency < 100ms for order lookups
-> 3. Must run on or integrate cleanly with GCP
+> **Hard constraints**: (1) ACID transactions for payments; (2) query latency < 100ms; (3) GCP integration.
+> **Soft preferences**: (4) team expertise (PostgreSQL); (5) low infrastructure cost; (6) managed service.
 >
-> **Soft Preferences (nice-to-haves)**:
-> 4. Team expertise (PostgreSQL) — reduces ramp-up time
-> 5. Low infrastructure cost — early-stage budget constraints
-> 6. Managed service — reduces operational overhead
->
-> Would you like to reorder or adjust any of these?
+> Would you like to reorder or adjust these?
 
 **User confirms**: Looks good.
 
 **Agent output**:
-> Here's a map of the confirmed decision drivers so the trade-off space is visible:
+> Confirmed decision-driver map:
 >
 > ```mermaid
 > flowchart TD
@@ -100,20 +73,15 @@
 > We're thinking Cloud SQL (PostgreSQL), but should we consider others?
 
 **Agent output**:
-> Cloud SQL (PostgreSQL) is a solid starting point. Let me brainstorm alternatives across a few dimensions:
+> Brainstorming alternatives: **industry-standard** — Cloud Spanner (global scale, strong consistency), Firestore (serverless NoSQL); **build vs. buy** — all managed, no build option; **incremental vs. big-bang** — start simple, migrate later.
 >
-> - **Do nothing / status quo**: Not applicable — new service
-> - **Industry-standard**: Cloud Spanner (global scale, strong consistency), Firestore (serverless NoSQL)
-> - **Build vs. buy**: All are managed — no build option here
-> - **Incremental vs. big-bang**: We could start simple and migrate later
+> Proposed options:
 >
-> Here are the options I'd propose for evaluation:
+> - Option 1: Cloud SQL for PostgreSQL — managed relational DB, full SQL, ACID
+> - Option 2: Cloud Spanner — globally distributed, strong consistency
+> - Option 3: Firestore — serverless NoSQL document DB, real-time sync
 >
-> 1. **Cloud SQL for PostgreSQL** — managed relational DB, full SQL, ACID
-> 2. **Cloud Spanner** — globally distributed, strong consistency, relational
-> 3. **Firestore** — serverless NoSQL document DB, real-time sync
->
-> Do these three cover the viable options? Any others to add?
+> Do these three cover the viable options?
 
 **User confirms**: These three are good.
 
@@ -124,97 +92,34 @@
 **Evaluating Option 1: Cloud SQL for PostgreSQL**
 
 **User input**:
-> Pros: team already knows it, full ACID support, great query flexibility. Cons: might need read replicas at scale, max connections could be a bottleneck.
+> Pros: team knows it, full ACID, flexible queries. Cons: read replicas at scale, connection limits.
 
 **Agent output**:
-> **Cloud SQL for PostgreSQL — Evaluation**
->
 > | Driver | Impact |
 > |---|---|
-> | ACID transactions ✅ | Full support — satisfies hard constraint #1 |
-> | Query latency ✅ | Indexed queries well under 100ms — satisfies #2 |
-> | GCP integration ✅ | Native GCP managed service — satisfies #3 |
-> | Team expertise ✅ | Team already knows PostgreSQL — satisfies #4 |
-> | Cost ⚠️ | Reasonable for moderate load; read replicas add cost — partial on #5 |
-> | Managed service ✅ | Fully managed with automatic backups — satisfies #6 |
+> | ACID transactions ✅ | Full support — HC1 |
+> | Query latency ✅ | Indexed queries well under 100ms — HC2 |
+> | GCP integration ✅ | Native managed service — HC3 |
+> | Team expertise ✅ | Team knows PostgreSQL — SP4 |
+> | Cost ⚠️ | Reasonable; read replicas add cost — partial SP5 |
+> | Managed service ✅ | Automatic backups — SP6 |
 >
-> **Pros**:
-> - Team already knows PostgreSQL — zero ramp-up
-> - Full SQL + extensions cover all query patterns
-> - Mature ecosystem: tooling, monitoring, community
->
-> **Cons**:
-> - Connection pooling needed at scale
-> - Vertical scaling has an upper bound; read replicas add eventual consistency
+> **Verdict:** Recommended — satisfies all three hard constraints. Full card rendered in the final ADR below.
 >
 > Does this evaluation look accurate?
 
 **User confirms**: Yes.
 
-**Evaluating Option 2: Cloud Spanner**
+**Options 2 and 3** use the same card pattern; key results:
+- **Option 2: Cloud Spanner** — ACID ✅, GCP ✅, managed ✅; **fails** team experience and cost.
+- **Option 3: Firestore** — latency ✅, cost ✅, managed ✅; **fails** the ACID hard constraint.
 
-**User input**:
-> Pros: unlimited scale, strong consistency. Cons: expensive, team doesn't know it, overkill for 10K orders/day.
-
-**Agent output**:
-> **Cloud Spanner — Evaluation**
->
-> | Driver | Impact |
-> |---|---|
-> | ACID transactions ✅ | Full support — satisfies #1 |
-> | Query latency ✅ | < 10ms typical — satisfies #2 |
-> | GCP integration ✅ | Native — satisfies #3 |
-> | Team expertise ❌ | No team experience, steep learning curve — fails #4 |
-> | Cost ❌ | Minimum ~$600/month even at idle — fails #5 |
-> | Managed service ✅ | Fully managed — satisfies #6 |
->
-> **Pros**:
-> - Unlimited horizontal scaling with no sharding
-> - 99.999% SLA for critical workloads
->
-> **Cons**:
-> - Minimum cost prohibitive for early-stage ($600+/month)
-> - Team has zero experience; significant ramp-up
-> - Massive overkill for 10K orders/day
->
-> Does this evaluation look accurate?
-
-**User confirms**: Yes, Spanner is clearly not the right choice.
-
-**Evaluating Option 3: Firestore**
-
-**User input**:
-> Pros: serverless, cheap, real-time. Cons: no joins, limited querying, no native ACID across documents.
-
-**Agent output**:
-> **Firestore — Evaluation**
->
-> | Driver | Impact |
-> |---|---|
-> | ACID transactions ❌ | Limited to 25 document groups; no cross-collection transactions — **fails hard constraint #1** |
-> | Query latency ✅ | < 100ms typical — satisfies #2 |
-> | GCP integration ✅ | Native — satisfies #3 |
-> | Team expertise ⚠️ | Some team members have NoSQL experience — partial on #4 |
-> | Cost ✅ | Pay-per-use, very low at this scale — satisfies #5 |
-> | Managed service ✅ | Serverless, zero ops — satisfies #6 |
->
-> **Pros**:
-> - Serverless pricing ideal for early-stage
-> - Real-time sync enables live order-tracking features
->
-> **Cons**:
-> - **Fails ACID hard constraint** — no cross-collection transactions for payment
-> - Complex queries require denormalization and composite indexes
-> - No JOINs — application-level data assembly
->
-> Does this evaluation look accurate?
-
-**User confirms**: Yes. Firestore fails the ACID requirement.
+**User confirms**: Spanner and Firestore are out.
 
 **Agent output (after all options evaluated)**:
-> Here's the summary across all three options:
+> Summary across all three options:
 >
-> | Driver | Cloud SQL (PG) | Cloud Spanner | Firestore |
+> | Driver | Option 1: Cloud SQL (PG) | Option 2: Cloud Spanner | Option 3: Firestore |
 > |---|---|---|---|
 > | ACID transactions | ✅ | ✅ | ❌ (knock-out) |
 > | Query latency < 100ms | ✅ | ✅ | ✅ |
@@ -223,36 +128,31 @@
 > | Low cost | ⚠️ | ❌ | ✅ |
 > | Managed service | ✅ | ✅ | ✅ |
 >
-> Firestore is eliminated by the ACID hard constraint. Cloud Spanner fails on cost and team expertise. Cloud SQL for PostgreSQL satisfies all hard constraints and 3/3 soft preferences.
->
-> Here's the elimination tree that visualizes why we dropped each option:
+> Option 3 is eliminated by the ACID hard constraint; Option 2 fails cost and team expertise. Option 1 satisfies all hard constraints and 3/3 soft preferences.
 >
 > ```mermaid
 > flowchart TD
->     All["All options"] --> A["Cloud SQL for PostgreSQL"]
->     All --> B["Cloud Spanner"]
->     All --> C["Firestore"]
+>     All["All options"] --> A["Option 1: Cloud SQL for PostgreSQL"]
+>     All --> B["Option 2: Cloud Spanner"]
+>     All --> C["Option 3: Firestore"]
 >     C -->|"fails ACID knock-out"| X1["Eliminated"]
 >     B -->|"fails low cost + team expertise"| X2["Eliminated"]
->     A -->|"passes all hard constraints + 3/3 soft"| W["Chosen: Cloud SQL for PostgreSQL"]
+>     A -->|"passes all hard constraints + 3/3 soft"| W["Chosen: Option 1"]
 > ```
 >
 > **Given the evaluations, which option best satisfies the decision drivers?**
 
-**User confirms**: Cloud SQL for PostgreSQL.
+**User confirms**: Option 1.
 
 ---
 
 ## Capability: compile-adr
 
 **Agent output**:
-> Before I compile the ADR, let me gather metadata:
-> - **Title**: What should we call this ADR? (e.g., "Database Selection for Order-Management Service")
-> - **Owners**: Who is driving this ADR?
-> - **Status**: draft, adopt, declined, or superseded?
+> Metadata: title, owners, and status?
 
 **User input**:
-> Title: "Database Selection for Order-Management Service", Owners: Alice (Tech Lead), Status: draft.
+> "Database Selection for Order-Management Service"; Alice (Tech Lead); draft.
 
 **Agent loads reference/adr-template.md and produces**:
 
@@ -265,74 +165,87 @@
 
 ## Context and Problem Statement
 
-We need to select a database for a new order-management microservice running on GCP. The service will handle approximately 10,000 orders per day and must support complex queries on order history (filtering by date range, status, customer) and ACID transactions for payment processing.
+**Decision:** Cloud SQL for PostgreSQL — the only option meeting all hard constraints.
 
-![C4 context diagram: customer, order management service, database, payment processor, GCP IAM](diagrams/context.png)
+The service handles ~10,000 orders/day on GCP and must support complex order-history queries and ACID payment transactions. Which managed database satisfies all constraints within an early-stage budget?
+
+![C4 context diagram: customer, order management service, payment processor, GCP IAM](diagrams/context.png)
 
 ## Decision Outcome
 
-Chosen option: "Cloud SQL for PostgreSQL", because it is the only option that satisfies all three hard constraints (ACID transactions, query latency under 100ms, GCP integration) while also meeting all soft preferences — the team already has PostgreSQL expertise, costs are reasonable at the projected scale, and it is a fully managed GCP service.
+**Chosen:** "Option 1: Cloud SQL for PostgreSQL" — the only option satisfying all three hard constraints (ACID, <100ms lookups, GCP) while meeting every soft preference.
 
-![C4/flowchart: target state — order management service with Cloud SQL for PostgreSQL, PgBouncer, read replica, and payment processor](diagrams/solution.png)
+![C4/flowchart: target state — order management service with Cloud SQL for PostgreSQL, PgBouncer, and read replica](diagrams/solution.png)
 
 ## Consequences
 
-Adopting Cloud SQL for PostgreSQL gives the team immediate productivity with zero ramp-up time and provides full SQL flexibility for complex order-history queries. The primary risk is that at significantly higher scale (10x+ growth), connection pooling and read replicas will be required, introducing operational complexity.
-
-### Positive Consequences
-
-* Immediate team productivity — everyone already knows PostgreSQL
-* Rich SQL + extensions (PostGIS, pg_trgm) cover all current and foreseeable query patterns
-* Fully managed with automatic backups, point-in-time recovery, and easy replica creation
-* Mature ecosystem with extensive monitoring, tooling, and community support
+**Trade-off:** manual scaling work at 10× growth for lower cost and zero ramp-up.
 
 ### Risks
 
-* Connection pooling (e.g., PgBouncer) will be needed if order volume grows significantly — plan for this in the architecture from day one
-* Read replicas introduce eventual consistency for read operations — ensure the application layer can tolerate replica lag for non-critical reads
-* If the service outgrows Cloud SQL's vertical scaling ceiling, a migration to Cloud Spanner or CockroachDB would be required — but this is unlikely at current projections
+* Connection pooling needed if order volume grows significantly
+* Read replicas introduce eventual consistency for reads
+* Outgrowing Cloud SQL's vertical ceiling may force migration
 
 ### Security
 
-* Cloud SQL supports IAM integration, private IP with VPC, and encryption at rest and in transit
-* Ensure customer PII in orders is encrypted at the application layer before storage
-* Enable audit logging for all schema changes and sensitive queries
+* Cloud SQL supports IAM, private IP, and encryption in transit and at rest
+* Encrypt customer PII at the application layer before storage
 
 ## Decision Drivers
 
-* ACID transaction support (hard constraint — payment processing)
-* Query latency < 100ms for order lookups (hard constraint)
-* Must run on or integrate cleanly with GCP (hard constraint)
+* ACID transactions (hard constraint — payments)
+* Query latency < 100ms (hard constraint)
+* GCP integration (hard constraint)
 * Team expertise in PostgreSQL (soft preference)
-* Low infrastructure cost — early-stage budget constraints (soft preference)
-* Managed service to reduce operational overhead (soft preference)
+* Low infrastructure cost (soft preference)
+* Managed service (soft preference)
 
 ## Considered Options
 
-* Cloud SQL for PostgreSQL
-* Cloud Spanner
-* Firestore
+* Option 1: Cloud SQL for PostgreSQL
+* Option 2: Cloud Spanner
+* Option 3: Firestore
 
 ## Evaluation of the Options
 
-### Cloud SQL for PostgreSQL
+### Option 1: Cloud SQL for PostgreSQL
 
-Fully managed relational database on GCP. Supports full PostgreSQL with ACID transactions, complex queries with JOINs, and a mature extension ecosystem.
+#### Verdict
+
+Recommended — satisfies all three hard constraints.
+
+#### What it is
+
+A fully managed PostgreSQL database on GCP.
+
+#### How it works
+
+Standard PostgreSQL with automated backups and replication; the service connects over JDBC.
 
 #### Pros
 
 * Team already knows PostgreSQL — zero ramp-up
 * Full SQL + extensions cover all query patterns
-* Mature ecosystem: tooling, monitoring, community
 
 #### Cons
 
 * Connection pooling needed at scale
-* Vertical scaling has an upper bound; read replicas add eventual consistency
+* Vertical scaling has an upper bound
 
-### Cloud Spanner
+### Option 2: Cloud Spanner
 
-Globally distributed relational database with strong consistency and unlimited horizontal scaling.
+#### Verdict
+
+Dropped — fails the cost and team-expertise drivers.
+
+#### What it is
+
+A globally distributed, strongly consistent relational database on GCP.
+
+#### How it works
+
+Shards data across regions and serves ACID transactions at horizontal scale.
 
 #### Pros
 
@@ -343,11 +256,20 @@ Globally distributed relational database with strong consistency and unlimited h
 
 * Minimum cost prohibitive for early-stage ($600+/month)
 * Team has zero experience; significant ramp-up
-* Massive overkill for 10K orders/day
 
-### Firestore
+### Option 3: Firestore
 
-Serverless NoSQL document database with real-time sync and pay-per-use pricing.
+#### Verdict
+
+Dropped — fails the ACID hard constraint.
+
+#### What it is
+
+A serverless NoSQL document database on GCP.
+
+#### How it works
+
+Stores JSON-like documents per collection and syncs clients in real time; transactions cannot span collections.
 
 #### Pros
 
@@ -356,11 +278,8 @@ Serverless NoSQL document database with real-time sync and pay-per-use pricing.
 
 #### Cons
 
-* Fails ACID hard constraint — no cross-collection transactions for payment
-* Complex queries require denormalization and composite indexes
+* Fails ACID hard constraint — no cross-collection transactions
 * No JOINs — application-level data assembly
-
-## References
 ```
 
 **Agent output**:

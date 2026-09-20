@@ -63,7 +63,7 @@ Focus on diffs of **existing code** — the user needs location and how-to, not 
 ## Output format (per option)
 
 ````markdown
-### Option: [Name]
+### Option N: <name>
 
 #### Target-state diagram
 [ C4 view + sequence diagram(s) ]

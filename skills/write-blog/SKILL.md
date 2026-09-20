@@ -29,7 +29,7 @@ Quotes nested inside a bold span break Markdown rendering. Never write `**"term"
 Four styles (deep analysis, narrative story, practical guide, opinion) plus the article structure. Details: [reference/writing-styles.md](reference/writing-styles.md)
 </writing-styles>
 <human-voice>
-Write like a person narrating real experience to a colleague, not like an essay generator. Avoid AI-flavor words (e.g. 阴险, 赋能, 综上所述), telegraph-style runs of short sentences, parallel flourishes, and summary endings. Rules, blacklist, rhythm guidance, and the pre-delivery Human-Voice Gate checklist: [reference/human-voice.md](reference/human-voice.md). Hand-written style exemplars with extracted rules: [reference/style-exemplars.md](reference/style-exemplars.md)
+Write like a practitioner making a written statement — plain vocabulary, composed sentences, first-person where the experience is personal. Not like an essay generator, and not like a friendly assistant chatting with the reader. Avoid AI-flavor words (e.g. 阴险, 赋能, 综上所述), telegraph-style runs of short sentences, parallel flourishes, summary endings, and the chatty-assistant register (emotional self-narration, debate/reassurance phrasing, suspense beats, filler openers — 豆包味). Rules, blacklist, rhythm guidance, the chatty-voice section (§7), and the pre-delivery Human-Voice Gate checklist: [reference/human-voice.md](reference/human-voice.md). Hand-written style exemplars with extracted rules: [reference/style-exemplars.md](reference/style-exemplars.md)
 </human-voice>
 <document-as-single-source>
 The article document is the only state carrier; HTML comments separate auxiliary content from the body. Every turn edits the document file in place and reports only the changes, not a full re-output. Details: [reference/document-as-single-source.md](reference/document-as-single-source.md)
@@ -42,7 +42,7 @@ Suggest 2–4 image positions per article; generate SVG illustrations on request
 |---|---|---|
 | The marker blocks or document update loop is unclear | Document-as-single-source convention | [reference/document-as-single-source.md](reference/document-as-single-source.md) |
 | Choosing a style or structuring the article | Four styles with structure and fit | [reference/writing-styles.md](reference/writing-styles.md) |
-| Composing, reviewing, or refining any prose | Anti-AI-flavor rules, blacklist, rhythm, and the delivery gate | [reference/human-voice.md](reference/human-voice.md) |
+| Composing, reviewing, or refining any prose | Anti-AI-flavor rules, blacklist, rhythm, the chatty-assistant (豆包味) section, and the delivery gate | [reference/human-voice.md](reference/human-voice.md) |
 | Composing or refining to match a personal voice | Hand-written exemplars and extracted style rules | [reference/style-exemplars.md](reference/style-exemplars.md) |
 | Suggesting or generating an illustration | Image types, placement, naming, SVG rules | [reference/illustration-standards.md](reference/illustration-standards.md) |
 | User pastes content or shares scattered ideas | Walkthrough of ingest, collect, and gaps | [examples/ingest-and-collect.md](examples/ingest-and-collect.md) |
@@ -86,7 +86,7 @@ Suggest 2–4 image positions per article; generate SVG illustrations on request
 1. Read reference/style-exemplars.md; state 2–3 style rules from it ("像这个人一样写") before composing.
 2. Recommend a writing style from reference/writing-styles.md; confirm with the user.
 3. Compose the draft with the user's own spoken sentences and material as the backbone — preserve their phrasing where it exists; AI connects, reorders, and fills gaps instead of rewriting their voice. If material is thin, compose from what exists and mark the thin spots as gaps.
-4. Apply reference/human-voice.md while composing: plain words (no blacklisted AI-flavor words), varied rhythm (no 3+ consecutive short sentences), first-person and reader address, concrete anchors, no florification, no summary ending.
+4. Apply reference/human-voice.md while composing: plain words (no blacklisted AI-flavor words), varied rhythm (no 3+ consecutive short sentences), first-person and reader address, concrete anchors, no florification, no summary ending, and a written-statement register (no chatty-assistant voice — see §7).
 5. Compose title candidates, summary candidates, intro, body sections, and conclusion per the style's structure.
 6. Put title and summary candidates in the title-and-summary block at the top.
 7. Add an assistant note per section: intent, weakness, and improvement.
@@ -125,9 +125,9 @@ Suggest 2–4 image positions per article; generate SVG illustrations on request
 2. Strengthen each section's opening line.
 3. Match depth to reader: detail for technical, meaning and value for managers.
 4. Check the reader journey from pain point to insight.
-5. Apply reference/human-voice.md: replace blacklisted AI-flavor words, break up telegraph-style runs of short sentences, remove parallel flourishes and 总结腔.
+5. Apply reference/human-voice.md: replace blacklisted AI-flavor words, break up telegraph-style runs of short sentences, remove parallel flourishes and 总结腔, and rewrite any chatty-assistant phrasing (§7: emotional self-narration, debate/reassurance register, suspense beats, filler openers) as flat written statements.
 6. End with a conclusion, an action, or an open question — never a forced summary.
-7. Run the Human-Voice Gate checklist from reference/human-voice.md (blacklist, telegraph, florification, anchor, voice, ending); report pass / fixed / gap per check; only deliver when all checks pass or gaps are deferred with the user's consent.
+7. Run the Human-Voice Gate checklist from reference/human-voice.md (blacklist, telegraph, florification, anchor, voice, ending, chatty); report pass / fixed / gap per check; only deliver when all checks pass or gaps are deferred with the user's consent.
 8. Verify opening lines are strong and depth matches the reader.
 </refine-style>
 <generate-illustrations>

@@ -218,10 +218,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    All["All options"] --> A["Option A"]
-    All --> B["Option B"]
+    All["All options"] --> A["Option 1"]
+    All --> B["Option 2"]
     A -->|"fails driver X"| X["Eliminated"]
-    B -->|"passes all hard constraints"| W["Chosen: Option C"]
+    B -->|"passes all hard constraints"| W["Chosen: Option 2"]
 ```
 
 ## Updating and Extending Diagrams
@@ -236,6 +236,6 @@ Diagrams are living artifacts of the ADR session: sync them whenever the user co
 
 ## Cross-References
 
-- Selection logic (which diagram to draw for which context): **diagram-selection** in `SKILL.md`
+- Selection logic (which diagram to draw for which context): `reference/diagram-selection.md`
 - When to update vs. add diagrams after corrections: **diagram-sync** in `SKILL.md`
 - Where diagrams appear in the final document: `reference/adr-template.md`

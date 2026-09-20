@@ -2,7 +2,7 @@
 
 Used by **compose-blog** and **refine-style** to keep prose sounding like a real person narrating real experience, not like an essay generator. Apply these rules while composing and run the **Human-Voice Gate** before delivering a draft.
 
-The target feel: a colleague telling a story over coffee — plain words, uneven rhythm, first-person, honest caveats. Reference the exemplars in [style-exemplars.md](style-exemplars.md) for the feel in full.
+The target feel: a practitioner making a **written statement** — plain vocabulary, composed sentences, uneven rhythm, first-person where the experience is personal, honest caveats. It is **not** a chat with a friendly assistant. §7 covers the "chatty assistant" failure mode (豆包味), which is the most common tell in Chinese drafts and the one this file used to accidentally encourage. Reference the exemplars in [style-exemplars.md](style-exemplars.md) for the feel in full.
 
 ## 1. Plain-words rule
 
@@ -15,7 +15,7 @@ The target feel: a colleague telling a story over coffee — plain words, uneven
 | 阴险 / 险恶 / 居心叵测 | 挖了坑 / 不好对付 / 坑 |
 | 赋能 | 帮助 / 支持 / 让……能 |
 | 抓手 / 着力点 | 切入点 / 办法 / 途径 |
-| 综上所述 / 总而言之 / 归根结底 | drop it; or 所以 / 说到底 |
+| 综上所述 / 总而言之 / 归根结底 / 说到底 | drop it; or just 所以 |
 | 值得注意的是 / 值得一提的是 | drop it; say the thing directly |
 | 让我们一起 / 让我们 | 我们 / 大家 |
 | 愈发 / 愈加 | 越来越 |
@@ -41,17 +41,17 @@ The reader should feel a natural breathing rhythm. Two failure modes to avoid:
 - **Telegraph mode**: many short sentences in a row — reads like bullet points, uncomfortable to read aloud.
 - **Pillow mode**: endless long sentences — loses the reader.
 
-**Rule**: alternate sentence length. Do not write 3+ consecutive short sentences; after a short punch sentence, follow with a longer explanation or connecting thought. Use spoken connectives to glue ideas: 不过 / 其实 / 说白了 / 你会发现 / 话说回来 / 有意思的是 / 关键在于.
+**Rule**: alternate sentence length. Do not write 3+ consecutive short sentences; after a short punch sentence, follow with a longer explanation or connecting thought. Glue ideas with connectives that carry the argument forward: 那么 / 也就是说 / 例如 / 这个时候 / 从而 / 进而 / 但 / 所以 / 不过. Do **not** reach for filler openers that only add warmth (说白了 / 你会发现 / 说实话 / 关键在于) — see §7.4.
 
 **Example (telegraph → human):**
 
 > ✗ 这个问题很难。它需要很多经验。很多人都做不好。
 >
-> ✓ 这个问题其实很难，需要不少经验。你会发现，很多人第一次都会栽在这里——不是能力不够，而是根本没见过类似的坑。
+> ✓ 这个问题其实很难，需要不少经验。很多人第一次都会栽在这里，不是能力不够，而是根本没见过类似的坑。
 
 ## 3. First-person and reader address
 
-- Write from "我 / 笔者" perspective; address the reader directly ("你", "大家", "你有没有遇到过……").
+- Write from "我 / 笔者" perspective; address the reader directly ("你", "大家", "你有没有遇到过……"). Address the reader to press a point, not to make small talk: "那么解决问题真的是第一优先级么？" rather than "你有没有觉得很神奇？".
 - Show the reasoning process, including the initial wrong take, then the correction: "起初，我并没有觉得这句话有什么不对。但在分析了几个 Bug 之后，我发现……" Self-correction is what makes prose feel human.
 - Allow honest caveats and hedges: "由于作者能力有限，本文不对这些概念做严格区分。" Do not claim false precision.
 
@@ -72,7 +72,59 @@ Do not force a summary. End with one of:
 - an open thought / direction,
 - a concrete action for the reader.
 
-## 7. Human-Voice Gate (run in refine-style before delivery)
+## 7. Chatty-assistant voice (豆包味)
+
+The most common tell in Chinese AI drafts is not fancy vocabulary — it is a **register**. The text sounds like a helpful assistant *talking with* the reader, instead of a practitioner *stating* something. The author's hand-written posts are written statements; the failure mode is a chat.
+
+Four classes, all forbidden. The examples are real before/after pairs from a live revision:
+
+### 7.1 Emotional self-narration (情绪化自述)
+
+Rendering your inner state for atmosphere, instead of reporting what happened.
+
+| ✗ | ✓ |
+|---|---|
+| 我盯着它的输出，心里越来越没底。 | 这段时间我只能盯着它的输出。 |
+| 明明急得要死，手里却没有一件能推进的事，只能一圈一圈地走。 | 我站起来在电脑桌前来回走，手上却没有一件能做的事，只能等它压缩完。 |
+| 但我心里清楚，它不是终点。 | 但它不是终点。 |
+
+### 7.2 Debate and reassurance register (辩论腔 / 安抚腔)
+
+Winning an argument against the reader, or soothing them, instead of stating a position.
+
+| ✗ | ✓ |
+|---|---|
+| 这一点它确实赢，没什么好争的。 | 这一点没有争议。 |
+| 它确实比我快得多，我没有异议。 | 它确实比我快得多，这一点我不否认。 |
+
+### 7.3 Suspense beats (悬念式停顿)
+
+A short stall sentence placed *before* the actual point, to manufacture drama.
+
+| ✗ | ✓ |
+|---|---|
+| 真做下来才发现，没那么简单。 | 实际用下来并非如此。 |
+| 写到这，我本来想收个尾…… | delete — never narrate your own writing process |
+
+### 7.4 Filler openers (口语填充)
+
+Warm-up words that add no meaning.
+
+| ✗ | ✓ |
+|---|---|
+| 说白了就是念头一个接一个地冒出来。 | 心流的意思就是，念头一个接一个地冒出来。 |
+| 说到底，我之所以必须守在这些格子边上验收…… | 我之所以必须守在这些格子边上验收…… |
+| 这一点很关键。 | delete — let the next sentence carry the weight |
+
+### 7.5 Related tells
+
+- **Stacked rhetorical questions**: 4+ question marks in a few thousand characters reads as a chat. Keep only argumentative questions, plus the single closing question.
+- **Em-dashes**: Chinese drafts overuse 「——」 as an all-purpose connector. The author's hand-written posts use 0–2 per article. Prefer a comma, 但, 所以, or a full stop.
+- **Second-person coaching**: repeated "你会发现……" turns the piece into a lecture with a smile.
+
+**How to test**: read the sentence aloud. If it sounds like greeting, reassuring, or arguing with someone, rewrite it as a flat statement. Do not hunt for a synonym — rewrite the sentence.
+
+## 8. Human-Voice Gate (run in refine-style before delivery)
 
 Executable checklist — not "does it feel okay", but these checks:
 
@@ -82,5 +134,6 @@ Executable checklist — not "does it feel okay", but these checks:
 4. **Anchor scan**: every section has at least one concrete anchor (scene, number, example, tool). If missing, mark a gap and ask the user.
 5. **Voice scan**: first-person present ("我") present; reader addressed at least once.
 6. **Ending scan**: the ending is a question, open thought, or action — not a summary.
+7. **Chatty scan** (§7): count the four classes — emotional self-narration, debate/reassurance register, suspense beats, filler openers. Also count em-dashes (target ≤ 2) and rhetorical questions (keep only argumentative ones plus the closing question). If > 0, rewrite those sentences as flat statements.
 
 Report the results per check: pass / fixed (what changed) / gap (ask user). Only deliver when all checks pass or the gaps are explicitly deferred with the user's consent.

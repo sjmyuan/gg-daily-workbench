@@ -1,10 +1,8 @@
 # Example: Tech Details Per Option — Inter-Service Communication
 
-**Scenario**: While drafting the "Inter-service communication" ADR (options carried over from a payment-monolith spike), the user asks: "Show me the tech details for each option — the architecture and the actual code changes with locations — before I pick one." Each option gets its own diagrams and code diff profile.
+**Scenario**: While drafting the "Inter-service communication" ADR (options from a payment-monolith spike), the user asks to see each option's tech details — architecture and concrete code changes with locations — before choosing.
 
 **Applies**: `detail-options-tech` (within `evaluate-options`), rendered into the ADR by `compile-adr`.
-
-**What makes this distinct**: Per-option tech details grounded in an existing evidence base (the spike's findings doc) — every diff carries a `file:line`, every claim a confidence tag, nothing assumed.
 
 ---
 
@@ -14,9 +12,9 @@
 
 | Option | Description | Pros | Cons |
 |---|---|---|---|
-| A: Synchronous REST | Services call each other via REST APIs | Simple; team familiar | Tight coupling; cascading failures |
-| B: Async events (Kafka) | Services communicate via event streams | Loose coupling; resilience | Learning curve; eventual consistency |
-| C: Hybrid | REST for queries, events for commands | Best of both worlds | Two patterns to maintain |
+| Option 1: Synchronous REST | Services call each other via REST APIs | Simple; team familiar | Tight coupling; cascading failures |
+| Option 2: Async events (Kafka) | Services communicate via event streams | Loose coupling; resilience | Learning curve; eventual consistency |
+| Option 3: Hybrid | REST for queries, events for commands | Best of both worlds | Two patterns to maintain |
 
 ### Evidence base — findings doc evidence map (from the spike)
 
@@ -34,7 +32,7 @@ Findings-doc current state: single monolith — `PaymentOrchestrator` calls `Ban
 
 ## Expected output — per-option tech details
 
-### Option A: Synchronous REST
+### Option 1: Synchronous REST
 
 #### Target-state diagram (C4 container)
 
@@ -120,11 +118,11 @@ sequenceDiagram
      ```
    - How: add the URL under the existing `payment.services` block.
 
-Note: `pom.xml:21` already includes `spring-web` (verified), so no new dependency. Every change is spelled out — no prior knowledge assumed.
+Note: `pom.xml:21` already includes `spring-web` (verified) — no new dependency needed.
 
 ---
 
-### Option B: Async events (Kafka)
+### Option 2: Async events (Kafka)
 
 #### Target-state diagram (C4 container)
 
@@ -224,10 +222,10 @@ sequenceDiagram
      ```
    - How: add Kafka bootstrap config under the existing `spring` block.
 
-Note: the `PaymentCommand` DTO and topic name are **unverified** additions — flagged and offered as a follow-up investigation. The response becomes `202 Accepted` (async), reflected in the sequence diagram.
+Note: the `PaymentCommand` DTO and topic name are **unverified** — flagged for follow-up. The response becomes `202 Accepted` (async).
 
 ---
 
 ## How it renders in the ADR
 
-The confirmed tech details inform the recommendation (Option A: few, small verified diffs; Option B: new dependency, listener, async semantics). At `compile-adr`, each option's evaluation section carries a `#### Tech Details` subsection with the target-state diagram and the code change profile — so reviewers see the concrete implementation of every option, not just pros/cons.
+The confirmed tech details inform the recommendation (Option 1: few verified diffs; Option 2: new dependency, listener, async semantics). At `compile-adr`, each option's evaluation section carries a `#### Tech Details` subsection with its diagram and code change profile — so reviewers see the concrete implementation of every option.

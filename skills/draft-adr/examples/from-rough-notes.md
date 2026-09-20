@@ -143,7 +143,7 @@
 **User input**:
 > Let's drop opaque tokens — too similar to sessions. Evaluate the first three.
 
-**Agent confirms**: Three options: JWT (status quo), Sessions, JWT + denylist.
+**Agent confirms**: Option 1: JWT (status quo); Option 2: Sessions; Option 3: JWT + denylist.
 
 ---
 
@@ -153,7 +153,7 @@
 
 **After all evaluations, agent summarizes**:
 
-| Driver | JWT (status quo) | Sessions | JWT + denylist |
+| Driver | Option 1: JWT (status quo) | Option 2: Sessions | Option 3: JWT + denylist |
 |---|---|---|---|
 | Immediate revocation | ❌ (knock-out) | ✅ | ✅ |
 | SOC 2 audit logging | ⚠️ | ✅ | ✅ |
@@ -167,12 +167,12 @@
 >
 > ```mermaid
 > flowchart TD
->     All["All options"] --> A["JWT - status quo"]
->     All --> B["Sessions"]
->     All --> C["JWT + Redis denylist"]
+>     All["All options"] --> A["Option 1: JWT - status quo"]
+>     All --> B["Option 2: Sessions"]
+>     All --> C["Option 3: JWT + Redis denylist"]
 >     A -->|"fails immediate revocation knock-out"| X1["Eliminated"]
 >     B -->|"compromises statelessness"| X2["Weaker fit"]
->     C -->|"passes all hard constraints"| W["Chosen: JWT + Redis denylist"]
+>     C -->|"passes all hard constraints"| W["Chosen: Option 3"]
 > ```
 
 **User confirms**: JWT + Redis denylist.
