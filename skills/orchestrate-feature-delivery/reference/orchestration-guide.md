@@ -49,7 +49,7 @@ Rules for **orchestrate-delivery**, **resume-delivery**, and **update-delivery-i
 - Dispatch each gate finding straight to the planner — a fix is a pre-merge rework planned (**plan-development-task**, sibling `rework-<date>.md`) then executed (**execute-plan**), never a direct executor edit; the index tracks status only.
 - When a returned result looks inconsistent (status vs plan files, claimed merge vs branch state), verify it with a NEW same-type agent — never the original instance — before recording.
 - Never let conversation text be the source of truth — the delivery index is.
-- Run the delivery write-boundary check after each index update — confirm every changed path contains a `deliveries/` segment; stop and report on any out-of-folder change.
+- Run the delivery write-boundary check after each index update — an own-writes snapshot delta: only paths newly written by the orchestrator outside `**/deliveries/**` are violations; stop and report those.
 
 ## ADR changes
 

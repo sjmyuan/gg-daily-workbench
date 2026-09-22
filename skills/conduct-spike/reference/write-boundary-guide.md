@@ -19,18 +19,22 @@ The spike folder always carries a `spikes/` path segment (`<base>/spikes/<spike-
 | Doc-scoped `edit` permission (allow `*.md`, deny the rest) | ADR/findings/solution writers | Hard block on non-docs |
 | Write-boundary doctrine + rules | Skill and agent files | Intent |
 | Brief Constraints + Report-back | Every dispatch brief | Intent, per dispatch |
-| Boundary check | After each write capability | Detection |
+| Boundary check (own-writes snapshot delta) | After each write capability | Detection |
 
 Platforms without an agent permission layer rely on the doctrine and rules alone.
 
 ## Boundary check (after every write capability)
 
-1. List changed paths with a read-only command (e.g., `git status --porcelain`).
-2. Confirm every changed path contains a `spikes/` segment.
-3. On any out-of-folder change: stop, do not save further artifacts, and report the offending paths to the user.
-4. Ask the user to revert the out-of-folder change before the spike continues.
+Audits **only the acting agent's own writes** via a before/after snapshot — pre-existing or unrelated repo changes never trigger a stop.
 
-The check is the compensating control for `bash: allow` — shell commands can write files, so detection is mandatory.
+1. Snapshot changed paths **before** the write capability with a read-only command (e.g., `git status --porcelain`) in the repo containing the spike folder.
+2. Perform the write capability.
+3. Snapshot changed paths **after** the write with the same command.
+4. Keep only the **delta** — paths new or modified since the before-snapshot; ignore everything already present.
+5. Pass when the delta is empty or every delta path contains a `spikes/` segment.
+6. On any delta path outside it: stop, report only the offending delta paths, and ask the user to revert them before the spike continues.
+
+Pre-existing edits, unrelated files, and other tasks' changes are never judged. The delta also catches in-window shell writes — the compensating control for `bash: allow`.
 
 ## Recording implementation needs
 

@@ -54,7 +54,7 @@ Propagation always stops at the first artifact the change does not affect.
 3. Apply the change at the origin through its owning skill — `draft-adr` for ADRs, `write-solution-doc` for findings/solution docs (the findings doc carries the evidence map). Never hand-edit.
 4. Run the **no-note scan** on each touched ADR and solution doc; rewrite until clean.
 5. Propagate downstream one artifact at a time, seeding each with the current artifact plus the delta.
-6. Run the write-boundary check per **reference/write-boundary-guide.md** — every touched path stays inside the spike folder.
+6. Run the own-writes write-boundary check per **reference/write-boundary-guide.md** — no newly written path outside the spike folder.
 7. Validate consistency — every artifact reflects the latest facts; ADRs cite only current findings; the solution doc mirrors every ADR grouped by area — and present the delta in conversation, never inside the artifacts.
 
 ## Consistency checklist (validation gate)

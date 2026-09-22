@@ -1,6 +1,6 @@
 # Run-Spike-Workflow Procedure
 
-Full procedure for the `run-spike-workflow` capability — loaded on demand when a spike investigation starts from scratch. Pause for user confirmation after each capability; skip a pause only if the user requests it. Run the write-boundary check after every write capability per **reference/write-boundary-guide.md**; stop and report on any out-of-folder change.
+Full procedure for the `run-spike-workflow` capability — loaded on demand when a spike investigation starts from scratch. Pause for user confirmation after each capability; skip a pause only if the user requests it. Run the own-writes write-boundary check after every write capability per **reference/write-boundary-guide.md**; stop and report on newly written out-of-folder paths.
 
 1. Apply **define-spike-scope**.
 2. Do not proceed until the scope is confirmed.

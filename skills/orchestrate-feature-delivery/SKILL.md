@@ -26,7 +26,7 @@ Persistent orchestrator for **one spiked epic**; input is the **delivery index**
 **Non-negotiable mandate** — never perform any delivery task yourself; every investigate / plan / execute / verify / artifact update is a separate dispatched agent. **Plan-first gate** — never dispatch an executor until the cell's plan file exists on disk (verified). **Never back-fill** — a plan is always written before execution, never appended after. **No simplicity exemption** — a simple or easy cell still runs the full flow.
 </orchestrator-role>
 <write-boundary>
-Writes are confined to the delivery folder (`**/deliveries/**`) — never code, config, tests, infrastructure, or any file outside it. Code changes come only from a dispatched **executor**; planning only from a dispatched **planner**. Where the platform supports it, an `edit` permission enforces the path boundary and a `task` allowlist limits dispatchable agents; elsewhere the doctrine and rules alone apply. After every index write, run the delivery write-boundary check. Full layers, check, and delegation rules: **reference/write-boundary-guide.md**.
+Writes are confined to the delivery folder (`**/deliveries/**`) — never code, config, tests, infrastructure, or any file outside it. Code changes come only from a dispatched **executor**; planning only from a dispatched **planner**. Where the platform supports it, an `edit` permission enforces the path boundary and a `task` allowlist limits dispatchable agents; elsewhere the doctrine and rules alone apply. After every index write, run the delivery write-boundary check — an own-writes snapshot delta, so unrelated repo changes never stop delivery. Full layers, check, and delegation rules: **reference/write-boundary-guide.md**.
 </write-boundary>
 <feature-definition>
 A feature is a coherent, independently valuable deliverable spanning one or more repos.
@@ -96,7 +96,7 @@ All prose in the delivery index follows **reference/writing-style.md** — table
 | Writing or updating the delivery index prose | BLUF rules, rewrite transforms, banned-phrase list | [reference/writing-style.md](reference/writing-style.md) |
 | Rewriting wordy index prose to its shortest faithful form | Move-then-shorten walkthrough, before/after model | [examples/concise-rewrite.md](examples/concise-rewrite.md) |
 | Handling an ADR change mid-delivery, or seeing it walked through with mixed statuses | ADR-change routing, resume currency check, done/planned/in-progress walkthrough | [reference/orchestration-guide.md](reference/orchestration-guide.md) · [examples/adr-change-mid-delivery.md](examples/adr-change-mid-delivery.md) |
-| Confining orchestrator writes / running the boundary check | Allowed vs forbidden writes, enforcement layers, boundary-check procedure, delegation | [reference/write-boundary-guide.md](reference/write-boundary-guide.md) |
+| Confining orchestrator writes / running the boundary check | Allowed vs forbidden writes, enforcement layers, own-writes snapshot-delta check, delegation | [reference/write-boundary-guide.md](reference/write-boundary-guide.md) |
 </context-loading-guide>
 
 </knowledge>
@@ -226,5 +226,5 @@ All prose in the delivery index follows **reference/writing-style.md** — table
 <rule> When decomposing change items and an ADR option needs proof before a decision, apply **define-poc-scope** to flag and sequence POC cells. </rule>
 <rule> When a POC cell reaches **poc-ready**, do not evaluate or decide — wait for the user to record **adopted**/**rejected** directly in the index, then apply **update-delivery-index** to record it and dispatch the follow-ups. </rule>
 <rule> When presenting or confirming any delivery index (new or updated), apply **rewrite-concise** as the final gate — never present a draft that fails a **writing-style.md** cap. </rule>
-<rule> Confine every orchestrator write to the delivery folder (`**/deliveries/**`) and run the delivery write-boundary check after every index write; never modify code, config, tests, or any file outside it. </rule>
+<rule> Confine every orchestrator write to the delivery folder (`**/deliveries/**`) and run the delivery write-boundary check after every index write — an own-writes snapshot delta; never modify code, config, tests, or any file outside it. </rule>
 </rules>

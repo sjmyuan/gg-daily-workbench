@@ -17,18 +17,22 @@ The delivery folder always carries a `deliveries/` path segment (`<base>/deliver
 | `edit` permission — `"*": "deny"`, `"**/deliveries/**": "allow"` | Orchestrator agent (opencode) | Hard block |
 | `task` allowlist — planner / executor / code-reviewer / spike-conductor / adr-writer / solution-doc-writer | Orchestrator agent (opencode) | Blocks unexpected agents |
 | Write-boundary doctrine + rules | Skill and agent files (all platforms) | Intent |
-| Boundary check | After each index write | Detection |
+| Boundary check (own-writes snapshot delta) | After each index write | Detection |
 
 Copilot and Claude agent files have no permission layer — the doctrine and rules carry the boundary there.
 
 ## Boundary check (after every index write)
 
-1. List changed paths with a read-only command (e.g., `git status --porcelain`).
-2. Confirm every changed path contains a `deliveries/` segment.
-3. On any out-of-folder change: stop, do not save further updates, and report the offending paths to the user.
-4. Ask the user to revert the out-of-folder change before delivery continues.
+Audits **only the orchestrator's own writes** via a before/after snapshot — pre-existing or unrelated repo changes never trigger a stop.
 
-The check is the compensating control for `bash: allow` — shell commands can write files, so detection is mandatory.
+1. Snapshot changed paths **before** the index write with a read-only command (e.g., `git status --porcelain`) in the repo containing the delivery folder.
+2. Perform the index write.
+3. Snapshot changed paths **after** the write with the same command.
+4. Keep only the **delta** — paths new or modified since the before-snapshot; ignore everything already present.
+5. Pass when the delta is empty or every delta path contains a `deliveries/` segment.
+6. On any delta path outside it: stop, report only the offending delta paths, and ask the user to revert them before delivery continues.
+
+Dispatched **planner** / **executor** agents own their writes and commit them; the orchestrator never audits their output. The delta also catches in-window shell writes — the compensating control for `bash: allow`.
 
 ## Implementation is delegated, never done here
 

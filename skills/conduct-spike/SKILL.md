@@ -32,7 +32,7 @@ One folder per spike — `spikes/<spike-name>/` with `scope.md`, `adrs/adr-<area
 </spike-artifact-layout>
 
 <write-boundary>
-Writes are confined to the spike folder (`**/spikes/**`) — never code, config, tests, or any file outside it; never build prototypes or POCs (`orchestrate-feature-delivery` delivers them). Run the boundary check after every write capability: **reference/write-boundary-guide.md**.
+Writes are confined to the spike folder (`**/spikes/**`) — never code, config, tests, or any file outside it; never build POCs (`orchestrate-feature-delivery` delivers them). Run the own-writes boundary check after every write: **reference/write-boundary-guide.md**.
 </write-boundary>
 
 <scope-map>
@@ -165,5 +165,5 @@ Propagation stops at the first unaffected artifact. Full protocol: **reference/a
 <rule>When a fact or decision changes after spike artifacts exist, apply **sync-update-artifacts**.</rule>
 <rule>When ADR discussion hinges on unverified assumptions or missing evidence, apply **suggest-spike-on-adr-uncertainty** before finalizing the ADR.</rule>
 <rule>When the artifact base root is unresolved, apply `resolve-artifact-location` before the scope map is saved.</rule>
-<rule>When any write capability completes, run the write-boundary check per **reference/write-boundary-guide.md**; stop and report on any out-of-folder change.</rule>
+<rule>When any write capability completes, run the own-writes boundary check per **reference/write-boundary-guide.md**; stop and report on newly written out-of-folder paths.</rule>
 </rules>
