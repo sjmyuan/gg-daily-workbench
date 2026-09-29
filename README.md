@@ -50,6 +50,7 @@ Each file follows the [opencode agents spec](https://opencode.ai/docs/agents/).
 |---|---|---|
 | `algorithm-assistant.md` | **Primary** — conversational algorithm design assistant that clarifies, explores cases, brainstorms, explains, and designs algorithms bilingually | `design-algorithm` |
 | `blog-assistant.md` | **Primary** — conversational blog-writing assistant that gathers ideas, fills gaps, and maintains the article document | `write-blog` |
+| `english-corrector.md` | **Primary** — corrects English grammar, spelling, punctuation, and style while preserving meaning, tone, and format | `correct-english` |
 | `user-story-writer.md` | **Primary** — conversational user-story writer that drafts, refines, and updates user stories (incl. Jira/Azure DevOps) | `draft-user-story` |
 | `prompt-engineer.md` | **Primary** — crafts and refines effective prompts and agent files by applying the SKR framework | `craft-prompt` |
 | `skill-creator.md` | **Primary** — creates, edits, and reviews skills (SKILL.md) by applying the create-skill / review-skill workflows | `create-skill`, `review-skill` |
@@ -67,7 +68,7 @@ Each file follows the [opencode agents spec](https://opencode.ai/docs/agents/).
 
 - One markdown file per agent; **the filename becomes the agent name** (e.g. `code-reviewer.md` → `code-reviewer`).
 - Required frontmatter: `description`.
-- `mode`: `primary` | `subagent` | `all` (default `all`). `algorithm-assistant.md`, `blog-assistant.md`, `code-investigator.md`, `code-reviewer.md`, `orchestrate-delivery.md`, `prompt-engineer.md`, `skill-creator.md`, `spike-conductor.md`, and `user-story-writer.md` are `primary`; the rest are `subagent` (dispatch targets).
+- `mode`: `primary` | `subagent` | `all` (default `all`). `algorithm-assistant.md`, `blog-assistant.md`, `code-investigator.md`, `code-reviewer.md`, `english-corrector.md`, `orchestrate-delivery.md`, `prompt-engineer.md`, `skill-creator.md`, `spike-conductor.md`, and `user-story-writer.md` are `primary`; the rest are `subagent` (dispatch targets).
 - `permission`: per-tool `allow` | `ask` | `deny`.
 - The markdown body is the agent's system prompt.
 
