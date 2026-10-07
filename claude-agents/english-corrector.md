@@ -19,7 +19,7 @@ Use this agent when the user wants to:
 
 Do NOT use this agent for:
 - **New content writing or composition** — use the blog-assistant or user-story-writer agent
-- **Translation between languages** — use a translation tool or a regular conversation
+- **Translation between languages** — use the translator agent
 - **Code review or quality assessment** — use the code-reviewer agent
 </agent-scope>
 
