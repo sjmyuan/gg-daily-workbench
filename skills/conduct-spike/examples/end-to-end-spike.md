@@ -50,7 +50,7 @@
 
 *(one findings doc per area, always: `docs/findings-<area>.md`; four areas → four docs, compiled concurrently, each embedding its area's evidence map inline.)*
 
-| Findings doc | Current Architecture Summary | Constraints & Pain Points |
+| Findings doc | Current-state orientation | Representative topic answers |
 |---|---|---|
 | `findings-service-decomposition.md` | Monolithic Spring Boot app (~200K LOC), package-by-layer; `PaymentOrchestrator` (1200 lines) couples all types | Redeploy on any change; wallet can't scale; 3 teams contend |
 | `findings-communication.md` | All calls in-process; external REST/gRPC/SOAP; no broker; no circuit breaker | No async experience; SOAP must be maintained |
@@ -59,7 +59,7 @@
 
 **Cross-area constraints**: `findings-database.md` ↔ `findings-service-decomposition.md` (shared tables); `findings-communication.md` ↔ `findings-migration.md` (no async/traffic-split infra → migration starts synchronous).
 
-> *Findings = current-state baseline per area; ADRs cite their area's doc; the solution doc evolves these diagrams as-is → to-be.*
+> *Findings = question-style current-state explanation per area; ADRs cite their stable IDs; the solution doc is authored target-state and references the findings for evidence.*
 
 ---
 
@@ -93,7 +93,7 @@ Example — `adr-service-decomposition-01-split-monolith.md`:
 
 **Solution Document**: `solution.md`
 - C2: API Gateway → Wallet, Bank Transfer, Credit Card services, each with own DB; Kafka event bus
-- C3 + sequence diagrams per service (as-is → to-be); payment initiation/settlement/migration flows
+- C3 + sequence diagrams per service (target state); payment initiation/settlement/migration flows
 - API contracts: REST endpoints for queries, Kafka topic schemas for events
 - RAID: risks (data consistency), assumptions (Kafka adoption), issues (SOAP legacy); RACI per service
 

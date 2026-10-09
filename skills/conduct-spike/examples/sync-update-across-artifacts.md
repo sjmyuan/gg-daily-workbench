@@ -28,7 +28,7 @@ Artifacts after the original spike:
 
 ## What the assistant does, artifact by artifact
 
-1. **Findings doc** (via `write-solution-doc`): replaces the "peak load unmeasured" assumption with the measured 3K/sec limit; records the REST throttle in the Evidence & Verification section with `file:line` and a **verified** confidence tag; adds it to constraints & pain points.
+1. **Findings doc** (via `document-findings`): replaces the "peak load unmeasured" assumption with the measured 3K/sec limit; updates the communication topic's claim and its Evidence & Verification ledger row with `file:line` and a **verified** confidence tag.
 2. **`adr-communication-01-service-communication.md`** (via `draft-adr`): decision changes to "Event-driven Kafka" — chosen option, justification, and consequences rewritten in place.
 
    **Before** (as drafted):

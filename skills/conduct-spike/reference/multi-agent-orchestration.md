@@ -5,9 +5,9 @@ Dispatch task execution to sub-agents — for investigation, findings-doc compil
 | Capability | Agent | Applies skill | Brief template |
 |---|---|---|---|
 | Investigate | `code-investigator` | `investigate-code` | Investigation brief — [investigation-brief.md](investigation-brief.md) |
-| Compile findings docs | `solution-doc-writer` | `write-solution-doc` (current-state mode) | Findings-doc brief — [findings-doc-brief.md](findings-doc-brief.md) |
+| Compile findings docs | `findings-doc-writer` | `document-findings` | Findings-doc brief — [findings-doc-brief.md](findings-doc-brief.md) |
 | Draft problem ADRs (evaluate + draft) | `adr-writer` | `draft-adr` (full flow) | ADR-drafting brief — [adr-drafting-brief.md](adr-drafting-brief.md) |
-| Compile solution doc | `solution-doc-writer` | `write-solution-doc` (baseline-input mode) | Solution-doc brief — [solution-doc-brief.md](solution-doc-brief.md) |
+| Compile solution doc | `solution-doc-writer` | `write-solution-doc` (target-state) | Solution-doc brief — [solution-doc-brief.md](solution-doc-brief.md) |
 
 Each capability's brief template lives in its own reference file (see the table above) — prepare the brief from it, then dispatch to the mapped agent. Every capability is dispatched even for a single task (see below). ADR drafting runs the `draft-adr` flow — decision drivers → options → evaluation → compile-adr — **headlessly inside the `adr-writer` session**: the orchestrator collects the drivers from the user, carries them in the brief, and the agent returns the ADR with a proposed chosen option for the orchestrator to confirm.
 
@@ -37,4 +37,4 @@ Every sub-agent result — investigation findings, ADR decisions, and dispatched
 
 ## Platform Detection
 
-Before dispatching, detect whether `code-investigator`, `adr-writer`, and `solution-doc-writer` are available on the current platform; map each work unit to the closest equivalent agent type.
+Before dispatching, detect whether `code-investigator`, `findings-doc-writer`, `adr-writer`, and `solution-doc-writer` are available on the current platform; map each work unit to the closest equivalent agent type.

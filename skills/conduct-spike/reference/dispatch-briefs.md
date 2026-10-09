@@ -5,7 +5,7 @@ Brief index + the shared **structured brief shape** and evidence-map input/outpu
 | Capability → agent | Brief file |
 |---|---|
 | investigate-per-area → `code-investigator` | [investigation-brief.md](investigation-brief.md) |
-| compile-findings-doc → `solution-doc-writer` | [findings-doc-brief.md](findings-doc-brief.md) |
+| compile-findings-doc → `findings-doc-writer` | [findings-doc-brief.md](findings-doc-brief.md) |
 | draft-problem-adrs → `adr-writer` | [adr-drafting-brief.md](adr-drafting-brief.md) |
 | compile-solution-doc → `solution-doc-writer` | [solution-doc-brief.md](solution-doc-brief.md) |
 

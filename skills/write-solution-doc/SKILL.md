@@ -1,6 +1,6 @@
 ---
 name: write-solution-doc
-description: Produce solution documentation with C4/sequence/flowchart diagrams, API/event schemas, RAID, and RACI — for decisions, architectures, and current-state findings. Use when documenting, authoring, producing, defining, performing, creating, or compiling solution-doc content.
+description: Produce solution documentation with C4/sequence/flowchart diagrams, API/event schemas, RAID, and RACI for decisions and architectures. Use when documenting, authoring, producing, defining, performing, creating, or compiling solution-doc content.
 ---
 
 <when-to-use-this-skill>
@@ -10,7 +10,7 @@ description: Produce solution documentation with C4/sequence/flowchart diagrams,
 - User needs API or event schemas
 - User wants RAID analysis or a RACI matrix
 - User wants to compile a multi-section solution document
-- User is running a spike (via `conduct-spike`) and needs a solution or current-state findings document
+- User is running a spike (via `conduct-spike`) and needs the target-state solution document
 </when-to-use-this-skill>
 
 <knowledge>
@@ -19,7 +19,7 @@ description: Produce solution documentation with C4/sequence/flowchart diagrams,
 </solution-doc-structure>
 
 <current-state-mode>
-The same format documents **current state** and evolves a baseline into **target state**; load **reference/current-state-mode.md**, or **reference/seed-input-contract.md** in a `conduct-spike` run.
+The same format documents **current state** and evolves a baseline into **target state**; load **reference/current-state-mode.md**, or **reference/seed-input-contract.md** when dispatched by an orchestrator.
 </current-state-mode>
 
 <c4-model>

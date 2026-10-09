@@ -62,6 +62,7 @@ Each file follows the [opencode agents spec](https://opencode.ai/docs/agents/).
 | `learner.md` | Extract knowledge from history (self-dispatch for parallelism) | `learn-from-history` |
 | `orchestrate-delivery.md` | **Primary** — delivery orchestrator that dispatches the plan/execute/spike/ADR/solution-doc sub-agents and tracks the delivery index | `orchestrate-feature-delivery` |
 | `planner.md` | Produce + persist a TDD plan (never executes) | `plan-development-task`, `investigate-code` |
+| `findings-doc-writer.md` | Compile question-style findings docs (resource index, topic blocks, `file:line` evidence ledger) | `document-findings` |
 | `solution-doc-writer.md` | Compile solution documents (C4, sequence, RAID/RACI) | `write-solution-doc` |
 | `spike-conductor.md` | **Primary** — orchestrate spike investigations + verify sub-agent results | `conduct-spike`, `question-everything` |
 
@@ -99,7 +100,7 @@ Dispatching agents and their targets:
 | Agent | Dispatches |
 |---|---|
 | `orchestrate-delivery` | planner, executor, code-reviewer, spike-conductor, adr-writer, solution-doc-writer |
-| `spike-conductor` | code-investigator, adr-writer, solution-doc-writer |
+| `spike-conductor` | code-investigator, findings-doc-writer, adr-writer, solution-doc-writer |
 | `learner` | learner (self-dispatch) |
 | `code-reviewer` | code-reviewer (fan-out) |
 | `code-investigator` | code-investigator (fan-out) |

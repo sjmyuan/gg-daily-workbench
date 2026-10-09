@@ -1,50 +1,32 @@
 # Findings Document Guide
 
-A findings document documents the **current-state architecture** — what exists in the code today. It uses the same format as a solution document (C4 diagrams, sequence diagrams, API/event contracts, dependency maps) but describes the as-is rather than the to-be. This makes findings documents directly transformable into the solution document during solution-doc compilation.
+A findings document explains **what exists in a code area today** — a question-style, resource-first artifact for both a human reader and a downstream agent. It is the spike's **evidence home**: the single place where code evidence lives.
 
-## Why the solution-doc format?
+## Producer
 
-Most of the time, the current implementation *is* a solution — just the existing one. Documenting it in solution-doc format means:
-
-- The solution document can start from the findings doc and evolve diagrams from as-is → to-be, rather than drawing from scratch.
-- ADRs have a precise, structured baseline to compare options against: "The current architecture (see Findings Doc §3, C2 diagram) couples payment types via shared tables..."
-- Reviewers can diff the findings doc against the solution doc to see exactly what changes are proposed.
+Findings documents are produced by the `document-findings` skill, compiled per area by the `findings-doc-writer` agent. That skill owns the structure, question style, evidence ledger, and stable IDs; this guide covers only the spike-specific handoff.
 
 ## One per area — always
 
-Findings docs are always **one per investigation area** — `docs/findings-<area>.md` — for every spike, regardless of size or coupling. A single-area spike yields exactly one findings doc. Each findings doc holds one subsection per problem in its area and embeds the area's shared evidence map, keeping it focused and independently updatable.
+Findings docs are always **one per investigation area** — `docs/findings-<area>.md` — for every spike. A single-area spike yields exactly one findings doc. Cross-area constraints travel as cross-references between the affected docs; there is no consolidated findings doc — areas come together only in the solution doc.
 
-**Cross-area constraints** (relevant when areas are tightly coupled) travel as cross-references between the affected findings docs — each notes the constraint and points to the other area's doc. There is no consolidated findings doc; areas come together only in the solution doc.
+## Structure (owned by document-findings)
 
-## Document format
+A metadata block → an Orientation resource index → question-style topic blocks (TL;DR → diagram/table → atomic claims with `file:line`) → an Evidence & Verification section (ledger, searched-negatives, coverage). Load `document-findings`'s **reference/structure-and-template.md** for the full template.
 
-Findings documents are produced by the `write-solution-doc` skill in **current-state mode** — same structure, diagramming, and formatting as a solution doc, applied to the **current state** instead of the target state. Load `write-solution-doc`'s **reference/current-state-mode.md** for the full adaptation rules.
+## Evidence the spike relies on
 
-## Embedded evidence map (the spike's code evidence)
+- **Entry points & key locations**: `file:line` beside the component or flow; never vague references like "the service layer".
+- **Call chains**: topic sequence diagrams annotated with `file:line`.
+- **Evidence ledger**: claim ID → claim → verdict → evidence → confidence (5-tag model: ✅ Verified, 🔶 Inferred, 💭 Assumption, ⚠️ Inconsistency, ❓ Gap).
+- **Searched-negatives**: dead-end searches recorded so later sub-agents don't repeat them.
+- **Stable IDs**: `<area>/<topic-slug>#cN`, cited by ADRs and the solution doc.
 
-The findings doc is the spike's **evidence home** — the single place where code evidence lives. Each area's evidence map is embedded inline, close to the code it describes:
-
-- **Entry points & key locations**: annotate the current-state sections and diagrams with `file:line` beside the component or flow they describe. Preserve `file:line` precision — never vague references like "the service layer".
-- **Call chains**: the findings doc's sequence diagrams express call chains; annotate each step with `file:line`.
-- **Evidence & Verification section** (per area): an evidence ledger table and a searched-negatives table.
-
-**Evidence ledger**
-
-| Claim / Question | Verdict | Evidence (file:line) | Confidence |
-
-Claims are the spike's questions ("Is there a circuit breaker?"); the verdict is the answer; evidence is the exact location. Confidence uses the `investigate-code` 5-tag model: **Verified** (directly read, `file:line` confirmed), **Inferred** (reasoned from evidence), **Assumption** (taken for granted), **Inconsistency** (contradiction — code vs code, docs, or config, both sides located), **Gap** (searched but not found, or not investigated). Never present inference as evidence — Inferred/Assumption claims are not Verified; Gap claims also go in searched-negatives.
-
-**Searched-negatives**
-
-| Area | Search performed (pattern/query) | Result | Next step |
-
-Dead-end searches recorded so later sub-agents don't repeat them; open questions still to investigate.
-
-**Maintenance**: update the embedded evidence map the moment new evidence is found during any later work (continuation rounds, follow-ups) — no round/version tracking, never rebuilt from scratch. Pass the findings doc (or its evidence sections) to sub-agents so covered code is not re-scanned.
+Details: `document-findings`'s **reference/evidence-and-ids.md**.
 
 ## Relationship to other artifacts
 
-- **ADRs** reference findings docs for evidence: "The current C2 topology (Findings Doc §2) shows all payment types sharing a single database..."
-- **The solution document** is produced by loading the findings doc(s) and applying `write-solution-doc` in **baseline-input mode** — evolving each section as-is → to-be (see `write-solution-doc`'s **reference/current-state-mode.md**).
-- When findings change (e.g., after a continuation round), update the affected findings doc and any ADRs that reference it.
-- **ADRs and the solution document stay clean**: investigation detail and raw data live only in this findings document. ADRs and the solution doc carry the decision and the target-state architecture, citing the findings doc for evidence rather than embedding it.
+- **ADRs** cite the findings doc's stable IDs for evidence: "The current authorize path (`payment/authorize-flow#c2`, `ChargeService.java:88`) couples retries to the gateway call..."
+- **The solution document** is produced by `write-solution-doc` (target-state, decision-only), seeded with the findings docs as the current-state evidence it references; it does not restate findings content.
+- When findings change, update the affected findings doc via `document-findings`'s **update-findings-doc**, then the ADRs and solution doc that cite it.
+- **ADRs and the solution document stay clean**: investigation detail and raw data live only in the findings doc.

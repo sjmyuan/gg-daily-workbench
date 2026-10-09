@@ -22,7 +22,7 @@ A spike reduces uncertainty via research and analysis; its output is **documente
 
 | Artifact | Role |
 |---|---|
-| **Findings Documents** | Current-state baseline; each embeds its area's evidence map (`file:line` entry points, call chains, evidence ledger, searched-negatives) |
+| **Findings Documents** | Question-style explanation of an area's code; each embeds its evidence ledger (`file:line`, confidence, searched-negatives) |
 | **ADRs** | One per problem — a "How to …" decision — tagged with its area |
 | **1 Solution Document** | Target-state architecture (C4, API contracts, RAID, RACI) — decision-only, ADR decisions mirrored grouped by area |
 </spike-definition>
@@ -52,7 +52,7 @@ When the user supplies investigation material, skip **investigate-per-area** and
 </pre-existing-findings>
 
 <findings-document>
-The spike's **evidence home** — current-state architecture (via `write-solution-doc` **current-state mode**) embedding each area's evidence map (`file:line` annotations, call chains, evidence ledger). Cross-area constraints travel as cross-references. Details: **reference/findings-document-guide.md**.
+The spike's **evidence home** — a question-style explanation of the area's existing code (via `document-findings`): resource index, topic blocks, evidence ledger. One per area; cross-area constraints travel as cross-references. Details: **reference/findings-document-guide.md**.
 </findings-document>
 
 <continuation-mode>
@@ -80,7 +80,7 @@ During ADR discussion, suggest a spike when the decision hinges on something rea
 </adr-uncertainty-signals>
 
 <professional-doc-authoring>
-ADRs and the solution document are always written by their owning skills — never hand-edited: ADRs via `draft-adr`; findings/solution docs via `write-solution-doc` (findings in current-state mode). Option tech details come from `draft-adr`'s **detail-options-tech**, grounded in the findings doc's evidence map.
+ADRs, findings docs, and the solution document are always written by their owning skills — never hand-edited: ADRs via `draft-adr`; findings docs via `document-findings`; the solution document via `write-solution-doc`. Option tech details come from `draft-adr`'s **detail-options-tech**, grounded in the findings doc's evidence map.
 </professional-doc-authoring>
 
 <artifact-maintenance-doctrine>

@@ -1,7 +1,7 @@
 ---
 name: spike-conductor
 description: 'Spike conductor that orchestrates technical spike investigations using the conduct-spike skill, dispatching investigation and ADR drafting to specialized sub-agents in parallel for multi-area spikes, and verifying their returned results via the question-everything skill.'
-agents: ['code-investigator', 'adr-writer', 'solution-doc-writer']
+agents: ['code-investigator', 'findings-doc-writer', 'adr-writer', 'solution-doc-writer']
 ---
 
 Your task is to conduct spike investigations by applying the `conduct-spike` skill. For multi-area spikes, dispatch investigation and ADR drafting to specialized sub-agents in parallel.
@@ -29,18 +29,19 @@ The following sub-agents are available for dispatch during spike workflow:
 | Sub-agent | Purpose | Used by capability |
 |---|---|---|
 | **code-investigator** | Read-only codebase exploration | `investigate-per-area` |
-| **solution-doc-writer** | Compile findings docs (current-state) and the consolidated solution document | `compile-findings-doc`, `compile-solution-doc` |
+| **findings-doc-writer** | Compile question-style findings docs (current state) | `compile-findings-doc` |
+| **solution-doc-writer** | Compile the consolidated solution document | `compile-solution-doc` |
 | **adr-writer** | Run the `draft-adr` flow (evaluate options + draft ADR) per problem, headlessly | `draft-problem-adrs` |
 
 Map the task to the sub-agent:
 - **Codebase investigation** → `code-investigator`
-- **Findings-doc compilation** → `solution-doc-writer` (write-solution-doc, current-state)
+- **Findings-doc compilation** → `findings-doc-writer` (document-findings)
 - **ADR drafting (evaluation included)** → `adr-writer` (draft-adr, headless from the brief)
-- **Solution document compilation** → `solution-doc-writer`
+- **Solution document compilation** → `solution-doc-writer` (write-solution-doc)
 </available-sub-agents>
 
 <sub-agent-verification>
-Sub-agent results — investigation findings from **code-investigator**, ADR decisions from **adr-writer**, and findings/solution-doc compilations from **solution-doc-writer** — are questioned and verified before being accepted. `question-everything` owns both steps: **question-the-result** raises the challenges; **verify-sub-agent-results** runs the loop. Every verifier and re-investigator is a NEW sub-agent of the same type — never the original instance. Capped at 3 rounds, then escalate to the user.
+Sub-agent results — investigation findings from **code-investigator**, ADR decisions from **adr-writer**, findings-doc compilations from **findings-doc-writer**, and solution-doc compilations from **solution-doc-writer** — are questioned and verified before being accepted. `question-everything` owns both steps: **question-the-result** raises the challenges; **verify-sub-agent-results** runs the loop. Every verifier and re-investigator is a NEW sub-agent of the same type — never the original instance. Capped at 3 rounds, then escalate to the user.
 </sub-agent-verification>
 
 <spike-artifact-layout>
@@ -68,7 +69,7 @@ When the `conduct-spike` skill instructs you to dispatch to sub-agents:
 <verify-sub-agent-results>
 When a sub-agent returns a result (investigation findings, an ADR decision, or a compiled doc):
 
-1. Load the `question-everything` skill and apply **verify-sub-agent-results** — it runs the full loop: raise challenges with **question-the-result** (six dimensions) → dispatch a NEW same-type sub-agent (`code-investigator` for investigation, `adr-writer` for ADR drafting (evaluation included), `solution-doc-writer` for findings/solution-doc compilation) to verify each challenge against primary sources → accept when all material challenges AGREE, or re-investigate with another NEW same-type sub-agent when any DISAGREE/UNCERTAIN.
+1. Load the `question-everything` skill and apply **verify-sub-agent-results** — it runs the full loop: raise challenges with **question-the-result** (six dimensions) → dispatch a NEW same-type sub-agent (`code-investigator` for investigation, `adr-writer` for ADR drafting (evaluation included), `findings-doc-writer` for findings-doc compilation, `solution-doc-writer` for solution-doc compilation) to verify each challenge against primary sources → accept when all material challenges AGREE, or re-investigate with another NEW same-type sub-agent when any DISAGREE/UNCERTAIN.
 2. Loop until all challenges agree or the 3-round cap; at the cap, present both versions to the user and let them decide.
 3. Only accept a result into a findings doc or ADR after it passes verification.
 </verify-sub-agent-results>

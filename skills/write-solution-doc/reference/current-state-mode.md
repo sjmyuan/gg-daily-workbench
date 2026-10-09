@@ -2,7 +2,7 @@
 
 The solution-doc format has two input modes beyond the default target-state compile: documenting what exists today (as-is), and evolving that baseline into the target state (to-be). Backs the `<current-state-mode>` knowledge entry.
 
-## Current-state mode (as-is / findings documents)
+## Current-state mode (as-is)
 
 Produce the same 9-section structure, diagrams, and formatting, but describing the **current state** rather than the target:
 
@@ -13,13 +13,13 @@ Produce the same 9-section structure, diagrams, and formatting, but describing t
 
 ## Baseline-input mode (evolve as-is → to-be)
 
-When compiling a target-state document from a current-state baseline (e.g., spike findings docs):
+When compiling a target-state document from a current-state baseline:
 
 - Start from the current-state document and **evolve each section** as-is → to-be — do not redraw from scratch.
 - Diagrams show the **target architecture**, not current state: update C4 topology, interaction flows, and API/event contracts to the chosen solution.
 - Add what the target introduces (new contracts, RAID analysis, RACI matrix); replace the baseline's Constraints & Pain Points / Raw Data & Metrics with RAID and RACI.
 - The target document stays decision-only — current-state detail lives in the baseline it evolved from.
 
-## Where this mode comes from
+## Where these modes come from
 
-Used by the `conduct-spike` skill: findings documents are compiled in **current-state mode**, and the solution document is compiled in **baseline-input mode** seeded with the findings baseline. `conduct-spike` seeds the compile; this skill owns the format rules.
+These are general-purpose modes. A spike's findings documents are compiled by the `document-findings` skill; a spike's solution document is compiled by this skill in **target-state mode**, seeded with the findings docs as referenced evidence. When dispatched by an orchestrator, this skill owns the format rules.

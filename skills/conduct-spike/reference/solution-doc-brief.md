@@ -13,12 +13,13 @@ You are the `solution-doc-writer`. Deliver: the spike's target-state solution do
 - Chosen options: **[chosen option from each ADR]**
 
 ## 3. Inputs
-- **[findings doc path(s)]** — current-state baseline to evolve.
+- **[findings doc path(s)]** — current-state evidence to reference; do not copy its content.
 - **[ADR path(s)]** — decisions to mirror.
 
 ## 4. Tasks
-1. Load `write-solution-doc` and produce a **target-state** document in **baseline-input mode**.
+1. Load `write-solution-doc` and produce a **target-state** document.
 2. Mirror each ADR's chosen option, grouped by area.
+3. Reference findings-doc IDs wherever current-state evidence is needed; keep the document decision-only.
 
 ## 5. Output contract
 - Solution doc: target-state architecture, decision-only, ADR decisions grouped by area (per `write-solution-doc` structure).

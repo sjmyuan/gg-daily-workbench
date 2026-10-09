@@ -36,39 +36,42 @@
 
 ## Compile Findings Documents
 
-*(compile-findings-doc applied to formalize the user's pre-existing investigation notes — one findings doc per area, always: `docs/findings-<area>.md`. Two areas → two docs.)*
+*(compile-findings-doc applied to formalize the user's pre-existing investigation notes — one findings doc per area, always: `docs/findings-<area>.md`. Two areas → two docs, compiled via `document-findings`.)*
 
 ### Findings Document: `docs/findings-cache-topology.md`
 
-*(write-solution-doc applied to current state, seeded with the user's provided findings)*
+*(`document-findings` applied to the existing code, seeded with the user's notes)*
 
-**C2 Container Diagram (Current State)**: Product Catalog Service → PostgreSQL (no caching layer). 10K reads/sec, 50 writes/sec. DB CPU regularly exceeds 80%.
+| Component | Purpose | Entry point | Key files |
+|---|---|---|---|
+| Product Catalog Service | Serves catalog reads and writes | `ProductCatalogService.java:64` | `ProductCatalogService.java`, `ProductRepository.java` |
 
-**Current Architecture Summary** (formalized from user's notes):
-- Product Catalog Service queries PostgreSQL directly for all read operations
-- No caching layer exists at any tier (application, distributed, or CDN)
-- Database CPU exceeds 80% during peak traffic; P99 latency is 450ms
-- Read-to-write ratio: 200:1 (10K reads/sec vs. 50 writes/sec)
-- The service is the single source of truth for product data
-- No existing Redis/ElastiCache infrastructure in the organization
+**Is there a caching layer today?**
+**TL;DR:** No — the read path queries PostgreSQL directly.
 
-**Constraints & Pain Points**:
-- Database is the scaling bottleneck — cannot handle projected 2x traffic growth
-- P99 latency of 450ms is above the 100ms target for cache hits
-- Any caching solution must not increase write latency (already acceptable at ~50ms)
-- No existing cache infrastructure — any solution requires new operational investment
+**Key claims**
+- No cache exists at any tier — `ProductCatalogService.java:64` ✅ Verified
+- Reads query PostgreSQL directly — `ProductRepository.java:112` ✅ Verified
+- 200:1 read-to-write ratio; DB CPU >80% at peak; P99 450ms — user notes 💭 Assumption
+- No Redis/ElastiCache infrastructure exists — user notes 💭 Assumption
+
+Evidence & Verification: ledger rows for each claim; searched-negatives: none (notes only); coverage: caching tier, load profile, cache infrastructure.
 
 ### Findings Document: `docs/findings-cache-invalidation.md`
 
-*(write-solution-doc applied to current state — the invalidation-relevant facts; cross-references the topology doc for the shared baseline)*
+*(`document-findings` applied — invalidation-relevant facts; cross-references the topology doc)*
 
-**Current Architecture Summary** (formalized from user's notes):
-- All writes (~50/sec) go to the single source of truth (PostgreSQL); no secondary stores exist to invalidate today
-- No caching tier exists, so no invalidation mechanism (TTL, write-through, or event-based) is present in the codebase
-- No existing Redis/CDC infrastructure to build on (see also `docs/findings-cache-topology.md`)
-- Read-to-write ratio of 200:1 means read paths dominate — invalidation must not add write-path latency
+**Is there any invalidation mechanism today?**
+**TL;DR:** No caching tier exists, so no invalidation mechanism is present.
 
-> *Findings formalized from your pre-existing notes. These are the current-state baseline per area. Evaluation will compare solution options against each area's constraints. No re-investigation was needed.*
+**Key claims**
+- No TTL, write-through, or event invalidation exists — `ProductCatalogService.java:64` ✅ Verified
+- All writes go to the single source of truth — `ProductRepository.java:130` ✅ Verified
+- 200:1 read-to-write ratio means invalidation must not add write latency — user notes 💭 Assumption
+
+Evidence & Verification: ledger + searched-negatives; cross-reference: `docs/findings-cache-topology.md`.
+
+> *Findings formalized from your pre-existing notes: code-verifiable facts are ✅ Verified, note-only metrics remain 💭 Assumption. Evaluation will compare options against each area's constraints. No re-investigation was needed.*
 
 ---
 
