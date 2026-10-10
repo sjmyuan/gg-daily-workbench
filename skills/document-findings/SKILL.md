@@ -22,7 +22,7 @@ A findings doc explains what exists in a code **area** today, organized as quest
 | Need | Human | AI consumer | Format response |
 |---|---|---|---|
 | Locate resources | Scan fast | Deterministic pointer | Orientation index + inline `file:line` |
-| Understand | One visual, short prose | Atomic claims | Topic block: TL;DR → visual → claims |
+| Understand | Self-explanatory diagram or clear table | Atomic claims | Topic block: TL;DR → artifact → claims |
 | Trust | See the source | Verify verdict | Evidence ledger + confidence tags |
 | Avoid rework | — | Know what is scanned | Searched-negatives + coverage |
 | Cite precisely | Copy anchor | Stable citation | Scope-slug IDs |
@@ -31,27 +31,25 @@ A findings doc explains what exists in a code **area** today, organized as quest
 <findings-doc-structure>
 Fixed section order: metadata block → Orientation → topic blocks → Evidence & Verification. Load **reference/structure-and-template.md** for titles, numbering, and template.
 </findings-doc-structure>
-
 <topic-block-format>
-Each topic answers one reader question: question heading, TL;DR, one diagram or table, then atomic claims with inline `file:line`. Load **reference/topic-block-guide.md**.
+- Each topic answers one reader question: TL;DR → primary artifact → claims.
+- Diagram for a single flow, structure, or branch; a comparison table (rows = items) for cross-flow diffs; prose for reasoning.
+- Multiple diagrams allowed. Load **reference/topic-block-guide.md** and **reference/table-guidelines.md**.
 </topic-block-format>
 <evidence-ledger>
 - The AI-tracking layer: a consolidated ledger (claim ID → claim → verdict → evidence `file:line` → confidence) plus searched-negatives and coverage.
 - Confidence uses the 5-tag model; IDs are scope slugs (`<area>/<topic-slug>#cN`), area-scoped and never renumbered.
 - Details: **reference/evidence-and-ids.md**.
 </evidence-ledger>
-
 <artifact-layout>
 One doc per area at `<spike-folder>/docs/findings-<area>.md` inside a spike; a user-provided path otherwise. The filename slug matches the metadata `area` and the topic-ID prefix.
 </artifact-layout>
-
 <inappropriate-scenarios>
 | Do NOT use for | Route to |
 |---|---|
 | Target-state architecture, solution documents, decision records | `write-solution-doc`, `draft-adr` |
 | Unverified investigation output | `investigate-code` (verify evidence first) |
 </inappropriate-scenarios>
-
 <pipeline-integration>
 - Position: `investigate-code` → findings doc → `draft-adr` → `write-solution-doc`.
 - Spike seed: `conduct-spike` seeds each area's doc. Details: **reference/pipeline-integration.md**.
@@ -69,12 +67,14 @@ One doc per area at `<spike-folder>/docs/findings-<area>.md` inside a spike; a u
 | Load when | Provides | File |
 |---|---|---|
 | Writing the doc structure, template, numbering, metadata block | Canonical sections + template | [reference/structure-and-template.md](reference/structure-and-template.md) |
-| Writing or formatting a topic block | Question style, answer shapes, claim bullets | [reference/topic-block-guide.md](reference/topic-block-guide.md) |
+| Writing or formatting a topic block | Question style, representation rule, claim rules | [reference/topic-block-guide.md](reference/topic-block-guide.md) |
+| Writing a table or comparison table | Table principles, required columns, patterns | [reference/table-guidelines.md](reference/table-guidelines.md) |
 | Building the evidence ledger and IDs | Ledger schema, confidence tags, searched-negatives, coverage, slug IDs | [reference/evidence-and-ids.md](reference/evidence-and-ids.md) |
 | Wiring the doc into a spike or downstream doc | Handoff, shared schema, citation rules | [reference/pipeline-integration.md](reference/pipeline-integration.md) |
 | Validating a findings doc before saving | Quality checklist + severity | [reference/quality-checklist.md](reference/quality-checklist.md) |
 | Sourcing the area's questions | Question-sourcing walkthrough | [examples/collect-area-questions.md](examples/collect-area-questions.md) |
 | Authoring a full per-area doc | End-to-end doc example | [examples/author-findings-doc.md](examples/author-findings-doc.md) |
+| Comparing one thing across flows | Comparison-table pattern | [examples/compare-across-flows.md](examples/compare-across-flows.md) |
 | Building only the evidence ledger | Ledger-only example | [examples/compile-evidence-ledger.md](examples/compile-evidence-ledger.md) |
 | Updating a doc on new evidence | In-place update example | [examples/update-findings-doc.md](examples/update-findings-doc.md) |
 | Validating a doc | Validation-report example | [examples/validate-findings-doc.md](examples/validate-findings-doc.md) |
@@ -92,9 +92,9 @@ One doc per area at `<spike-folder>/docs/findings-<area>.md` inside a spike; a u
 3. Merge duplicates; drop questions the evidence cannot answer.
 4. Order orientation questions (what/where) before depth questions (flow, config, gotchas).
 5. Cap the list at 3–7 topics; ask the user to split the area when larger.
-6. Confirm the question list with the user before authoring.
+6. Verify each question is answerable from the verified evidence and covers a single topic; drop any that fail.
+7. Confirm the question list with the user before authoring.
 </collect-area-questions>
-
 <author-findings-doc>
 **Objective**: Write the complete per-area findings doc.
 1. Write the metadata block and Orientation index per **reference/structure-and-template.md**.

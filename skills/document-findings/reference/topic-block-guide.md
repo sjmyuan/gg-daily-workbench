@@ -21,32 +21,35 @@ Use when the user supplies no questions.
 | What are the failure / gotcha paths? | Retries, error handling, edge cases |
 | What is deliberately absent? | Unhandled cases, dead code, gaps |
 
-## Answer shape
+## Representation rule
 
-Pick the smallest shape that conveys the answer.
+Pick the shape that best explains the answer — diagram-first.
 
-| Answer type | Shape |
+| Answer is… | Use |
 |---|---|
-| Structure / responsibilities | Table |
-| Message or call ordering | Sequence diagram |
-| Decision or branch logic | Flowchart |
-| Configuration / data store | Table |
-| Single fact | One claim bullet, no visual |
+| A single flow, structure, sequence, state, or topology | **Diagram** — self-explanatory, no walkthrough needed |
+| Branch or decision logic | **Diagram** (flowchart) |
+| A comparison of the same thing across flows/variants | **Comparison table** (rows = compared items); add one diagram per flow when each flow's shape matters |
+| A list of homogeneous facts (config, stores, dependencies) | **Table** with the required columns |
+| Reasoning / "why" / a single fact | **Short prose** (or nothing) |
 
-Cap: one visual per topic.
+- Multiple diagrams per topic are allowed.
+- Diagrams must label every element, annotate key elements with `file:line`, and avoid unexplained abbreviations.
+- Table rules and required columns: **reference/table-guidelines.md**.
 
 ## Topic block format
 
 ```markdown
 ## <N>. <Question?> <!-- id: <area>/<topic-slug> -->
-**TL;DR:** <≤15-word answer>
+**TL;DR:** <one-line answer>
 
-<diagram or table>
+<diagram(s) — or a comparison table, or short prose>
 
-**Key claims**
-- <atomic fact> — `<path:line>` <confidence>
+**Claims**
 - <atomic fact> — `<path:line>` <confidence>
 ```
+
+Each claim states the fact; its `file:line` is its evidence.
 
 ## Claim rules
 - One fact per bullet; no reasoning or justification.

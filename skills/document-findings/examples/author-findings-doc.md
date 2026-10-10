@@ -30,7 +30,7 @@ related-areas: [orders]
 | Charge service | Calls the gateway and records the ledger | `ChargeService.java:88` | `ChargeService.java`, `LedgerRepository.java` |
 | Retry config | Sets retry attempts and backoff | `RetryConfig.java:12` | `RetryConfig.java` |
 
-## 2. Where does a payment get authorized?
+## 2. Where does a payment get authorized? <!-- id: payment/authorize-flow -->
 
 **TL;DR:** The controller forwards to the gateway, then writes the ledger.
 
@@ -43,19 +43,20 @@ sequenceDiagram
     ChargeService->>LedgerRepository: insert(charge)
 ```
 
-**Key claims**
+**Claims**
 - Authorize enters at the controller — `PaymentController.java:41` ✅ Verified
 - The gateway is called from `authorize()` — `ChargeService.java:88` ✅ Verified
 - The ledger row is written after gateway approval — `LedgerRepository.java:57` ✅ Verified
 
-## 3. How is retry configured for the charge call?
+## 3. How is retry configured for the charge call? <!-- id: payment/retry-config -->
 
 **TL;DR:** Three attempts with exponential backoff, no jitter.
 
-**Key claims**
-- Retry count is 3 — `RetryConfig.java:12` ✅ Verified
-- Backoff is exponential — `RetryConfig.java:13` ✅ Verified
-- No jitter is configured — `RetryConfig.java:14` ✅ Verified
+| Setting | Meaning | Value | Evidence (file:line) |
+|---|---|---|---|
+| `retry.attempts` | Number of retry attempts | 3 | `RetryConfig.java:12` |
+| `retry.backoff` | Backoff between attempts | Exponential | `RetryConfig.java:13` |
+| `retry.jitter` | Randomize backoff to avoid a thundering herd | Off | `RetryConfig.java:14` |
 
 ## 4. Evidence & Verification
 

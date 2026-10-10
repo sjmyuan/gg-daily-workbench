@@ -32,9 +32,9 @@ related-areas: [<area-slug>]
 ## 2. <Question?> <!-- id: <area>/<topic-slug> -->
 **TL;DR:** <one-line answer>
 
-<diagram or table>
+<diagram(s) — or a comparison table, or short prose>
 
-**Key claims**
+**Claims**
 - <atomic fact> — `<path:line>` ✅ Verified
 
 ## N. Evidence & Verification
@@ -55,7 +55,9 @@ related-areas: [<area-slug>]
 
 ## Rendering rules
 - Number topics from 2; Evidence & Verification is last with the next number.
-- Every topic block: question heading, TL;DR, one visual, claim bullets.
+- Every topic block: question heading, TL;DR, a primary artifact (diagram / table / prose), claim bullets.
+- Diagram-first: a flow, structure, or branch is a diagram; a comparison is a table (rows = items) per **reference/table-guidelines.md**.
+- Multiple diagrams per topic are allowed.
 - Use tables for structured facts and fenced Mermaid for diagrams.
 - Keep the metadata block first and the section order fixed across every area.
 - One doc per area; the filename `findings-<area-slug>.md` matches the metadata `area` and the ID prefix.

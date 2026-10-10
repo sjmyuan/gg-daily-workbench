@@ -22,6 +22,7 @@ Draft defects to catch: a topic claim missing `file:line`, one ledger claim abse
 | 8 | Searched-negatives and Coverage present | Pass | — |
 | 9 | Current-state only, no version markers | Pass | — |
 | 10 | No banned phrases | **Fail** — "It is important to note" in §3 | 🟢 Nit |
+| 11 | Representation rule followed (diagram for flow; comparison rows = items) | Pass | — |
 
 **Fixes applied**:
 - Add `RetryConfig.java:14` to the missing claim.

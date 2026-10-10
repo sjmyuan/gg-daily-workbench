@@ -19,7 +19,7 @@
 
 **TL;DR:** Yes, a timeout-based breaker on the gateway client.
 
-**Key claims**
+**Claims**
 - A timeout-based circuit breaker is configured — `GatewayClient.java:203` ✅ Verified
 ```
 

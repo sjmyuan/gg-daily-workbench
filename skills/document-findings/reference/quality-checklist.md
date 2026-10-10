@@ -7,14 +7,21 @@ Loaded by **validate-findings-doc**. Report each failed item by severity.
 - [ ] Section order: Orientation → topic blocks → Evidence & Verification.
 - [ ] One doc per area; filename matches the area slug.
 
+## Representation
+- [ ] A flow, structure, or branch topic uses a **diagram**, not a table.
+- [ ] A cross-flow comparison uses a **comparison table** (rows = items) with `Evidence` and `Confidence` columns.
+- [ ] Multiple diagrams are used when each flow's shape matters.
+- [ ] Diagrams label every element, annotate key elements with `file:line`, and use no unexplained abbreviations.
+- [ ] Tables follow **reference/table-guidelines.md**: self-describing headers, units, defined terms, no ambiguous cells, required columns present.
+
 ## Topics
 - [ ] Every topic is a single reader question, ordered orientation → depth.
 - [ ] Every topic has a `**TL;DR:**` line (≤15 words).
-- [ ] At most one diagram or table per topic; it renders.
+- [ ] Every diagram or table renders.
 - [ ] Claim bullets are atomic, with no reasoning.
 
-## Evidence
-- [ ] Every claim has an inline `file:line` and a confidence tag.
+## Claims & evidence
+- [ ] Every claim bullet has an inline `file:line` and a confidence tag.
 - [ ] No 🔶 Inferred or 💭 Assumption presented as ✅ Verified.
 - [ ] Every topic-block claim appears in the ledger.
 - [ ] Searched-negatives and Coverage tables are present and honest.

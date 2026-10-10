@@ -49,7 +49,7 @@
 **Is there a caching layer today?**
 **TL;DR:** No — the read path queries PostgreSQL directly.
 
-**Key claims**
+**Claims**
 - No cache exists at any tier — `ProductCatalogService.java:64` ✅ Verified
 - Reads query PostgreSQL directly — `ProductRepository.java:112` ✅ Verified
 - 200:1 read-to-write ratio; DB CPU >80% at peak; P99 450ms — user notes 💭 Assumption
@@ -64,7 +64,7 @@ Evidence & Verification: ledger rows for each claim; searched-negatives: none (n
 **Is there any invalidation mechanism today?**
 **TL;DR:** No caching tier exists, so no invalidation mechanism is present.
 
-**Key claims**
+**Claims**
 - No TTL, write-through, or event invalidation exists — `ProductCatalogService.java:64` ✅ Verified
 - All writes go to the single source of truth — `ProductRepository.java:130` ✅ Verified
 - 200:1 read-to-write ratio means invalidation must not add write latency — user notes 💭 Assumption

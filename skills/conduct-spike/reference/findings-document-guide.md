@@ -12,7 +12,7 @@ Findings docs are always **one per investigation area** — `docs/findings-<area
 
 ## Structure (owned by document-findings)
 
-A metadata block → an Orientation resource index → question-style topic blocks (TL;DR → diagram/table → atomic claims with `file:line`) → an Evidence & Verification section (ledger, searched-negatives, coverage). Load `document-findings`'s **reference/structure-and-template.md** for the full template.
+A metadata block → an Orientation resource index → question-style topic blocks (TL;DR → diagram / comparison table / prose → claims with `file:line`) → an Evidence & Verification section (ledger, searched-negatives, coverage). Load `document-findings`'s **reference/structure-and-template.md** for the full template.
 
 ## Evidence the spike relies on
 
