@@ -26,6 +26,7 @@ No separate files — the gate reuses the feature folder's existing docs (`<feat
 - The index tracks **status only** — no findings record.
 - The executor appends each fix round's handoff to the same `## Execution` section.
 - POC cells add `<feature-folder>/evaluation-report.md` (see **produce-poc-report**).
+- The gate result travels **inline** to the fix-round planner — the unresolved findings and verdicts are not yet an artifact; once recorded in `rework-<date>.md`, later rounds pass that file by **path**.
 
 ## Gate inputs
 
@@ -48,6 +49,8 @@ A full quality re-review is out of scope — `review-post-execution` already ran
 
 Never silently discard a finding.
 
+- The fix-round brief carries the prior round's **verification result** — each unresolved/new finding with its verdict — so the planner plans against what failed, never a blank re-run.
+- The scoped **re-review** receives the prior findings (inline) plus the new `rework-<date>.md` (path) — it confirms each is resolved and re-checks only the changed scope.
 - A fix is a **rework** — planned (**plan-development-task**) then executed (**execute-plan**), never a direct executor edit.
 - The cell stays **in-progress** through the rework; the `rework-<date>.md` file is the record, not the index.
 - Roll deferred Minors into the epic integration review.

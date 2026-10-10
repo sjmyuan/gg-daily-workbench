@@ -1,6 +1,6 @@
 # Findings-Doc Brief
 
-Ready-to-fill structured brief for `compile-findings-doc` → `findings-doc-writer` — loaded on demand when dispatching findings-doc compilation. Fills the **structured brief shape**; shared evidence-map contract: **reference/dispatch-briefs.md** (**Evidence map in every brief**); format rules: `document-findings`'s **reference/structure-and-template.md**.
+Ready-to-fill structured brief for `compile-findings-doc` → `findings-doc-writer` — loaded on demand when dispatching findings-doc compilation. Fills the **structured brief shape**; shared known-context + evidence-map contracts: **reference/dispatch-briefs.md**; format rules: `document-findings`'s **reference/structure-and-template.md**.
 
 **Announce**: "Dispatching findings-doc compilation to a sub-agent."
 
@@ -8,12 +8,16 @@ Ready-to-fill structured brief for `compile-findings-doc` → `findings-doc-writ
 You are the `findings-doc-writer`. Deliver: the findings document for **one investigation area** — a question-style explanation of that area's existing code with its evidence ledger embedded. One findings doc per area, always (`docs/findings-<area>.md`).
 
 ## 2. Context
-- Spike goal: **[goal]**
+- Spike goal **(path)**: `scope.md`
 - Area: **[area name]** — this brief compiles only this area's findings doc
-- Investigation results: **[the area's summary + its evidence map]**
+- User's questions/notes **(inline)**: **[the questions and context the user already supplied]**
+- Cross-area constraints **(path)**: sibling `docs/findings-*.md` — **[the constraints to cross-reference]**
+- Investigation results **(inline)**: **[the area's summary + its evidence map]**
 
 ## 3. Inputs
-- Investigation results (summaries + evidence maps) — already verified; embed faithfully, do not re-investigate.
+- Investigation results **(inline)**: summaries + evidence maps — already verified; embed faithfully, do not re-investigate.
+- Sibling findings docs **(path)**: **[...]** — for cross-references.
+- Open verification challenges **(re-dispatch only, inline)**: **[challenged claims, verdicts, what the verifier disputed]** — resolve each; leave everything else settled.
 
 ## 4. Tasks
 1. Load `document-findings` and produce a findings doc for this area: **collect-area-questions** → **author-findings-doc** (which applies **compile-evidence-ledger**, then **validate-findings-doc**).

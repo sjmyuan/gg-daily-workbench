@@ -73,7 +73,12 @@ The index tracks **status only** — verification findings are not recorded here
 
 ## Per-cell scope brief
 
-Each cell carries a brief that seeds **plan-development-task**:
+Each cell carries a brief that seeds **plan-development-task** and every later dispatch for that cell. Fill each item by where the info lives:
+
+- **By reference** — persisted in an artifact (index, `context.md`, spike/plan/rework file): feature, repo, scope, branch, plan location, spike references, dependency/wave context → the **path + section**; never inline a whole spike artifact.
+- **Inline** — orchestrator/user-only context: global constraints not yet persisted, prior gate findings → the **value** (see **reference/verification-gate.md**).
+
+Brief items:
 
 - **Feature**: ID + name + one-line description
 - **Repo**: repo name

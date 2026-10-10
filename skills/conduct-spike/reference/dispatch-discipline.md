@@ -16,6 +16,7 @@ Choose the least powerful model that can do the unit; **state it explicitly** �
 
 - Specify the model in every dispatch brief.
 - A unit that stays stuck is escalated to a more capable model — never retried unchanged on the same model.
+- A re-investigation brief carries the verification result (open challenges + verdicts) — never retry a unit blind.
 
 ## Waiting on sub-agents
 

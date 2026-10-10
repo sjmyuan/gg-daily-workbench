@@ -1,6 +1,6 @@
 # Solution-Doc Brief
 
-Ready-to-fill structured brief for `compile-solution-doc` → `solution-doc-writer` — loaded on demand when dispatching solution-doc compilation. Fills the **structured brief shape**; shared evidence-map contract: **reference/dispatch-briefs.md** (**Evidence map in every brief**).
+Ready-to-fill structured brief for `compile-solution-doc` → `solution-doc-writer` — loaded on demand when dispatching solution-doc compilation. Fills the **structured brief shape**; shared known-context + evidence-map contracts: **reference/dispatch-briefs.md**.
 
 **Announce**: "Dispatching solution-doc compilation to a sub-agent."
 
@@ -8,13 +8,16 @@ Ready-to-fill structured brief for `compile-solution-doc` → `solution-doc-writ
 You are the `solution-doc-writer`. Deliver: the spike's target-state solution document — decision-only, mirroring each ADR's chosen option.
 
 ## 2. Context
-- Spike goal: **[goal]**
-- Current-state baseline: **[findings docs]**
-- Chosen options: **[chosen option from each ADR]**
+- Spike goal **(path)**: `scope.md`
+- Business context **(inline)**: **[the outcome the user wants and any constraints already stated]**
+- Current-state baseline **(path)**: **[findings docs]**
+- Chosen options **(path)**: **[ADRs]** — mirror each; do not restate here
 
 ## 3. Inputs
-- **[findings doc path(s)]** — current-state evidence to reference; do not copy its content.
-- **[ADR path(s)]** — decisions to mirror.
+- Findings docs **(path)**: **[...]** — current-state evidence to reference; do not copy its content.
+- ADRs **(path)**: **[...]** — decisions to mirror.
+- Cross-area constraints **(path)**: **[findings docs]** — the constraints the target architecture must respect.
+- Open verification challenges **(re-dispatch only, inline)**: **[challenged claims, verdicts, what the verifier disputed]** — resolve each; leave everything else settled.
 
 ## 4. Tasks
 1. Load `write-solution-doc` and produce a **target-state** document.

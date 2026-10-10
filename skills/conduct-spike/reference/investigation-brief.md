@@ -1,6 +1,6 @@
 # Investigation Brief
 
-Ready-to-fill structured brief for `investigate-per-area` → `code-investigator` — loaded on demand when dispatching an area's investigation. Fills the **structured brief shape**; carries the shared evidence-map contract: **reference/dispatch-briefs.md** (**Evidence map in every brief**).
+Ready-to-fill structured brief for `investigate-per-area` → `code-investigator` — loaded on demand when dispatching an area's investigation. Fills the **structured brief shape**; carries the shared known-context + evidence-map contracts: **reference/dispatch-briefs.md**.
 
 **Announce**: "Dispatching investigation of [N] area(s) to a sub-agent."
 
@@ -10,12 +10,18 @@ Fill one brief per area:
 You are the `code-investigator`. Deliver: current-state findings plus a per-area evidence map for **[area]**.
 
 ## 2. Context
-- Spike goal: **[goal]**
+- Spike goal **(path)**: `scope.md`
 - Area: **[name]** — **[description]**
+- Problems this area must inform **(path)**: `scope.md` — this area's "How to …?" rows
+- Boundaries **(inline)**: **[modules/files/teams inside; what is out of scope — name the sibling areas]**
+- User-stated context **(inline)**: **[constraints, facts, and domain details the user already gave]**
 - Mode: **brownfield** (trace code) | **greenfield** (research approaches + comparable systems; see **greenfield-scenarios**)
 
 ## 3. Inputs
-- **[existing findings doc / evidence map path]** — start from its **Verified** claims; dig only **Gap** / **Inconsistency** / **Inferred** / **Assumption** claims. First pass (no doc yet): build the map from scratch.
+- Findings doc / evidence map **(path)**: **[path]** — start from its **Verified** claims; dig only **Gap** / **Inconsistency** / **Inferred** / **Assumption** claims. First pass (no doc yet): build the map from scratch.
+- Pre-existing user findings **(inline)**: **[the notes/findings the user supplied]** — treat as already known; verify only what it leaves unresolved.
+- Sibling findings docs **(path)**: **[paths]** — cross-area constraints this area must respect.
+- Open verification challenges **(re-dispatch only, inline)**: **[challenged claims, verdicts, what the verifier disputed]** — resolve each; leave everything else settled.
 
 ## 4. Tasks
 1. Apply `investigate-code` to the area — **[entry points / open questions]**.

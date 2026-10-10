@@ -27,7 +27,7 @@
 
 ### Orchestrator: Prepare Briefs
 
-4 self-contained briefs, one per area — area description, spike goal, expected output — each **requiring a per-area evidence map**. No findings doc exists yet, so this round seeds the map (see `reference/findings-document-guide.md`).
+4 self-contained briefs, one per area — persisted context by path (`scope.md` goal + problems), live context inline (boundaries, user-stated constraints), expected output — each **requiring a per-area evidence map**. No findings doc exists yet, so this round seeds the map (see `reference/dispatch-briefs.md`, `reference/findings-document-guide.md`).
 
 | Brief | Investigate | Scope | Expected output |
 |---|---|---|---|
@@ -99,10 +99,12 @@
 
 **Brief 1 — ADR for Service Decomposition (problem: split the monolith)**:
 ```
-Produce ADR for problem: How to split the monolith? (Area: Service Decomposition)
-Decision drivers: 99.9% SLA; no data loss; align with existing teams
-Options: A) Payment-type services — clear ownership, independent scaling; shared-lib coupling. B) Domain-driven services — cleaner dependencies; team restructuring. C) Strangler extraction — lowest risk; temporary hybrid complexity.
-Findings doc: docs/findings-service-decomposition.md — Evidence & Verification section (key locations, ledger, coupling); cite evidence without re-scanning
+Produce ADR for problem: How to split the monolith? (Area: Service Decomposition)  [path: scope.md]
+Decision drivers (inline): 99.9% SLA; no data loss; align with existing teams
+Candidate options (inline): A) Payment-type services — clear ownership, independent scaling; shared-lib coupling. B) Domain-driven services — cleaner dependencies; team restructuring. C) Strangler extraction — lowest risk; temporary hybrid complexity.
+User context (inline): 3 teams already own payment types; wallet scaling is the pain point
+Cross-area constraints (path): docs/findings-database.md (shared transactions/accounts/audit_log tables); docs/findings-communication.md (SOAP contract must stay)
+Findings doc (path): docs/findings-service-decomposition.md — Evidence & Verification section (key locations, ledger, coupling); cite evidence without re-scanning
 Load draft-adr skill and produce a complete ADR tagged Area: Service Decomposition.
 ```
 
