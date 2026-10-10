@@ -20,7 +20,7 @@
 **TL;DR:** Yes, a timeout-based breaker on the gateway client.
 
 **Claims**
-- A timeout-based circuit breaker is configured — `GatewayClient.java:203` ✅ Verified
+- A timeout-based circuit breaker is configured — `GatewayClient#breaker (GatewayClient.java:203)` ✅ Verified
 ```
 
 **Changed ledger rows**:

@@ -4,14 +4,21 @@ Loaded by **validate-findings-doc**. Report each failed item by severity.
 
 ## Structure
 - [ ] Metadata block present and first (area, spike, scope, status, related areas).
-- [ ] Section order: Orientation → topic blocks → Evidence & Verification.
+- [ ] A `**Summary:**` (2–4 sentences) follows the title.
+- [ ] Section order: Summary → Orientation → Glossary → topic blocks → Evidence & Verification.
 - [ ] One doc per area; filename matches the area slug.
+
+## Orientation & terms
+- [ ] Orientation has a "Start here" pointer.
+- [ ] Repeated domain terms are in the Glossary; others are defined on first mention.
 
 ## Representation
 - [ ] A flow, structure, or branch topic uses a **diagram**, not a table.
 - [ ] A cross-flow comparison uses a **comparison table** (rows = items) with `Evidence` and `Confidence` columns.
 - [ ] Multiple diagrams are used when each flow's shape matters.
-- [ ] Diagrams label every element, annotate key elements with `file:line`, and use no unexplained abbreviations.
+- [ ] Diagrams label every element, annotate key elements with `Symbol (file:line)`, and use no unexplained abbreviations.
+- [ ] Claims cite `Symbol#method (file:line)`.
+- [ ] Failure/edge behavior is covered where it changes the answer.
 - [ ] Tables follow **reference/table-guidelines.md**: self-describing headers, units, defined terms, no ambiguous cells, required columns present.
 
 ## Topics

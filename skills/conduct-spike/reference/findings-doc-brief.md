@@ -24,7 +24,7 @@ You are the `findings-doc-writer`. Deliver: the findings document for **one inve
 2. Seed the topic questions from the investigation's own questions and the area scope.
 
 ## 5. Output contract
-- Findings doc: metadata block, Orientation resource index, question-style topic blocks (TL;DR → diagram / comparison table / prose → claims with `file:line` and confidence), and an Evidence & Verification section (ledger, searched-negatives, coverage); cross-area constraints as cross-references to the other area's findings doc.
+- Findings doc: metadata block, Summary, Orientation resource index with a "Start here" pointer, Glossary, question-style topic blocks (TL;DR → diagram / comparison table / prose → claims citing `Symbol#method (file:line)`), and an Evidence & Verification section (ledger, searched-negatives, coverage); cross-area constraints as cross-references to the other area's findings doc.
 
 ## 6. Constraints
 - Write only `<spike-folder>/docs/findings-<area>.md`; never modify code or any file outside the spike folder.

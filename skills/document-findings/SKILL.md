@@ -29,7 +29,7 @@ A findings doc explains what exists in a code **area** today, organized as quest
 | Stay current | Not stale | Update in place | Living doc, no version tags |
 </dual-audience-model>
 <findings-doc-structure>
-Fixed section order: metadata block → Orientation → topic blocks → Evidence & Verification. Load **reference/structure-and-template.md** for titles, numbering, and template.
+Fixed section order: metadata block → Summary → Orientation → Glossary (optional) → topic blocks → Evidence & Verification. Load **reference/structure-and-template.md** for titles, numbering, and template.
 </findings-doc-structure>
 <topic-block-format>
 - Each topic answers one reader question: TL;DR → primary artifact → claims.

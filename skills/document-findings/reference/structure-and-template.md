@@ -7,8 +7,10 @@ Backs the `<findings-doc-structure>` knowledge entry; used by **author-findings-
 | # | Section | Purpose |
 |---|---|---|
 | — | Metadata block | Machine-readable header (area, spike, scope, status, related areas) |
-| 1 | Orientation | Resource index: component → purpose → entry point → key files |
-| 2..N | Topic blocks | One per question — TL;DR, diagram/table, claims with `file:line` |
+| — | Summary | 2–4 sentence human intro under the title |
+| 1 | Orientation | Resource index with a "Start here" pointer |
+| 2 | Glossary (optional) | Domain terms defined once |
+| 3..N | Topic blocks | One per question — TL;DR, diagram/table, claims with `file:line` |
 | N+1 | Evidence & Verification | Consolidated ledger, searched-negatives, coverage |
 
 ## Template
@@ -24,18 +26,29 @@ related-areas: [<area-slug>]
 
 # Findings: <Area name>
 
+**Summary:** <2–4 sentences: what this area is, its boundary, why it matters.>
+
 ## 1. Orientation
 
 | Component | Purpose | Entry point | Key files |
 |---|---|---|---|
 
-## 2. <Question?> <!-- id: <area>/<topic-slug> -->
+Start here: <the file:line to read first>.
+
+## 2. Glossary
+
+| Term | Meaning |
+|---|---|
+
+## 3. <Question?> <!-- id: <area>/<topic-slug> -->
 **TL;DR:** <one-line answer>
+
+> <optional one-line framing: scope or assumption the artifact relies on>
 
 <diagram(s) — or a comparison table, or short prose>
 
 **Claims**
-- <atomic fact> — `<path:line>` ✅ Verified
+- <atomic fact> — `Symbol#method (file:line)` ✅ Verified
 
 ## N. Evidence & Verification
 
@@ -54,10 +67,11 @@ related-areas: [<area-slug>]
 ````
 
 ## Rendering rules
-- Number topics from 2; Evidence & Verification is last with the next number.
+- Open with the metadata block and a `**Summary:**` (2–4 sentences); number topics from 3.
 - Every topic block: question heading, TL;DR, a primary artifact (diagram / table / prose), claim bullets.
 - Diagram-first: a flow, structure, or branch is a diagram; a comparison is a table (rows = items) per **reference/table-guidelines.md**.
-- Multiple diagrams per topic are allowed.
-- Use tables for structured facts and fenced Mermaid for diagrams.
-- Keep the metadata block first and the section order fixed across every area.
+- Multiple diagrams per topic are allowed; annotate diagram elements with `Symbol (file:line)`.
+- Cite code as `Symbol#method (file:line)` on first mention, e.g. `ChargeService#authorize (ChargeService.java:88)`.
+- Glossary is optional; include it when a term repeats, else define terms on first mention.
+- End with Evidence & Verification; keep the section order fixed across every area.
 - One doc per area; the filename `findings-<area-slug>.md` matches the metadata `area` and the ID prefix.

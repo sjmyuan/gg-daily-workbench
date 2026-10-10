@@ -23,8 +23,8 @@
 | Subscription | On renewal | Plan price | Floor, 2 dp | `fee` debit | `SubscriptionFee.java:33` | 🔶 Inferred |
 
 **Claims**
-- Checkout and refund share the same rounding rule — `FeeService.java:44`, `RefundService.java:71` ✅ Verified
-- Subscription uses floor rounding — `SubscriptionFee.java:33` 🔶 Inferred
+- Checkout and refund share the same rounding rule — `FeeService#round (FeeService.java:44)`, `RefundService#round (RefundService.java:71)` ✅ Verified
+- Subscription uses floor rounding — `SubscriptionFee#round (SubscriptionFee.java:33)` 🔶 Inferred
 ```
 
 *Each flow's shape is not diagrammed because the question is a diff; when the flow shape also matters, add one compact diagram per flow.*

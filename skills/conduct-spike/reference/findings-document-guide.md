@@ -12,11 +12,11 @@ Findings docs are always **one per investigation area** — `docs/findings-<area
 
 ## Structure (owned by document-findings)
 
-A metadata block → an Orientation resource index → question-style topic blocks (TL;DR → diagram / comparison table / prose → claims with `file:line`) → an Evidence & Verification section (ledger, searched-negatives, coverage). Load `document-findings`'s **reference/structure-and-template.md** for the full template.
+A metadata block → a Summary → an Orientation resource index with a "Start here" pointer → a Glossary (optional) → question-style topic blocks (TL;DR → diagram / comparison table / prose → claims citing `Symbol#method (file:line)`) → an Evidence & Verification section (ledger, searched-negatives, coverage). Load `document-findings`'s **reference/structure-and-template.md** for the full template.
 
 ## Evidence the spike relies on
 
-- **Entry points & key locations**: `file:line` beside the component or flow; never vague references like "the service layer".
+- **Entry points & key locations**: `Symbol (file:line)` beside the component or flow; never vague references like "the service layer".
 - **Call chains**: topic sequence diagrams annotated with `file:line`.
 - **Evidence ledger**: claim ID → claim → verdict → evidence → confidence (5-tag model: ✅ Verified, 🔶 Inferred, 💭 Assumption, ⚠️ Inconsistency, ❓ Gap).
 - **Searched-negatives**: dead-end searches recorded so later sub-agents don't repeat them.

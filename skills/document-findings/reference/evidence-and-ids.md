@@ -47,4 +47,5 @@ Coverage is in/out-of-scope status only — never a changelog.
 
 - IDs are area-scoped and stable for the life of the topic.
 - Never renumber existing IDs; add new IDs for new claims.
-- Downstream docs cite the ID plus `file:line` (for example "`payment/authorize-flow#c2`, `ChargeService.java:88`").
+- Downstream docs cite the ID plus `Symbol#method (file:line)` (for example "`payment/authorize-flow#c2`, `ChargeService#authorize (ChargeService.java:88)`").
+- The ledger's Evidence column stays bare `file:line` for machine parsing; topic prose uses the symbol form.

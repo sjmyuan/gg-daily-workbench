@@ -17,7 +17,7 @@ Backs the topic-block table guidance; used by **author-findings-doc**. Use a tab
 - Self-describing headers — full words, no abbreviations.
 - One idea per cell — values, not sentences.
 - Units stated — `Base amount (USD)`, `Timeout (s)`.
-- Define terms — a Meaning column or the Domain-terms table.
+- Define terms — a Meaning column or the doc's Glossary.
 - No ambiguous cells — write the value; no bare `Yes`, `—`, or `maybe` without a defined legend.
 - Keep it narrow — ≤6–7 columns; split by aspect when wider.
 - Consistent value formats across cells.

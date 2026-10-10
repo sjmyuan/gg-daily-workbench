@@ -43,17 +43,24 @@ Pick the shape that best explains the answer — diagram-first.
 ## <N>. <Question?> <!-- id: <area>/<topic-slug> -->
 **TL;DR:** <one-line answer>
 
+> <optional one-line framing: scope or assumption the artifact relies on>
+
 <diagram(s) — or a comparison table, or short prose>
 
 **Claims**
-- <atomic fact> — `<path:line>` <confidence>
+- <atomic fact> — `Symbol#method (file:line)` <confidence>
 ```
 
-Each claim states the fact; its `file:line` is its evidence.
+Each claim states the fact; `Symbol#method (file:line)` is its evidence. Add the framing line only when the artifact assumes something — a happy path, or one variant of several.
+
+## Coverage of behavior
+- Cover failure and edge paths where they change the answer — add `alt` branches to the diagram, or a dedicated failure topic.
+- Do not diagram every error branch — only those a reader must know.
+- Annotate diagram elements with `Symbol (file:line)` so a reader can jump to code.
 
 ## Claim rules
 - One fact per bullet; no reasoning or justification.
-- Every claim carries an inline `file:line` and a confidence tag.
+- Every claim cites `Symbol#method (file:line)` and a confidence tag.
 - Confidence tags: ✅ Verified, 🔶 Inferred, 💭 Assumption, ⚠️ Inconsistency, ❓ Gap.
 - Never present 🔶 Inferred or 💭 Assumption as ✅ Verified.
-- Never use vague references ("the service layer") — always `file:line`.
+- Never use vague references ("the service layer") — always a symbol + `file:line`.
