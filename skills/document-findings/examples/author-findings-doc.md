@@ -1,6 +1,6 @@
 # Example: Authoring a Findings Doc for a Payment Area
 
-**Scenario**: The questions for the `payment` area are confirmed and evidence is verified. Author the full `findings-payment.md` with a summary, orientation, glossary, topic blocks, and an evidence section.
+**Scenario**: The `payment` area's questions and evidence are ready. Author the full `findings-payment.md` with summary, orientation, glossary, topic blocks, and evidence.
 
 **Applies**: **author-findings-doc**
 
@@ -22,7 +22,7 @@ related-areas: [orders]
 
 # Findings: Payment
 
-**Summary:** The payment area authorizes, captures, and refunds card payments. It is the only writer of the `ledger` table and the sole caller of the external gateway; checkout and orders reach it through the Payment API.
+**Summary:** The payment area authorizes, captures, and refunds card payments. It alone writes the `ledger` table and calls the external gateway. Checkout and orders reach it via the Payment API.
 
 ## 1. Orientation
 
@@ -98,7 +98,10 @@ flowchart TD
 | Claim ID | Claim | Verdict | Evidence (file:line) | Confidence |
 |---|---|---|---|---|
 | payment/authorize-flow#c1 | Authorize enters at the controller | Yes | `PaymentController.java:41` | ✅ Verified |
-| payment/authorize-failure#c1 | No ledger row on gateway failure | Yes | `ChargeService.java:96` | ✅ Verified |
+| payment/authorize-flow#c2 | Gateway called in `authorize()` | Yes | `ChargeService.java:88` | ✅ Verified |
+| payment/authorize-flow#c3 | Ledger row written after approval | Yes | `LedgerRepository.java:57` | ✅ Verified |
+| payment/authorize-failure#c1 | Retries up to three times | Yes | `RetryConfig.java:12` | ✅ Verified |
+| payment/authorize-failure#c2 | No ledger row written on failure | Yes | `ChargeService.java:96` | ✅ Verified |
 
 ### Searched-negatives
 
@@ -115,6 +118,6 @@ flowchart TD
 
 **Result**:
 - Human on-ramp: a `**Summary:**`, a Glossary, and a "Start here" pointer.
-- Every claim cites `Symbol#method (file:line)`; the ledger keeps bare `file:line`.
+- Every claim cites `<reference> (file:line)`; the ledger keeps bare `file:line`.
 - The happy-path diagram states its assumption; the failure path is its own topic.
 - Saved to `spikes/checkout-reliability/docs/findings-payment.md`.

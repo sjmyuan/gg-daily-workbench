@@ -1,6 +1,6 @@
 # Table Guidelines
 
-Backs the topic-block table guidance; used by **author-findings-doc**. Use a table only for a cross-flow comparison or a list of homogeneous facts. Any flow, structure, or branch is a diagram.
+Used by **author-findings-doc**. Use a table only for a cross-flow comparison or a list of homogeneous facts. Any flow, structure, or branch is a diagram.
 
 ## When a table is allowed
 

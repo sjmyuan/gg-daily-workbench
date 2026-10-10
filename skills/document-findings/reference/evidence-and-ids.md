@@ -1,6 +1,6 @@
 # Evidence Ledger and Stable IDs
 
-Backs the `<evidence-ledger>` and `<stable-ids>` knowledge entries; used by **compile-evidence-ledger** and **update-findings-doc**.
+Used by **compile-evidence-ledger** and **update-findings-doc**.
 
 ## Evidence ledger schema
 
@@ -10,8 +10,11 @@ Backs the `<evidence-ledger>` and `<stable-ids>` knowledge entries; used by **co
 - One row per claim; every topic-block claim appears here.
 - Claim = a question the area asks or a fact the reader needs.
 - Verdict = the answer in one phrase.
-- Evidence = exact `file:line` (multiple separated by `;`).
 - Confidence = one of the five tags below.
+- Evidence depends on claim type:
+  - ✅ Verified / 🔶 Inferred → the exact `file:line` (multiple separated by `;`).
+  - ⚠️ Inconsistency → both conflicting `file:line`s.
+  - ❓ Gap / 💭 Assumption → the search scope, cross-linked to its Searched-negatives row.
 
 ## Confidence tags
 
@@ -47,5 +50,5 @@ Coverage is in/out-of-scope status only — never a changelog.
 
 - IDs are area-scoped and stable for the life of the topic.
 - Never renumber existing IDs; add new IDs for new claims.
-- Downstream docs cite the ID plus `Symbol#method (file:line)` (for example "`payment/authorize-flow#c2`, `ChargeService#authorize (ChargeService.java:88)`").
+- Downstream docs cite the ID plus the `<reference> (file:line)` form (for example "`payment/authorize-flow#c2`, `ChargeService#authorize (ChargeService.java:88)`").
 - The ledger's Evidence column stays bare `file:line` for machine parsing; topic prose uses the symbol form.

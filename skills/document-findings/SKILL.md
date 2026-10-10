@@ -13,11 +13,9 @@ description: Produce question-style findings docs mapping existing code to diagr
 </when-to-use-this-skill>
 
 <knowledge>
-
 <findings-doc-definition>
-A findings doc explains what exists in a code **area** today, organized as question-style topics, for two audiences at once: a human scanning for resources and an agent citing evidence. It is current-state only — never target-state or decisions. One doc per area.
+A findings doc explains what exists in a code **area** today, as question-style topics for a human reader and an AI consumer. Current-state only — never target-state or decisions.
 </findings-doc-definition>
-
 <dual-audience-model>
 | Need | Human | AI consumer | Format response |
 |---|---|---|---|
@@ -29,12 +27,14 @@ A findings doc explains what exists in a code **area** today, organized as quest
 | Stay current | Not stale | Update in place | Living doc, no version tags |
 </dual-audience-model>
 <findings-doc-structure>
-Fixed section order: metadata block → Summary → Orientation → Glossary (optional) → topic blocks → Evidence & Verification. Load **reference/structure-and-template.md** for titles, numbering, and template.
+- Fixed section order: metadata block → Summary → Orientation → Glossary (optional) → topic blocks → Evidence & Verification.
+- Load **reference/structure-and-template.md** for titles, numbering, and template.
 </findings-doc-structure>
 <topic-block-format>
 - Each topic answers one reader question: TL;DR → primary artifact → claims.
-- Diagram for a single flow, structure, or branch; a comparison table (rows = items) for cross-flow diffs; prose for reasoning.
-- Multiple diagrams allowed. Load **reference/topic-block-guide.md** and **reference/table-guidelines.md**.
+- Pick the representation diagram-first per **reference/topic-block-guide.md**.
+- Apply **reference/table-guidelines.md** for comparison tables.
+- Multiple diagrams per topic are allowed.
 </topic-block-format>
 <evidence-ledger>
 - The AI-tracking layer: a consolidated ledger (claim ID → claim → verdict → evidence `file:line` → confidence) plus searched-negatives and coverage.
@@ -131,7 +131,7 @@ One doc per area at `<spike-folder>/docs/findings-<area>.md` inside a spike; a u
 **Objective**: Verify a findings doc before saving or delivering.
 1. Load **reference/quality-checklist.md**.
 2. Check structure: metadata block, Orientation, topic blocks, Evidence & Verification, in order.
-3. Check every claim has an inline `file:line` and a confidence tag, and appears in the ledger.
+3. Check every claim has a confidence tag, cites evidence per its type, and appears in the ledger.
 4. Check IDs are unique, area-scoped, and unrenumbered; citation format is valid.
 5. Check Searched-negatives and Coverage are present and honest.
 6. Check no target-state or decision content leaked in; render every diagram and table.

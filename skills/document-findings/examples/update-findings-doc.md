@@ -15,7 +15,7 @@
 **Changed topic block** (only the resilience topic touched):
 
 ```markdown
-## 5. Is there a circuit breaker on the gateway call?
+## 5. Is there a circuit breaker on the gateway call? <!-- id: payment/resilience -->
 
 **TL;DR:** Yes, a timeout-based breaker on the gateway client.
 

@@ -1,6 +1,6 @@
 # Topic Block Guide
 
-Backs the `<topic-block-format>` knowledge entry; used by **collect-area-questions** and **author-findings-doc**.
+Used by **collect-area-questions** and **author-findings-doc**.
 
 ## Question style
 - Phrase each topic as a question a reader asks: "Where does a payment get authorized?", "How is retry configured?"
@@ -48,19 +48,22 @@ Pick the shape that best explains the answer — diagram-first.
 <diagram(s) — or a comparison table, or short prose>
 
 **Claims**
-- <atomic fact> — `Symbol#method (file:line)` <confidence>
+- <atomic fact> — `<reference> (file:line)` <confidence>
 ```
 
-Each claim states the fact; `Symbol#method (file:line)` is its evidence. Add the framing line only when the artifact assumes something — a happy path, or one variant of several.
+Each claim states the fact; `<reference> (file:line)` is its evidence.
+`<reference>` is `Class#member` (class member) or `module.function` (free function).
+Add the framing line only when the artifact assumes something — a happy path, or one variant of several.
 
 ## Coverage of behavior
 - Cover failure and edge paths where they change the answer — add `alt` branches to the diagram, or a dedicated failure topic.
 - Do not diagram every error branch — only those a reader must know.
-- Annotate diagram elements with `Symbol (file:line)` so a reader can jump to code.
+- Annotate diagram elements with `file:line` so a reader can jump to code.
 
 ## Claim rules
 - One fact per bullet; no reasoning or justification.
-- Every claim cites `Symbol#method (file:line)` and a confidence tag.
+- Every claim cites `<reference> (file:line)` and a confidence tag.
+- A ❓ Gap or 💭 Assumption claim cites its search scope instead.
 - Confidence tags: ✅ Verified, 🔶 Inferred, 💭 Assumption, ⚠️ Inconsistency, ❓ Gap.
 - Never present 🔶 Inferred or 💭 Assumption as ✅ Verified.
-- Never use vague references ("the service layer") — always a symbol + `file:line`.
+- Never use vague references ("the service layer"); name a concrete symbol or module.

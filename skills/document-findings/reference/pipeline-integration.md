@@ -1,6 +1,6 @@
 # Pipeline Integration
 
-Backs the `<pipeline-integration>` knowledge entry. The findings doc sits upstream of ADRs and the solution doc, and is seeded by investigation.
+The findings doc sits upstream of ADRs and the solution doc, and is seeded by investigation.
 
 ## Position
 
@@ -11,6 +11,7 @@ Backs the `<pipeline-integration>` knowledge entry. The findings doc sits upstre
 | Point | Rule |
 |---|---|
 | Upstream input | Verified investigation results for one area, with an evidence map (`file:line`, call chains, confidence). |
+| Embedding agent | `findings-doc-writer` loads this skill to author a per-area doc. |
 | Seed (spike) | `conduct-spike`'s `compile-findings-doc` seeds one doc per area; this skill owns the format and IDs. |
 | Output path | `<spike-folder>/docs/findings-<area>.md` inside a spike; a user-provided path otherwise. |
 | Downstream | `draft-adr` grounds options in the doc's evidence; `write-solution-doc` cites IDs for the current-state baseline. |
