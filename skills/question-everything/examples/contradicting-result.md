@@ -14,27 +14,27 @@ Applies **verify-sub-agent-results** — the **question-the-result** → verify 
 - **C2 (Completeness, high)** — "Order sync is complete": what happens when Kafka is down, and is there a fallback path? Satisfactory answer: state the failure and fallback behavior.
 - **C3 (Ambiguity, medium)** — "syncs orders": unclear whether full order payloads or just notification events. Satisfactory answer: state the payload type.
 
-### Verification (new same-type sub-agent)
-A NEW research agent (same type as the original, not the original instance) is dispatched and instructed to trace the actual sync path from primary sources.
+### Verification (new `code-investigator`)
+The evidence is code, so a NEW `code-investigator` (not the original instance) is dispatched and instructed to trace the actual sync path from primary sources.
 
 ### Comparison (verdicts vs. result)
 - **C1** — DISAGREE: primary sync is DB polling (`OrderPoller`); Kafka is used only for notifications.
 - **C2** — AGREE: a DB fallback exists.
 - **C3** — AGREE: only notification events, not payloads.
 
-A material verdict is DISAGREE → a new research agent (same type, not the original instance) redoes the investigation with the corrected understanding.
+A material verdict is DISAGREE → a new `code-investigator` (not the original instance) redoes the investigation with the corrected understanding.
 
 ## Round 2
-### Re-investigation (new same-type agent)
-A NEW research agent (same type as the original, never the original instance) receives the divergence — the C1–C3 verdicts, the `OrderPoller` evidence, and the corrected understanding — and redoes the investigation from scratch. It returns a corrected result: "Order sync is DB polling based; Kafka is notification-only."
+### Re-investigation (new `code-investigator`)
+A NEW `code-investigator` (never the original instance) receives the divergence — the C1–C3 verdicts, the `OrderPoller` evidence, and the corrected understanding — and redoes the investigation from scratch. It returns a corrected result: "Order sync is DB polling based; Kafka is notification-only."
 
 ### Questioning (question-the-result)
 Question the corrected result:
 - **C4 (Correctness, high)** — "Order sync is DB polling based": unclear whether the poller batches or processes one-by-one, and the poll interval is unstated. Satisfactory answer: state the batch behavior and poll interval.
 - **C5 (Completeness, medium)** — "Kafka is notification-only": other consumers of the same topic may be affected. Satisfactory answer: enumerate the topic's consumers.
 
-### Verification (new same-type sub-agent)
-Another NEW research agent (again not the original instance) verifies C4–C5.
+### Verification (new `code-investigator`)
+Another NEW `code-investigator` (again not the original instance) verifies C4–C5.
 
 ### Comparison (verdicts vs. result)
 - **C4** — AGREE: batch processing every 30s, matches.

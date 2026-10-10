@@ -47,7 +47,7 @@ Rules for **orchestrate-delivery**, **resume-delivery**, and **update-delivery-i
 - After every agent result, update the cell status; record the **head commit** from each execution handoff; when a PR is opened, record its reference; when it merges, confirm the recorded head commit is in the merged PR before marking **done**, then re-check downstream cells for develop/merge-readiness.
 - A completed execution advances to **verified** only after **verify-cell** passes — never mark a cell **done** or **poc-ready** without the gate (see **reference/verification-gate.md**).
 - Dispatch each gate finding straight to the planner — a fix is a pre-merge rework planned (**plan-development-task**, sibling `rework-<date>.md`) then executed (**execute-plan**), never a direct executor edit; the index tracks status only.
-- When a returned result looks inconsistent (status vs plan files, claimed merge vs branch state), verify it with a NEW same-type agent — never the original instance — before recording.
+- When a returned result looks inconsistent (status vs plan files, claimed merge vs branch state), verify it with a NEW evidence-matched agent — never the original instance — before recording.
 - Never let conversation text be the source of truth — the delivery index is.
 - Run the delivery write-boundary check after each index update — an own-writes snapshot delta: only paths newly written by the orchestrator outside `**/deliveries/**` are violations; stop and report those.
 

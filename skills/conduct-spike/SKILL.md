@@ -68,7 +68,7 @@ Dispatch investigation, findings-doc compilation, ADR drafting (evaluation inclu
 </multi-agent-orchestration>
 
 <sub-agent-verification>
-Every dispatched result is verified before acceptance via `question-everything`'s **verify-sub-agent-results** — verify with a NEW same-type sub-agent, accept or re-investigate, capped at 3 rounds. Full rules: `question-everything`'s **reference/verification-protocol.md**.
+Every dispatched result is verified before acceptance via `question-everything`'s **verify-sub-agent-results** — evidence-matched verifiers (code → `code-investigator`, else the producer's type), accept or re-investigate. Full rules: `question-everything`'s **reference/verification-protocol.md**.
 </sub-agent-verification>
 
 <problem-decomposition-guide>

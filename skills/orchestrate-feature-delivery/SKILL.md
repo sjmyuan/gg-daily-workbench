@@ -132,7 +132,7 @@ All prose in the delivery index follows **reference/writing-style.md** — table
 </produce-delivery-index>
 <update-delivery-index>
 1. After every agent result, update the cell's status per **reference/state-machine.md** — `unplanned → planned → in-progress → verified → done`, plus `failed` or `blocked` with the reason.
-2. When an agent result looks inconsistent (status vs plan files, claimed merge vs branch state), re-read the artifacts or dispatch a NEW same-type agent to verify before recording.
+2. When an agent result looks inconsistent (status vs plan files, claimed merge vs branch state), re-read the artifacts or dispatch a NEW evidence-matched agent to verify before recording.
 3. Apply the **plan-first gate**: mark **planned** only when the planner's plan file exists on disk at the recorded Plan location; never set a cell to **in-progress** without a verified plan file — a missing file is **failed** (reason: no plan file).
 4. Record per cell: agent assignment, plan location, branch name, the **head commit** from the execution handoff, and the PR reference once opened (see **branch-and-push-conventions**).
 5. When a cell's PR merges, confirm the recorded head commit is in the merged PR before marking **done**; then re-check downstream cells for develop/merge-readiness.

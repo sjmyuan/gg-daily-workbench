@@ -25,7 +25,7 @@ Question results across six dimensions: **Completeness** (missing paths/cases), 
 </questioning-dimensions>
 
 <verification-principles>
-Verification is the loop that decides whether a challenged result may be accepted. Principles: **independence** (the verifier never sees a pre-written expected verdict), **primary sources** (answer from code, docs, data, logs — not the original result), **traceability** (one verdict per challenge), and **fresh instances** (every verifier and re-investigator is a NEW sub-agent of the same type as the original — never the original instance). The loop caps at 3 rounds; at the cap, present both versions to the user. Full rules: **reference/verification-protocol.md**.
+Verification is the loop that decides whether a challenged result may be accepted. Principles: **independence** (the verifier never sees a pre-written expected verdict), **primary sources** (answer from code, docs, data, logs — not the original result), **traceability** (one verdict per challenge), **fresh instances** (every verifier and re-investigator is a NEW sub-agent — never the original instance), and **evidence-matched verifiers** (route each challenge to the agent that can read the evidence that settles it: code → `code-investigator`; non-code → a NEW agent of the producer's type). The loop caps at 3 rounds; at the cap, present both versions to the user. Full rules: **reference/verification-protocol.md**.
 </verification-principles>
 
 <context-loading-guide>
@@ -59,12 +59,12 @@ Verification is the loop that decides whether a challenged result may be accepte
 
 1. Load [reference/verification-protocol.md](reference/verification-protocol.md).
 2. Apply **question-the-result** to raise prioritized challenges on the returned result.
-3. Dispatch a NEW same-type sub-agent — never the original instance — to verify each material challenge against primary sources.
-4. If no same-type sub-agent is available, verify each challenge directly against primary sources.
+3. Route each material challenge to an **evidence-matched verifier** — `code-investigator` for code claims, otherwise a NEW agent of the producer's type — never the original instance — and verify it against primary sources.
+4. If no evidence-matched verifier is available, verify each challenge directly against primary sources.
 5. Collect per-challenge verdicts (AGREE / DISAGREE / UNCERTAIN), each traceable to its challenge and citing its primary source.
 6. Apply the protocol's Traps list to the collected verdicts before comparing.
 7. Accept when every material verdict is AGREE.
-8. If any material verdict is DISAGREE or UNCERTAIN, dispatch a NEW same-type sub-agent to redo the work with the corrected understanding, then loop to step 2.
+8. If any material verdict is DISAGREE or UNCERTAIN, dispatch a NEW evidence-matched verifier to redo the affected work (code facts → `code-investigator`; documents → the producer's type) with the corrected understanding, then loop to step 2.
 9. Loop until all AGREE or the 3-round cap.
 10. At the cap, present both versions to the user — never silently pick one.
 11. Hand the verified result back to the caller for synthesis only after verification.

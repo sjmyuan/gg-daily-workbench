@@ -87,7 +87,7 @@ Compare a story against its PR with [reference/story-analysis-framework.md](refe
 5. **Exclude anti-signals**: drop trivial facts, one-off fixes, already-documented info, session state, boilerplate. Lighter pre-filter on agent-produced candidates.
 6. **Apply the quality gate**: load reference/quality-rubric.md; score all five dimensions; a single failure rejects.
 7. **If no candidates pass**: report "No lessons worth learning from this [source]" and stop — never fabricate lessons.
-8. **Verify agent-sourced candidates**: before provisioning, confirm evidence against the primary source; if unconfirmed, re-derive with a NEW same-type agent or reject.
+8. **Verify agent-sourced candidates**: before provisioning, confirm evidence against the source; if unconfirmed, re-derive with a NEW evidence-matched agent or reject.
 9. **Classify by form**: one-sentence directive or fact → `form: rule`; requires steps, parameters, or branches → `form: procedure` (default when in doubt).
 10. **Route by form**: rules → **provision-lessons** directly; procedures → **extract-and-refine-capability** first, then all → **provision-lessons**.
 </detect-learning-signals>

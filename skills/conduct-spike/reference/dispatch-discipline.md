@@ -12,7 +12,7 @@ Choose the least powerful model that can do the unit; **state it explicitly** �
 | Findings-doc / solution-doc compilation (synthesis of verified material) | Standard |
 | ADR drafting (evaluation + option detail) | Standard–capable |
 | Verification (per `question-everything`) | Scaled to claim risk — cheap for mechanical claims, mid for subtle ones |
-| Re-investigation after a DISAGREE / UNCERTAIN | One tier above the original investigator |
+| Re-investigation after a DISAGREE / UNCERTAIN | Evidence-matched to the challenged claim; one tier above the original investigator |
 
 - Specify the model in every dispatch brief.
 - A unit that stays stuck is escalated to a more capable model — never retried unchanged on the same model.
@@ -34,7 +34,7 @@ A dispatched worker never spawns sub-agents — not helpers, and never a verifie
 Before dispatching, detect the platform's agent mechanism and map each unit to the closest equivalent agent type (see **multi-agent-orchestration**).
 
 - No suitable agent → ask the user how to proceed, or run the unit in-session with the same brief and verification — never skip the unit.
-- Verification with no same-type agent → verify directly against primary sources in-session (per `question-everything`'s protocol).
+- Verification with no evidence-matched agent → verify directly against primary sources in-session (per `question-everything`'s protocol).
 
 ## Common rationalizations
 
@@ -43,7 +43,8 @@ Before dispatching, detect the platform's agent mechanism and map each unit to t
 | "Single area / single ADR — dispatching is overhead" | Context preservation is the goal, not parallelism; the unit is still dispatched. |
 | "The investigator was thorough — verification is redundant" | Verification is the gate; the original instance is never reused. |
 | "The evidence map looks complete" | Completeness is verified per challenge, not by inspection. |
-| "I'll verify it myself in this session" | Dispatch a NEW same-type agent; verify in-session only when no agent exists. |
+| "I'll verify it myself in this session" | Dispatch a NEW evidence-matched agent; verify in-session only when none exists. |
+| "The producer's own agent type can verify its doc" | A findings/ADR/solution doc still makes code claims — those need a code-reading verifier (`code-investigator`). |
 | "Re-investigate with the same agent — it has context" | It anchors on its own output; dispatch a new instance. |
 | "One more round will converge" | Past the cap the failure is structural — present both versions to the user. |
 | "The worker spawned its own reviewer — extra assurance" | A duplicate seat; the orchestrator's verification is the gate. |

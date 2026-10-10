@@ -19,8 +19,8 @@ Prioritized challenges:
 - **C2 (Completeness, high)** — Password change invalidates cached tokens: only the `TokenCacheService` path is covered; if the refresh-token path skips this cache, invalidation is incomplete. Satisfactory answer: confirm the refresh flow also invalidates, or explain why it need not.
 - **C3 (Ambiguity, medium)** — "Invalidates cached tokens": unclear whether access and refresh tokens are both covered and whether the cache is keyed by `userId` or by token. Satisfactory answer: state the token types and cache keying.
 
-## Verification (new same-type sub-agent)
-A NEW coding agent (same type as the original, not the original instance) is dispatched with the original claims plus C1–C3, instructed to answer from the codebase only.
+## Verification (new `code-investigator`)
+The evidence is code, so a NEW `code-investigator` (not the original instance) is dispatched with the original claims plus C1–C3, instructed to answer from the codebase only.
 
 ## Comparison (verdicts vs. result)
 - **C1** — AGREE: `TokenCacheService.java:42` matches; the controller calls it on password change.

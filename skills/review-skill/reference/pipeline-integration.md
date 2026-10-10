@@ -22,7 +22,7 @@ The skill's capabilities dispatch agents to execute work units (e.g., `conduct-s
 1. **Handoff (dispatch brief)** — the skill defines a brief template (context, scope, expected output) and carries all needed seed files, since the agent cannot see the parent conversation. Missing template → 🟡 Minor.
 2. **Output contract** — the skill requires a structured return format from the agent (e.g., evidence map, draft document). Missing → 🟡 Minor.
 3. **Availability detection & fallback** — the skill detects suitable agents and falls back to direct execution when none exist. No fallback → 🟡 Minor.
-4. **Verification loop** — returned results are questioned and verified with a NEW same-type agent, never the original instance. No verification → 🔴 Major.
+4. **Verification loop** — returned results are questioned and verified with a NEW **evidence-matched** agent (code claims via a code-reading agent, non-code via the producer's type), never the original instance. No verification → 🔴 Major.
 5. **Result merging** — parallel results are collected, de-duplicated, synthesized, and cross-checked across work units. Undefined → 🟡 Minor.
 6. **Safety boundary** — read-only agents are told not to write files; write agents get explicit artifact paths. Missing → 🟡 Minor.
 
