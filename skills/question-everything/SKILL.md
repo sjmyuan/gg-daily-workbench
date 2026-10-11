@@ -10,7 +10,7 @@ description: Question and verify agent-reported information like a skeptic — r
 - A result will be consumed downstream (decision, commit, merge, release) and being wrong is costly
 - Two agents or sub-agents return conflicting results and a resolution is needed
 - User asks to validate the correctness, completeness, or clarity of a returned result
-- Inside a spike pipeline (via `conduct-spike`) — question or verify sub-agent results before acceptance
+- Inside a spike pipeline (via `conduct-spike`) or a delivery pipeline (inconsistent results via `orchestrate-feature-delivery`) — question or verify sub-agent results before acceptance
 - Do NOT load for plain ADR drafting, solution-doc writing, or code investigation — use `draft-adr`, `write-solution-doc`, or `investigate-code` instead
 </when-to-use-this-skill>
 
@@ -27,6 +27,10 @@ Question results across six dimensions: **Completeness** (missing paths/cases), 
 <verification-principles>
 Verification is the loop that decides whether a challenged result may be accepted. Principles: **independence** (the verifier never sees a pre-written expected verdict), **primary sources** (answer from code, docs, data, logs — not the original result), **traceability** (one verdict per challenge), **fresh instances** (every verifier and re-investigator is a NEW sub-agent — never the original instance), and **evidence-matched verifiers** (route each challenge to the agent that can read the evidence that settles it: code → `code-investigator`; non-code → a NEW agent of the producer's type). The loop caps at 3 rounds; at the cap, present both versions to the user. Full rules: **reference/verification-protocol.md**.
 </verification-principles>
+
+<brief-context>
+Every verifier brief carries the known context — established `file:line`, the settled-vs-open claim split, and prior searched-negatives — so the verifier starts from evidence, not zero. The carried context stays non-exhaustive; the verifier may go beyond it. Template: **reference/verification-protocol.md**.
+</brief-context>
 
 <context-loading-guide>
 | Load when | Provides | File |
@@ -59,7 +63,7 @@ Verification is the loop that decides whether a challenged result may be accepte
 
 1. Load [reference/verification-protocol.md](reference/verification-protocol.md).
 2. Apply **question-the-result** to raise prioritized challenges on the returned result.
-3. Route each material challenge to an **evidence-matched verifier** — `code-investigator` for code claims, otherwise a NEW agent of the producer's type — never the original instance — and verify it against primary sources.
+3. Route each material challenge to an **evidence-matched verifier** — `code-investigator` for code claims, otherwise a NEW agent of the producer's type — never the original instance — carrying the known context per **brief-context** and verifying it against primary sources.
 4. If no evidence-matched verifier is available, verify each challenge directly against primary sources.
 5. Collect per-challenge verdicts (AGREE / DISAGREE / UNCERTAIN), each traceable to its challenge and citing its primary source.
 6. Apply the protocol's Traps list to the collected verdicts before comparing.
@@ -78,5 +82,5 @@ Verification is the loop that decides whether a challenged result may be accepte
 <rule>When the user asks to verify or accept a returned result before using it, apply **verify-sub-agent-results**.</rule>
 <rule>When a result will be consumed downstream and being wrong is costly, apply **question-the-result**, then **verify-sub-agent-results** before the result is accepted.</rule>
 <rule>When two agents or sub-agents return conflicting results, apply **question-the-result** to each, then **verify-sub-agent-results** to resolve the conflict.</rule>
-<rule>When verifying sub-agent results inside a spike pipeline (investigation findings, ADR decisions, or findings/solution-doc compilations via `conduct-spike`), apply **verify-sub-agent-results**.</rule>
+<rule>When verifying sub-agent results inside a spike pipeline (via `conduct-spike`) or an inconsistent delivery result (via `orchestrate-feature-delivery`), apply **verify-sub-agent-results**.</rule>
 </rules>

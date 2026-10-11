@@ -9,5 +9,6 @@ Rework rules for `orchestrate-feature-delivery`. Rework is **always append-only*
 
 - **Rework lineage**: `F2-r1` reworks `F2`; `F2-r2` reworks `F2-r1` (latest delivered state); `Rework of:` names it. Rework files key by date — same-day collision suffix `-2`, `-3`. The `## Reworks` manifest is the canonical chain.
 - A verification-gate finding (**verify-cell**) is a **pre-merge** rework trigger while the cell is **in-progress**; the planner writes the sibling `rework-<date>.md` — the index tracks status only.
+- **Dispatched briefs**: the focused-spike / rework briefs carry the affected cell (repo + feature), the governing ADR path, the surfaced issue (inline), and the spike references — never re-scope the whole epic.
 - **Post-merge index handling**: keep the original cell exactly as-is (**done**); add the rework as a new feature/cell in a new wave with `**Rework of**: F2`.
 - **Pre-merge index handling**: no index change; the cell keeps its identity and **in-progress** status.

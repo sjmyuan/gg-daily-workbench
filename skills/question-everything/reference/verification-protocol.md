@@ -24,17 +24,44 @@ Route each challenge to the agent that can read the evidence that would settle i
 - **Structure and format** stay with the owning skill's checklist, not the evidence loop.
 - **Greenfield** — no code exists, so the verification evidence is non-code and the producer's type applies.
 
+## Known context in the brief
+
+Carry every established fact with the brief so the verifier starts from the producer's evidence, not from zero.
+
+| Carry | Source | Mode |
+|---|---|---|
+| Evidence map: established `file:line` and **Verified** claims | findings doc / producer output | Path, else inline |
+| Open claims: **Inferred** / **Assumption** / **Gap** — the failure points | same | Inline |
+| Searched-negatives: scans already done | same | Path, else inline |
+| Scope slice: goal, area boundaries, the decision the result feeds | scope map / user dialog | Inline |
+| Producer's citation behind each challenge | the result | Inline |
+
+- Load by **path** when an artifact holds the info; **inline** otherwise — never leave a field empty.
+- Carry context for every brief, even a single mechanical challenge — the cost is far below a full re-scan.
+- Independence holds: carry claims and citations, never a pre-written expected verdict.
+- The context is non-exhaustive — the verifier starts from these locations but may go beyond them.
+- A round-2+ brief also carries the prior round's verdicts and any evidence the earlier verifier added.
+
 ## Brief template
 
 ```markdown
 ## Context
 <the original result and its key claims>
 
+## Known context
+- Established evidence (path/inline): <findings doc / evidence map> — its `file:line` locations and **Verified** claims; settled, do not re-scan.
+- Open claims (inline): <the Inferred / Assumption / Gap claims — the likely failure points>.
+- Searched-negatives (path/inline): <scans already done — do not repeat>.
+- Scope slice (inline): <goal + area boundaries + the decision the result feeds>.
+- First pass, no artifact yet: carry the producer's inline citations instead.
+
 ## Challenges to verify
-1. <challenge>: <claim> — <dimension> — <why suspect>
+1. <challenge>: <claim> — <dimension> — <why suspect> — producer's citation: <file:line / doc>
 
 ## Task
 Verify each challenge against primary sources. Do not assume the original result is correct.
+Start from the cited locations; go beyond them when the evidence requires it.
+Re-open a settled claim only when a challenge touches it.
 Read-only task — do not write or modify any files.
 Return a per-challenge verdict, each citing its primary source (file:line, doc, or log):
 - **AGREE** — claim holds, with the supporting source
@@ -59,6 +86,9 @@ Return a per-challenge verdict, each citing its primary source (file:line, doc, 
 ## Traps
 
 - Verifying the whole result instead of per-challenge — a wholesale "looks fine" is not a verdict
+- Dispatching the verifier blind — omitting established `file:line` locations forces a full re-scan; carry the known context
+- Handing over "these are verified" with no settled-vs-open split — name the open Inferred/Assumption/Gap claims so the verifier targets them
+- Treating handed-over locations as exhaustive — the verifier must be free to go beyond them
 - Reusing the original agent instance in verification or re-investigation — it will defend or anchor on its own output; always dispatch a new agent
 - Verifying code claims with the producer's type — a findings/ADR/solution-doc agent cannot read code; route code challenges to `code-investigator`
 - Sending only the verdict back in re-investigation — the agent needs the verifier's evidence and corrected understanding to redo its investigation

@@ -83,12 +83,12 @@ Brief items:
 - **Feature**: ID + name + one-line description
 - **Repo**: repo name
 - **Scope**: ADR refs + target-state section
+- **Plan location**: the feature folder (`deliveries/<epic-name>/<repo>/<feature-name>/`) the planner writes `plan.md` + `context.md` into and the executor reads them from
 - **Spike references**: the file paths + section pointers (from **Spike References**) the agent should load for full context
 - **Dependency context**: what must be merged before this cell's PR (other repos / features)
 - **Constraints**: one PR per repo per feature (soft — may merge with other features when convenient)
 - **Branch**: the branch name to use for this cell, matching the **repo's branch convention** (per **branch-and-push-conventions**); created during the agent's Prepare Environment step, pushed only after user confirmation
-- **PR**: the pull-request reference (number or URL) to record in the index once the PR is opened (per **branch-and-push-conventions**); `—` until then
-- **Commit**: the head commit the execution agent reports on handoff, recorded in the index (per **branch-and-push-conventions**); `—` until the first commit
+- **PR / Commit** — index pointers recorded **after** work (per **branch-and-push-conventions**): the PR reference once opened, the head commit on handoff; `—` until recorded, never dispatch context
 
 ## Status lifecycle
 

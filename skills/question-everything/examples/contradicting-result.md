@@ -15,7 +15,7 @@ Applies **verify-sub-agent-results** — the **question-the-result** → verify 
 - **C3 (Ambiguity, medium)** — "syncs orders": unclear whether full order payloads or just notification events. Satisfactory answer: state the payload type.
 
 ### Verification (new `code-investigator`)
-The evidence is code, so a NEW `code-investigator` (not the original instance) is dispatched and instructed to trace the actual sync path from primary sources.
+The evidence is code, so a NEW `code-investigator` (not the original instance) is dispatched with the original claim, C1–C3, and the known context — the producer's cited `orders.warehouse` topic — instructed to start from that location and trace the actual sync path from primary sources.
 
 ### Comparison (verdicts vs. result)
 - **C1** — DISAGREE: primary sync is DB polling (`OrderPoller`); Kafka is used only for notifications.

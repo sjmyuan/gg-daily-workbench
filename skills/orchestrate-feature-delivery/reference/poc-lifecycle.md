@@ -30,6 +30,10 @@ The orchestrator never evaluates or decides. At **poc-ready**, the user reads th
 3. **Rejected** — close the cell (archive/discard the branch — ask the user); delivery proceeds on the other option.
 4. Apply **update-delivery-index**.
 
+## Dispatch brief
+
+The POC planner and executor briefs carry the governing `adr` (path), the `option` under proof, and the `success-criteria` — the same fields the gate judges `evaluation-report.md` against. Compare siblings carry their own option.
+
 ## Adoption models
 
 - **POC-as-implementation**: the POC branch becomes the shipped feature — on adopt, ask before pushing/PR, merge, mark `replaces` **superseded**.

@@ -54,6 +54,7 @@ The evidence map (embedded in findings docs) is the input/output contract every 
 - **Output — require an evidence map back**: every investigation brief asks the sub-agent to return a per-area evidence map (entry points, key code locations with `file:line`, call chains, evidence verdicts, searched-negatives) alongside its narrative findings — the orchestrator embeds it in the area's findings doc (see **compile-findings-doc**).
 - **Searched-negatives travel with the findings doc**: a documented "not found" tells the next sub-agent not to repeat the scan.
 - **ADR-drafting briefs** include the area's findings doc (evidence sections) so ADRs can cite evidence locations without re-reading code.
+- **Verification briefs** carry the same contract — established `file:line`, the settled-vs-open claim split, and searched-negatives — so the verifier starts from evidence, not zero (see `question-everything`'s **reference/verification-protocol.md**).
 - **First pass is the seed**: when no findings doc exists yet, briefs omit the input but still require the evidence-map output — the first investigation builds the map the findings doc embeds.
 
 ## Verification results in a re-dispatch brief
