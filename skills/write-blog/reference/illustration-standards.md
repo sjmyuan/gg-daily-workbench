@@ -27,5 +27,14 @@ Each illustration-suggestion block states: position (right after which paragraph
 - Choose the illustration name as an English or pinyin keyword from the content.
 - Replace the suggestion block with `![description](assets/filename.svg)` and an optional caption line `*caption*`.
 
+## Post-generation check
+
+Text inside a diagram goes stale as soon as the body is revised, and it never shows up in a prose diff. After generating or regenerating any illustration:
+
+1. **Title treatment consistent**: if the article's diagrams carry a main heading, every one of them does. A single diagram missing its heading is the tell (hit once in practice).
+2. **Wording matches the current body**: re-grep each SVG's text against the body for terms the body has since dropped — a diagram kept the word "返工" after the article had stopped using it.
+3. **Checks re-run after every regeneration**: XML parses, no element overlaps, no text overflows its container, smallest font ≥14px.
+4. **Placement confirmed**: file lives in the article's `assets/` folder as `<article-name>-<illustration-name>.svg`, referenced from the article as `../assets/<file>.svg`, with the suggestion block replaced by `![desc](../assets/<file>.svg)` plus an optional caption line.
+
 ## Optimization
 - On user change requests, re-scan the article context, regenerate, and overwrite the original file (keep the filename).

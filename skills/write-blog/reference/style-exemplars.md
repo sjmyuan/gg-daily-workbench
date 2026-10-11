@@ -63,3 +63,56 @@ The *flourish* above is structural and fairly easy to spot. The other tell only 
 - stacked rhetorical questions ("心流是什么？……为什么等 AI 会让人这么难受？")
 
 Both are AI tells, and both are covered by the same gate. Rules, before/after pairs, and the test ("read it aloud — if it sounds like greeting, reassuring, or arguing, rewrite it as a flat statement"): [human-voice.md](human-voice.md) §7.
+
+## 用户手写范本（本博客长期风格档案）
+
+Two published posts by the same author, both written by hand, are the standing voice reference for this blog. Fetch them at the start of a composing session rather than guessing the voice.
+
+### 范本 A —《如何让团队接受持续部署？》(2024-03-10)
+
+https://www.shangjiaming.top/archives/1710080830635
+
+- TL;DR 开头
+- 自述式纠错："当时，我对团队的反应很不解……后来，我发现自己搞错了目标和方法"
+- 反问句连发（一口气四个"为什么……呢？"）
+- "注意，……"作提醒装置（全文 3 次）
+- 编号列举 1. 2. 3. 列定义与做法
+- 小标题用问句或名词短语
+- 加粗只压关键术语，且与链接一起加粗
+- 排比用于列举（"针对第三方服务的区域不可用／维护窗口／请求速率限制"）
+- 结尾"总结"一节，交代边界条件（"属于必要性指标……但在行动区的不一定会实施"）
+- 正文破折号 0 处
+
+### 范本 B —《如何让团队真正接受AI编程助手？》(2025-06-21)
+
+https://www.shangjiaming.top/archives/how-to-get-the-team-to-truly-embrace-ai-coding-assistant
+
+- 开篇连问读者四个问题（"你的团队开通AI编程助手了么？你有没有被天天催着提高使用率？……"）
+- 大量用"那么，……"把话推进到下一节
+- "需要注意的是，……"
+- "首先／其次／之后／然后／最后"顺次列举措施
+- 加粗整句关键主张
+- 诚实的自我设限："让我们暂且相信这个假设是成立的，并通过实践来验证它"
+- "我所在的团队"这类具体落点
+- 小标题大量用问句，甚至有"知识和案例分享为啥有效？"这种口语问法
+- 读者称呼两种都用：问读者时用"你"，讲团队经验时用"我们／带过团队的人"
+- 术语首次出现带英文括号（信任(Treat)、基于技能(Skill-based)）
+- 正文破折号 1 处
+
+## 范本优先与豁免
+
+Rule: **a hand-written sample supplied by the user outranks every heuristic in [human-voice.md](human-voice.md).** Three patterns that file bans are, in this author's hands, signature moves:
+
+| Heuristic | Sample evidence | Handling |
+|---|---|---|
+| §7.5: keep rhetorical questions to the closing one | 范本 A 连用四句；范本 B 开篇四句 | allow argumentative or puzzled questions in the author's voice; the tell is the debate/reassurance register, not the question count |
+| §6: never end with a summary | 两篇范本都以"总结"收尾 | a deliberate 总结 section is allowed; what stays banned is the 总结腔 transition inside prose ("由此可见", "综上所述") |
+| §5: no parallel structures | 范本 A 用排比列举三种情形 | parallels used to enumerate aspects are fine; flourish-only parallels are not |
+
+Procedure when a sample is supplied:
+
+1. Fetch the sample (or, when only a title is given, fetch the site archive to get its URL).
+2. Extract its markers: opening move, connectives, enumeration style, bold density, heading form, reader address, ending form, punctuation quirks.
+3. Write the marker list into the article's assistant notes as "本文风格清单", with the sample URL.
+4. Compose or refine against that list. Where it conflicts with human-voice.md, the list wins, and the exemption is recorded in the notes.
+5. Re-run the Human-Voice Gate reporting each exemption explicitly (gate check 8).

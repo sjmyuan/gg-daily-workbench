@@ -29,7 +29,9 @@ Quotes nested inside a bold span break Markdown rendering. Never write `**"term"
 Four styles (deep analysis, narrative story, practical guide, opinion) plus the article structure. Details: [reference/writing-styles.md](reference/writing-styles.md)
 </writing-styles>
 <human-voice>
-Write like a practitioner making a written statement — plain vocabulary, composed sentences, first-person where the experience is personal. Not like an essay generator, and not like a friendly assistant chatting with the reader. Avoid AI-flavor words (e.g. 阴险, 赋能, 综上所述), telegraph-style runs of short sentences, parallel flourishes, summary endings, and the chatty-assistant register (emotional self-narration, debate/reassurance phrasing, suspense beats, filler openers — 豆包味). Rules, blacklist, rhythm guidance, the chatty-voice section (§7), and the pre-delivery Human-Voice Gate checklist: [reference/human-voice.md](reference/human-voice.md). Hand-written style exemplars with extracted rules: [reference/style-exemplars.md](reference/style-exemplars.md)
+Write like a practitioner making a written statement — plain vocabulary, composed sentences, first-person where the experience is personal. Not like an essay generator, and not like a friendly assistant chatting with the reader. Avoid AI-flavor words (e.g. 阴险, 赋能, 综上所述), telegraph-style runs of short sentences, parallel flourishes, summary endings, and the chatty-assistant register (emotional self-narration, debate/reassurance phrasing, suspense beats, filler openers — 豆包味). Rules, blacklist, rhythm guidance, the chatty-voice section (§7), and the pre-delivery Human-Voice Gate checklist: [reference/human-voice.md](reference/human-voice.md). Hand-written style exemplars with extracted rules, plus the author's published samples and the markers extracted from them: [reference/style-exemplars.md](reference/style-exemplars.md)
+
+**The author's own sample outranks these heuristics.** When the user supplies a hand-written post or a published article of their own as the voice reference, extract its markers into the article's notes and treat that list as authoritative. If the sample legitimately uses a pattern the heuristics ban — stacked rhetorical questions, a deliberate 总结 section, parallels used to enumerate — record it as an explicit exemption instead of rewriting the author's voice away.
 </human-voice>
 <document-as-single-source>
 The article document is the only state carrier; HTML comments separate auxiliary content from the body. Every turn edits the document file in place and reports only the changes, not a full re-output. Details: [reference/document-as-single-source.md](reference/document-as-single-source.md)
@@ -43,7 +45,7 @@ Suggest 2–4 image positions per article; generate SVG illustrations on request
 | The marker blocks or document update loop is unclear | Document-as-single-source convention | [reference/document-as-single-source.md](reference/document-as-single-source.md) |
 | Choosing a style or structuring the article | Four styles with structure and fit | [reference/writing-styles.md](reference/writing-styles.md) |
 | Composing, reviewing, or refining any prose | Anti-AI-flavor rules, blacklist, rhythm, the chatty-assistant (豆包味) section, and the delivery gate | [reference/human-voice.md](reference/human-voice.md) |
-| Composing or refining to match a personal voice | Hand-written exemplars and extracted style rules | [reference/style-exemplars.md](reference/style-exemplars.md) |
+| Composing or refining to match a personal voice, or the user shares a sample post | Hand-written exemplars, the author's published samples, and the sample-overrides-heuristics rule | [reference/style-exemplars.md](reference/style-exemplars.md) |
 | Suggesting or generating an illustration | Image types, placement, naming, SVG rules | [reference/illustration-standards.md](reference/illustration-standards.md) |
 | User pastes content or shares scattered ideas | Walkthrough of ingest, collect, and gaps | [examples/ingest-and-collect.md](examples/ingest-and-collect.md) |
 | User asks to draft, review, or refine an article | Walkthrough of compose, reference, review, refine | [examples/compose-and-review.md](examples/compose-and-review.md) |
@@ -84,23 +86,26 @@ Suggest 2–4 image positions per article; generate SVG illustrations on request
 <compose-blog>
 **Objective**: Turn collected material into a full draft that reads like a person wrote it.
 1. Read reference/style-exemplars.md; state 2–3 style rules from it ("像这个人一样写") before composing.
-2. Recommend a writing style from reference/writing-styles.md; confirm with the user.
-3. Compose the draft with the user's own spoken sentences and material as the backbone — preserve their phrasing where it exists; AI connects, reorders, and fills gaps instead of rewriting their voice. If material is thin, compose from what exists and mark the thin spots as gaps.
-4. Apply reference/human-voice.md while composing: plain words (no blacklisted AI-flavor words), varied rhythm (no 3+ consecutive short sentences), first-person and reader address, concrete anchors, no florification, no summary ending, and a written-statement register (no chatty-assistant voice — see §7).
-5. Compose title candidates, summary candidates, intro, body sections, and conclusion per the style's structure.
-6. Put title and summary candidates in the title-and-summary block at the top.
-7. Add an assistant note per section: intent, weakness, and improvement.
-8. Write the draft into the article document file; output the title and summary candidates and a section outline in chat, not the full document; ask 3–4 targeted feedback questions.
-9. Verify title and summary candidates and per-section notes are present.
-10. Revise per feedback; refresh title and summary when core content changes.
+2. **Ask for the author's own voice reference** before composing: a hand-written post or a published article of theirs (for a sequel, the post it continues; for this blog the standing samples are listed in reference/style-exemplars.md). If one is given, fetch it, extract its markers into the assistant notes as "本文风格清单", and treat that list as authoritative over the human-voice heuristics. Composing first and aligning style later cost several full rounds in practice.
+3. Recommend a writing style from reference/writing-styles.md; confirm with the user.
+4. Compose the draft with the user's own spoken sentences and material as the backbone — preserve their phrasing where it exists; AI connects, reorders, and fills gaps instead of rewriting their voice. **Never invent first-person experience**: no fabricated scenes, numbers, or "我试过一次……" episodes. Every first-person detail must trace back to supplied material; a missing one is a gap to fill, not a composition problem.
+5. Apply reference/human-voice.md while composing: plain words (no blacklisted AI-flavor words), varied rhythm (no 3+ consecutive short sentences), first-person and reader address, concrete anchors, no florification, and a written-statement register (no chatty-assistant voice — see §7). The ending follows the author's own samples (a 总结 section is fine when his do that).
+6. Compose title candidates, summary candidates, intro, body sections, and conclusion per the style's structure. For a sequel, link the previous post in the intro.
+7. Put title and summary candidates in the title-and-summary block at the top.
+8. Add an assistant note per section: intent, weakness, and improvement.
+9. Write the draft into the article document file; output the title and summary candidates and a section outline in chat, not the full document; ask 3–4 targeted feedback questions.
+10. Verify title and summary candidates and per-section notes are present.
+11. Revise per feedback; refresh title and summary when core content changes.
 </compose-blog>
 <track-references>
 **Objective**: Embed shared sources as inline links.
 1. Extract the URL and title from each shared source.
 2. Link it inline at the relevant paragraph with Markdown link syntax.
-3. Confirm placement with the user.
-4. Mark verbally mentioned, unlinked sources as gaps.
-5. Verify every shared source is linked inline.
+3. **Resolve in-site links from the site itself**: for a link to another post on the author's own site, fetch the archive index (e.g. `https://www.shangjiaming.top/archives`) and take the real slug from there. Never guess a slug from the article title or from the local file name — they diverge (local `ai-can-not-catch-up-my-brain.md` ↔ published `/archives/ai-can-not-catch-up-my-thoughts`).
+4. Confirm placement with the user.
+5. Mark verbally mentioned, unlinked sources as gaps.
+6. **Verify every link before delivery**: one HTTP status request per URL, expect 200, and report the results.
+7. Verify every shared source is linked inline.
 </track-references>
 <suggest-images>
 **Objective**: Mark 2–4 high-value illustration positions.
@@ -121,14 +126,15 @@ Suggest 2–4 image positions per article; generate SVG illustrations on request
 </review-draft>
 <refine-style>
 **Objective**: Make the prose natural, strong, and reader-adapted — and free of AI flavor.
-1. Remove stiff transitions, repeated patterns, and translation-ese.
-2. Strengthen each section's opening line.
-3. Match depth to reader: detail for technical, meaning and value for managers.
-4. Check the reader journey from pain point to insight.
-5. Apply reference/human-voice.md: replace blacklisted AI-flavor words, break up telegraph-style runs of short sentences, remove parallel flourishes and 总结腔, and rewrite any chatty-assistant phrasing (§7: emotional self-narration, debate/reassurance register, suspense beats, filler openers) as flat written statements.
-6. End with a conclusion, an action, or an open question — never a forced summary.
-7. Run the Human-Voice Gate checklist from reference/human-voice.md (blacklist, telegraph, florification, anchor, voice, ending, chatty); report pass / fixed / gap per check; only deliver when all checks pass or gaps are deferred with the user's consent.
-8. Verify opening lines are strong and depth matches the reader.
+1. If the author has supplied a hand-written sample (or has published posts listed in reference/style-exemplars.md), load its marker list first: the sample governs over the heuristics, and every deviation is recorded as an exemption.
+2. Remove stiff transitions, repeated patterns, and translation-ese.
+3. Strengthen each section's opening line — and when a heading is renamed, check that the opening line does not repeat the heading verbatim (same check for a summary opening against the section it summarizes).
+4. Match depth to reader: detail for technical, meaning and value for managers.
+5. Check the reader journey from pain point to insight.
+6. Apply reference/human-voice.md: replace blacklisted AI-flavor words (including ones that came from the author's own material — use the author's plainer phrasing and record the swap), break up telegraph-style runs of short sentences, remove flourish-only parallels and 总结腔 transitions, and rewrite chatty-assistant phrasing (§7) as flat statements. A deliberate 总结 section, or a question in the author's own puzzled voice, is not a chatty tell when a sample demonstrates it.
+7. End with a conclusion, an action, or an open question — never a forced summary (unless the author asked for one).
+8. Run the Human-Voice Gate checklist from reference/human-voice.md (blacklist, telegraph, florification, anchor, voice, ending, chatty, exemption log) over the article body only; report pass / fixed / gap per check; only deliver when all checks pass or gaps are deferred with the user's consent.
+9. Verify opening lines are strong and depth matches the reader.
 </refine-style>
 <generate-illustrations>
 **Objective**: Produce a real illustration file from a suggestion.
@@ -153,4 +159,6 @@ Suggest 2–4 image positions per article; generate SVG illustrations on request
 <rule>When the user asks for an actual illustration, use **generate-illustrations**.</rule>
 <rule>When composing or reviewing a draft, also use **suggest-images**.</rule>
 <rule>When composing or refining any prose, apply **human-voice** rules from reference/human-voice.md and the style exemplars; never deliver a draft without passing the Human-Voice Gate.</rule>
+<rule>When the user shares their own hand-written post or a published article as a style reference, use **refine-style** against that sample (or **compose-blog** if no draft exists yet), record its markers as the article's style list in the notes, and let the sample outrank the human-voice heuristics — logging every exemption in the gate report.</rule>
+<rule>When the article continues a previously published post, link the previous post in the intro and once more in the closing section; cite what it established instead of re-arguing it.</rule>
 </rules>

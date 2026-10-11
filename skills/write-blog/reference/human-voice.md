@@ -32,7 +32,7 @@ The target feel: a practitioner making a **written statement** — plain vocabul
 | 颗粒度 | 详细程度 / 粗细 |
 | 心智模型 | 想法 / 看问题的方式 (keep only if it's the actual topic) |
 
-**Behavior**: If a draft sentence needs a blacklisted word, rewrite the sentence instead of swapping in a near-synonym. Swapping keeps the stiff rhythm.
+**Behavior**: If a draft sentence needs a blacklisted word, rewrite the sentence instead of swapping in a near-synonym. Swapping keeps the stiff rhythm. When the blacklisted word came out of the author's own material (a dimension name such as 颗粒度), check whether the author has a plainer phrasing for it and use that instead (报多细、报多勤), recording the swap in the assistant notes — a word is not laundered by having come from the author.
 
 ## 2. Rhythm rule (fixes "too terse")
 
@@ -58,6 +58,8 @@ The reader should feel a natural breathing rhythm. Two failure modes to avoid:
 ## 4. Concrete over abstract
 
 Every claim should anchor to something real: a scene, a number, a conversation, a specific tool, a before/after. If a paragraph has no concrete anchor, treat it as a gap and ask the user for the real material.
+
+**Never fabricate the anchor.** This is the rule most easily broken while trying to be helpful: a first-person scene, number, or anecdote that the author never supplied ("我试过一次干脆不看了……结果是返工") reads exactly like the real thing and quietly becomes a false claim in the published post. Every first-person detail must trace back to material the author provided; if it does not exist, mark a gap and ask — do not fill it in. Composed-but-unconfirmed details already in the draft must be flagged in the assistant notes until the author replaces them.
 
 ## 5. No florification
 
@@ -118,22 +120,25 @@ Warm-up words that add no meaning.
 
 ### 7.5 Related tells
 
-- **Stacked rhetorical questions**: 4+ question marks in a few thousand characters reads as a chat. Keep only argumentative questions, plus the single closing question.
+- **Stacked rhetorical questions**: 4+ question marks in a few thousand characters can read as a chat. The tell is not the count but the register — a question put to the *reader* to win an argument or to soothe them. Questions the author asks out of his own puzzlement, or that carry the argument forward, are his own habit (see [style-exemplars.md](style-exemplars.md): 范本 A 连用四句、范本 B 开篇四句) and are allowed.
 - **Em-dashes**: Chinese drafts overuse 「——」 as an all-purpose connector. The author's hand-written posts use 0–2 per article. Prefer a comma, 但, 所以, or a full stop.
-- **Second-person coaching**: repeated "你会发现……" turns the piece into a lecture with a smile.
+- **Second-person coaching**: repeated "你会发现……" turns the piece into a lecture with a smile. A direct question to the reader is different and is part of this author's voice ("你有没有被这两种情况绊住过？").
 
 **How to test**: read the sentence aloud. If it sounds like greeting, reassuring, or arguing with someone, rewrite it as a flat statement. Do not hunt for a synonym — rewrite the sentence.
 
 ## 8. Human-Voice Gate (run in refine-style before delivery)
 
+**Scope**: the Gate scans the **article body only**. HTML comment blocks (📌 Title & Summary, 📋 Materials, ❓ Gaps, 💡 Assistant Notes, 🖼️ Illustration Suggestions, and the inline 💡 notes) are auxiliary working text — framework vocabulary, tables, and em-dashes there are fine and are not failures. State which scope was scanned when reporting.
+
 Executable checklist — not "does it feel okay", but these checks:
 
-1. **Blacklist scan**: no AI-flavor words from the table survive. Count them; if > 0, rewrite those sentences.
+1. **Blacklist scan**: no AI-flavor words from the table survive in the body. Count them; if > 0, rewrite those sentences.
 2. **Telegraph scan**: find the longest run of consecutive short sentences (≤ 12 characters). If ≥ 3, add connecting thought or merge sentences.
-3. **Florification scan**: no parallel triplets, no aphorism closing any section, no 总结腔 transition.
-4. **Anchor scan**: every section has at least one concrete anchor (scene, number, example, tool). If missing, mark a gap and ask the user.
-5. **Voice scan**: first-person present ("我") present; reader addressed at least once.
-6. **Ending scan**: the ending is a question, open thought, or action — not a summary.
-7. **Chatty scan** (§7): count the four classes — emotional self-narration, debate/reassurance register, suspense beats, filler openers. Also count em-dashes (target ≤ 2) and rhetorical questions (keep only argumentative ones plus the closing question). If > 0, rewrite those sentences as flat statements.
+3. **Florification scan**: no flourish-only parallel triplets, no aphorism closing any section, no 总结腔 transition inside prose. Parallels used to enumerate aspects, and a deliberate 总结 section, are allowed when the author's own samples use them.
+4. **Anchor scan**: every section has at least one concrete anchor (scene, number, example, tool), and **every first-person detail traces to material the author supplied** — a composed anecdote is not an anchor, it is a gap. If missing, mark a gap and ask the user.
+5. **Voice scan**: first-person present ("我") present; reader addressed at least once (this author's register: "你有没有……？" when addressing the reader, "我们／带过团队的人" when sharing team experience).
+6. **Ending scan**: the ending is a question, open thought, or action — not a summary (unless the author deliberately asked for a 总结 section).
+7. **Chatty scan** (§7): count the four classes — emotional self-narration, debate/reassurance register, suspense beats, filler openers. Also count em-dashes (target ≤ 2). If > 0, rewrite those sentences as flat statements.
+8. **Exemption log**: list every point where the author's own sample overrode a heuristic (stacked questions, a 总结 ending, enumeration parallels, a "需要注意的是"-style device, bold density, reader address). Each exemption needs the sample as its evidence; a documented exemption passes.
 
 Report the results per check: pass / fixed (what changed) / gap (ask user). Only deliver when all checks pass or the gaps are explicitly deferred with the user's consent.
