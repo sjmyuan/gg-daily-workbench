@@ -5,6 +5,8 @@
 
 **Review Focus**: Structure, clarity, completeness, and accuracy for developer onboarding.
 
+**Applies**: **reviewing-document**
+
 ## Code Review Summary
 
 **Scope**: `services/payment-service/README.md` — new microservice README
@@ -18,7 +20,8 @@
 ### 🔴 Major Issues
 
 #### Missing Prerequisites Section
-- **File**: [README.md](README.md)
+- **File**: `services/payment-service/README.md:1 (after — add a Prerequisites section here)`
+- **Confidence**: Confirmed
 - **Issue**: No prerequisites section. The README jumps straight to "Getting Started" without listing required tools (Java 21, Docker, AWS CLI, etc.). A developer without those tools will hit cryptic errors before reading a single line of service code.
 - **Impact**: Onboarding friction; developers waste time debugging missing tools rather than running the service.
 - **Recommendation**: Add a **Prerequisites** section before "Getting Started":
@@ -31,7 +34,11 @@
 ```
 
 #### Incorrect `docker-compose` Command
-- **File**: [README.md](README.md#L34)
+- **File**: `services/payment-service/README.md:34`
+- **Confidence**: Confirmed
+```bash
+34 │ docker-compose up -d
+```
 - **Issue**: The "Local Development" section uses `docker-compose up` but the project uses Compose V2 (`docker compose up`). The legacy command fails silently on macOS with Docker Desktop ≥ 4.18.
 - **Impact**: Local setup fails on all modern developer machines; the error message is unrelated to the root cause.
 - **Recommendation**: Replace every `docker-compose` occurrence with `docker compose` and add a note on the minimum Docker Desktop version required.
@@ -41,13 +48,15 @@
 ### 🟡 Minor Issues
 
 #### Environment Variable Table Is Incomplete
-- **File**: [README.md](README.md#L52-L65)
+- **File**: `services/payment-service/README.md:52`
+- **Confidence**: Confirmed
 - **Issue**: The config reference table lists 8 variables but `application.yaml` declares 12. `PAYMENT_RETRY_MAX_ATTEMPTS`, `PAYMENT_TIMEOUT_MS`, `STRIPE_WEBHOOK_SECRET`, and `DB_POOL_SIZE` are absent.
 - **Impact**: Developers miss required configuration and encounter startup failures with no guidance on what is missing.
 - **Recommendation**: Audit `application.yaml` and synchronize the README table. Consider generating the table from code comments to prevent future drift.
 
 #### "Deployment" Section Describes the Old Pipeline
-- **File**: [README.md](README.md#L80-L95)
+- **File**: `services/payment-service/README.md:80`
+- **Confidence**: Confirmed
 - **Issue**: The deployment section references Jenkins pipeline steps, but the project migrated to GitHub Actions in Q3 2025. The Jenkins URL is no longer valid.
 - **Impact**: Confusing for anyone following the deployment runbook; could lead to failed or duplicate deployments.
 - **Recommendation**: Update to describe the GitHub Actions workflow (`.github/workflows/deploy.yml`) and remove all Jenkins references.
@@ -56,7 +65,7 @@
 
 ### 🟢 Nits / Suggestions
 
-- The "Architecture" diagram (ASCII art on line 22) is helpful but hard to read at scale — consider replacing with a Mermaid diagram for automatic rendering in GitHub.
+- `services/payment-service/README.md:22` — the "Architecture" ASCII diagram is helpful but hard to read at scale — consider replacing with a Mermaid diagram for automatic rendering in GitHub.
 - Section headings are inconsistently capitalized: "Getting Started" vs "local development" vs "API Reference" — standardize to title case throughout.
 - The "Contributing" section is a single line linking to a global `CONTRIBUTING.md` — fine for a shared doc, but verify the link is not broken.
 

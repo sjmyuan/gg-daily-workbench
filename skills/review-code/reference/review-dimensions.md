@@ -1,6 +1,8 @@
 # Review Dimensions Reference
 
-Reference checklist for **all 9 review dimensions**. Apply every relevant ✓ item from each dimension when conducting a code review.
+Reference checklist for **all 10 review dimensions**. Apply every relevant ✓ item from each dimension when conducting a code review.
+
+Assume the change is wrong and hunt for the evidence that proves it right — the deeper sections below (**Adversarial stance**, **Failure-mode enumeration**, **Negative space**) drive that search.
 
 1. **Correctness & Robustness**:
    - ✓ Logic errors and edge cases (null/undefined, empty collections, boundary values)
@@ -79,3 +81,57 @@ Reference checklist for **all 9 review dimensions**. Apply every relevant ✓ it
    - ✓ Database migration safety (schema changes are backward-compatible with the previous app version; a rollback path exists)
    - ✓ Configuration externalized (no hardcoded environment-specific values; all config changes are explicit and documented)
    - ✓ Deployment prerequisites documented (migration steps, cache warm-up, seed data, or manual actions noted in the PR description or a linked runbook)
+
+10. **Change Context & Blast Radius**:
+   - ✓ Call sites (every caller of a changed, added, or renamed symbol is updated and behavior-compatible)
+   - ✓ Implementations (every implementation, subclass, and mock of a changed signature still satisfies it)
+   - ✓ Contracts (serialized payloads, API/event schemas, DB columns, config keys, CLI flags, env vars)
+   - ✓ Behavior diff (state what the code did before and does now — a behavior diff, not a text diff)
+   - ✓ Parallel paths (other code doing the same job that the change did not update)
+   - ✓ Downstream consumers (services, jobs, reports, exports, dashboards reading the changed data)
+   - ✓ Lifecycle fit (deploy order, migration order, rollback, data backfill, cache warm-up)
+
+   **For every changed symbol**: name its callers, the callers' assumptions, and the evidence that each still holds.
+
+## Adversarial stance
+
+Assume the change is wrong until the code proves it right.
+
+- State the failure hypothesis before judging the fix — never open with "this looks correct"
+- Treat a guard absent from the diff as a guard that does not exist, not as one that lives elsewhere
+- Name concrete evidence for every "safe" verdict: the existing guard, test, or invariant at `file:line`
+- Re-read the change once as an attacker (abuse, injection, bypass, exhaustion) and once as a careless maintainer (misuse, missed update, stale assumption)
+- Keep every unproven suspicion in the report at its true confidence — never drop it silently
+
+## Failure-mode enumeration
+
+Walk every changed behavior through each mode; mark it `verified` or `not verified` with the reason.
+
+| Mode | Prompt |
+|---|---|
+| Empty / null / zero | Does the path survive absent, null, empty, and zero input? |
+| Boundary | Off-by-one, max size, first and last element, exact-limit values |
+| Partial failure | What happens when the operation fails halfway? Is state left inconsistent? |
+| Concurrency | Can two requests interleave on the same state? Is the read-modify-write atomic? |
+| Retry / duplicate | Is the operation idempotent when the caller retries or the message redelivers? |
+| Ordering | Does correctness depend on arrival order that is not guaranteed? |
+| Timeout / latency | What if the call is slower than expected, or hangs? |
+| Clock / timezone | Is time compared or stored in mixed zones or units? |
+| Scale | Does it hold at 10× the current volume, rows, or tenant count? |
+| Error path | Is the error propagated, logged, and translated into the caller's contract? |
+| Rollback / undo | Can the change be reversed without data loss? |
+
+## Negative space
+
+List what the change should have included but does not.
+
+| Missing artifact | Present when |
+|---|---|
+| Regression test | A bug fix ships without a failing-first test |
+| Migration | A schema change ships without a versioned migration |
+| Cleanup / eviction | An unbounded cache, set, listener, or subscription is added |
+| Validation | New external input (request, file, env, message) enters without checks |
+| Rollback path | A destructive or irreversible operation is introduced |
+| Observability | A new external call, cache, queue, or job ships without logs or metrics |
+| Documentation | A config key, flag, endpoint, or env var is added |
+| Feature gate | A risky or broad change ships unguarded |

@@ -34,3 +34,15 @@ Apply consistently when categorizing review findings.
 - Two or more conflicting patterns, styles, or usages detected across the codebase
 - **Neither side is assumed correct** — the reviewer presents both and requests a decision
 - Escalate to 🔴 Major if the inconsistency affects a widely-used pattern or public API surface
+
+## Confidence labels (orthogonal to severity)
+
+Every finding carries a confidence label; severity is assigned independently of it.
+
+| Label | Means | Reporting rule |
+|---|---|---|
+| Confirmed | Proven from the code | Normal finding |
+| Suspected | Plausible from the code, not proven | Keep it — name the evidence that would confirm or refute it |
+| Needs runtime check | Depends on data, load, or environment | Keep it — name the runtime validation |
+
+A `Suspected` finding whose plausible consequence is data loss, corruption, or a security breach is still a 🚫 Blocker.

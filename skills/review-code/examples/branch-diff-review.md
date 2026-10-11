@@ -3,7 +3,7 @@
 
 **Scenario**: User asks to review changes between `main` and `feature/order-discount`, or supplies only one branch to diff against the current checkout.
 
----
+**Applies**: **preparing-review-checkout**, **conducting-code-review**
 
 ## Workflow
 
@@ -28,8 +28,6 @@ git diff main...feature/order-discount
 git diff release/1.2...feature/order-discount
 ```
 
----
-
 ### Step 2 – Summarize changed files before diving in
 
 ```
@@ -43,8 +41,6 @@ Changed files (feature/order-discount vs main):
 Total: +327 / -29 across 5 files
 ```
 
----
-
 ### Step 3 – Conduct the review
 
 ## Code Review Summary
@@ -53,14 +49,16 @@ Total: +327 / -29 across 5 files
 **Focus Areas**: Correctness, security, performance, test coverage  
 **Overall Assessment**: Close to merge-ready; one security issue and one race condition must be addressed first
 
----
-
 ## Findings
 
 ### 🚫 Blockers (Must Fix)
 
 #### Discount Code Not Sanitized Before Database Query
-- **File**: [DiscountCalculator.java](DiscountCalculator.java#L44-L48)
+- **File**: `src/discount/DiscountCalculator.java:44`
+- **Confidence**: Confirmed
+```java
+44 │ String jpql = "FROM Discount WHERE code = '" + discountCode + "'";
+```
 - **Issue**: `discountCode` from the request is interpolated directly into a JPQL string instead of using a parameterized query.
 - **Impact**: SQL/JPQL injection — an attacker can exfiltrate or corrupt the `discounts` table.
 - **Recommendation**:
@@ -74,18 +72,18 @@ TypedQuery<Discount> query = em.createQuery(
 query.setParameter("code", discountCode);
 ```
 
----
-
 ### 🔴 Major Issues
 
 #### Race Condition in Discount Usage Counter
-- **File**: [DiscountRepository.java](DiscountRepository.java#L62-L70)
+- **File**: `src/discount/DiscountRepository.java:63`
+- **Confidence**: Confirmed
 - **Issue**: `usageCount` is read, incremented, and saved in separate steps without pessimistic locking. Under concurrent requests the counter can be under-incremented and a single-use discount may be applied multiple times.
 - **Impact**: Financial loss from discount over-redemption under load.
 - **Recommendation**: Use `@Lock(LockModeType.PESSIMISTIC_WRITE)` on the repository method, or an atomic SQL `UPDATE discount SET usage_count = usage_count + 1 WHERE id = :id AND usage_count < max_usage`.
 
 #### Missing Test for Expired Discount
-- **File**: [OrderServiceTest.java](OrderServiceTest.java#L140)
+- **File**: `src/discount/OrderServiceTest.java:140 (after — insert the expired-discount test here)`
+- **Confidence**: Confirmed
 - **Issue**: Tests cover valid and invalid discount codes but no test verifies that an expired discount is rejected.
 - **Impact**: Regression risk — expiry logic could silently break in a future refactor.
 - **Recommendation**: Add:
@@ -99,41 +97,33 @@ void shouldRejectExpiredDiscountCode() {
 }
 ```
 
----
-
 ### 🟡 Minor Issues
 
 #### `OrderRequest` Accepts Negative Quantity
-- **File**: [OrderRequest.java](OrderRequest.java#L18)
+- **File**: `src/order/dto/OrderRequest.java:18`
+- **Confidence**: Confirmed
 - **Issue**: `quantity` field has no `@Min(1)` constraint; a value of `-1` passes validation.
 - **Recommendation**: Add `@Min(value = 1, message = "Quantity must be at least 1")`.
 
 #### `DiscountCalculator` Silently Returns 0 for Unknown Strategy
-- **File**: [DiscountCalculator.java](DiscountCalculator.java#L80-L84)
+- **File**: `src/discount/DiscountCalculator.java:80`
+- **Confidence**: Confirmed
 - **Issue**: The `switch` default branch returns `BigDecimal.ZERO` without logging or throwing, making misconfigured discount types invisible.
 - **Recommendation**: Log a warning or throw an `UnsupportedDiscountTypeException`.
 
----
-
 ### 🟢 Nits / Suggestions
 
-- `applyDiscount()` in `OrderService.java` could be extracted to a private helper to reduce method length (currently 45 lines).
-- Constant `0.0` on line 33 of `DiscountCalculator.java` could be named `NO_DISCOUNT` for readability.
-
----
+- `src/order/OrderService.java:118` — `applyDiscount()` could be extracted to a private helper to cut the method to under 45 lines.
+- `src/discount/DiscountCalculator.java:33` — constant `0.0` could be named `NO_DISCOUNT` for readability.
 
 ## Positive Highlights
 - New `DiscountCalculator` is well-structured with clear single responsibility.
 - Test coverage is thorough for the happy path and covers several edge cases already.
 - `OrderRequest` DTO cleanly separates concerns from the domain entity.
 
----
-
 ## Risks & Assumptions
 - Assumes discount codes are case-insensitive — no normalization observed; verify DB collation matches.
 - Distributed lock may be needed if the service runs with multiple replicas (see race condition finding).
-
----
 
 ## Recommended Next Steps
 1. Fix JPQL injection (blocker — required before merge)
@@ -142,12 +132,10 @@ void shouldRejectExpiredDiscountCode() {
 4. Add `@Min(1)` to `OrderRequest.quantity` (minor)
 5. Handle unknown discount strategy explicitly (minor)
 
----
-
 ## Key Review Characteristics
 
 - **Review Type**: Branch diff (`main` → `feature/order-discount`)
-- **Diff obtained via**: `git diff main...feature/order-discount` (or MCP service)
+- **Diff obtained via**: `git diff main...feature/order-discount`
 - **Files reviewed**: 5 (327 lines added, 29 removed)
 - **Severity Distribution**: 1 blocker, 2 major, 2 minor, 2 nits
 - **Action Required**: Fix security and concurrency issues before merge

@@ -5,6 +5,8 @@
 
 **Review Focus**: Observability, deployment safety, migration backward-compatibility, and cache correctness.
 
+**Applies**: **conducting-code-review**
+
 ## Code Review Summary
 
 **Scope**: `feature/order-summary-endpoint` — new REST endpoint, DB migration, and Redis caching
@@ -24,7 +26,11 @@
 - **Recommendation**: Add a default value, or split into two migrations (add nullable → backfill → add `NOT NULL` constraint) deployed across two separate releases.
 
 #### Cache Has No Invalidation on Order Update
-- **File**: [OrderSummaryService.java](OrderSummaryService.java#L72-L80)
+- **File**: `src/main/java/com/shop/order/OrderSummaryService.java:72`
+- **Confidence**: Confirmed
+```java
+72 │ cache.put("orderSummary::" + orderId, summary, Duration.ofHours(1));
+```
 - **Issue**: Summaries are cached in Redis with a 1-hour TTL but there is no `@CacheEvict` on `updateOrder()` or `cancelOrder()`. A cancelled order will appear as active in the summary for up to 60 minutes.
 - **Impact**: Users see stale financial data; regulatory and support risk depending on the domain.
 - **Recommendation**:
@@ -41,7 +47,8 @@ public void cancelOrder(String orderId) { ... }
 ### 🔴 Major Issues
 
 #### No Logging on Cache Miss or Slow Query Path
-- **File**: [OrderSummaryService.java](OrderSummaryService.java#L55-L68)
+- **File**: `src/main/java/com/shop/order/OrderSummaryService.java:57`
+- **Confidence**: Confirmed
 - **Issue**: When the cache misses and the DB query runs, there is no log statement and no metric counter. In production it will be impossible to distinguish "cache is working" from "cache is always missing" without querying Redis directly.
 - **Impact**: The performance improvement cannot be validated post-deployment; latency regressions will be invisible.
 - **Recommendation**:
@@ -58,7 +65,8 @@ if (summary == null) {
 ```
 
 #### New Endpoint Has No Authorization Check
-- **File**: [OrderSummaryController.java](OrderSummaryController.java#L28-L35)
+- **File**: `src/main/java/com/shop/order/OrderSummaryController.java:31`
+- **Confidence**: Confirmed
 - **Issue**: `GET /api/v1/orders/summary` has no `@PreAuthorize` annotation and is not listed in the security config's restricted paths. Any authenticated user can retrieve any other user's order summary by passing a different `orderId`.
 - **Impact**: Horizontal privilege escalation — OWASP A01:2021 Broken Access Control.
 - **Recommendation**: Add ownership check:
@@ -69,7 +77,8 @@ public ResponseEntity<OrderSummary> getSummary(@PathVariable String orderId) { .
 ```
 
 #### No Deployment Runbook
-- **File**: PR description / missing
+- **File**: `docs/deploy-runbook.md (file absent — create here)`
+- **Confidence**: Confirmed
 - **Issue**: This PR requires a specific deployment sequence: migration must run before the new code is deployed. There is no runbook, no PR checklist item, and no note in the README about this prerequisite.
 - **Impact**: If a developer deploys app code before running the migration, the new endpoint will throw on every request.
 - **Recommendation**: Add a deployment notes section to the PR and to the service README:
@@ -85,7 +94,8 @@ public ResponseEntity<OrderSummary> getSummary(@PathVariable String orderId) { .
 ### 🟡 Minor Issues
 
 #### Redis TTL Is Hardcoded
-- **File**: [OrderSummaryService.java](OrderSummaryService.java#L72)
+- **File**: `src/main/java/com/shop/order/OrderSummaryService.java:72`
+- **Confidence**: Confirmed
 - **Issue**: `Duration.ofHours(1)` is hardcoded. Cannot be tuned for different environments without a code change.
 - **Recommendation**: Externalize to configuration:
 ```yaml
@@ -96,7 +106,8 @@ cache:
 ```
 
 #### No Test Verifies Migration Is Backward-Compatible
-- **File**: Tests missing
+- **File**: `db/migration/V20_create_order_summary.sql:1 (after — add the backward-compatibility test here)`
+- **Confidence**: Confirmed
 - **Issue**: No integration test runs the migration against an empty database and then exercises `INSERT` via the old schema to confirm compatibility.
 - **Recommendation**: Add a `@MigrationTest` that verifies the old `INSERT` path succeeds after migration runs.
 
