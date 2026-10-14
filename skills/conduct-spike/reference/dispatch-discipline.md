@@ -42,7 +42,7 @@ Before dispatching, detect the platform's agent mechanism and map each unit to t
 |---|---|
 | "Single area / single ADR — dispatching is overhead" | Context preservation is the goal, not parallelism; the unit is still dispatched. |
 | "The investigator was thorough — verification is redundant" | Verification is the gate; the original instance is never reused. |
-| "The evidence map looks complete" | Completeness is verified per challenge, not by inspection. |
+| "Just the evidence doc is enough" | An area's findings always travel as a pair — human doc + evidence doc; never one alone. |
 | "I'll verify it myself in this session" | Dispatch a NEW evidence-matched agent; verify in-session only when none exists. |
 | "The producer's own agent type can verify its doc" | A findings/ADR/solution doc still makes code claims — those need a code-reading verifier (`code-investigator`). |
 | "Re-investigate with the same agent — it has context" | It anchors on its own output; dispatch a new instance. |

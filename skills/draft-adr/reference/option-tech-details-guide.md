@@ -5,7 +5,7 @@ Tech details make each option's implementation concrete in the ADR: the target-s
 ## Evidence base (grounding contract)
 
 Before producing tech details, determine the evidence base:
-- **Existing evidence**: findings from the `conduct-spike` pipeline (embedded evidence map — entry points, key locations, call chains, evidence ledger). Use it directly — do not re-scan covered code.
+- **Existing evidence**: the area's evidence doc from the `conduct-spike` pipeline (`docs/evidence-<area>.md` — entry points, key locations, call chains, evidence ledger). Use it directly — do not re-scan covered code.
 - **No evidence, code accessible**: build a lightweight evidence map on demand via the `investigate-code` skill — entry points, key locations with `file:line`, call chains for the affected flows.
 - **No evidence, no code access**: produce architectural-level change profiles; mark every location/scope **unverified**; recommend a spike (`conduct-spike`) to ground them before relying on the tech details.
 

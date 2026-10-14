@@ -26,7 +26,7 @@ Findings doc saved → area `spiking`. Problems still `investigating` (no ADR).
 
 ```markdown
 ## Area: Session storage — `spiking`
-**Findings**: docs/findings-session-storage.md
+**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
 - `investigating` How to choose the session store? → (no ADR)
 - `investigating` How to migrate existing sessions? → (no ADR)
 ```
@@ -37,7 +37,7 @@ Each ADR saved → its problem `deciding`. Area stays `spiking` (open problems).
 
 ```markdown
 ## Area: Session storage — `spiking`
-**Findings**: docs/findings-session-storage.md
+**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
 - `deciding` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md
 - `deciding` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md
 ```
@@ -48,7 +48,7 @@ User confirms both options → problems `done`; all problems `done` → area `do
 
 ```markdown
 ## Area: Session storage — `done`
-**Findings**: docs/findings-session-storage.md
+**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
 - `done` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md
 - `done` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md
 ```
@@ -59,7 +59,7 @@ A later measurement shows the chosen store's failover exceeds the SLA → **sync
 
 ```markdown
 ## Area: Session storage — `spiking`
-**Findings**: docs/findings-session-storage.md
+**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
 - `deciding` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md
 - `done` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md
 ```
@@ -67,5 +67,5 @@ A later measurement shows the chosen store's failover exceeds the SLA → **sync
 ## Rules in play
 
 - A `done` problem always has its ADR; an area is never `done` with an open problem.
-- Area status is derived from its problems and findings link — never stored.
+- Area status is derived from its problems and findings-pair link — never stored.
 - Statuses track saved artifacts, not in-flight dispatches.

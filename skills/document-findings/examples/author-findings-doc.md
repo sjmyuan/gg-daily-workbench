@@ -1,24 +1,22 @@
-# Example: Authoring a Findings Doc for a Payment Area
+# Example: Authoring the Human Findings Doc for a Payment Area
 
-**Scenario**: The `payment` area's questions and evidence are ready. Author the full `findings-payment.md` with summary, orientation, glossary, topic blocks, and evidence.
+**Scenario**: The `payment` area's questions and evidence are ready. Author the publishable `findings-payment.md` with frontmatter, summary, orientation, glossary, and topic blocks.
 
 **Applies**: **author-findings-doc**
 
 ## Input / Context
 
-- Confirmed questions: responsibility, entry points, authorize flow, failure behavior, retry config.
+- Confirmed questions: responsibility, entry points, authorize flow, failure behavior, retry config, circuit-breaker presence.
 - Evidence: `PaymentController.java:41`, `ChargeService.java:88`, `RetryConfig.java:12` (no circuit-breaker match).
 
 ## Output
 
 ````markdown
-<!-- findings-doc
+---
+title: Findings: Payment
 area: payment
-spike: checkout-reliability
 status: complete
-scope: card authorization, capture, and refund paths
-related-areas: [orders]
--->
+---
 
 # Findings: Payment
 
@@ -43,7 +41,7 @@ Start here: `PaymentController#authorize (PaymentController.java:41)`.
 | Gateway | External card processor called over HTTP |
 | Ledger | Internal table recording every charge and refund |
 
-## 3. Where does a payment get authorized? <!-- id: payment/authorize-flow -->
+## 3. Where does a payment get authorized?
 
 **TL;DR:** The controller forwards to the gateway, then writes the ledger.
 
@@ -60,12 +58,7 @@ sequenceDiagram
     ChargeService->>LedgerRepository: insert(charge)
 ```
 
-**Claims**
-- Authorize enters at `PaymentController#authorize (PaymentController.java:41)` ✅ Verified
-- The gateway is called from `ChargeService#authorize (ChargeService.java:88)` ✅ Verified
-- The ledger row is written by `LedgerRepository#insert (LedgerRepository.java:57)` ✅ Verified
-
-## 4. What happens when the gateway fails? <!-- id: payment/authorize-failure -->
+## 4. What happens when the gateway fails?
 
 **TL;DR:** Three retries, then the call fails and no ledger row is written.
 
@@ -79,11 +72,7 @@ flowchart TD
     B -- no --> F[write ledger]
 ```
 
-**Claims**
-- Retries up to 3 times — `RetryConfig#attempts (RetryConfig.java:12)` ✅ Verified
-- No ledger row is written on failure — `ChargeService#authorize (ChargeService.java:96)` ✅ Verified
-
-## 5. How is retry configured for the charge call? <!-- id: payment/retry-config -->
+## 5. How is retry configured for the charge call?
 
 **TL;DR:** Three attempts with exponential backoff, no jitter.
 
@@ -93,31 +82,15 @@ flowchart TD
 | `retry.backoff` | Backoff between attempts | Exponential | `RetryConfig.java:13` |
 | `retry.jitter` | Randomize backoff to avoid a thundering herd | Off | `RetryConfig.java:14` |
 
-## 6. Evidence & Verification
+## 6. Is there a circuit breaker on the gateway call?
 
-| Claim ID | Claim | Verdict | Evidence (file:line) | Confidence |
-|---|---|---|---|---|
-| payment/authorize-flow#c1 | Authorize enters at the controller | Yes | `PaymentController.java:41` | ✅ Verified |
-| payment/authorize-flow#c2 | Gateway called in `authorize()` | Yes | `ChargeService.java:88` | ✅ Verified |
-| payment/authorize-flow#c3 | Ledger row written after approval | Yes | `LedgerRepository.java:57` | ✅ Verified |
-| payment/authorize-failure#c1 | Retries up to three times | Yes | `RetryConfig.java:12` | ✅ Verified |
-| payment/authorize-failure#c2 | No ledger row written on failure | Yes | `ChargeService.java:96` | ✅ Verified |
+**TL;DR:** No breaker found; the gateway client has no resilience wrapper.
 
-### Searched-negatives
-
-| Search (pattern/query) | Result | Next step |
-|---|---|---|
-| `circuit.?breaker` in `payment/**` | No match | Investigate gateway client resilience |
-
-### Coverage
-
-| In-scope question | Investigated | Not investigated / Gaps |
-|---|---|---|
-| Circuit breaker on gateway | No | ❓ Not found |
+> Searched `payment/**` for a breaker; none found.
 ````
 
 **Result**:
-- Human on-ramp: a `**Summary:**`, a Glossary, and a "Start here" pointer.
-- Every claim cites `<reference> (file:line)`; the ledger keeps bare `file:line`.
-- The happy-path diagram states its assumption; the failure path is its own topic.
+- Publishable: YAML frontmatter, no claim IDs, no confidence tags, no ledger.
+- Every topic cites `<reference> (file:line)` for checking.
+- Self-contained: no link to `evidence-payment.md`, so it publishes anywhere.
 - Saved to `spikes/checkout-reliability/docs/findings-payment.md`.

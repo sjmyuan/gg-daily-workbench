@@ -35,27 +35,27 @@ Everything the orchestrator already holds travels in the brief — a sub-agent n
 | Known-context item | Source | Mode |
 |---|---|---|
 | Spike goal, area problems | `scope.md` | Path |
-| Findings-doc evidence, sibling findings docs | `docs/findings-*.md` | Path |
+| Findings doc pair (human + evidence), sibling pairs | `docs/findings-*.md` + `docs/evidence-*.md` | Path |
 | Chosen options, decided sibling ADRs | `adrs/*.md` | Path |
 | Area boundaries | scope dialog | Inline |
 | User-stated constraints & facts | user dialog | Inline |
 | Decision drivers, candidate options | user dialog | Inline |
-| Investigation results (pre-findings-doc) | investigator's output | Inline |
+| Investigation results (pre-findings-pair) | investigator's output | Inline |
 
-- **Must-write → inline**: when the sub-agent writes the info into its output (drivers → ADR, investigation results → findings doc), pass it inline.
+- **Must-write → inline**: when the sub-agent writes the info into its output (drivers → ADR, investigation results → evidence doc), pass it inline.
 - **Persist-once (optional)**: when unpersisted context is needed across several dispatches, persist it once and pass the path.
 - A `[bracketed]` field is a **path** when an artifact holds it, a **value** otherwise — never leave either empty.
 
-## Evidence map in every brief
+## Findings docs in every brief
 
-The evidence map (embedded in findings docs) is the input/output contract every brief carries:
+An area's findings are **always passed as a pair** — the human doc (`docs/findings-<area>.md`) and the evidence doc (`docs/evidence-<area>.md`) together. Never pass one alone: the human doc orients (resource index, diagrams, TL;DRs, constraints), the evidence doc carries the claim ledger (`file:line`, confidence, searched-negatives).
 
-- **Input — include the findings doc**: pass the area's findings doc (or its evidence sections) so the sub-agent starts from verified `file:line` locations instead of scanning from scratch. Instruct it to treat the evidence ledger's **Verified** claims as settled and only dig into marked **Gap**s/**Inconsistencies** or **Inferred**/**Assumption** claims.
-- **Output — require an evidence map back**: every investigation brief asks the sub-agent to return a per-area evidence map (entry points, key code locations with `file:line`, call chains, evidence verdicts, searched-negatives) alongside its narrative findings — the orchestrator embeds it in the area's findings doc (see **compile-findings-doc**).
-- **Searched-negatives travel with the findings doc**: a documented "not found" tells the next sub-agent not to repeat the scan.
-- **ADR-drafting briefs** include the area's findings doc (evidence sections) so ADRs can cite evidence locations without re-reading code.
+- **Input — include the pair**: pass both docs so the sub-agent starts from verified `file:line` locations instead of scanning from scratch. Instruct it to treat the evidence ledger's **Verified** claims as settled and only dig into marked **Gap**s/**Inconsistencies** or **Inferred**/**Assumption** claims.
+- **Output — require an evidence map back**: every investigation brief asks the sub-agent to return a per-area evidence map (entry points, key code locations with `file:line`, call chains, evidence verdicts, searched-negatives) alongside its narrative findings — the orchestrator records it in the area's evidence doc (see **compile-findings-doc**).
+- **Searched-negatives travel with the evidence doc**: a documented "not found" tells the next sub-agent not to repeat the scan.
+- **ADR-drafting briefs** include the area's findings pair so ADRs can cite evidence locations without re-reading code.
 - **Verification briefs** carry the same contract — established `file:line`, the settled-vs-open claim split, and searched-negatives — so the verifier starts from evidence, not zero (see `question-everything`'s **reference/verification-protocol.md**).
-- **First pass is the seed**: when no findings doc exists yet, briefs omit the input but still require the evidence-map output — the first investigation builds the map the findings doc embeds.
+- **First pass is the seed**: when no findings pair exists yet, briefs omit the input but still require the evidence-map output — the first investigation builds the map the evidence doc records.
 
 ## Verification results in a re-dispatch brief
 

@@ -48,7 +48,7 @@ The following sub-agents are available for dispatch during spike workflow:
 | Sub-agent | Purpose | Used by capability |
 |---|---|---|
 | **code-investigator** | Read-only codebase exploration | `investigate-per-area` |
-| **findings-doc-writer** | Compile question-style findings docs (current state) | `compile-findings-doc` |
+| **findings-doc-writer** | Compile findings doc pairs — human + evidence (current state) | `compile-findings-doc` |
 | **solution-doc-writer** | Compile the consolidated solution document | `compile-solution-doc` |
 | **adr-writer** | Run the `draft-adr` flow (evaluate options + draft ADR) per problem, headlessly | `draft-problem-adrs` |
 

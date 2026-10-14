@@ -6,7 +6,7 @@ Backs the **write-boundary** knowledge entry and the spike write-boundary check.
 
 | May write — inside the spike folder (`**/spikes/**`) | Never write |
 |---|---|
-| `scope.md`, `docs/findings-<area>.md`, `adrs/adr-*.md`, `solution.md` | code, config, tests, infrastructure, scripts, any file outside the spike folder |
+| `scope.md`, `docs/findings-<area>.md`, `docs/evidence-<area>.md`, `adrs/adr-*.md`, `solution.md` | code, config, tests, infrastructure, scripts, any file outside the spike folder |
 | Throwaway diagrams embedded in spike markdown | prototypes, proof-of-concept code, or any executable artifact |
 
 The spike folder always carries a `spikes/` path segment (`<base>/spikes/<spike-name>/`), which anchors the boundary.

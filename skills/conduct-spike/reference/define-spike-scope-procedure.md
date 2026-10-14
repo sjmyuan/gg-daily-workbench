@@ -10,7 +10,7 @@ Full procedure for the `define-spike-scope` capability — loaded on demand when
 6. Propose the problems for each area.
 7. Confirm split, merge, add, or remove of problems.
 8. Resolve the artifact base root via `resolve-artifact-location` when the user named no folder (spike folder = `<base>/spikes/<spike-name>/`); record the scope map in `scope.md` — `Artifact root:` at the top — per the scope-map model (**reference/scope-map-guide.md**).
-9. Record the goal (1 sentence) and each area (`preparing`, empty findings link) with its problems (`investigating`).
+9. Record the goal (1 sentence) and each area (`preparing`, empty findings-pair link) with its problems (`investigating`).
 10. Validate each problem is independently decidable (areas are shared-subject groupings).
 11. Validate the breakdown per **problem-decomposition-guide**: 2–5 areas is the target but a single area is valid; ~1–3 problems per area; >5 areas or >~8 total problems → narrow or split.
 12. Validate the goal is clear enough to know completion.

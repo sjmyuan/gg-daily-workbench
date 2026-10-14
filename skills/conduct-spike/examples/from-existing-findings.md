@@ -36,40 +36,40 @@
 
 ## Compile Findings Documents
 
-*(compile-findings-doc applied to formalize the user's pre-existing investigation notes — one findings doc per area, always: `docs/findings-<area>.md`. Two areas → two docs, compiled via `document-findings`.)*
+*(compile-findings-doc applied to the user's pre-existing notes — one findings pair per area, always: `docs/findings-<area>.md` (human) + `docs/evidence-<area>.md` (evidence). Two areas → two pairs, compiled via `document-findings`.)*
 
-### Findings Document: `docs/findings-cache-topology.md`
+### Cache topology — human doc `docs/findings-cache-topology.md`
 
-*(`document-findings` applied to the existing code, seeded with the user's notes)*
-
-| Component | Purpose | Entry point | Key files |
-|---|---|---|---|
-| Product Catalog Service | Serves catalog reads and writes | `ProductCatalogService.java:64` | `ProductCatalogService.java`, `ProductRepository.java` |
+Orientation index: Product Catalog Service → `ProductCatalogService.java:64`.
 
 **Is there a caching layer today?**
 **TL;DR:** No — the read path queries PostgreSQL directly.
 
-**Claims**
-- No cache exists at any tier — `ProductCatalogService.java:64` ✅ Verified
-- Reads query PostgreSQL directly — `ProductRepository.java:112` ✅ Verified
-- 200:1 read-to-write ratio; DB CPU >80% at peak; P99 450ms — user notes 💭 Assumption
-- No Redis/ElastiCache infrastructure exists — user notes 💭 Assumption
+### Cache topology — evidence doc `docs/evidence-cache-topology.md`
 
-Evidence & Verification: ledger rows for each claim; searched-negatives: none (notes only); coverage: caching tier, load profile, cache infrastructure.
+| Claim ID | Claim | Verdict | Evidence (file:line) | Confidence |
+|---|---|---|---|---|
+| cache-topology/present#c1 | No cache exists at any tier | No | `ProductCatalogService.java:64` | ✅ Verified |
+| cache-topology/present#c2 | Reads query PostgreSQL directly | Yes | `ProductRepository.java:112` | ✅ Verified |
+| cache-topology/load#c1 | 200:1 read-to-write ratio; DB CPU >80% at peak; P99 450ms | Assumed | user notes | 💭 Assumption |
+| cache-topology/infra#c1 | No Redis/ElastiCache infrastructure exists | Assumed | user notes | 💭 Assumption |
 
-### Findings Document: `docs/findings-cache-invalidation.md`
+Coverage: caching tier, load profile, cache infrastructure. Searched-negatives: none (notes only).
 
-*(`document-findings` applied — invalidation-relevant facts; cross-references the topology doc)*
+### Cache invalidation — human doc `docs/findings-cache-invalidation.md`
 
 **Is there any invalidation mechanism today?**
 **TL;DR:** No caching tier exists, so no invalidation mechanism is present.
 
-**Claims**
-- No TTL, write-through, or event invalidation exists — `ProductCatalogService.java:64` ✅ Verified
-- All writes go to the single source of truth — `ProductRepository.java:130` ✅ Verified
-- 200:1 read-to-write ratio means invalidation must not add write latency — user notes 💭 Assumption
+### Cache invalidation — evidence doc `docs/evidence-cache-invalidation.md`
 
-Evidence & Verification: ledger + searched-negatives; cross-reference: `docs/findings-cache-topology.md`.
+| Claim ID | Claim | Verdict | Evidence (file:line) | Confidence |
+|---|---|---|---|---|
+| cache-invalidation/present#c1 | No TTL, write-through, or event invalidation exists | No | `ProductCatalogService.java:64` | ✅ Verified |
+| cache-invalidation/writes#c1 | All writes go to the single source of truth | Yes | `ProductRepository.java:130` | ✅ Verified |
+| cache-invalidation/latency#c1 | Invalidation must not add write latency | Assumed | user notes | 💭 Assumption |
+
+Coverage: invalidation mechanisms, write path. Cross-area reference: `docs/evidence-cache-topology.md`.
 
 > *Findings formalized from your pre-existing notes: code-verifiable facts are ✅ Verified, note-only metrics remain 💭 Assumption. Evaluation will compare options against each area's constraints. No re-investigation was needed.*
 

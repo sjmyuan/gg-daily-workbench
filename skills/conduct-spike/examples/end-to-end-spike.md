@@ -48,18 +48,20 @@
 
 ## Compile Findings Documents
 
-*(one findings doc per area, always: `docs/findings-<area>.md`; four areas → four docs, compiled concurrently, each embedding its area's evidence map inline.)*
+*(one findings pair per area, always: `docs/findings-<area>.md` (human) + `docs/evidence-<area>.md` (evidence); four areas → four pairs, compiled concurrently.)*
 
-| Findings doc | Current-state orientation | Representative topic answers |
+| Findings human doc | Current-state orientation | Representative topic answers |
 |---|---|---|
 | `findings-service-decomposition.md` | Monolithic Spring Boot app (~200K LOC), package-by-layer; `PaymentOrchestrator` (1200 lines) couples all types | Redeploy on any change; wallet can't scale; 3 teams contend |
 | `findings-communication.md` | All calls in-process; external REST/gRPC/SOAP; no broker; no circuit breaker | No async experience; SOAP must be maintained |
 | `findings-database.md` | Single PostgreSQL (~80 tables); `transactions`/`accounts`/`audit_log` shared; 12 settlement procedures | No per-type access control; procedures block decomposition |
 | `findings-migration.md` | K8s (3 replicas) behind Kong; GitHub Actions canary CI/CD; routes `/api/payments/*` | No feature flags or traffic splitting |
 
-**Cross-area constraints**: `findings-database.md` ↔ `findings-service-decomposition.md` (shared tables); `findings-communication.md` ↔ `findings-migration.md` (no async/traffic-split infra → migration starts synchronous).
+Each area's `evidence-<area>.md` holds the claim ledger (IDs, `file:line`, confidence) and searched-negatives.
 
-> *Findings = question-style current-state explanation per area; ADRs cite their stable IDs; the solution doc is authored target-state and references the findings for evidence.*
+**Cross-area constraints**: `evidence-database.md` ↔ `evidence-service-decomposition.md` (shared tables); `evidence-communication.md` ↔ `evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
+
+> *Findings = a human explanation + an evidence doc per area; ADRs cite the evidence doc's stable IDs; the solution doc is authored target-state and references the evidence docs for evidence.*
 
 ---
 
@@ -97,7 +99,7 @@ Example — `adr-service-decomposition-01-split-monolith.md`:
 - API contracts: REST endpoints for queries, Kafka topic schemas for events
 - RAID: risks (data consistency), assumptions (Kafka adoption), issues (SOAP legacy); RACI per service
 
-**Final bundle**: `scope.md` · `adrs/` (5 area-prefixed ADRs) · `solution.md` · `docs/findings-<area>.md` (4).
+**Final bundle**: `scope.md` · `adrs/` (5 area-prefixed ADRs) · `solution.md` · `docs/findings-<area>.md` + `docs/evidence-<area>.md` (4 pairs).
 
 ### Wrap-Up (conversation level — not written into any artifact)
 

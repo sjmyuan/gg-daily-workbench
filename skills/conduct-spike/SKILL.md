@@ -12,7 +12,7 @@ description: Conduct spike investigations producing ADRs, findings, and solution
 - Formalize pre-existing investigation findings into ADRs and a solution document
 - Continue a previous spike into areas not fully resolved
 - Re-investigate a decided ADR after implementation revealed a problem (focused rework spike)
-- Sync findings doc, ADR, and solution doc after new evidence or a changed decision
+- Sync findings docs, ADR, and solution doc on new evidence or a changed decision
 </when-to-use-this-skill>
 
 <knowledge>
@@ -22,21 +22,21 @@ A spike reduces uncertainty via research and analysis; its output is **documente
 
 | Artifact | Role |
 |---|---|
-| **Findings Documents** | Question-style explanation of an area's code; each embeds its evidence ledger (`file:line`, confidence, searched-negatives) |
+| **Findings Docs** (per area) | A publishable human doc (question-style explanation) + an evidence doc (ledger, `file:line`, confidence, searched-negatives) |
 | **ADRs** | One per problem — a "How to …" decision — tagged with its area |
 | **1 Solution Document** | Target-state architecture (C4, API contracts, RAID, RACI) — decision-only, ADR decisions mirrored grouped by area |
 </spike-definition>
 
 <spike-artifact-layout>
-One folder per spike — `spikes/<spike-name>/` with `scope.md`, `adrs/adr-<area>-<NN>-<problem>.md`, `solution.md`, `docs/findings-<area>.md`, cross-referenced by relative path. The `spikes/` segment anchors the write boundary. Unnamed root → `resolve-artifact-location`; record `Artifact root:` atop `scope.md`.
+One folder per spike — `spikes/<spike-name>/` with `scope.md`, `adrs/adr-<area>-<NN>-<problem>.md`, `solution.md`, `docs/findings-<area>.md` + `docs/evidence-<area>.md`, cross-referenced by relative path. The `spikes/` segment anchors the write boundary. Unnamed root → `resolve-artifact-location`; record `Artifact root:` atop `scope.md`.
 </spike-artifact-layout>
 
 <write-boundary>
-Writes are confined to the spike folder (`**/spikes/**`) — never code, config, tests, or any file outside it; never build POCs (`orchestrate-feature-delivery` delivers them). Run the own-writes boundary check after every write: **reference/write-boundary-guide.md**.
+Writes are confined to the spike folder (`**/spikes/**`) — never code, config, tests, or any file outside it; never build POCs (`orchestrate-feature-delivery` delivers them). Run the boundary check after every write: **reference/write-boundary-guide.md**.
 </write-boundary>
 
 <scope-map>
-The spike's canonical **area → problem map** and live status dashboard. Each problem maps to one ADR; each ADR carries its `Area:` tag; `solution.md` renders the map grouped by area. Record at **define-spike-scope**; edit at **continue-prior-spike**.
+The spike's **area → problem map** and live status dashboard. Each problem maps to one ADR; each ADR carries its `Area:` tag; `solution.md` renders the map grouped by area. Record at **define-spike-scope**; edit at **continue-prior-spike**.
 </scope-map>
 
 <scope-map-status>
@@ -52,7 +52,7 @@ When the user supplies investigation material, skip **investigate-per-area** and
 </pre-existing-findings>
 
 <findings-document>
-The spike's **evidence home** — a question-style explanation of the area's existing code (via `document-findings`): resource index, topic blocks, evidence ledger. One per area; cross-area constraints travel as cross-references. Details: **reference/findings-document-guide.md**.
+The spike's findings doc pair (via `document-findings`): a publishable human doc (resource index, topic blocks) plus an evidence doc holding the ledger, claim IDs, and confidence — the **evidence home**. One pair per area; any brief that carries an area's findings passes both docs together; cross-area constraints travel as cross-references. Details: **reference/findings-document-guide.md**.
 </findings-document>
 
 <continuation-mode>
@@ -60,11 +60,11 @@ Another round seeded with prior artifacts: read `scope.md` statuses for open wor
 </continuation-mode>
 
 <greenfield-scenarios>
-No existing implementation: research industry approaches and comparable systems and study operational constraints instead of tracing code. Never build POCs — `orchestrate-feature-delivery` delivers any POC.
+No existing implementation: research industry approaches, comparable systems, and operational constraints. Never build POCs — `orchestrate-feature-delivery` delivers any POC.
 </greenfield-scenarios>
 
 <multi-agent-orchestration>
-Dispatch investigation, findings-doc compilation, ADR drafting (evaluation included via `draft-adr`), and solution-doc compilation to sub-agents — including single-task spikes; dispatch is the default. Details: **reference/multi-agent-orchestration.md**; model routing, waiting, fallback: **reference/dispatch-discipline.md**.
+Dispatch investigation, findings-doc compilation, ADR drafting, and solution-doc compilation to sub-agents — including single-task spikes; dispatch is the default. Details: **reference/multi-agent-orchestration.md**; model routing, waiting, fallback: **reference/dispatch-discipline.md**.
 </multi-agent-orchestration>
 
 <sub-agent-verification>
@@ -80,15 +80,15 @@ During ADR discussion, suggest a spike when the decision hinges on something rea
 </adr-uncertainty-signals>
 
 <professional-doc-authoring>
-ADRs, findings docs, and the solution document are always written by their owning skills — never hand-edited: ADRs via `draft-adr`; findings docs via `document-findings`; the solution document via `write-solution-doc`. Option tech details come from `draft-adr`'s **detail-options-tech**, grounded in the findings doc's evidence map.
+ADRs, findings docs, and the solution document are always written by their owning skills — never hand-edited: ADRs via `draft-adr`; findings docs via `document-findings`; the solution document via `write-solution-doc`. Option tech details come from `draft-adr`'s **detail-options-tech**, grounded in the evidence doc's claim ledger.
 </professional-doc-authoring>
 
 <artifact-maintenance-doctrine>
-Dependency chain — **Findings Docs → ADRs → Solution Doc** — kept at the latest state: rewrite changed sections in place, delete superseded content (git is history), no version markers or changelogs. Notes allowed only in findings docs and conversation.
+Dependency chain — **Findings Docs → ADRs → Solution Doc** — kept at the latest state: rewrite changed sections in place, delete superseded content (git is history), no version markers or changelogs. Notes allowed only in evidence docs and conversation.
 
 | Change origin | Propagate to |
 |---|---|
-| Findings doc (new evidence) | ADR → solution doc |
+| Evidence doc (new evidence) | ADR → solution doc |
 | ADR decision change | Solution doc |
 | Scope-map delta | Affected ADR(s) → solution doc area section |
 

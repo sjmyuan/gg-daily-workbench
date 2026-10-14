@@ -9,7 +9,7 @@ Dispatch task execution to sub-agents — for investigation, findings-doc compil
 | Draft problem ADRs (evaluate + draft) | `adr-writer` | `draft-adr` (full flow) | ADR-drafting brief — [adr-drafting-brief.md](adr-drafting-brief.md) |
 | Compile solution doc | `solution-doc-writer` | `write-solution-doc` (target-state) | Solution-doc brief — [solution-doc-brief.md](solution-doc-brief.md) |
 
-Each capability's brief template lives in its own reference file (see the table above) — prepare the brief from it, then dispatch to the mapped agent. Every capability is dispatched even for a single task (see below). ADR drafting runs the `draft-adr` flow — decision drivers → options → evaluation → compile-adr — **headlessly inside the `adr-writer` session**: the orchestrator collects the drivers from the user, carries them in the brief, and the agent returns the ADR with a proposed chosen option for the orchestrator to confirm.
+Each capability's brief template lives in its own reference file (see the table above) — prepare the brief from it, then dispatch to the mapped agent. Whenever a brief carries an area's findings, pass **both** docs of its pair — `docs/findings-<area>.md` (human) and `docs/evidence-<area>.md` (evidence) — never one alone. Every capability is dispatched even for a single task (see below). ADR drafting runs the `draft-adr` flow — decision drivers → options → evaluation → compile-adr — **headlessly inside the `adr-writer` session**: the orchestrator collects the drivers from the user, carries them in the brief, and the agent returns the ADR with a proposed chosen option for the orchestrator to confirm.
 
 ## Why Dispatch Even a Single Task
 
@@ -23,7 +23,7 @@ Each capability's brief template lives in its own reference file (see the table 
 2. For each unit, fill the capability's ready-to-fill brief (see the table above) per the **structured brief shape** — carry all known context, persisted items by **path** and unpersisted items **inline**; the shared known-context and evidence-map contracts live in **reference/dispatch-briefs.md**.
 3. Dispatch the briefs — all units concurrently when there are multiple, or the single unit on its own when there is one. Sub-agents operate independently and do not communicate with each other. Apply **reference/dispatch-discipline.md** — explicit model per brief, bounded waits, and no worker-spawned sub-agents.
 4. Collect results from all sub-agents when they complete.
-5. Verify each collected result via `question-everything`'s **verify-sub-agent-results** — dispatch evidence-matched verifiers per the verification protocol. Review the accepted results for completeness and consistency across areas, then hand each area's verified evidence map to `compile-findings-doc`, which embeds it into its own `docs/findings-<area>.md` (see **reference/findings-document-guide.md**).
+5. Verify each collected result via `question-everything`'s **verify-sub-agent-results** — dispatch evidence-matched verifiers per the verification protocol. Review the accepted results for completeness and consistency across areas, then hand each area's verified evidence map to `compile-findings-doc`, which records it in the area's `docs/evidence-<area>.md` (see **reference/findings-document-guide.md**).
 6. **Document-compilation briefs** (findings and solution docs) carry the full synthesis context per **reference/findings-doc-brief.md** / **reference/solution-doc-brief.md** — the orchestrator still reviews, validates, and presents the returned doc.
 
 ## Verifying Returned Results

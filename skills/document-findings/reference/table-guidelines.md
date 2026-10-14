@@ -28,23 +28,23 @@ Used by **author-findings-doc**. Use a table only for a cross-flow comparison or
 | Required column | Present when |
 |---|---|
 | Evidence (file:line) | The table asserts anything about the code |
-| Confidence | Not every cell is ✅ Verified (mixed reliability) |
 | Meaning / Description | Rows are terms, config keys, or stores |
 
 Domain columns (Trigger, Base amount, Rounding, …) are free, but must obey the principles.
+Confidence is never a human-doc column; it lives in the evidence ledger.
 
 ## Comparison-table pattern
 
-Rows = the compared items; columns = the aspects that answer the question; end with `Evidence` and `Confidence`.
+Rows = the compared items; columns = the aspects that answer the question; end with `Evidence`.
 
 ```markdown
 **Fee charge across flows**
 
-| Flow | When charged | Base amount | Rounding | Ledger entry | Evidence | Confidence |
-|---|---|---|---|---|---|---|
-| Checkout | On capture | Order subtotal | Half-up, 2 dp | `fee` debit | `FeeService.java:44` | ✅ Verified |
-| Refund | On refund | Refunded subtotal | Half-up, 2 dp | `fee_reversal` credit | `RefundService.java:71` | ✅ Verified |
-| Subscription | On renewal | Plan price | Floor, 2 dp | `fee` debit | `SubscriptionFee.java:33` | 🔶 Inferred |
+| Flow | When charged | Base amount | Rounding | Ledger entry | Evidence |
+|---|---|---|---|---|---|
+| Checkout | On capture | Order subtotal | Half-up, 2 dp | `fee` debit | `FeeService.java:44` |
+| Refund | On refund | Refunded subtotal | Half-up, 2 dp | `fee_reversal` credit | `RefundService.java:71` |
+| Subscription | On renewal | Plan price | Floor, 2 dp | `fee` debit | `SubscriptionFee.java:33` |
 ```
 
 When each flow's **shape** also matters, pair the table with one compact diagram per flow (multiple diagrams are allowed).

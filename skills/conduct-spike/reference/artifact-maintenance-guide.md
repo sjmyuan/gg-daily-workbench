@@ -1,6 +1,6 @@
 # Artifact Maintenance Guide
 
-Spike artifacts form a dependency chain: **Findings Docs → ADRs → Solution Doc**. Each artifact cites the one before it: ADRs cite findings (which embed the evidence map), and the solution doc mirrors ADR decisions.
+Spike artifacts form a dependency chain: **Findings Docs → ADRs → Solution Doc**. Each artifact cites the one before it: ADRs cite the evidence docs (which hold the claim ledger), and the solution doc mirrors ADR decisions.
 
 This guide backs the **artifact-maintenance-doctrine** knowledge entry and the **sync-update-artifacts** capability.
 
@@ -20,9 +20,9 @@ When a decision or fact changes (ADR revision, continuation round, mid-spike cor
 
 | Artifact | Notes allowed? | Notes go where |
 |---|---|---|
-| ADR | ❌ No notes, changelogs, or process history | In the findings document, or spoken in conversation |
-| Solution document | ❌ No notes, version markers, or change lists | In the findings document, or spoken in conversation |
-| Findings documents | ✅ Yes — current-state record may note raw data, metrics, searched-negatives | In the findings document itself |
+| ADR | ❌ No notes, changelogs, or process history | In the evidence document, or spoken in conversation |
+| Solution document | ❌ No notes, version markers, or change lists | In the evidence document, or spoken in conversation |
+| Evidence documents | ✅ Yes — current-state record may note raw data, metrics, searched-negatives | In the evidence document itself |
 | Conversation | ✅ Yes — the assistant narrates what changed and why | In chat, not in the artifacts |
 
 ### No-note scan (validation gate)
@@ -41,7 +41,7 @@ Before presenting any ADR or solution document, scan it for banned process langu
 
 | Change origin | Propagate to | Stopping condition |
 |---|---|---|
-| Findings doc (new evidence or correction) | ADR → solution doc | Evidence only confirms existing facts and decisions |
+| Evidence doc (new evidence or correction) | ADR → solution doc | Evidence only confirms existing facts and decisions |
 | ADR decision change | Solution doc | Decision has no target-state impact |
 | Scope-map delta (add/adjust area or problem) | Affected ADR(s) → solution doc area section | New problem has no ADR drafted yet |
 
@@ -49,18 +49,18 @@ Propagation always stops at the first artifact the change does not affect.
 
 ## Sync procedure
 
-1. Capture the change: what changed, which artifact is the origin (findings doc / ADR / scope map / solution doc), and what triggered it. A changed decision reopens its problem to `deciding` in `scope.md` per the scope-map status.
+1. Capture the change: what changed, which artifact is the origin (evidence doc / ADR / scope map / solution doc), and what triggered it. A changed decision reopens its problem to `deciding` in `scope.md` per the scope-map status.
 2. Trace the propagation path per the **Propagation matrix** — per area: findings → that area's ADRs → the solution doc's area section; a scope-map delta (add/adjust area or problem) propagates to the affected ADR(s) and solution sections.
-3. Apply the change at the origin through its owning skill — `draft-adr` for ADRs, `document-findings` for findings docs, `write-solution-doc` for the solution doc (the findings doc carries the evidence map). Never hand-edit.
+3. Apply the change at the origin through its owning skill — `draft-adr` for ADRs, `document-findings` for findings docs, `write-solution-doc` for the solution doc (the evidence doc carries the claim ledger). Never hand-edit.
 4. Run the **no-note scan** on each touched ADR and solution doc; rewrite until clean.
-5. Propagate downstream one artifact at a time, seeding each dispatched owning-skill agent with the current artifact (path), the delta (inline), and any upstream constraints.
+5. Propagate downstream one artifact at a time, seeding each dispatched owning-skill agent with the current artifact — for findings, the full pair (`docs/findings-<area>.md` + `docs/evidence-<area>.md`) — the delta (inline), and any upstream constraints.
 6. Run the own-writes write-boundary check per **reference/write-boundary-guide.md** — no newly written path outside the spike folder.
 7. Validate consistency — every artifact reflects the latest facts; ADRs cite only current findings; the solution doc mirrors every ADR grouped by area — and present the delta in conversation, never inside the artifacts.
 
 ## Consistency checklist (validation gate)
 
 - [ ] Every artifact reflects the latest facts and decisions — nothing references superseded content
-- [ ] Findings doc is the only home for evidence; ADRs cite it rather than copying it
+- [ ] The evidence doc is the only home for evidence; ADRs cite it rather than copying it
 - [ ] Solution doc mirrors every ADR's chosen option
 - [ ] No-note scan passes on every touched ADR and solution doc
 - [ ] Every write stayed inside the spike folder (`**/spikes/**`); no code, config, or test file was touched

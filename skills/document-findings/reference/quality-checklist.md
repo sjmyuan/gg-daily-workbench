@@ -1,54 +1,41 @@
-# Findings Doc Quality Checklist
+# Findings Doc Pair Quality Checklist
 
 Loaded by **validate-findings-doc**. Report each failed item by severity.
 
-## Structure
-- [ ] Metadata block present and first (area, spike, scope, status, related areas).
+## Human doc
+- [ ] YAML frontmatter present (title, area, status).
 - [ ] A `**Summary:**` (2–4 sentences) follows the title.
-- [ ] Section order: Summary → Orientation → Glossary → topic blocks → Evidence & Verification.
-- [ ] One doc per area; filename matches the area slug.
-
-## Orientation & terms
+- [ ] Section order: Summary → Orientation → Glossary → topic blocks.
 - [ ] Orientation has a "Start here" pointer.
 - [ ] Repeated domain terms are in the Glossary; others are defined on first mention.
-
-## Representation
 - [ ] A flow, structure, or branch topic uses a **diagram**, not a table.
-- [ ] A cross-flow comparison uses a **comparison table** (rows = items) with `Evidence` and `Confidence` columns.
-- [ ] Multiple diagrams are used when each flow's shape matters.
-- [ ] Diagrams label every element, annotate key elements with `file:line`, and use no unexplained abbreviations.
-- [ ] Claims cite `<reference> (file:line)` on first mention.
+- [ ] A cross-flow comparison uses a **comparison table** (rows = items) with an `Evidence` column.
+- [ ] Diagrams label every element and annotate key elements with `file:line`.
 - [ ] Failure/edge behavior is covered where it changes the answer.
-- [ ] Tables follow **reference/table-guidelines.md**: self-describing headers, units, defined terms, no ambiguous cells, required columns present.
-
-## Topics
+- [ ] Tables follow **reference/table-guidelines.md**.
 - [ ] Every topic is a single reader question, ordered orientation → depth.
-- [ ] Every topic has a `**TL;DR:**` line (≤15 words).
-- [ ] Every diagram or table renders.
-- [ ] Claim bullets are atomic, with no reasoning.
+- [ ] Every topic has a `**TL;DR:**` line (≤15 words) and renders its diagram/table.
+- [ ] No claim IDs, confidence tags, claim ledger, or reference to the evidence doc appear in the human doc.
+- [ ] Conciseness: sentences ≤20 words; no banned phrases; no table or diagram restated in prose.
 
-## Claims & evidence
-- [ ] Every claim bullet has a confidence tag.
-- [ ] Every ✅ Verified or 🔶 Inferred claim bullet has an inline `file:line`.
-- [ ] No 🔶 Inferred or 💭 Assumption presented as ✅ Verified.
-- [ ] Every topic-block claim appears in the ledger.
+## Evidence doc
+- [ ] Metadata block present and first (area, spike, scope, status, related-areas, human-doc).
+- [ ] Section order: Topic map → Claim ledger → Searched-negatives → Coverage → Cross-area references.
+- [ ] Topic map covers every human-doc heading and links its anchor.
+- [ ] Every human-doc topic claim is one ledger row.
+- [ ] Every claim has a confidence tag; no 🔶 Inferred or 💭 Assumption presented as ✅ Verified.
+- [ ] Every ✅ Verified or 🔶 Inferred claim cites an inline `file:line`.
 - [ ] Searched-negatives and Coverage tables are present and honest.
+- [ ] Topic and claim IDs use the `<area>/<topic-slug>#cN` scheme; unique and unrenumbered.
 
-## IDs
-- [ ] Topic and claim IDs use the `<area>/<topic-slug>#cN` scheme.
-- [ ] IDs are unique and no existing ID was renumbered.
+## Cross-consistency & scope
+- [ ] Every human-doc topic claim appears in the ledger (no orphans).
+- [ ] Every ledger row links back to a human topic.
 - [ ] Citation format is valid for downstream docs.
-
-## Scope
-- [ ] Current-state only — no target-state or decision content.
-- [ ] No version markers or changelogs.
-
-## Conciseness
-- [ ] Sentences ≤20 words; no banned phrases.
-- [ ] No table or diagram restated in prose.
+- [ ] Current-state only — no target-state or decision content, no version markers or changelogs.
 
 ## Severity
 - 🚫 Blocker: a required section is missing, or any ✅/🔶 claim lacks `file:line`.
-- 🔴 Major: ledger missing claims, an ID renumbered, or target-state content leaked.
+- 🔴 Major: a ledger claim missing from the human doc, an ID renumbered, or target-state content leaked.
 - 🟡 Minor: missing searched-negatives/coverage, or a non-rendering diagram.
 - 🟢 Nit: wording or ordering polish.

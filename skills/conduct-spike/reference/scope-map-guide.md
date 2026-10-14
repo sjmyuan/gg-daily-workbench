@@ -9,17 +9,17 @@ Full status model for `scope.md` — backs the **scope-map** / **scope-map-statu
 | Problem `investigating` | No ADR yet | Stored (ground truth) |
 | Problem `deciding` | ADR drafted, option awaiting user confirmation | Stored |
 | Problem `done` | ADR + user-confirmed option | Stored |
-| Area `preparing` | Findings doc not compiled | Derived |
+| Area `preparing` | Findings pair not compiled | Derived |
 | Area `spiking` | Findings compiled, ≥1 problem not `done` | Derived |
 | Area `done` | All problems `done` | Derived |
 
-Area status is derived from its problems + findings link — never stored separately.
+Area status is derived from its problems + findings-pair link — never stored separately.
 
 ## Transitions
 
 | From | Event | To |
 |---|---|---|
-| Area `preparing` | Findings doc saved | Area `spiking` |
+| Area `preparing` | Findings pair saved | Area `spiking` |
 | Problem `investigating` | ADR saved | Problem `deciding` |
 | Problem `deciding` | User confirms option | Problem `done` |
 | Area `spiking` | All problems `done` | Area `done` |
@@ -36,6 +36,6 @@ Statuses track **saved artifacts**, not in-flight dispatches. When a spike pause
 
 ## Usage
 
-- **define-spike-scope**: record the goal (1 sentence) and each area (`preparing`, empty findings link) with its problems (`investigating`).
+- **define-spike-scope**: record the goal (1 sentence) and each area (`preparing`, empty findings-pair link) with its problems (`investigating`).
 - **continue-prior-spike**: read statuses to surface open problems; update statuses as each step completes.
 - **sync-update-artifacts**: a changed decision reopens its problem to `deciding`.

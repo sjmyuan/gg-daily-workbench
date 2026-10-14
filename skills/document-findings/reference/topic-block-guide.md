@@ -40,30 +40,23 @@ Pick the shape that best explains the answer — diagram-first.
 ## Topic block format
 
 ```markdown
-## <N>. <Question?> <!-- id: <area>/<topic-slug> -->
+## <N>. <Question?>
 **TL;DR:** <one-line answer>
 
 > <optional one-line framing: scope or assumption the artifact relies on>
 
 <diagram(s) — or a comparison table, or short prose>
-
-**Claims**
-- <atomic fact> — `<reference> (file:line)` <confidence>
 ```
 
-Each claim states the fact; `<reference> (file:line)` is its evidence.
-`<reference>` is `Class#member` (class member) or `module.function` (free function).
-Add the framing line only when the artifact assumes something — a happy path, or one variant of several.
+- The TL;DR answers the question in ≤15 words.
+- Add the framing line only when the artifact assumes something — a happy path, or one variant of several.
+- Annotate diagram elements with `file:line`; name a concrete symbol (`Class#member`) or module (`module.function`).
+- Hold no claim bullets, claim IDs, or confidence tags — those live only in `evidence-<area>.md`.
 
 ## Coverage of behavior
 - Cover failure and edge paths where they change the answer — add `alt` branches to the diagram, or a dedicated failure topic.
 - Do not diagram every error branch — only those a reader must know.
-- Annotate diagram elements with `file:line` so a reader can jump to code.
 
-## Claim rules
-- One fact per bullet; no reasoning or justification.
-- Every claim cites `<reference> (file:line)` and a confidence tag.
-- A ❓ Gap or 💭 Assumption claim cites its search scope instead.
-- Confidence tags: ✅ Verified, 🔶 Inferred, 💭 Assumption, ⚠️ Inconsistency, ❓ Gap.
-- Never present 🔶 Inferred or 💭 Assumption as ✅ Verified.
+## Anchors
 - Never use vague references ("the service layer"); name a concrete symbol or module.
+- Inline `file:line` anchors are for checking; the formal claim list and confidence live in the evidence doc.

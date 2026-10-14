@@ -9,7 +9,7 @@
 ## Input (artifacts produced)
 
 - Scope map: 4 areas; the database area holds 2 problems
-- Findings docs (per area): service-boundaries, communication, database, migration-strategy
+- Findings pairs (per area, human + evidence): service-boundaries, communication, database, migration-strategy
 - ADRs: one per problem, area-prefixed — 5 total (database area → 2)
 - Solution doc (hub, decisions grouped by area)
 
@@ -27,9 +27,13 @@ spikes/payment-migration/
 ├── solution.md
 └── docs/
     ├── findings-service-boundaries.md
+    ├── evidence-service-boundaries.md
     ├── findings-communication.md
+    ├── evidence-communication.md
     ├── findings-database.md
-    └── findings-migration-strategy.md
+    ├── evidence-database.md
+    ├── findings-migration-strategy.md
+    └── evidence-migration-strategy.md
 ```
 
 `scope.md` (canonical area → problem map + live status dashboard — see **scope-map-status**):
@@ -39,26 +43,26 @@ spikes/payment-migration/
 **Goal**: Determine the target architecture for decomposing the payment monolith.
 
 Problem status: `investigating` (no ADR) → `deciding` (ADR, awaiting confirmation) → `done` (confirmed).
-Area status (derived): `preparing` (findings doc missing) · `spiking` (a problem open) · `done` (all problems done).
+Area status (derived): `preparing` (findings pair missing) · `spiking` (a problem open) · `done` (all problems done).
 
 ## Area: Service decomposition — `done`
-**Findings**: docs/findings-service-boundaries.md
+**Findings**: docs/findings-service-boundaries.md + docs/evidence-service-boundaries.md
 - `done` How to split the monolith? → adr-service-decomposition-01-split-monolith.md
 ## Area: Inter-service communication — `done`
-**Findings**: docs/findings-communication.md
+**Findings**: docs/findings-communication.md + docs/evidence-communication.md
 - `done` How to handle service-to-service communication? → adr-communication-01-service-communication.md
 ## Area: Database decomposition — `spiking`
-**Findings**: docs/findings-database.md
+**Findings**: docs/findings-database.md + docs/evidence-database.md
 - `done` How to break up the monolithic database? → adr-database-01-break-up-database.md
 - `deciding` How to migrate the schema safely? → adr-database-02-schema-migration.md
 ## Area: Migration strategy — `done`
-**Findings**: docs/findings-migration-strategy.md
+**Findings**: docs/findings-migration-strategy.md + docs/evidence-migration-strategy.md
 - `done` How to migrate with zero downtime? → adr-migration-01-zero-downtime-migration.md
 ```
 
 ## Assistant confirmation (conversation level — not written into any artifact)
 
-> "Saved the scope map to `scope.md`, all 4 findings docs to `docs/`, the 5 ADRs to `adrs/` (area-prefixed, one per problem), and the solution doc to `solution.md` with each area's ADR decisions grouped under its heading. Cross-references between artifacts use relative paths inside the spike folder."
+> "Saved the scope map to `scope.md`, all 4 findings pairs (human + evidence) to `docs/`, the 5 ADRs to `adrs/` (area-prefixed, one per problem), and the solution doc to `solution.md` with each area's ADR decisions grouped under its heading. Cross-references between artifacts use relative paths inside the spike folder."
 
 **Notes**:
 - The spike folder sits under an artifact base root (resolved via `resolve-artifact-location` when unnamed) and records `Artifact root:` at the top of `scope.md`.

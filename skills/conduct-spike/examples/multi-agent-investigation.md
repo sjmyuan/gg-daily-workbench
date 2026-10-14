@@ -27,7 +27,7 @@
 
 ### Orchestrator: Prepare Briefs
 
-4 self-contained briefs, one per area — persisted context by path (`scope.md` goal + problems), live context inline (boundaries, user-stated constraints), expected output — each **requiring a per-area evidence map**. No findings doc exists yet, so this round seeds the map (see `reference/dispatch-briefs.md`, `reference/findings-document-guide.md`).
+4 self-contained briefs, one per area — persisted context by path (`scope.md` goal + problems), live context inline (boundaries, user-stated constraints), expected output — each **requiring a per-area evidence map**. No findings pair exists yet, so this round seeds the map (see `reference/dispatch-briefs.md`, `reference/findings-document-guide.md`).
 
 | Brief | Investigate | Scope | Expected output |
 |---|---|---|---|
@@ -58,14 +58,14 @@
 
 ## Compile Findings Documents
 
-*(one findings doc per area, always; four docs dispatched concurrently, each embedding its area's evidence map inline.)*
+*(one findings pair per area, always; four pairs dispatched concurrently, each area's evidence map recorded in its evidence doc.)*
 
-### `docs/findings-communication.md` (evidence map detail)
+### `docs/evidence-communication.md` (evidence map detail)
 
 **Current State**: all calls in-process; external REST/gRPC/SOAP; no message broker; no circuit breaker.
 **Constraints**: no async experience on team; SOAP contract must stay.
 
-**Evidence & Verification**:
+**Claim ledger**:
 
 | Claim / Question | Verdict | Evidence (`file:line`) | Confidence |
 |---|---|---|---|
@@ -74,9 +74,9 @@
 
 **Searched-Negatives**: `grep -ri "kafka\|rabbit\|mq"` in `payment-service` — no broker usage.
 
-*(The other three findings docs follow the same shape — current state, constraints, evidence map.)*
+*(The other three evidence docs follow the same shape — current state, constraints, claim ledger.)*
 
-**Cross-area constraints**: `findings-service-decomposition.md` ↔ `findings-database.md` (shared `transactions`/`accounts`/`audit_log`); `findings-communication.md` ↔ `findings-migration.md` (no async/traffic-split infra → migration starts synchronous).
+**Cross-area constraints**: `evidence-service-decomposition.md` ↔ `evidence-database.md` (shared `transactions`/`accounts`/`audit_log`); `evidence-communication.md` ↔ `evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
 
 ---
 
@@ -103,8 +103,8 @@ Produce ADR for problem: How to split the monolith? (Area: Service Decomposition
 Decision drivers (inline): 99.9% SLA; no data loss; align with existing teams
 Candidate options (inline): A) Payment-type services — clear ownership, independent scaling; shared-lib coupling. B) Domain-driven services — cleaner dependencies; team restructuring. C) Strangler extraction — lowest risk; temporary hybrid complexity.
 User context (inline): 3 teams already own payment types; wallet scaling is the pain point
-Cross-area constraints (path): docs/findings-database.md (shared transactions/accounts/audit_log tables); docs/findings-communication.md (SOAP contract must stay)
-Findings doc (path): docs/findings-service-decomposition.md — Evidence & Verification section (key locations, ledger, coupling); cite evidence without re-scanning
+Cross-area constraints (path): docs/evidence-database.md (shared transactions/accounts/audit_log tables); docs/evidence-communication.md (SOAP contract must stay)
+Evidence doc (path): docs/evidence-service-decomposition.md — claim ledger (key locations, coupling); cite evidence without re-scanning
 Load draft-adr skill and produce a complete ADR tagged Area: Service Decomposition.
 ```
 

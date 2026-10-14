@@ -55,13 +55,13 @@
 
 **Already known** (not re-investigated): single PostgreSQL, ~80 tables, 2000+ lines of procedures, no DB-level access control.
 
-**Findings doc updated in place**: new facts recorded in the Evidence & Verification section with `file:line` + confidence tags.
+**Findings pair updated in place**: new facts recorded in the evidence doc's claim ledger with `file:line` + confidence tags; the human doc's affected topic refreshed.
 
 ---
 
 ## Step 4: Draft/Revise Problem ADRs — Evaluate + Draft (Rewrite In Place)
 
-*(draft-problem-adrs applied per problem, seeded with the updated findings doc; each ADR's evaluation runs via `draft-adr`'s **evaluate-options** inside the drafting session.)*
+*(draft-problem-adrs applied per problem, seeded with the updated evidence doc; each ADR's evaluation runs via `draft-adr`'s **evaluate-options** inside the drafting session.)*
 
 **Problem 1 — break up the database — evaluation**:
 

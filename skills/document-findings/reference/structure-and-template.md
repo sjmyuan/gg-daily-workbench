@@ -1,28 +1,25 @@
-# Findings Doc Structure and Template
+# Human Findings Doc Structure and Template
 
-Used by **author-findings-doc**. A findings doc keeps a fixed section order so readers and agents navigate by position.
+Used by **author-findings-doc**. The human doc keeps a fixed section order and is self-contained — claims and coverage live in `evidence-<area>.md`, with no link to it.
 
 ## Section order
 
 | # | Section | Purpose |
 |---|---|---|
-| — | Metadata block | Machine-readable header (area, spike, scope, status, related areas) |
+| — | YAML frontmatter | Publication metadata (title, area, status) |
 | — | Summary | 2–4 sentence human intro under the title |
 | 1 | Orientation | Resource index with a "Start here" pointer |
 | 2 | Glossary (optional) | Domain terms defined once |
-| 3..N | Topic blocks | One per question — TL;DR, diagram/table, claims with `file:line` |
-| N+1 | Evidence & Verification | Consolidated ledger, searched-negatives, coverage |
+| 3..N | Topic blocks | One per question — TL;DR, diagram/table, short prose |
 
 ## Template
 
 ````markdown
-<!-- findings-doc
+---
+title: Findings: <Area name>
 area: <area-slug>
-spike: <spike-name>
 status: investigating | complete
-scope: <one line>
-related-areas: [<area-slug>]
--->
+---
 
 # Findings: <Area name>
 
@@ -32,6 +29,7 @@ related-areas: [<area-slug>]
 
 | Component | Purpose | Entry point | Key files |
 |---|---|---|---|
+| | | | |
 
 Start here: <the file:line to read first>.
 
@@ -40,41 +38,25 @@ Start here: <the file:line to read first>.
 | Term | Meaning |
 |---|---|
 
-## 3. <Question?> <!-- id: <area>/<topic-slug> -->
+## 3. <Question?>
 **TL;DR:** <one-line answer>
 
 > <optional one-line framing: scope or assumption the artifact relies on>
 
 <diagram(s) — or a comparison table, or short prose>
 
-**Claims**
-- <atomic fact> — `<reference> (file:line)` ✅ Verified
-
-## N. Evidence & Verification
-
-| Claim ID | Claim | Verdict | Evidence (file:line) | Confidence |
-|---|---|---|---|---|
-
-### Searched-negatives
-
-| Search (pattern/query) | Result | Next step |
-|---|---|---|
-
-### Coverage
-
-| In-scope question | Investigated | Not investigated / Gaps |
-|---|---|---|
+... one block per question; end after the last topic — no evidence section ...
 ````
 
 ## Rendering rules
-- Open with the metadata block and a `**Summary:**` (2–4 sentences); number topics from 3.
-- Every topic block: question heading, TL;DR, a primary artifact (diagram / table / prose), claim bullets.
+- Open with YAML frontmatter and a `**Summary:**` (2–4 sentences); number topics from 3.
+- Every topic block: question heading, TL;DR, a primary artifact (diagram / table / prose).
 - Diagram-first: a flow, structure, or branch is a diagram.
 - A comparison is a table (rows = items) per **reference/table-guidelines.md**.
 - Multiple diagrams per topic are allowed.
-- Annotate diagram elements with `file:line`.
-- Cite code as `<reference> (file:line)` on first mention.
-- Use `Class#member` for class members and `module.function` for free functions — e.g. `ChargeService#authorize (ChargeService.java:88)`, `charge.authorize (charge.py:88)`.
+- Annotate diagram elements with `file:line` so a reader can jump to code.
+- Cite code as `<reference> (file:line)`: `Class#member` for members, `module.function` for free functions.
 - Glossary is optional; include it when a term repeats, else define terms on first mention.
-- End with Evidence & Verification; keep the section order fixed across every area.
-- One doc per area; the filename `findings-<area-slug>.md` matches the metadata `area` and the ID prefix.
+- Never place claim IDs, confidence tags, the claim ledger, or a link to `evidence-<area>.md` in the human doc.
+- End after the last topic block; keep the section order fixed across every area.
+- One human doc per area; the filename `findings-<area-slug>.md` matches the metadata `area` and the ID prefix.
