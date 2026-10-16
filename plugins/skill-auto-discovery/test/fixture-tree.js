@@ -41,6 +41,28 @@ export async function createPluginCacheTree() {
   );
   await write(join(root, 'cache/mkt-beta/beta/1.0.0/skills/beta-skill/SKILL.md'), '# no frontmatter\n');
   await write(
+    join(root, 'cache/mkt-beta/beta/1.0.0/CHANGELOG.md'),
+    frontmatter({ name: 'CHANGELOG', description: 'PLUGIN-CHANGELOG-MARKER' }),
+  );
+  // Plugin-root Markdown that is not a skill: the F-2 over-registration.
+  await write(
+    join(root, 'cache/plugin-alpha/README.md'),
+    frontmatter({ name: 'README', description: 'PLUGIN-README-MARKER' }),
+  );
+  await write(
+    join(root, 'cache/plugin-alpha/agents/agent-notes.md'),
+    frontmatter({ name: 'agent-notes', description: 'PLUGIN-AGENT-MARKER' }),
+  );
+  await write(
+    join(root, 'cache/plugin-alpha/agents/SKILL.md'),
+    frontmatter({ name: 'agents', description: 'PLUGIN-AGENT-SKILL-MARKER' }),
+  );
+  // Root-level Markdown inside the skills subtree stays admissible.
+  await write(
+    join(root, 'cache/plugin-alpha/skills/alpha-release.md'),
+    frontmatter({ name: 'alpha-release', description: 'Root-level Markdown inside the skills subtree.' }),
+  );
+  await write(
     join(root, 'cache/plugin-delta/skills/cache-uninstalled/SKILL.md'),
     frontmatter({ name: 'cache-uninstalled', description: 'Skill from an uninstalled plugin.' }),
   );

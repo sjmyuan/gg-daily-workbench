@@ -10,7 +10,7 @@ import {
   createPluginCacheTree,
 } from './fixture-tree.js';
 
-const INSTALLED_IDS = ['beta-skill', 'cache-installed', 'draft-adr', 'mkt-installed'];
+const INSTALLED_IDS = ['alpha-release', 'beta-skill', 'cache-installed', 'draft-adr', 'mkt-installed'];
 const UNLISTED_IDS = [...INSTALLED_IDS, 'cache-uninstalled', 'mkt-uninstalled'];
 const LEGACY_IDS = ['SKILL', 'legacy-skill', 'release', 'rules-notes'];
 
@@ -98,4 +98,14 @@ test('records carry the registration shape with frontmatter fallbacks', async ()
   assert.ok(fronted.content.includes('cache-installed'));
   assert.equal(bare.name, 'beta-skill');
   assert.equal(bare.description, '');
+});
+
+test('Markdown outside a plugin skills subtree is not admitted', async () => {
+  const ids = await discoveredIds(cacheTree);
+
+  assert.deepEqual(ids, INSTALLED_IDS);
+  assert.deepEqual(
+    ids.filter((id) => ['README', 'agent-notes', 'CHANGELOG'].includes(id)),
+    [],
+  );
 });

@@ -40,8 +40,10 @@ async function skillRoots(claudeDir, installed) {
 
 async function pluginRoots(claudeDir, key, entry) {
   const [pluginName, marketplace] = key.split('@');
-  const roots = [join(claudeDir, 'cache', pluginName)];
-  for (const installPath of installPaths(entry)) roots.push(installPath);
+  // Cache-derived roots are plugin directories, so the skills subtree is the
+  // route; a manifest already declares the skills directory itself.
+  const roots = [join(claudeDir, 'cache', pluginName, 'skills')];
+  for (const installPath of installPaths(entry)) roots.push(join(installPath, 'skills'));
 
   for (const declared of await manifestSkillPaths(claudeDir, marketplace, pluginName)) {
     roots.push(join(claudeDir, 'marketplaces', marketplace, declared));
