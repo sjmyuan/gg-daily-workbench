@@ -6,11 +6,7 @@ import { basename, dirname, join, relative } from 'node:path';
 const SKILL_FILE = 'skill.md';
 
 export async function discoverInstalledSkills({ claudeDir }) {
-  const installed = await readInstallState(claudeDir);
-  const roots = [];
-  for (const [key, entry] of Object.entries(installed.plugins ?? {})) {
-    for (const root of await pluginRoots(claudeDir, key, entry)) roots.push(root);
-  }
+  const roots = await skillRoots(claudeDir, await readInstallState(claudeDir));
 
   const byId = new Map();
   for (const root of roots) {
@@ -31,6 +27,15 @@ async function readInstallState(claudeDir) {
   } catch {
     return {};
   }
+}
+
+// Every route an installed plugin can ship skills from, in precedence order.
+async function skillRoots(claudeDir, installed) {
+  const roots = [];
+  for (const [key, entry] of Object.entries(installed.plugins ?? {})) {
+    for (const root of await pluginRoots(claudeDir, key, entry)) roots.push(root);
+  }
+  return roots;
 }
 
 async function pluginRoots(claudeDir, key, entry) {
