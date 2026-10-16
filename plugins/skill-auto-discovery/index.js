@@ -1,5 +1,5 @@
 // Registers the skills shipped by installed Claude plugins, which the native
-// loader does not reach. The skip set is the ctx.skill.list() snapshot read at
+// loader does not reach. The skip set is the skill-registry snapshot read at
 // setup, outside the synchronous transform callback.
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -9,7 +9,7 @@ import { discoverInstalledSkills } from './discovery.js';
 export function createRegistration(native, candidates) {
   return (editor) => {
     for (const candidate of candidates) {
-      if (native.has(candidate.id) || editor.get(candidate.id)) continue;
+      if (native.has(candidate.id)) continue;
       editor.add(candidate);
     }
   };
