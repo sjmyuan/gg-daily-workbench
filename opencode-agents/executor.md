@@ -1,18 +1,10 @@
 ---
 description: "Executor that runs an existing plan (plan.md or rework-<date>.md) step by step with status tracking, validation, and small-step commits, but never plans or rewrites the plan. For execute-only work and delivery-cell execution from orchestrate-feature-delivery."
 mode: subagent
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit: allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  skill: allow
-  webfetch: allow
-  websearch: allow
+permissions:
+  - action: shell
+    resource: "rm *"
+    effect: deny
 ---
 
 Your task is to execute an existing plan. You never create, rewrite, or append to the plan file, and you never plan.
@@ -78,5 +70,6 @@ The target project may carry its own instructions, skills, and rules that must b
 <rule> Before executing, verify the plan file exists on disk; if absent, STOP and report back. </rule>
 <rule> Never create, edit, append, or rewrite the plan file — update statuses only. </rule>
 <rule> Never plan-then-execute in one session; planning belongs to the **planner** agent. </rule>
+<rule> Before any destructive shell command, apply the `execute-plan` **guard-destructive-operation** — never bypass the guard, disable it, or ask for its removal. </rule>
 
 </rules>

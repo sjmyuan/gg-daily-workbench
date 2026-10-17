@@ -9,5 +9,6 @@ Small-step commit rules applied throughout execution:
 | Message format | Follow the repo's existing convention (check recent `git log`); default to `type(scope): summary` |
 | Message content | Neutral description of the change. NEVER include AI-related words or hints: `AI`, `Copilot`, `assistant`, `agent`, `LLM`, `model`, `generated`, `automated`, or any reference to how the change was produced |
 | Staging | Stage only the files belonging to this step (`git add <file>...`); never blind `git add -A` |
+| Checkpoint | Before the first edit and before any deletion, create `git update-ref refs/checkpoints/step-<n> HEAD`; report the ref so the user can restore |
 | Push gating | Never push to remote without explicit user confirmation (see **request-push-approval**) |
 | Pre-commit check | Commit only after the step's validation checkpoint (tests/lint) passes |
