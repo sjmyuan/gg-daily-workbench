@@ -68,7 +68,7 @@ C4Container
 > Updated: removed the S3 Client component from the Chat Service; file operations now belong to the Media Service. A C3 diagram for the Media Service can be added on request.
 
 **Updated Send DM sequence diagram**:
-> Updated: file-upload steps now go through the Media Service and return a signed URL to the sender before the message is sent. The flow has 8 participants, so it is split into upload / intake / delivery diagrams to stay within the 6-lifeline budget.
+> Updated: file-upload steps now go through the Media Service and return a signed URL to the sender before the message is sent. The flow carries three concerns (upload, intake, delivery), so it is split into three diagrams.
 
 **Send DM — file upload**:
 

@@ -92,14 +92,14 @@ C4Component
 
 ## Capability 3: draw-interaction-diagrams
 
-**Based on the diagram-selection-guide, the assistant determines:**
+**The assistant maps each flow to a type:**
 - **Send DM flow** → Sequence diagram (runtime message passing between participants)
 - **Create group chat flow** → Sequence diagram (runtime message passing between participants)
 - **Message moderation workflow** → Flowchart (decision logic with branching)
 
 ### Direct Message Flow (Sequence Diagrams)
 
-**The flow has 8 participants, so it is split into two diagrams (intake + delivery) to stay within the 6-lifeline budget.**
+**The flow carries two concerns (intake and delivery), so it is split into two diagrams.**
 
 **Send DM — intake & validation**:
 

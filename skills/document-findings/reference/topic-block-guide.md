@@ -33,7 +33,9 @@ Pick the shape that best explains the answer — diagram-first.
 | A list of homogeneous facts (config, stores, dependencies) | **Table** with the required columns |
 | Reasoning / "why" / a single fact | **Short prose** (or nothing) |
 
-- Multiple diagrams per topic are allowed.
+- Multiple diagrams per topic are allowed; split a crowded view instead of compressing it.
+- Pick the type from the question: order/flow → sequence, branch → flowchart, structure → C4, lifecycle → state.
+- Draw diagrams via `draw-mermaid-diagrams` (`author-mermaid-diagram`, then `validate-diagram-syntax`).
 - Diagrams must label every element, annotate key elements with `file:line`, and avoid unexplained abbreviations.
 - Table rules and required columns: **reference/table-guidelines.md**.
 

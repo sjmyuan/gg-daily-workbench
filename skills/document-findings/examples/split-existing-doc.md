@@ -32,6 +32,7 @@ status: complete
 
 ```mermaid
 sequenceDiagram
+    %% Level: code — cross-file / class
     Client->>PaymentController: POST /payments/authorize
     PaymentController->>ChargeService: authorize()
     ChargeService->>Gateway: POST /charges

@@ -110,7 +110,7 @@ C4Component
 
 ## 3. Sequence Diagram: User Registration
 
-**The flow spans two concerns, so it is split into two code-level diagrams (registration core + email notification) to stay within the 6-lifeline budget.**
+**The flow spans two concerns (registration core and email notification), so it is split into two code-level diagrams.**
 
 ### Registration core
 

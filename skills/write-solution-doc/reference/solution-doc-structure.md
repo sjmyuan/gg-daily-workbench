@@ -83,4 +83,4 @@ Every `##` section opens with a `**Takeaway:**` line (≤15 words). Every diagra
 - Number sub-sections `N.M`; never invent alternate titles or numbering.
 - Use tables for structured data and fenced code blocks for Mermaid/JSON/YAML. Never restate what a table or diagram shows.
 - For any section explicitly skipped, mark it as `[Skipped]`.
-- Ensure all Mermaid diagrams use correct syntax and are renderable.
+- Validate every Mermaid diagram via `draw-mermaid-diagrams` (`validate-diagram-syntax`); fix to 0 errors.

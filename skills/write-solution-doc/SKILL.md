@@ -23,12 +23,13 @@ The same format documents **current state** and evolves a baseline into **target
 </current-state-mode>
 
 <c4-model>
-**C2 (Container)** = building blocks; **C3 (Component)** = one container's internals. Load **reference/mermaid-standards.md** for C4 syntax.
+**C2 (Container)** = building blocks; **C3 (Component)** = one container's internals. Draw both via `draw-mermaid-diagrams` (`author-mermaid-diagram`).
 </c4-model>
 
-<diagram-selection-guide>
-Messages → **sequence**; process/decisions → **flowchart**; both → **both**; state lifecycle → **state diagram** (or **flowchart** when decisions dominate). Load **reference/diagram-selection-guide.md**.
-</diagram-selection-guide>
+<diagram-delegation>
+This skill chooses the type per section: messages → sequence, decisions → flowchart, both → both, lifecycle → state.
+It also sets focus and splits a crowded view; `draw-mermaid-diagrams` owns authoring, validation, and sync.
+</diagram-delegation>
 
 <api-design-standards>
 Load **reference/api-design-standards.md** for contract fields and conventions.
@@ -47,8 +48,6 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
 | Load when | Provides | File |
 |---|---|---|
 | Compiling the final document | Canonical titles, numbering, template | [reference/solution-doc-structure.md](reference/solution-doc-structure.md) |
-| Writing any Mermaid diagram | Syntax, label rules, zoom levels | [reference/mermaid-standards.md](reference/mermaid-standards.md) |
-| Choosing a diagram type | Selection matrix, interop rules | [reference/diagram-selection-guide.md](reference/diagram-selection-guide.md) |
 | Defining API/event contracts | Contract fields, conventions | [reference/api-design-standards.md](reference/api-design-standards.md) |
 | Running RAID or RACI | Item schema, matrix rules | [reference/raid-raci-frameworks.md](reference/raid-raci-frameworks.md) |
 | Producing/evolving a current-state document | As-is mode, baseline-input rules | [reference/current-state-mode.md](reference/current-state-mode.md) |
@@ -87,24 +86,23 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
    - Participating systems/services/applications.
    - Communication style (sync HTTP, async messaging, gRPC).
    - External systems and users.
-3. Produce a C2 Container diagram (`C4Container`) with a brief explanation.
+3. Produce a C2 Container diagram via `draw-mermaid-diagrams` (`C4Container`), then validate to 0 errors.
 4. On confirmation, zoom into the most critical container for a C3 diagram.
-5. Produce the C3 Component diagram (`C4Component`) with a brief explanation.
+5. Produce the C3 Component diagram via `draw-mermaid-diagrams` (`C4Component`), then validate to 0 errors.
 6. Ask the user to confirm; offer additional C3 diagrams if needed.
 7. Refine from feedback until confirmed.
 </draw-c4-topology>
 
 <draw-interaction-diagrams>
 1. From the confirmed topology, identify the key interaction flows.
-2. Per flow, consult **diagram-selection-guide** for sequence, flowchart, or both; if unsure, explain the trade-off and ask.
+2. Per flow, choose sequence, flowchart, or both; if unsure, explain the trade-off and ask.
 3. Ask 3–8 clarifying questions, one at a time, about:
    - Which flows are most critical.
    - Sequence diagrams: call order, sync vs async, error/edge flows.
    - Flowcharts: decision points, branch conditions, start/end states.
-4. Produce one Mermaid diagram per critical flow.
-5. **Sequence requirements**: clear participants, message ordering, activation bars, notes.
-6. **Flowchart requirements**: start/stop nodes, process steps, decision diamonds, labeled branches.
-7. Ask the user to confirm each diagram; refine from feedback.
+4. Produce one Mermaid diagram per critical flow via `draw-mermaid-diagrams` (`author-mermaid-diagram`).
+5. Apply `draw-mermaid-diagrams` (`validate-diagram-syntax`); fix to 0 errors.
+6. Ask the user to confirm each diagram; refine from feedback.
 </draw-interaction-diagrams>
 
 <design-api-event-schema>
@@ -180,19 +178,17 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
 2. Open every `##` section with a `**Takeaway:**` line (≤15 words); tables and diagrams carry the detail.
 3. Use tables for structured data and code blocks for Mermaid and JSON/YAML schemas; never restate a table or diagram.
 4. Mark explicitly skipped sections as `[Skipped]`.
-5. Validate Mermaid diagrams with `scripts/validate_mermaid.mjs`; fix to 0 failures.
+5. Validate every Mermaid block via `draw-mermaid-diagrams` (`validate-diagram-syntax`); fix to 0 errors.
 6. Match the user's language preference.
 7. Run the concise check (see **concise-writing**): ≤20-word sentences, no banned phrases, one claim per bullet, a takeaway per heading, no restated fact, ~20% cut.
 8. Present the document and offer to refine any section.
 </structure-solution-doc>
 
 <sync-diagrams>
-1. After a confirmed new finding or correction (changed topology, added/removed container or component, corrected flow, revised schema, new dependency or edge case), list every diagram produced earlier.
-2. Per diagram, decide whether the change affects any element, relationship, message, branch, or section, leaving unaffected ones untouched.
-3. Update each affected diagram to the latest confirmed state, stating in one line what changed and why.
-4. Draw a new diagram (per **diagram-selection-guide**) for new context, and add it to its document section.
-5. Cross-check the set: every confirmed fact appears in at least one diagram, and none contradicts the latest state.
-6. Present updated and new diagrams with the revised sections, noting which changed.
+1. After a confirmed correction or new finding, apply `draw-mermaid-diagrams` (**sync-diagram-set**) to the document's diagrams.
+2. Restate each delta in document terms: which section and takeaway the updated diagram supports.
+3. Cross-check the document: every confirmed fact appears in a diagram, none contradicts the latest state, and each diagram's takeaway still matches.
+4. Present updated and new diagrams with the revised sections, noting which changed.
 </sync-diagrams>
 
 </capabilities>
@@ -203,6 +199,7 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
 <rule>When a correction or new finding changes confirmed content, apply **sync-diagrams** before continuing.</rule>
 <rule>When the user provides existing diagrams or architecture, incorporate them directly and confirm whether to reuse, modify, or add alongside.</rule>
 <rule>When the user confirms ("looks good", "proceed", "next"), move to the next capability.</rule>
+<rule>When drawing, validating, or syncing any diagram, apply the `draw-mermaid-diagrams` skill for mechanics.</rule>
 <rule>When the user says "skip [section]", skip that capability and mark the section `[Skipped]`.</rule>
 <rule>When the user asks to jump to a capability, skip ahead and continue from there.</rule>
 <rule>When the user says "draft all" or "generate full document", draft all sections at once via **structure-solution-doc**, then offer to refine.</rule>

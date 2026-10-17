@@ -34,6 +34,7 @@ A findings doc pair explains what exists in a code **area** today: a human findi
 <topic-block-format>
 - Each topic answers one reader question: TL;DR → primary artifact → short prose.
 - Pick the representation diagram-first per **reference/topic-block-guide.md**.
+- Draw diagrams via `draw-mermaid-diagrams`; this skill owns the `file:line` annotations and topic framing.
 </topic-block-format>
 <evidence-doc>
 - The machine layer: metadata block, topic→claim map, ledger, searched-negatives, coverage, cross-area references.
@@ -41,9 +42,6 @@ A findings doc pair explains what exists in a code **area** today: a human findi
 - IDs are scope slugs (`<area>/<topic-slug>#cN`), area-scoped and never renumbered.
 - Details and linking: **reference/evidence-and-ids.md**.
 </evidence-doc>
-<artifact-layout>
-Two docs per area in `<spike-folder>/docs/`: `findings-<area>.md` and `evidence-<area>.md`; slugs match the metadata `area`. The evidence doc names the human doc; the human doc stays self-contained.
-</artifact-layout>
 <pipeline-integration>
 Pipeline: `investigate-code` → doc pair → `draft-adr` → `write-solution-doc`, seeded by `conduct-spike`; details in **reference/pipeline-integration.md**.
 </pipeline-integration>
@@ -86,9 +84,10 @@ Pipeline: `investigate-code` → doc pair → `draft-adr` → `write-solution-do
 1. Write the YAML frontmatter (title, area, status) and a `**Summary:**` per **reference/structure-and-template.md**.
 2. Write the Orientation index with a "Start here" pointer.
 3. For each confirmed question, write one topic block per **reference/topic-block-guide.md**.
-4. Keep `file:line` anchors inline for checking; add no claim IDs, confidence tags, or link to the evidence doc.
-5. Apply **validate-findings-doc**; fix findings and re-validate.
-6. Save to `<spike-folder>/docs/findings-<area>.md` (or the user-provided path); offer to refine any topic.
+4. Draw every diagram in those blocks via `draw-mermaid-diagrams` (`author-mermaid-diagram`).
+5. Keep `file:line` anchors inline for checking; add no claim IDs, confidence tags, or link to the evidence doc.
+6. Apply **validate-findings-doc** (it validates diagrams via `draw-mermaid-diagrams`); fix findings and re-validate.
+7. Save to `<spike-folder>/docs/findings-<area>.md` (or the user-provided path); offer to refine any topic.
 </author-findings-doc>
 
 <author-evidence-doc>
@@ -121,8 +120,9 @@ Pipeline: `investigate-code` → doc pair → `draft-adr` → `write-solution-do
 4. Update the claim's confidence tag and verdict (for example 🔶 Inferred → ✅ Verified).
 5. Record new dead-end searches in Searched-negatives; update Coverage.
 6. Refresh the human topic only when its reader-facing answer changed; keep its heading anchor stable.
-7. Keep no version markers or changelogs — git is history.
-8. Apply **validate-findings-doc**; then flag downstream artifacts that cite the changed IDs.
+7. Sync that topic's diagrams via `draw-mermaid-diagrams` (`sync-diagram-set`) when the change affects them.
+8. Keep no version markers or changelogs — git is history.
+9. Apply **validate-findings-doc**; then flag downstream artifacts that cite the changed IDs.
 </update-findings-doc>
 
 <validate-findings-doc>
@@ -133,7 +133,7 @@ Pipeline: `investigate-code` → doc pair → `draft-adr` → `write-solution-do
 4. Check the evidence doc: metadata, topic→claim map, ledger, Searched-negatives, Coverage, in order.
 5. Check every human-doc topic claim appears in the ledger, and every ledger row links back to a topic.
 6. Check IDs are unique, area-scoped, and unrenumbered; citation format is valid.
-7. Check no target-state or decision content leaked in; render every diagram and table.
+7. Check no target-state or decision content leaked in; validate every diagram via `draw-mermaid-diagrams` (0 errors).
 8. Report findings by severity (🚫 Blocker / 🔴 Major / 🟡 Minor / 🟢 Nit) and fix before saving.
 </validate-findings-doc>
 

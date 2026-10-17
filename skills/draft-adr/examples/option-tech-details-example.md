@@ -54,6 +54,7 @@ C4Container
 
 ```mermaid
 sequenceDiagram
+  %% Level: container — cross-system flow
   participant API as API Gateway
   participant PS as Payment Service
   participant BTS as Bank Transfer Service
@@ -145,6 +146,7 @@ C4Container
 
 ```mermaid
 sequenceDiagram
+  %% Level: container — cross-system flow
   participant API as API Gateway
   participant PS as Payment Service
   participant K as Kafka

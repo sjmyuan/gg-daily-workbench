@@ -49,6 +49,7 @@ Start here: `PaymentController#authorize (PaymentController.java:41)`.
 
 ```mermaid
 sequenceDiagram
+    %% Level: code — cross-file / class
     Client->>PaymentController: POST /payments/authorize
     Note over PaymentController: PaymentController#authorize (PaymentController.java:41)
     PaymentController->>ChargeService: authorize()
@@ -64,12 +65,15 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    A[ChargeService#authorize] --> B{gateway 5xx?}
+    S([Start]) --> A[ChargeService#authorize]
+    A --> B{gateway 5xx?}
     B -- yes --> C{attempts < 3?}
     C -- yes --> D[retry with backoff]
     D --> B
     C -- no --> E[throw GatewayException]
     B -- no --> F[write ledger]
+    E --> Z([End])
+    F --> Z
 ```
 
 ## 5. How is retry configured for the charge call?

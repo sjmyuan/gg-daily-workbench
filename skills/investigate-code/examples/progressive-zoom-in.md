@@ -84,7 +84,7 @@ C4Component
 
 ### Level 3: Sequence Diagram — Checkout Flow
 
-Applies `<draw-sequence-diagram>`. The flow has 7 participants, so it is split into two code-level diagrams (order creation + parallel fulfillment) to stay within the 6-lifeline budget.
+Applies `<draw-sequence-diagram>`. The flow carries two concerns (order creation and parallel fulfillment), so it is split into two code-level diagrams.
 
 **Checkout — order creation**:
 

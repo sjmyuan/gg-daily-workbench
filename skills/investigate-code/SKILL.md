@@ -41,7 +41,8 @@ Discover cross-repo dependencies:
 | **API contracts** | OpenAPI/Swagger specs, Protobuf files, GraphQL schemas |
 </multi-repo-discovery>
 <diagram-conventions>
-Choose the most appropriate diagram type for what you're explaining: C4 for architecture, sequence for interactions, flowchart for decision logic, state diagram for lifecycles, class/ER for data models. Draw all diagrams with Mermaid — use native `C4Container`/`C4Component` for C4. See [reference/diagram-quick-reference.md](reference/diagram-quick-reference.md) for syntax quick-reference, [reference/c4-model-conventions.md](reference/c4-model-conventions.md) for C4 element types and layout, and [reference/sequence-diagram-conventions.md](reference/sequence-diagram-conventions.md) for sequence diagram patterns. Validate every Mermaid block with `scripts/validate_mermaid.mjs` before presenting (0 failures).
+Choose by the message: C4 for architecture, sequence for interactions, flowchart for decisions, state for lifecycles, class/ER for data models.
+Draw, validate, and sync them via `draw-mermaid-diagrams` (`author-mermaid-diagram`, `validate-diagram-syntax`).
 </diagram-conventions>
 <progressive-disclosure-levels>
 Guide investigations from high-level to detail: C2 Container ("What systems exist?") → C3 Component ("What's inside?") → Sequence/Flowchart ("What's the message order or decision logic?") → Call Stack ("What happens in this method?"). Supplement with state diagrams (lifecycles), class diagrams (data models), or other types whenever they clarify the explanation better than the default level. Start at the level matching user familiarity — Level 1 for unfamiliar systems, Level 3-4 for specific flows.
@@ -83,9 +84,6 @@ Issues and uncertainty must be understandable without domain context — explana
 | Load when | Provides | File |
 |---|---|---|
 | Conducting a typical investigation (any question type) | End-to-end example with clarification, discovery, tracing, and synthesis | [examples/investigation-workflow.md](examples/investigation-workflow.md) |
-| Needing a Mermaid syntax quick-reference for any diagram type | C2/C3/Sequence syntax cheat-sheet | [reference/diagram-quick-reference.md](reference/diagram-quick-reference.md) |
-| Drawing C2 or C3 diagrams | Full element types, boundaries, `C4Container`/`C4Component` patterns | [reference/c4-model-conventions.md](reference/c4-model-conventions.md) |
-| Drawing sequence diagrams | Message numbering, Mermaid syntax, cross-reference conventions | [reference/sequence-diagram-conventions.md](reference/sequence-diagram-conventions.md) |
 | Tracing method-level call stacks | Frame format, cross-repo annotation, correlation with sequence diagrams | [reference/call-stack-trace-conventions.md](reference/call-stack-trace-conventions.md) |
 | Discovering patterns or detecting inconsistencies | Structural fingerprint format, comparison matrix, severity levels | [reference/pattern-discovery-strategies.md](reference/pattern-discovery-strategies.md) |
 | Investigating across multiple repos | Dependency matrix, C2 diagram, cross-repo call traces | [examples/multi-repo-dependency.md](examples/multi-repo-dependency.md) |
@@ -124,22 +122,22 @@ Issues and uncertainty must be understandable without domain context — explana
 
 <draw-c4-diagram>
 1. **Determine level**: C2 (Container) for system landscape across repos; C3 (Component) to zoom into one container's internals.
-2. **Load conventions**: Load [reference/c4-model-conventions.md](reference/c4-model-conventions.md).
+2. **Load conventions**: apply `draw-mermaid-diagrams` (`author-mermaid-diagram` with its C4 syntax reference).
 3. **Define content**: List all elements (containers/components, databases, external systems, actors) and connections with protocol labels.
-4. **Create Mermaid**: Use `C4Container` for C2 and `C4Component` for C3. For C3, wrap components in a `Container_Boundary()`; for C2, group containers with `System_Boundary()`. Label connections with protocols (e.g., `Rel(a, b, "POST /payments", "HTTPS")`).
+4. **Create Mermaid**: apply `draw-mermaid-diagrams` — `C4Container` for C2, `C4Component` for C3, boundaries per level, and `Rel` labels carrying protocol.
 5. **Render and explain**: Present the Mermaid source, then describe each element's role and key connections. State which elements/connections were directly found in code (✅ Verified) vs. assumed from naming or config (💭 Assumption).
 6. **Offer next level**: For C2, ask which container to zoom into (C3). For C3, ask which interaction to sequence-diagram.
-7. **Validate**: Verify that every container and connection in the diagram appears in the dependency matrix, and that connection labels include protocol and endpoint.
+7. **Validate**: Verify every container and connection appears in the dependency matrix; then apply `draw-mermaid-diagrams` (`validate-diagram-syntax`, 0 errors).
 </draw-c4-diagram>
 
 <draw-sequence-diagram>
 1. **Select the operation**: Based on user choice or the key interaction from the C2/C3 diagram.
-2. **Load conventions**: Load [reference/sequence-diagram-conventions.md](reference/sequence-diagram-conventions.md).
+2. **Load conventions**: apply `draw-mermaid-diagrams` (`author-mermaid-diagram`).
 3. **Trace the message flow**: Identify all participants, message order with method signatures, sync vs. async calls, and return values.
-4. **Create Mermaid**: Use `sequenceDiagram` syntax. Number messages sequentially for call-stack cross-referencing. Use `->>` for sync, `-->>` for async and returns. Add `alt/loop/par` blocks for branching.
+4. **Create Mermaid**: use `sequenceDiagram`; number messages sequentially for call-stack cross-referencing; apply the arrow semantics and flow discipline from the skill.
 5. **Render and explain**: Walk through numbered messages highlighting key interactions. Note flows inferred rather than traced directly, and calls left untraced (❓ Gap).
 6. **Offer method detail**: Ask which message to trace at the call-stack level via trace-call-stack.
-7. **Validate**: Verify that message numbers are sequential, return arrows exist for every call, and all participants match containers from the C2/C3 diagram.
+7. **Validate**: Verify message numbers are sequential and participants match the C2/C3 containers; then validate syntax via `draw-mermaid-diagrams` (0 errors).
 </draw-sequence-diagram>
 
 <trace-call-stack>
@@ -183,6 +181,7 @@ Issues and uncertainty must be understandable without domain context — explana
 <rule> When the question spans multiple repositories or the user asks about cross-system dependencies, apply analyze-cross-repo-dependencies before any diagramming. </rule>
 <rule> When the user wants to see system architecture, container internals, or how systems/components connect, apply draw-c4-diagram at the appropriate level (C2 for landscape, C3 for internals). </rule>
 <rule> When the user wants to see exact message ordering or interaction flow for an operation, apply draw-sequence-diagram. </rule>
+<rule> When drawing, validating, or syncing any diagram, apply the `draw-mermaid-diagrams` skill for mechanics. </rule>
 <rule> When the user wants method-level implementation details or code walkthrough, apply trace-call-stack. Correlate frame numbers with any existing sequence diagram. </rule>
 <rule> When the user wants a guided tour from high-level down to method detail, apply levels in sequence: draw-c4-diagram (C2) → draw-c4-diagram (C3) → draw-sequence-diagram → trace-call-stack. Start at the level matching user familiarity — do not always start at C2. </rule>
 <rule> When the user asks how a type of feature works generally, or wants to know if similar features follow a consistent pattern, apply investigate-codebase on one example, then apply discover-implementation-patterns to find and compare all similar implementations. </rule>

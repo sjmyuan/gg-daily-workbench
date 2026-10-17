@@ -15,6 +15,7 @@ Loaded by **validate-findings-doc**. Report each failed item by severity.
 - [ ] Tables follow **reference/table-guidelines.md**.
 - [ ] Every topic is a single reader question, ordered orientation → depth.
 - [ ] Every topic has a `**TL;DR:**` line (≤15 words) and renders its diagram/table.
+- [ ] Every Mermaid diagram passes `draw-mermaid-diagrams` validation (0 errors).
 - [ ] No claim IDs, confidence tags, claim ledger, or reference to the evidence doc appear in the human doc.
 - [ ] Conciseness: sentences ≤20 words; no banned phrases; no table or diagram restated in prose.
 

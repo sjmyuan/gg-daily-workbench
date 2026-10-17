@@ -15,6 +15,7 @@ The findings doc pair sits upstream of ADRs and the solution doc, and is seeded 
 | Seed (spike) | `conduct-spike`'s `compile-findings-doc` seeds one pair per area; this skill owns the format and IDs. |
 | Output path | `<spike-folder>/docs/findings-<area>.md` plus `<spike-folder>/docs/evidence-<area>.md` inside a spike; a user-provided path otherwise. |
 | Downstream | `draft-adr` grounds options in the evidence doc; `write-solution-doc` cites IDs for the current-state baseline. |
+| Diagram layer | Topic diagrams are drawn and validated by `draw-mermaid-diagrams`; this pair owns the question framing and `file:line` annotations. |
 
 ## Return contract
 
@@ -41,4 +42,5 @@ The human doc is self-contained — no claim IDs, confidence tags, ledger, or ev
 | Do not load for | Route to |
 |---|---|
 | Target-state architecture, solution docs, decision records | `write-solution-doc`, `draft-adr` |
+| Mermaid mechanics, diagram validation, or diagram sync | `draw-mermaid-diagrams` |
 | Unverified investigation output | `investigate-code` first |
