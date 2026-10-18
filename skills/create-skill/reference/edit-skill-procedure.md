@@ -10,6 +10,7 @@ The create-* capabilities author greenfield skills. **edit-skill** reuses them f
 | **create-skill-file** | Create directory + write new SKILL.md | Locate the existing SKILL.md; skip directory creation; edit sections in place; preserve unrelated content byte-for-byte |
 | **create-skill-examples** | Create example files | Adding an example is identical; editing one updates that file in place |
 | **create-skill-references** | Create reference files | Adding a reference is identical; editing one updates that file in place |
+| **create-skill-scripts** | Create `scripts/` + first script | Locate the existing `scripts/`; edit the script in place; keep its output fields and exit codes stable |
 | **validate-created-skill** | Validate new files | Run unchanged on the edited files (it already accepts user-provided files) |
 
 ## Change-type routing
@@ -18,6 +19,7 @@ The create-* capabilities author greenfield skills. **edit-skill** reuses them f
 | Add capability or knowledge | **create-skill-file** | Insert the new section; add rule, guide row, and example as needed | example coverage + no dangling refs |
 | Add example | **create-skill-examples** | None — same as greenfield | **example-standards** |
 | Add reference | **create-skill-references** | Self-link from knowledge; route inline or add a guide row | no orphaned ref |
+| Add or change a script | **create-skill-scripts** | Re-run the justification tests before adding; keep exit codes and field names stable | **script-and-cli-policy** contract |
 | Remove capability | **create-skill-file** | Delete the capability plus its rules, guide rows, examples | no dangling refs |
 | Rename capability | **create-skill-file** | Rename the tag plus every mention in the skill | ripple propagation |
 | Restructure | **create-skill-file** | Move content between knowledge, reference, and capabilities | **section-semantics** |

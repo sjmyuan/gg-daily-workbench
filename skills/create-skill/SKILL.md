@@ -1,6 +1,6 @@
 ---
 name: create-skill
-description: Author, edit, and validate skill files (SKILL.md) with capabilities, examples, and references that meet reviewer standards. Use when creating, authoring, generating, building, extracting, editing, improving, revising, or validating a skill.
+description: Author, edit, and validate skill files (SKILL.md), plus the examples, references, and scripts they ship. Use when creating, authoring, generating, building, extracting, editing, improving, revising, or validating a skill.
 ---
 
 <when-to-use-this-skill>
@@ -15,54 +15,27 @@ description: Author, edit, and validate skill files (SKILL.md) with capabilities
 
 <knowledge>
 
-<skill-file-sections>
-A well-formed SKILL.md uses distinct, non-overlapping sections: frontmatter `description` (load decision), `<when-to-use-this-skill>` (scope check), `<knowledge>` (facts), `<capabilities>` (procedures), `<rules>` (routing), and a `<context-loading-guide>` inside knowledge. Section table, structural violations, and directory layout: **reference/section-semantics.md**.
-</skill-file-sections>
+<named-standards>
+Capability steps cite these standards by name; load the Details file.
 
-<description-quality>
-The `description` follows a two-part template — domain summary plus a "Use when…" trigger phrase listing intent verbs — and is scored on five dimensions. Template, scoring rubric, and trigger-correctness rules: **reference/description-quality.md**.
-</description-quality>
-
-<naming-conventions>
-Skill names and capability names start with an imperative action verb; knowledge subsection names use descriptive noun phrases. Full rubric: **reference/naming-conventions.md**.
-</naming-conventions>
-
-<example-standards>
-Every capability needs a linked example; each example must have a scenario heading, realistic input, output matching the capability's steps, and no contradictions. Full criteria: **reference/example-standards.md**.
-</example-standards>
-
-<platform-agnostic-writing>
-Created skills must avoid platform-specific tool names, use abstract context descriptions, and detect-don't-assume. Full rules: **reference/platform-agnostic-writing.md**.
-</platform-agnostic-writing>
-
-<pipeline-integration>
-A skill in a multi-skill pipeline must satisfy 4 integration points: handoff mechanism, shared schema, bidirectional awareness, guard clauses. Full checklist: **reference/pipeline-integration.md**.
-</pipeline-integration>
-
-<writing-style>
-Created skill prose must use directive voice, BLUF, hard caps, atomic bullets, tables-over-prose, no banned phrases, no meta-narration. Full rules: **../review-skill/reference/writing-style.md**.
-</writing-style>
-<size-limits>
-Budgets are character-based: SKILL.md and each `reference/` ≤12,000 / 150 lines; each `examples/` ≤9,000 / 150 lines; >120-char lines flagged. Measure via **../review-skill/scripts/measure_sizes.py**, else `wc -m`/line count. Full rules: **../review-skill/reference/size-limits.md**.
-</size-limits>
-<size-remediation>
-Fix over-budget files via re-encode → reuse → cut weight → redistribute → reduce → escalate; chars are the only size gate — never merge steps or lines (structural-integrity gate, 🔴 Blocker). Full rules: **../review-skill/reference/size-remediation.md**.
-</size-remediation>
-<conciseness-check>
-Every element must justify its existence — one line = one idea. Cut anything the skill can lose without losing meaning. Full criteria: **../review-skill/reference/conciseness-check.md**.
-</conciseness-check>
-<evaluation-process>
-Each capability must include a validation or checklist step so output is verifiable. Patterns and absence severity: **../review-skill/reference/evaluation-process.md**.
-</evaluation-process>
-<severity-levels>
-Validation findings labeled Blocker 🚫 / Major 🔴 / Minor 🟡 / Nit 🟢 / Inconsistency ⚠️. Table: **../review-skill/reference/severity-levels.md**.
-</severity-levels>
-<edit-existing-skill>
-Editing an existing skill reuses the create-* capabilities in existing-file mode — review-first for open "improve", change-type routing, ripple on rename/remove, validate-after-each. Details: **reference/edit-skill-procedure.md**.
-</edit-existing-skill>
-<same-name-live-copy-ban>
-Never read, compare, or edit a live/loaded skill with the same name in claude/opencode/copilot dirs. The user-provided file(s) are the only source and target — if the user gives no location, ask; never auto-fetch a same-named installed skill.
-</same-name-live-copy-ban>
+| Standard | Rule | Details |
+|---|---|---|
+| **section-semantics** | Distinct, non-overlapping sections in order: frontmatter → when-to-use → knowledge → capabilities → rules; violations and directory layout in file. | **reference/section-semantics.md** |
+| **naming-conventions** | Skill and capability names use imperative verbs; knowledge names use noun phrases. | **reference/naming-conventions.md** |
+| **description-quality** | Domain summary + "Use when…" trigger verbs, self-scored ≥9 on five dimensions. | **reference/description-quality.md** |
+| **example-standards** | One linked example per capability: scenario heading, realistic input, step-matching output, no contradictions. | **reference/example-standards.md** |
+| **platform-agnostic-writing** | No platform tool names or concrete context paths; abstract context descriptions; detect, don't assume. | **reference/platform-agnostic-writing.md** |
+| **script-and-cli-policy** | CLI first, inline one-liner second, `scripts/` script last after four tests; Python 3 stdlib only; fixed output contract. | **../review-skill/reference/script-and-cli-policy.md** |
+| **pipeline-integration** | 4 points: handoff, shared schema, bidirectional awareness, guard clauses. | **reference/pipeline-integration.md** |
+| **writing-style** | Directive voice, BLUF, hard caps, atomic bullets, tables over prose, no banned phrases, no narration. | **../review-skill/reference/writing-style.md** |
+| **size-limits** | SKILL.md and `reference/` ≤12,000 chars / 150 lines; `examples/` ≤9,000; >120-char lines flagged; measure with **../review-skill/scripts/measure_sizes.py**. | **../review-skill/reference/size-limits.md** |
+| **size-remediation** | Re-encode → reuse → cut weight → redistribute → reduce → escalate; chars are the only gate, never merge steps or lines (🔴). | **../review-skill/reference/size-remediation.md** |
+| **conciseness-check** | Every element justifies its existence; one line = one idea. | **../review-skill/reference/conciseness-check.md** |
+| **evaluation-process** | Every capability ends with a validation or checklist step; absence severity in file. | **../review-skill/reference/evaluation-process.md** |
+| **severity-levels** | Blocker 🚫 / Major 🔴 / Minor 🟡 / Nit 🟢 / Inconsistency ⚠️. | **../review-skill/reference/severity-levels.md** |
+| **edit-existing-skill** | Existing-file mode: review-first, change-type routing, ripple on rename/remove, re-validate. | **reference/edit-skill-procedure.md** |
+| **same-name-live-copy-ban** | Never read, compare, or edit a live/loaded same-named skill; the user-provided files are the only subject. | — |
+</named-standards>
 
 <context-loading-guide>
 
@@ -73,6 +46,7 @@ Never read, compare, or edit a live/loaded skill with the same name in claude/op
 | Adding examples and references to a drafted skill | Examples + references walkthrough | [examples/create-examples-and-references.md](examples/create-examples-and-references.md) |
 | Validating a newly created skill before delivery | Validation-report walkthrough | [examples/validate-new-skill.md](examples/validate-new-skill.md) |
 | Editing an existing skill (review findings + rename ripple) | Edit walkthrough | [examples/editing-existing-skill.md](examples/editing-existing-skill.md) |
+| A capability step needs automation (CLI vs script) | Automation-decision walkthrough | [examples/create-skill-scripts.md](examples/create-skill-scripts.md) |
 
 </context-loading-guide>
 
@@ -83,27 +57,28 @@ Never read, compare, or edit a live/loaded skill with the same name in claude/op
 <collect-skill-requirements>
 **Objective**: Gather what defines the new skill's purpose, scope, and capabilities.
 
-1. Ask the user targeted questions to understand: **skill name** (kebab-case, imperative verb per **naming-conventions**), **description** (domain + trigger phrase), **when-to-use scenarios** (3–7), **core capabilities** (each named with an imperative action verb), **knowledge requirements** (tables, layouts, constraints), **rules** (when → capability routing), **example scenarios** (≥1 per capability), and **reference needs** (large rubrics to extract).
-2. Present a structured summary of the collected information and request confirmation or refinements.
-3. If the user provides existing source materials (agent prompts, code, docs), read and analyze them to extract accurate knowledge entries instead of asking from scratch — never fetch a live/loaded skill with the same name (per **same-name-live-copy-ban**).
+1. Ask for: **skill name** (action verb), **description** (domain + trigger), **when-to-use bullets** (3–7), **capabilities** (action verbs),
+   **knowledge** (tables, constraints), **rules** (routing), **examples** (≥1 per capability), **references** (large rubrics).
+2. Present a summary of the collected information for confirmation.
+3. If the user provides source materials (agent prompts, code, docs), extract knowledge from them instead of asking; never fetch a same-named live skill (per **same-name-live-copy-ban**).
 </collect-skill-requirements>
 
 <create-skill-file>
 **Objective**: Generate a complete SKILL.md that meets reviewer quality requirements.
 
-1. Create the directory structure under the user-provided target location (confirmed in **collect-skill-requirements**) with `examples/` and `reference/` subdirectories as needed.
-2. Write the frontmatter: `name` in kebab-case with an action verb; `description` per the two-part template — self-score it per **description-quality** (aim ≥ 9).
+1. Create the target directory with `examples/`, `reference/`, and — only when justified — `scripts/`.
+2. Write the frontmatter: action-verb `name`; `description` per the two-part template, self-scored ≥ 9 per **description-quality**.
 3. Write `<when-to-use-this-skill>` as 3–7 bullet scenarios whose intent verbs appear in the `description` trigger phrase.
-4. Allocate a per-section char budget (when-to-use, knowledge, each capability, rules, guide) totaling ≤ **size-limits**; write each within its cap — prevention beats remediation.
-5. Write the knowledge section: put reference data in tables/lists; extract large rubrics to `reference/` files, self-linked from their knowledge subsection and routed inline from the steps that use them.
-6. Write each capability with a unique action-verb name and numbered steps; never embed reference tables or constraint bullets inside capabilities.
-7. Write rules only when multiple capabilities exist — each answers "When [scenario] → use [capability]".
-8. Write all prose per **writing-style** — directive voice, BLUF, hard caps, atomic bullets, no banned phrases, no meta-narration.
-9. Write prose per **platform-agnostic-writing** — no platform tool names, no concrete context paths.
+4. Allocate a per-section char budget totaling ≤ **size-limits**; write each section within its cap.
+5. Write knowledge as tables/lists; extract large rubrics to `reference/` and route them inline from the using step.
+6. Write each capability with a unique action-verb name and numbered steps; no embedded reference tables or constraint bullets.
+7. Write rules only when multiple capabilities exist; each answers "When X → use capability".
+8. Write all prose per **writing-style**.
+9. Write prose per **platform-agnostic-writing**.
 10. Validate the draft against **section-semantics** (violations, section order, naming).
-11. If the skill is part of a multi-skill pipeline, verify the 4 integration points per **pipeline-integration** from the created files' own self-declared relationships — never fetch sibling skills.
-12. Measure the SKILL.md per **size-limits** (script when available, else manual count); if over budget, apply **size-remediation** (lever order + gate) — never merge steps/lines.
-13. Write the final content to the user-provided `<target>/SKILL.md` (per **same-name-live-copy-ban**).
+11. If the skill is part of a multi-skill pipeline, verify the 4 integration points per **pipeline-integration**.
+12. Measure per **size-limits**; if over, apply **size-remediation**.
+13. Write to the user-provided `<target>/SKILL.md` (per **same-name-live-copy-ban**).
 </create-skill-file>
 
 <create-skill-examples>
@@ -111,50 +86,52 @@ Never read, compare, or edit a live/loaded skill with the same name in claude/op
 
 1. Determine one realistic scenario per capability per **example-standards**.
 2. Create one `.md` file per scenario under `examples/`.
-3. Include per file: a scenario heading, a setup paragraph, `Applies **[capability-name]**`, the input/context, and the expected output formatted as the capability would produce it.
+3. Include: scenario heading, setup paragraph, `Applies **[capability]**`, input, and expected output as the capability would produce it.
 4. Validate each against **example-standards** before writing.
-5. Write example prose per **writing-style** — scenario 1–2 sentences, output as the capability would produce it, no meta-notes inside the output.
-6. Measure each example per **size-limits** (≤9,000 chars / 150 lines); if over budget, apply **size-remediation** (trim edge cases, drop low-value examples).
+5. Write example prose per **writing-style**.
+6. Measure each example per **size-limits**; if over budget, apply **size-remediation** (trim edge cases, drop low-value examples).
 7. Write each example to its file.
 </create-skill-examples>
 
 <create-skill-references>
 **Objective**: Create or update reference files for large rubrics and detailed criteria.
 
-1. Identify knowledge entries that are large rubrics, scoring matrices, or comprehensive criteria that would bloat SKILL.md.
-2. Create a dedicated `.md` file per topic under `reference/` with a clear title, full content, and cross-references to the relevant capability.
-3. Write the reference per **writing-style** — title + rubric only, no narrative intro, no restatement of SKILL.md.
-4. Measure each reference per **size-limits** (≤12,000 chars / 150 lines); if over budget, apply **size-remediation** (split or condense).
-5. Route each reference: self-link it from its knowledge subsection; step-tied files are also routed inline from the step; step-independent files get a `<context-loading-guide>` row.
+1. Identify knowledge entries that are large rubrics, scoring matrices, or criteria that would bloat SKILL.md.
+2. Create one `.md` per topic under `reference/` with a title, content, and a cross-reference to its capability.
+3. Write the reference per **writing-style**: title + rubric, no narrative intro, no restatement of SKILL.md.
+4. Measure each reference per **size-limits**; if over, apply **size-remediation** (split or condense).
+5. Route each reference: link it from its knowledge entry or named-standards row; step-tied files also route inline from the step; step-independent files get a guide row.
 </create-skill-references>
 
-<validate-created-skill>
-**Objective**: Validate the created or edited skill file, examples, and references before delivery.
+<create-skill-scripts>
+**Objective**: Add the minimum automation a capability step needs — a CLI invocation, or a justified Python script.
 
-1. Apply **same-name-live-copy-ban**: validate only the created/user-provided files — never a same-named live copy. Then verify all required sections exist in order: frontmatter, `<when-to-use-this-skill>`, `<knowledge>`, `<capabilities>`, optional `<rules>`.
-2. Score the description per **description-quality** (target ≥ 9) and check bidirectional trigger coverage.
-3. Check capabilities: action-verb names, ordered steps, no embedded reference data.
-4. Check knowledge: material placed correctly, large rubrics extracted, `<context-loading-guide>` condition-first.
-5. Check writing style per **writing-style**: directive voice, BLUF, hard caps, no banned phrases, no meta-narration.
-6. Check platform-agnostic writing per **platform-agnostic-writing**: no tool names, no concrete context paths.
-7. Measure all files per **size-limits**; for over-budget files, apply **size-remediation** (lever order) + structural-integrity gate — line/step-merging fails as 🔴 Blocker.
-8. Check conciseness per **conciseness-check**: one line = one idea, nothing fails the "So what?" test.
-9. Check examples: coverage of every capability, quality per **example-standards**, traceability, no contradictions.
-10. Check rules: route "when → capability" without re-stating capability content.
-11. Check each capability has a validation/checklist step per **evaluation-process**; flag absence per its severity.
-12. If the skill references another skill or is loaded by sub-agents, verify integration per **pipeline-integration** from the created files' own self-declared relationships only — never fetch other skills.
-13. Report results with severity labels per **severity-levels** and fixes; if issues exist, return to the relevant creation capability, fix, and re-validate.
+1. Apply the preferred means in **script-and-cli-policy**: CLI, then inline one-liner, then `scripts/` only after all four justification tests.
+2. Place an accepted script at `scripts/<verb>_<object>.py` and declare `scripts/` in the directory layout per **section-semantics**.
+3. Write Python 3 stdlib only to the script contract: shebang, usage docstring, `main(argv) -> int`, exit 0/1/2, stable sorted output.
+4. Name the script path and output fields in the step that runs it.
+5. Validate: run with no arguments, a passing sample, and a failing sample; confirm exit codes and no dependency, network, or prompt.
+6. Create the example per **example-standards**, then measure the script and changed skill files per **size-limits**.
+</create-skill-scripts>
+
+<validate-created-skill>
+**Objective**: Validate the created or edited skill files before delivery.
+
+1. Apply **same-name-live-copy-ban**; validate only the created or user-provided files.
+2. Run the 14 checks in **reference/validate-skill-procedure.md**, in order, on every created file.
+3. Report each finding with a severity label per **severity-levels** and an actionable fix; return to the failing capability and re-run step 2.
+4. Re-measure changed files and confirm the structural-integrity gate passed — line or step merging is a 🔴 Blocker.
 </validate-created-skill>
 
 <edit-skill>
-**Objective**: Edit or improve an existing skill's files (SKILL.md, examples, references) by reusing the create-* capabilities in existing-file mode.
+**Objective**: Edit an existing skill's files by reusing the create-* capabilities in existing-file mode.
 
 1. Apply **same-name-live-copy-ban** — target only the user-provided existing files.
-2. Read and inventory the skill: sections, capabilities, knowledge, rules, guide rows, examples, references.
-3. Triage per **reference/edit-skill-procedure.md** — an open-ended "improve" runs `review-skill`'s **review-skill-file** (read-only) and applies its findings; a concrete request proceeds directly.
-4. Classify each change per the change-type table in **reference/edit-skill-procedure.md** (add, remove, rename, restructure, apply findings, size-reduce).
-5. Route each change to **create-skill-file** / **create-skill-examples** / **create-skill-references** in existing-file mode per **reference/edit-skill-procedure.md**.
-6. Run the ripple checklist after renames or removals per **reference/edit-skill-procedure.md**.
+2. Inventory the skill: sections, capabilities, knowledge, rules, guide rows, examples, references.
+3. Triage per **reference/edit-skill-procedure.md**: an open-ended "improve" runs `review-skill` first; a concrete request proceeds directly.
+4. Classify each change per the change-type table in **reference/edit-skill-procedure.md**.
+5. Route each change to the mapped create-* capability in existing-file mode per **reference/edit-skill-procedure.md**.
+6. Run the ripple checklist after renames or removals.
 7. Run **validate-created-skill** after each change; revert on a Blocker 🔴 and redo.
 8. Re-measure changed files per **size-limits** and report per **severity-levels**.
 </edit-skill>
@@ -164,10 +141,9 @@ Never read, compare, or edit a live/loaded skill with the same name in claude/op
 <rules>
 <rule>When the user requests to create a new skill, use **collect-skill-requirements** to gather name, description, scenarios, capabilities, knowledge, and example needs.</rule>
 <rule>After requirements are confirmed, use **create-skill-file** to generate SKILL.md, and **create-skill-examples** plus **create-skill-references** in parallel as needed.</rule>
-<rule>When the user provides existing source materials, use **collect-skill-requirements** step 3 to incorporate them into the knowledge section rather than embedding them in capabilities.</rule>
 <rule>After creating or editing all files, use **validate-created-skill** before presenting the result.</rule>
-<rule>When validation reveals issues, return to the relevant creation capability to fix them, then re-validate.</rule>
 <rule>When creating or validating a skill, operate only on the user-provided files per **same-name-live-copy-ban** — never read, compare, or edit a live/loaded skill with the same name.</rule>
 <rule>When the user asks to edit, improve, or revise an existing skill, use **edit-skill**; run an open-ended "improve" through `review-skill` first per **reference/edit-skill-procedure.md**.</rule>
 <rule>When the user asks for a read-only review of an existing skill file, delegate to the `review-skill` skill instead.</rule>
+<rule>When a capability step needs automation, use **create-skill-scripts** — pick an installed CLI before a script, and Python 3 stdlib before any other language.</rule>
 </rules>

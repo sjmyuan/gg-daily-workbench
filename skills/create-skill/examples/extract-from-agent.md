@@ -12,7 +12,7 @@ Read the file and map constructs to skill targets:
 
 | Source construct | Skill target |
 |---|---|
-| `<knowledge>` subsections | knowledge section (extract large rubrics to `reference/`) |
+| `<knowledge>` subsections | knowledge section (named-standards table; extract large rubrics to `reference/`) |
 | Inline capability steps | capabilities with action-verb names |
 | `<rules>` | rules (when → capability routing) |
 
