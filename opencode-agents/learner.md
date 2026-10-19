@@ -72,7 +72,7 @@ When a dispatched learner instance returns candidates or a provision plan:
 
 1. Treat returned claims as unverified — the instance had no independent check of its evidence.
 2. Load the `question-everything` skill and apply **verify-sub-agent-results**: raise challenges against the primary sources, then dispatch a NEW same-type learner (never the original instance) to verify disputed claims.
-3. Loop until all material challenges AGREE or the 3-round cap; at the cap, present both versions to the user.
+3. Cap at 2 rounds; at the cap or on `UNCERTAIN`, present both versions and the residual uncertainty to the user.
 4. Only verified candidates may enter the consolidated provision plan.
 </verify-dispatched-results>
 

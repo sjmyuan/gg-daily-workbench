@@ -23,12 +23,26 @@ Each capability's brief template lives in its own reference file (see the table 
 2. For each unit, fill the capability's ready-to-fill brief (see the table above) per the **structured brief shape** — carry all known context, persisted items by **path** and unpersisted items **inline**; the shared known-context and evidence-map contracts live in **reference/dispatch-briefs.md**.
 3. Dispatch the briefs — all units concurrently when there are multiple, or the single unit on its own when there is one. Sub-agents operate independently and do not communicate with each other. Apply **reference/dispatch-discipline.md** — explicit model per brief, bounded waits, and no worker-spawned sub-agents.
 4. Collect results from all sub-agents when they complete.
-5. Verify each collected result via `question-everything`'s **verify-sub-agent-results** — dispatch evidence-matched verifiers per the verification protocol. Review the accepted results for completeness and consistency across areas, then hand each area's verified evidence map to `compile-findings-doc`, which records it in the area's `docs/evidence-<area>.md` (see **reference/findings-document-guide.md**).
+5. Verify each collected result via `question-everything`'s **verify-sub-agent-results** at the depth in **Verifying Returned Results** below. Review the accepted results for completeness and consistency across areas, then hand each area's verified evidence map to `compile-findings-doc`, which records it in the area's `docs/evidence-<area>.md` (see **reference/findings-document-guide.md**).
 6. **Document-compilation briefs** (findings and solution docs) carry the full synthesis context per **reference/findings-doc-brief.md** / **reference/solution-doc-brief.md** — the orchestrator still reviews, validates, and presents the returned doc.
 
 ## Verifying Returned Results
 
-Every sub-agent result — investigation findings, ADR decisions, and dispatched findings/solution-doc compilations — is verified before acceptance via `question-everything`'s **verify-sub-agent-results**: challenge the result across the six dimensions, then route each challenge to an **evidence-matched verifier** — `code-investigator` for code claims (a findings/ADR/solution doc still cites code), the producer's type for non-code, never the original instance; accept when all material challenges AGREE, or re-investigate the affected work with another NEW evidence-matched agent when any DISAGREE/UNCERTAIN. Loop until all agree or the 3-round cap; escalate to the user at the cap. The original sub-agent instance is never reused — and the re-dispatch brief carries the **verification result** (the open challenges and their verdicts) so the new sub-agent resolves them instead of redoing verified work (see **reference/dispatch-briefs.md**, **Verification results in a re-dispatch brief**). Each verifier brief carries the known context — established `file:line`, the settled-vs-open split, and searched-negatives — so the verifier starts from evidence, not zero. Dispatched findings/solution-doc compilations synthesize already-verified material, so their verification focuses on fidelity to that material — but any code or `file:line` claim they add still routes to `code-investigator`. Full loop: `question-everything`'s **reference/verification-protocol.md**.
+Verify via `question-everything`'s **verify-sub-agent-results**, with depth set by blast radius — never by artifact count:
+
+| Unit | Depth | What is verified |
+|---|---|---|
+| Investigation evidence | **Single pass** (default) | Material code claims, each against primary sources |
+| Findings-doc compilation | **Fidelity** | IDs, counts, and `file:line` match the verified ledger; no evidence sweep |
+| Solution-doc compilation | **Fidelity** | Fidelity to verified ADRs and evidence; no evidence sweep |
+| ADR decision (load-bearing) | **Full loop** (cap 2) | Chosen-option fit plus any new code claims; verify → repair once → confirm changed claims |
+
+- `code-investigator` verifies code claims; non-code claims go to a NEW instance of the producer's type. Never reuse the original instance.
+- A fidelity check that finds a new `file:line` claim drops to a **single pass** on that claim.
+- The re-dispatch brief carries the **verification result** (open challenges + verdicts) so the new agent resolves them instead of redoing settled work (see **reference/dispatch-briefs.md**).
+- Each verifier brief carries the known context — established `file:line`, the settled-vs-open split, and searched-negatives.
+- `UNCERTAIN` → tag the claim **unverified** in the evidence doc and surface it; never add a round to converge.
+- At the 2-round cap, present both versions to the user. Full rules: `question-everything`'s **reference/verification-protocol.md**.
 
 ## When NOT to Dispatch
 

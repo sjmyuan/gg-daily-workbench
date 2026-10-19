@@ -6,7 +6,6 @@ description: Question and verify agent-reported information like a skeptic — r
 <when-to-use-this-skill>
 - User asks to question or challenge a result returned by an agent or sub-agent
 - User asks to verify a returned result before accepting it — run the question → verify → accept/requestion loop
-- User asks the agent to act as a skeptic toward a result or claim
 - A result will be consumed downstream (decision, commit, merge, release) and being wrong is costly
 - Two agents or sub-agents return conflicting results and a resolution is needed
 - User asks to validate the correctness, completeness, or clarity of a returned result
@@ -17,19 +16,19 @@ description: Question and verify agent-reported information like a skeptic — r
 <knowledge>
 
 <skeptic-mindset>
-Treat every returned result as an unverified claim. The default stance is suspicion, not trust — trust is earned through questioning and independent verification. Never accept a result merely because it is confident, detailed, or produced by a capable-looking agent.
+Treat every returned result as an unverified claim. Default to suspicion; trust is earned through questioning and independent verification. Never accept a result because it is confident, detailed, or from a capable-looking agent.
 </skeptic-mindset>
 
 <questioning-dimensions>
-Question results across six dimensions: **Completeness** (missing paths/cases), **Correctness** (accuracy vs. primary sources), **Ambiguity** (vague wording), **Consistency** (self-contradiction), **Evidence** (claims backed by sources), **Assumptions** (silent premises). Load [reference/questioning-dimensions.md](reference/questioning-dimensions.md) for the full rubric with concrete questions per dimension.
+Question results across six dimensions: **Completeness** (missing paths/cases), **Correctness** (accuracy vs. primary sources), **Ambiguity** (vague wording), **Consistency** (self-contradiction), **Evidence** (claims backed by sources), **Assumptions** (silent premises). Load [reference/questioning-dimensions.md](reference/questioning-dimensions.md) for the per-dimension rubric.
 </questioning-dimensions>
 
 <verification-principles>
-Verification is the loop that decides whether a challenged result may be accepted. Principles: **independence** (the verifier never sees a pre-written expected verdict), **primary sources** (answer from code, docs, data, logs — not the original result), **traceability** (one verdict per challenge), **fresh instances** (every verifier and re-investigator is a NEW sub-agent — never the original instance), and **evidence-matched verifiers** (route each challenge to the agent that can read the evidence that settles it: code → `code-investigator`; non-code → a NEW agent of the producer's type). The loop caps at 3 rounds; at the cap, present both versions to the user. Full rules: **reference/verification-protocol.md**.
+Verification decides whether a challenged result may be accepted. Principles: **independence** (no pre-written verdict), **primary sources** (code, docs, data, logs — not the result), **traceability** (one verdict per challenge), **fresh instances** (a NEW agent whenever dispatching), **evidence-matched verifiers** (code → `code-investigator`; non-code → a NEW producer-type agent), and **depth by blast radius** (skip structure, fidelity-check synthesis, single pass for new facts, full loop only for load-bearing decisions). Cap: **2 rounds**; surface residual uncertainty. Full rules: **reference/verification-protocol.md**.
 </verification-principles>
 
 <brief-context>
-Every verifier brief carries the known context — established `file:line`, the settled-vs-open claim split, and prior searched-negatives — so the verifier starts from evidence, not zero. The carried context stays non-exhaustive; the verifier may go beyond it. Template: **reference/verification-protocol.md**.
+Every verifier brief carries known context — established `file:line`, the settled-vs-open split, and searched-negatives — so it starts from evidence, not zero. The context is non-exhaustive; the verifier may go beyond it. Template: **reference/verification-protocol.md**.
 </brief-context>
 
 <context-loading-guide>
@@ -59,7 +58,7 @@ Every verifier brief carries the known context — established `file:line`, the 
 </question-the-result>
 
 <verify-sub-agent-results>
-**Objective**: Run the verification loop on a returned result — challenge, verify, and accept or re-investigate — so only verified results are handed back to the caller.
+**Objective**: Run the verification loop on a returned result — challenge, verify, and accept or repair — so only verified results are handed back to the caller.
 
 1. Load [reference/verification-protocol.md](reference/verification-protocol.md).
 2. Apply **question-the-result** to raise prioritized challenges on the returned result.
@@ -68,9 +67,9 @@ Every verifier brief carries the known context — established `file:line`, the 
 5. Collect per-challenge verdicts (AGREE / DISAGREE / UNCERTAIN), each traceable to its challenge and citing its primary source.
 6. Apply the protocol's Traps list to the collected verdicts before comparing.
 7. Accept when every material verdict is AGREE.
-8. If any material verdict is DISAGREE or UNCERTAIN, dispatch a NEW evidence-matched verifier to redo the affected work (code facts → `code-investigator`; documents → the producer's type) with the corrected understanding, then loop to step 2.
-9. Loop until all AGREE or the 3-round cap.
-10. At the cap, present both versions to the user — never silently pick one.
+8. If any material verdict is DISAGREE, dispatch a NEW evidence-matched agent to repair the affected work (code facts → `code-investigator`; documents → the producer's type), then confirm only the changed claims. On UNCERTAIN, tag the claim unverified and surface it — no further round.
+9. Cap the loop at **2 rounds** — verify once, repair once, confirm only the changed claims.
+10. At the cap, present both versions and the residual uncertainty to the user — never silently pick one.
 11. Hand the verified result back to the caller for synthesis only after verification.
 </verify-sub-agent-results>
 

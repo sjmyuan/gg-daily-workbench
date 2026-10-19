@@ -46,6 +46,7 @@ Before dispatching, detect the platform's agent mechanism and map each unit to t
 | "I'll verify it myself in this session" | Dispatch a NEW evidence-matched agent; verify in-session only when none exists. |
 | "The producer's own agent type can verify its doc" | A findings/ADR/solution doc still makes code claims — those need a code-reading verifier (`code-investigator`). |
 | "Re-investigate with the same agent — it has context" | It anchors on its own output; dispatch a new instance. |
-| "One more round will converge" | Past the cap the failure is structural — present both versions to the user. |
+| "Every artifact needs a fresh verifier" | Depth scales with blast radius — synthesis docs get a fidelity check, not an evidence sweep. |
+| "One more round will converge" | Past the 2-round cap the failure is structural — present both versions to the user. |
 | "The worker spawned its own reviewer — extra assurance" | A duplicate seat; the orchestrator's verification is the gate. |
 | "It's only a scope note — I'll edit the ADR directly" | Artifacts are written by their owning skill; bypassing it degrades them. |

@@ -5,7 +5,7 @@ Full procedure for the `compile-findings-doc` capability — loaded on demand wh
 Findings docs are **one pair per area, always** — compile `docs/findings-<area>.md` (human) plus `docs/evidence-<area>.md` (evidence) for every area on the scope map, each from its area's verified investigation results.
 
 1. For each area on the scope map, dispatch that area's findings-doc compilation to `findings-doc-writer` per **multi-agent-orchestration** — one brief per area per **reference/findings-doc-brief.md** (2+ areas dispatch concurrently).
-2. Verify each compiled pair via `question-everything`'s **verify-sub-agent-results**.
+2. Apply `question-everything`'s **verify-sub-agent-results** at **fidelity** depth — IDs, counts, and cross-references against the verified ledger; no evidence sweep.
 3. Validate per `document-findings`'s **reference/quality-checklist.md**:
    - **Human doc** `docs/findings-<area>.md`: frontmatter → Summary → Orientation → topic blocks; no claims, confidence tags, ledger, or evidence-doc link.
    - **Evidence doc** `docs/evidence-<area>.md`: metadata → topic map → claim ledger → searched-negatives → coverage → cross-area references; every claim with inline `file:line` and a confidence tag; the ledger complete; stable IDs unrenumbered.

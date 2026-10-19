@@ -4,22 +4,24 @@ Rules for **orchestrate-delivery**, **resume-delivery**, and **update-delivery-i
 
 ## Agent dispatch
 
-- **Always delegate — never do the work yourself.** The orchestrator only dispatches and tracks. Every delivery task maps to a dedicated agent:
+- **Always delegate delivery work — never do it yourself.** The orchestrator only dispatches and tracks. Reading recorded artifacts to answer a question is orchestration, not delivery — apply **triage-issue** first. Every delivery task maps to a dedicated agent:
 
 | Task | Delegated agent (role → example) | Applies | Result |
 |---|---|---|---|
-| Investigate (incl. rework spike) | investigation agent → **spike-conductor** | **conduct-spike** | focused findings / ADR / solution-doc updates |
+| Answer a question (L0) | orchestrator reads the record | **investigation-triage** | answer, no artifacts |
+| Investigate a code fact (L1) | investigation agent → **code-investigator** | **investigate-code** | evidence answer with `file:line` |
+| Spike a decision (L2/L3; incl. rework) | ADR agent → **adr-writer** (L2), spike agent → **spike-conductor** (L3) | **draft-adr** / **conduct-spike** | revised ADR, or focused findings / solution-doc updates |
 | Plan a cell | planning agent → **planner** | **plan-development-task** | `plan.md` + `context.md` |
 | Execute a cell | execution agent → **executor** | **execute-plan** | code changes + commits |
 | Verify a cell | review agent → **code-reviewer** | **review-code** | spec-compliance + trust verdict |
 | Update solution doc | solution-doc agent → **solution-doc-writer** | **write-solution-doc** | revised sections, rewrite in place |
 | Update ADR | ADR agent → **adr-writer** | **draft-adr** | revised ADR, rewrite in place |
 
-- **One cell per agent.** Planning agents apply **plan-development-task** and write `deliveries/<epic-name>/{repo}/{feature-name}/plan.md` + `context.md` (feature folder named by the kebab-case feature name, e.g. `wallet-contracts`). Execution agents apply **execute-plan** and run the plan.
-- **Plan-first hard gate**: plan and execute are separate agents. Dispatch the **planner** first; verify its plan file exists on disk at the recorded Plan location; only then dispatch the **executor**. Never one agent for both plan and execute, never execute without a verified plan file, and never write or append a plan after execution.
-- **No simplicity exemption**: apparent simplicity never bypasses the flow — every cell, however simple or easy, is planned (**plan-development-task**) and executed (**execute-plan**) by separate agents in that order; never implement a cell directly.
+- **One cell per agent.** The planner writes `<epic>/<repo>/<feature-name>/plan.md` + `context.md` (kebab-case folder); the executor runs that plan.
+- **Plan-first gate**: separate agents. Dispatch the **planner**, verify its plan file on disk, then the **executor**. Never one agent for both; never execute without a verified plan; never append a plan after execution.
+- **No simplicity exemption**: every cell, however simple, is planned then executed by separate agents; never implement directly.
 - **Artifact updates are delegated too.** When a plan or execution surfaces changes to the spike's solution doc or ADRs, dispatch a **solution-doc-writer** / **adr-writer** agent for the update — never edit those artifacts from the orchestrator.
-- **Write boundary.** The orchestrator's only writes are the delivery index and delivery-doc prose, inside `**/deliveries/**`. Never modify code, config, tests, or any file outside the delivery folder — code changes come only from a dispatched **executor**. After every index write, run the delivery write-boundary check (see **reference/write-boundary-guide.md**).
+- **Write boundary.** Writes stay inside `**/deliveries/**`; code comes only from a dispatched **executor**. Run the write-boundary check after every index write (**reference/write-boundary-guide.md**).
 - **Full context in every brief.** Each brief carries the cell's scope brief + **spike references**, filled by **path** for persisted info and **inline** for orchestrator-only context (rule: **reference/delivery-index-format.md**, per-cell scope brief); never inline a whole spike artifact.
 - **Persist references to context.md.** Planning agents record the spike references in `context.md`, so execution and resume agents have durable distilled context and can load referenced artifacts when needed.
 - Dispatch agents **in parallel** across cells, subject to:
@@ -28,7 +30,7 @@ Rules for **orchestrate-delivery**, **resume-delivery**, and **update-delivery-i
   - **No conflict in parallel**: never run two cells that touch the same repo with a conflict edge at the same time — serialize them.
   - **Capacity**: match the number of parallel agents to what the platform supports; ask the user when unsure.
 - Use the platform's agent/sub-agent mechanism — detect what is available (e.g., planner / executor agents) and dispatch accordingly. If no agent mechanism exists, ask the user how to proceed — never fall back to doing the work yourself.
-- **Branches**: one branch per repo per cell, named to match the **repo's branch convention** (detect from existing branches / git config / team docs, or ask the user — never assume a prefix); the branch is recorded in the delivery index and included in the agent brief (the PR reference is recorded once opened); execution agents create the branch during their Prepare Environment step and commit small-step locally (see **branch-and-push-conventions**). The **head commit** from each execution handoff is recorded in the index (a pointer, like Branch/PR).
+- **Branches**: one per repo per cell, named per the repo's convention (detect; never assume a prefix). Record the branch, PR, and head commit in the index; the executor creates the branch and commits small-step (**branch-and-push-conventions**).
 - **Push gating**: never push a branch or open a PR automatically — after a cell's work is complete and ready to integrate, ask the user for confirmation first.
 
 ## Orchestration loop
@@ -67,7 +69,7 @@ Never dispatch a planned cell on a stale decision.
 
 ## Resume
 
-- On resume, confirm ADR currency with the user first — if a governing ADR changed, apply **handle-adr-change** before resuming. Then load the index: completed waves are skipped; in-progress cells resume from the last step in the active `rework-<date>.md` (or `plan.md` if no rework — see the `context.md` manifest); failed cells are re-planned or retried with the user; blocked cells wait for their blocker.
+- On resume, confirm ADR currency first (apply **handle-adr-change** if changed). Skip completed waves; resume in-progress from the active `rework-<date>.md` (or `plan.md`); re-plan/retry failed; wait on blocked.
 - Report what is resumed vs skipped before dispatching.
 
 ## Failure handling
@@ -95,7 +97,7 @@ Two modes, chosen by the cell's status (see **rework-modes** in the SKILL.md kno
 
 **Post-merge** (cell **done** — merged/verified): history is shipped and preserved.
 
-1. **Focused spike**: dispatch the **spike-conductor** agent (conduct-spike), scoped narrowly to the affected decision — usually the feature's governing ADR. Do not re-open the whole epic.
+1. **Triage**: apply **triage-issue**. A single wrong decision goes straight to **adr-writer** (L2). Dispatch **spike-conductor** (L3) only when the decision space changed or ≥2 decisions/areas are involved; scope it as a delta. Never re-open the whole epic.
 2. **Delegate artifact updates**: ADR changes → **adr-writer** (draft-adr); solution-doc changes → **solution-doc-writer** (write-solution-doc).
 3. **Update the index**: record only the rework cell (`F2-r1`, `Rework of: F2`) in a new wave + its plan-location pointer — the original cell stays **done**; spike focus, ADR revision, and rework steps live in the sibling `rework-<date>.md` / `context.md`.
 4. **Write the rework plan**: dispatch the **planner** (**plan-development-task**) to write a sibling `rework-<date>.md` in the feature folder — `plan.md` stays the frozen original, implemented steps never modified.
@@ -106,7 +108,7 @@ Two modes, chosen by the cell's status (see **rework-modes** in the SKILL.md kno
 
 **Pre-merge** (cell **in-progress** — implemented but not pushed/merged): nothing is merged yet, same append-only rule.
 
-1. **Scope**: no focused spike unless the issue challenges the governing ADR decision — if it does, dispatch **spike-conductor** and **adr-writer** / **solution-doc-writer** as above.
+1. **Scope**: apply **triage-issue**. Default to L1 (evidence) or L2 (ADR revision); dispatch **spike-conductor** only when the issue challenges the governing ADR decision across ≥2 decisions/areas.
 2. **Write the rework plan**: dispatch the **planner** (**plan-development-task**) to write a sibling `rework-<date>.md` in the feature folder — `plan.md` stays the frozen original, implemented steps never modified; no new rework feature/wave (rework stays on the same cell).
 3. **Execute the rework plan**: dispatch the **executor** (**execute-plan**) to run only the new rework steps on the unmerged work.
 4. No index change (cell stays **in-progress**; the sibling `rework-<date>.md` is the record); ask the user before pushing / opening a PR.

@@ -7,11 +7,13 @@
 ## 1. Identify scope + suggest skill routing
 
 - Affected cell: `order-service/F2` (done) · governing decision: `adr-wallet-01-payment-failure-handling.md` (payment failure handling)
+- **Triage (L3)**: the gateway assumption is invalid and compensating-failure **options must be compared** — one of the L3 triggers. A single decision tweak would be L2.
 - Focused spike scope: `adr-wallet-01-payment-failure-handling.md` only — the rest of the epic is not re-opened.
 - Skill-routing suggestion presented to the user before dispatch:
 
 | Step | Agent | Skill |
 |---|---|---|
+| Triage | orchestrator (L3 by trigger) | **triage-issue** |
 | Focused spike on `adr-wallet-01-payment-failure-handling.md` | **spike-conductor** | **conduct-spike** |
 | ADR revision (decision changes) | **adr-writer** | **draft-adr** |
 | Solution-doc refresh (target state changes) | **solution-doc-writer** | **write-solution-doc** |

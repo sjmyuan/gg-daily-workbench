@@ -10,6 +10,22 @@ Use with **verify-sub-agent-results** (the verification loop).
 - Never show the verifier a pre-written "expected verdict" — only the claims and the challenges.
 - If no suitable verifier agent is available, verify directly against primary sources in the current session.
 
+## Verification depth
+
+Scale depth to the **blast radius of the claim**, not the number of artifacts. Verify once at the source; never re-verify a synthesis of already-verified material.
+
+| Tier | Applies to | Action |
+|---|---|---|
+| **Skip** | Structure, format, wording; a doc that only restates a verified ledger | Owning-skill checklist only — no verifier dispatch |
+| **Fidelity** | Findings/solution synthesis over a verified ledger | Check IDs, counts, and cross-references against the ledger; no fresh evidence sweep; any new `file:line` claim drops to **Single pass** |
+| **Single pass** | New evidence, code facts, investigation results | One independent verifier round — the default |
+| **Full loop** | Load-bearing ADR decision, irreversible or high-cost outcome, conflicting evidence, or user request | Verify → repair once → scoped confirm (cap 2) |
+
+- Default to **Single pass**; **Full loop** is opt-in by the criteria above.
+- A `DISAGREE` gets one repair by a new evidence-matched agent; confirm only the changed claims, never the settled ones.
+- `UNCERTAIN` is a valid outcome: tag the claim **unverified** in the evidence doc and surface it to the user — do not loop for convergence.
+- Verify only **material** claims, capped at the top 3 by impact; each challenge needs a falsifiable primary-source test. Note low-priority challenges without verifying them.
+
 ## Verifier selection
 
 Route each challenge to the agent that can read the evidence that would settle it:
@@ -72,16 +88,17 @@ Return a per-challenge verdict, each citing its primary source (file:line, doc, 
 ## Comparison rules
 
 - All material verdicts **AGREE** → accept the result; report agreed claims and residual uncertainty.
-- Any material verdict **DISAGREE** or **UNCERTAIN** → dispatch a new evidence-matched agent to redo the affected work (below), then re-enter **question-the-result** on the new result.
-- Round cap: **3 rounds**. At the cap, stop and present both versions (original vs. verified) to the user for a decision — never silently pick one.
+- Any material verdict **DISAGREE** → dispatch a new evidence-matched agent to repair the affected work (below), then confirm only the changed claims.
+- Any material verdict **UNCERTAIN** → tag the claim **unverified**, record what is missing, and surface it; no further round.
+- Round cap: **2 rounds** — independent verify, then a scoped confirm after one repair. At the cap, present both versions (original vs. verified) to the user — never silently pick one.
 - Dispatch verification only for material (high/medium-priority) challenges; low-priority ones are noted, not verified.
 
-## Re-investigation loop
+## Repair loop
 
 - Dispatch a NEW evidence-matched agent — `code-investigator` to re-investigate a wrong code fact; the producer's type to recompile a document — never the original instance.
-- The brief carries: the challenged claims, each DISAGREE/UNCERTAIN verdict with its cited source and evidence, and the corrected understanding.
-- The agent redoes the affected work from scratch and must address every divergence — not rubber-stamp the earlier result.
-- The new result is then questioned again and re-verified by another new evidence-matched agent in the next round.
+- The brief carries: the challenged claims, each DISAGREE verdict with its cited source and evidence, and the corrected understanding.
+- The agent redoes only the affected work and must address every divergence — not rubber-stamp the earlier result.
+- The repaired result is questioned again; another new evidence-matched verifier confirms **only the changed claims**. Settled claims are not re-verified.
 
 ## Traps
 
@@ -94,5 +111,7 @@ Return a per-challenge verdict, each citing its primary source (file:line, doc, 
 - Sending only the verdict back in re-investigation — the agent needs the verifier's evidence and corrected understanding to redo its investigation
 - Treating "same wording" as agreement — compare substance and evidence, not phrasing
 - Verifying low-priority challenges — dispatch only material (high/medium) challenges; low-priority ones are noted, not verified
+- Re-verifying a synthesis doc — a findings/solution doc built from a verified ledger needs a fidelity check, not an evidence sweep
+- Chasing `UNCERTAIN` with another round — tag it **unverified** and surface it instead
 - Accepting verdicts without a cited source — each AGREE/DISAGREE must name the primary source that supports it
-- Infinite loops — always honor the round cap
+- Infinite loops — always honor the 2-round cap

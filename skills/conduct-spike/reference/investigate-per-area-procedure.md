@@ -4,7 +4,7 @@ Full procedure for the `investigate-per-area` capability — loaded on demand wh
 
 1. Dispatch each area's investigation to `code-investigator` per **multi-agent-orchestration**.
 2. Brief each investigation per **reference/investigation-brief.md**.
-3. Verify each area's result via `question-everything`'s **verify-sub-agent-results**.
+3. Apply `question-everything`'s **verify-sub-agent-results** at **single-pass** depth (default).
 4. Ask: "Is the investigation complete, or continue in a new direction?"
 5. Loop to scope when a new direction is chosen.
 6. Hand off to **compile-findings-doc** with the evidence maps.

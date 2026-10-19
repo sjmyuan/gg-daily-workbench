@@ -45,7 +45,8 @@ A full quality re-review is out of scope — `review-post-execution` already ran
 |---|---|
 | Pass | Mark the cell **verified** via **update-delivery-index** |
 | Spec gap or Critical/Important | Dispatch the **planner** immediately with the findings — it writes a sibling `rework-<date>.md`; then the **executor**; then a scoped re-review |
-| Cap (3 rounds) | Stop and escalate to the user — the cell cannot reach **verified** with an unresolved spec gap |
+| Cap (2 rounds) | Stop and escalate to the user — the cell cannot reach **verified** with an unresolved spec gap |
+| Recurs after round 1 | The finding is structural — escalate immediately instead of spending the second round |
 
 Never silently discard a finding.
 
@@ -72,5 +73,5 @@ When all cells are **done**, run one cross-cell review + integration test pass o
 - [ ] code-reviewer fetched the diff over the recorded range.
 - [ ] code-reviewer is a fresh instance, not the executor.
 - [ ] Both verdicts present: spec compliance and trust check.
-- [ ] Fix loop within 3 rounds; an unresolved finding escalated to the user.
+- [ ] Fix loop within 2 rounds; a recurring or unresolved finding escalated to the user.
 - [ ] Fix findings dispatched to the planner; the `rework-<date>.md` file is the record.

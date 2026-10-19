@@ -52,23 +52,23 @@ When the user supplies investigation material, skip **investigate-per-area** and
 </pre-existing-findings>
 
 <findings-document>
-The spike's findings doc pair (via `document-findings`): a publishable human doc (resource index, topic blocks) plus an evidence doc holding the ledger, claim IDs, and confidence — the **evidence home**. One pair per area; any brief that carries an area's findings passes both docs together; cross-area constraints travel as cross-references. Details: **reference/findings-document-guide.md**.
+The spike's findings pair (via `document-findings`): a human doc (resource index, topics) plus an evidence doc holding the ledger, claim IDs, and confidence — the **evidence home**. One pair per area; briefs carry both docs; cross-area constraints travel as references. Details: **reference/findings-document-guide.md**.
 </findings-document>
 
 <continuation-mode>
-Another round seeded with prior artifacts: read `scope.md` statuses for open work, confirm add/adjust areas and problems, run capabilities **revise-in-place**, then **sync-update-artifacts**.
+Another round seeded with prior artifacts: read `scope.md` for open work, confirm area/problem changes, run **revise-in-place**, then **sync-update-artifacts**.
 </continuation-mode>
 
 <greenfield-scenarios>
-No existing implementation: research industry approaches, comparable systems, and operational constraints. Never build POCs — `orchestrate-feature-delivery` delivers any POC.
+No existing implementation: research industry approaches, comparables, and constraints. Never build POCs — `orchestrate-feature-delivery` delivers any POC.
 </greenfield-scenarios>
 
 <multi-agent-orchestration>
-Dispatch investigation, findings-doc compilation, ADR drafting, and solution-doc compilation to sub-agents — including single-task spikes; dispatch is the default. Details: **reference/multi-agent-orchestration.md**; model routing, waiting, fallback: **reference/dispatch-discipline.md**.
+Dispatch every spike unit — including a single-task spike — to sub-agents. Details: **reference/multi-agent-orchestration.md**; model routing, waits, fallback: **reference/dispatch-discipline.md**.
 </multi-agent-orchestration>
 
 <sub-agent-verification>
-Every dispatched result is verified before acceptance via `question-everything`'s **verify-sub-agent-results** — evidence-matched verifiers (code → `code-investigator`, else the producer's type), accept or re-investigate. Full rules: `question-everything`'s **reference/verification-protocol.md**.
+Verification depth scales with blast radius, not artifact count: investigation evidence gets one independent verifier pass; findings/solution synthesis gets a fidelity check against the verified ledger; only load-bearing ADR decisions get the full loop. Cap 2 rounds — verify, repair once, confirm changed claims; residual uncertainty is tagged, not chased. Full rules: `question-everything`'s **reference/verification-protocol.md**.
 </sub-agent-verification>
 
 <problem-decomposition-guide>

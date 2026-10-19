@@ -59,11 +59,11 @@ An area's findings are **always passed as a pair** — the human doc (`docs/find
 
 ## Verification results in a re-dispatch brief
 
-A unit re-dispatched after a verification **DISAGREE** / **UNCERTAIN** carries the **verification result** — never a blank re-run. Its **Inputs** add:
+A unit re-dispatched after a verification **DISAGREE** carries the **verification result** — never a blank re-run. Its **Inputs** add:
 
 - **Open challenges (inline)**: the challenged claims, each challenge's verdict, and what the verifier disputed — resolve each and leave the settled work alone.
 - **Priors to preserve (path)**: the prior result or its evidence map, once persisted — start from it, do not rebuild.
-- **Re-dispatch scope**: which claims to re-examine and the round number (cap 3, per `question-everything`'s **verify-sub-agent-results**).
+- **Re-dispatch scope**: which claims to re-examine and the round number (cap 2 — repair once, then confirm changed claims; per `question-everything`'s **verify-sub-agent-results**).
 
 The result is inline (not yet an artifact); when a paused unit recorded open challenges in `scope.md` (see **scope-map-guide**), pass that section by path.
 
