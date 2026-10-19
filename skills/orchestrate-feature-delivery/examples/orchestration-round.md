@@ -41,7 +41,7 @@ F1's execution completes → the orchestrator applies **verify-cell**: a fresh *
 
 ## 6. Push approval + merge + update index
 
-Per **branch-and-push-conventions**, the branch is pushed and the PR opened only after user approval — F1 becomes **done** only after the PR merges with the recorded head commit.
+Per **branch-and-push-conventions**, the executor pushes and opens the PR after user approval — F1 becomes **done** only after the PR merges with the recorded head commit.
 
 | Cell | Branch | PR | Commit | Status | Agent | Location |
 |---|---|---|---|---|---|---|

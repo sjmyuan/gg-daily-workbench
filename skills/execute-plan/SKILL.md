@@ -98,7 +98,7 @@ All prose written into `plan.md` / `context.md` follows **reference/writing-styl
 </concise-writing>
 
 <orchestrator-handoff>
-When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), append the execution handoff to `context.md` `## Execution` — return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`; base is the branch point on first execution, the previous head for a rework), test evidence, the `review-code` outcome, and concerns — so the orchestrator's verification gate can read it. Append each fix round to the same section. A POC's completion routes to the decision gate.
+When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), append the execution handoff to `context.md` `## Execution` — return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`; base is the branch point on first execution, the previous head for a rework), test evidence, the `review-code` outcome, the PR reference (number/URL) when one is opened or `push/PR: pending approval`, and concerns — so the orchestrator's verification gate can read it. Append each fix round to the same section. A POC's completion routes to the decision gate.
 </orchestrator-handoff>
 
 <context-loading-guide>
@@ -242,6 +242,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 2. Ask the user explicitly: "Push branch [branch name] to remote?" Wait for a decision.
 3. Push only after the user confirms; report success or any errors.
 4. If the user declines or defers, leave the branch local and tell them the commits are ready to push whenever they choose.
+5. When the user also asks to open a pull/merge request, apply **create-pull-request** after the push — it resolves the PR conventions via **resolve-conventions**, gets approval on the full draft, and records the returned reference (or pending state) in the `## Execution` handoff.
 </request-push-approval>
 
 <manage-user-interaction>
@@ -269,6 +270,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 <rule> **Before Starting the First Step**: Apply **verify-prerequisites** — raise and wait if the environment is not ready. </rule>
 <rule> **After Each ✅ Step**: Apply **commit-step**. </rule>
 <rule> **Before Any Push**: Apply **request-push-approval** — never push without user confirmation. </rule>
+<rule> **When the User Asks to Open a PR/MR**: Apply **create-pull-request** after the push — it resolves the PR conventions and gets approval on the full draft; never reuse a generic title or body. </rule>
 <rule> **When the Folder Contains a Rework Plan**: Apply **track-plan** and **execute-step** to the active `rework-<date>.md` steps only. </rule>
 <rule> **When Executed as a Dispatched Agent** (orchestrate-feature-delivery): Apply **orchestrator-handoff** — append the `## Execution` handoff to `context.md` before reporting. </rule>
 <rule> **When the Plan is a POC** (type: poc): Apply **track-plan** and **execute-step**; never merge before the decision gate. </rule>

@@ -88,7 +88,8 @@ Brief items:
 - **Dependency context**: what must be merged before this cell's PR (other repos / features)
 - **Constraints**: one PR per repo per feature (soft — may merge with other features when convenient)
 - **Branch**: the branch name to use for this cell, matching the **repo's branch convention** (per **branch-and-push-conventions**); created during the agent's Prepare Environment step, pushed only after user confirmation
-- **PR / Commit** — index pointers recorded **after** work (per **branch-and-push-conventions**): the PR reference once opened, the head commit on handoff; `—` until recorded, never dispatch context
+- **Integration**: push and open the PR after user approval; return the PR reference in the executor handoff (see **branch-and-push-conventions**)
+- **PR / Commit** — index pointers recorded **after** work: the PR reference and head commit from the handoff; `—` until recorded, never dispatch context
 
 ## Status lifecycle
 
@@ -108,7 +109,6 @@ Canonical transitions and readiness predicates: **reference/state-machine.md**.
 - **Ready to execute**: cell is **planned** AND its plan file is verified on disk at the recorded Plan location (the plan-first gate).
 - **Ready to verify**: cell is **in-progress** AND `plan.md` shows every step ✅ with the `## Execution` handoff recorded in `context.md` (→ code-reviewer).
 - **Ready to merge**: cell is **verified** AND all dependency cells are **done** (merged).
-- Status must be **unplanned** (→ planner), **planned** with a verified plan file (→ executor), or **in-progress** with the recorded execution handoff (→ code-reviewer).
 
 ## Status semantics
 
@@ -117,7 +117,7 @@ Canonical transitions and readiness predicates: **reference/state-machine.md**.
 | **unplanned** | No plan files yet | Dispatch the **planner** (plan-development-task) |
 | **planned** | `plan.md` + `context.md` exist (verified on disk) | Dispatch the **executor** (execute-plan) — only after the plan-file gate passes |
 | **in-progress** | Execution running or complete, not yet verified | Resume from the last step in the active `rework-<date>.md` (per the `context.md` manifest), or `plan.md` if no rework; apply **verify-cell** when the executor reports |
-| **verified** | Independent verification gate passed (spec + trust); awaits merge | Ask before pushing/opening the PR; merge when dependencies are **done** |
+| **verified** | Independent verification gate passed (spec + trust); awaits merge | Executor pushes and opens the PR; merge when dependencies are **done** |
 | **poc-ready** | POC implemented + evaluation report written | Wait for the user to record **adopted**/**rejected** in the index |
 | **adopted** | POC proved the option | Promote (merge → done) or feed the **poc-gated** feature |
 | **rejected** | POC failed the criteria | Close the cell; delivery proceeds on the other option |

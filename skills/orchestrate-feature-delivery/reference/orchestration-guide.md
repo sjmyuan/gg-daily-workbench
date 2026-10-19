@@ -12,7 +12,7 @@ Rules for **orchestrate-delivery**, **resume-delivery**, and **update-delivery-i
 | Investigate a code fact (L1) | investigation agent → **code-investigator** | **investigate-code** | evidence answer with `file:line` |
 | Spike a decision (L2/L3; incl. rework) | ADR agent → **adr-writer** (L2), spike agent → **spike-conductor** (L3) | **draft-adr** / **conduct-spike** | revised ADR, or focused findings / solution-doc updates |
 | Plan a cell | planning agent → **planner** | **plan-development-task** | `plan.md` + `context.md` |
-| Execute a cell | execution agent → **executor** | **execute-plan** | code changes + commits |
+| Execute a cell | execution agent → **executor** | **execute-plan** | code changes + commits; push + PR |
 | Verify a cell | review agent → **code-reviewer** | **review-code** | spec-compliance + trust verdict |
 | Update solution doc | solution-doc agent → **solution-doc-writer** | **write-solution-doc** | revised sections, rewrite in place |
 | Update ADR | ADR agent → **adr-writer** | **draft-adr** | revised ADR, rewrite in place |
@@ -31,7 +31,7 @@ Rules for **orchestrate-delivery**, **resume-delivery**, and **update-delivery-i
   - **Capacity**: match the number of parallel agents to what the platform supports; ask the user when unsure.
 - Use the platform's agent/sub-agent mechanism — detect what is available (e.g., planner / executor agents) and dispatch accordingly. If no agent mechanism exists, ask the user how to proceed — never fall back to doing the work yourself.
 - **Branches**: one per repo per cell, named per the repo's convention (detect; never assume a prefix). Record the branch, PR, and head commit in the index; the executor creates the branch and commits small-step (**branch-and-push-conventions**).
-- **Push gating**: never push a branch or open a PR automatically — after a cell's work is complete and ready to integrate, ask the user for confirmation first.
+- **Push gating**: the **executor** owns push approval and PR creation; the orchestrator never pushes or opens the PR and records only the returned reference.
 
 ## Orchestration loop
 
@@ -46,7 +46,7 @@ Rules for **orchestrate-delivery**, **resume-delivery**, and **update-delivery-i
 
 ## Status updates
 
-- After every agent result, update the cell status; record the **head commit** from each execution handoff; when a PR is opened, record its reference; when it merges, confirm the recorded head commit is in the merged PR before marking **done**, then re-check downstream cells for develop/merge-readiness.
+- After every agent result, update the cell status; record the **head commit** from each execution handoff; when the executor reports a PR, record its reference; when it merges, confirm the recorded head commit is in the merged PR before marking **done**, then re-check downstream cells for develop/merge-readiness.
 - A completed execution advances to **verified** only after **verify-cell** passes — never mark a cell **done** or **poc-ready** without the gate (see **reference/verification-gate.md**).
 - Dispatch each gate finding straight to the planner — a fix is a pre-merge rework planned (**plan-development-task**, sibling `rework-<date>.md`) then executed (**execute-plan**), never a direct executor edit; the index tracks status only.
 - When a returned result looks inconsistent (status vs plan files, claimed merge vs branch state), verify it with `question-everything`'s **verify-sub-agent-results** — a NEW evidence-matched agent carrying the recorded artifacts as known context, never the original instance — before recording.
@@ -87,7 +87,7 @@ A POC proves one option of one ADR as a standalone feature (see **poc-definition
 - **Dispatch**: plan → **planner** (plan-development-task, POC mode); execute → **executor** (execute-plan, POC mode). Include `type: poc` + success criteria in the brief.
 - **Compare POCs**: sibling POC cells (one per option) run in parallel in an early wave.
 - **Decision gate**: at **poc-ready**, present the evaluation report vs success criteria to the user — the user/team decides adopt/reject, never auto-decide.
-- **Adopt**: dispatch **adr-writer** (draft-adr) to record the validated option; **POC-as-implementation** — ask before pushing/PR, merge the branch, mark the `replaces` cell **superseded**; **POC-as-decision-input** — close the POC, dispatch the **poc-gated** feature with the decided option.
+- **Adopt**: dispatch **adr-writer** (draft-adr) to record the validated option; **POC-as-implementation** — the executor pushes and opens the PR, merge the branch, mark the `replaces` cell **superseded**; **POC-as-decision-input** — close the POC, dispatch the **poc-gated** feature with the decided option.
 - **Reject**: dispatch **adr-writer** to record the outcome; close the cell **rejected**; archive or discard the branch (ask the user); delivery proceeds on the other option.
 - **Sequencing**: never dispatch a **poc-gated** feature before its POC's decision.
 
@@ -102,7 +102,7 @@ Two modes, chosen by the cell's status (see **rework-modes** in the SKILL.md kno
 3. **Update the index**: record only the rework cell (`F2-r1`, `Rework of: F2`) in a new wave + its plan-location pointer — the original cell stays **done**; spike focus, ADR revision, and rework steps live in the sibling `rework-<date>.md` / `context.md`.
 4. **Write the rework plan**: dispatch the **planner** (**plan-development-task**) to write a sibling `rework-<date>.md` in the feature folder — `plan.md` stays the frozen original, implemented steps never modified.
 5. **Execute the rework plan**: dispatch the **executor** (**execute-plan**) to run only the new rework steps.
-6. Update the index; ask the user before pushing / opening a PR.
+6. Update the index with the executor's PR reference; the executor handles push approval and PR creation.
 
 **Rework lineage**: rework features chain to the state they rework — `F2-r1` reworks `F2`; `F2-r2` reworks `F2-r1` (the latest delivered state); `Rework of:` names that state. Rework files key by date — on a same-day collision suffix `-2`, `-3` (`rework-2026-08-24-2.md`). The `context.md` `## Reworks` manifest is the canonical chain.
 
@@ -111,4 +111,4 @@ Two modes, chosen by the cell's status (see **rework-modes** in the SKILL.md kno
 1. **Scope**: apply **triage-issue**. Default to L1 (evidence) or L2 (ADR revision); dispatch **spike-conductor** only when the issue challenges the governing ADR decision across ≥2 decisions/areas.
 2. **Write the rework plan**: dispatch the **planner** (**plan-development-task**) to write a sibling `rework-<date>.md` in the feature folder — `plan.md` stays the frozen original, implemented steps never modified; no new rework feature/wave (rework stays on the same cell).
 3. **Execute the rework plan**: dispatch the **executor** (**execute-plan**) to run only the new rework steps on the unmerged work.
-4. No index change (cell stays **in-progress**; the sibling `rework-<date>.md` is the record); ask the user before pushing / opening a PR.
+4. No index change (cell stays **in-progress**; the sibling `rework-<date>.md` is the record); the executor handles push approval and PR creation.

@@ -36,5 +36,5 @@ The POC planner and executor briefs carry the governing `adr` (path), the `optio
 
 ## Adoption models
 
-- **POC-as-implementation**: the POC branch becomes the shipped feature — on adopt, ask before pushing/PR, merge, mark `replaces` **superseded**.
+- **POC-as-implementation**: the POC branch becomes the shipped feature — on adopt, the executor pushes and opens the PR, merge, mark `replaces` **superseded**.
 - **POC-as-decision-input**: the POC only informs the choice — on adopt, close the POC and dispatch the **poc-gated** feature with the decided option.

@@ -11,4 +11,5 @@ Small-step commit rules applied throughout execution:
 | Staging | Stage only the files belonging to this step (`git add <file>...`); never blind `git add -A` |
 | Checkpoint | Before the first edit and before any deletion, create `git update-ref refs/checkpoints/step-<n> HEAD`; report the ref so the user can restore |
 | Push gating | Never push to remote without explicit user confirmation (see **request-push-approval**) |
+| PR creation | When the user asks for a PR, apply **create-pull-request** — it resolves the PR conventions via **resolve-conventions**; never reuse a generic title or body |
 | Pre-commit check | Commit only after the step's validation checkpoint (tests/lint) passes |

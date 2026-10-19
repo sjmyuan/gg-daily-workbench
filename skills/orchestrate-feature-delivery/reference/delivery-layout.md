@@ -23,9 +23,11 @@ deliveries/<epic-name>/               # one folder per epic (epic-name = spike n
 
 ## Branch and push conventions
 
-Execution agents commit locally and small-step; pushing or opening PRs happens only after user confirmation.
+Execution agents commit locally and small-step; they push and open the PR only after user confirmation.
 
 - One branch per repo per cell, named per the **repo's branch convention** (detect from existing branches / git config / team docs — or ask; never assume a prefix like `feat/`); created during the execution agent's **Prepare Environment** step.
-- The index records the branch up front, the PR reference (number/URL) once opened, and the **head commit** from the execution handoff — pointers only; work history stays in `plan.md`.
+- The executor opens the PR after push approval, following the target repo's convention; the index records the returned reference.
+- Pushing and PR creation are separate approvals.
+- The index records the branch up front, the PR reference (number/URL) and **head commit** from the executor handoff — pointers only; work history stays in `plan.md`.
 - Commit after each ✅ step, with no AI-related wording (see **execute-plan** commit-conventions).
 - A cell is **done** only after its PR merges with the recorded head commit included, or the user records a gate waiver; pushing alone is not done.

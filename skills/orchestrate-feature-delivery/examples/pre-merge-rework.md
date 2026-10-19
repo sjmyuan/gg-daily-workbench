@@ -55,4 +55,4 @@ Original `plan.md` steps 1–N remain byte-for-byte unchanged.
 
 ## 5. Next actions
 
-Ask the user before pushing the branch / opening the PR (per **branch-and-push-conventions**); after the rework + original work merge, `F4` → **done** and its downstream cells unlock.
+The executor asks before pushing and opens the PR (per **branch-and-push-conventions**); after the rework + original work merge, `F4` → **done** and its downstream cells unlock.

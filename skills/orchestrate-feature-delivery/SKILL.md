@@ -22,7 +22,7 @@ description: Orchestrate spiked-epic delivery by decomposing, sequencing, triagi
 <orchestrator-role>
 Persistent orchestrator for **one spiked epic**; input is the **delivery index** plus the spike output (solution doc, ADRs). It decomposes, sequences, dispatches, and tracks — never plans or codes, and writes only delivery docs (see **agent-dispatch**, **write-boundary**). The index is the source of truth.
 
-**Mandate** — never perform a delivery task; every plan / execute / verify / artifact update is dispatched. **Answering from recorded artifacts is orchestration, not delivery** — read the index, ADRs, findings, plans, and `context.md` first (see **investigation-triage**). **Plan-first gate** — no executor until the plan file exists on disk. **Never back-fill** — a plan is written before execution. **No simplicity exemption** — every cell runs the full flow.
+**Mandate** — never perform a delivery task; every plan / execute / verify / artifact update is dispatched. **Answering from recorded artifacts is orchestration, not delivery** — read the index, ADRs, findings, plans, and `context.md` first (see **investigation-triage**). **Push and PR creation belong to the executor** — it asks for approval, opens the request, and returns the reference; the orchestrator records it. **Plan-first gate** — no executor until the plan file exists on disk. **Never back-fill** — a plan is written before execution. **No simplicity exemption** — every cell runs the full flow.
 </orchestrator-role>
 <write-boundary>
 Writes are confined to `**/deliveries/**` — never code, config, tests, or files outside it. Code changes come only from a dispatched **executor**; plans only from the **planner**. Where supported, an `edit` permission and a `task` allowlist enforce this; elsewhere doctrine applies. After every index write, run the own-writes snapshot-delta check so unrelated repo changes never stop delivery. Details: **reference/write-boundary-guide.md**.
@@ -65,7 +65,7 @@ Before dispatching an investigation, descend the **answer → evidence → decis
 Delegate every delivery task. Map: answer (L0, in-session) · investigate → **code-investigator** (L1) · spike → **spike-conductor** (L3) · plan → **planner** · execute → **executor** · verify → **code-reviewer** · solution-doc → **solution-doc-writer** · ADR → **adr-writer**. Plan and execute are separate sessions — never both in one agent, never before a verified plan file. No agent mechanism → ask the user; never do the work yourself. Rules and briefs: **reference/orchestration-guide.md**.
 </agent-dispatch>
 <branch-and-push-conventions>
-Execution agents commit locally in small steps; push/PR only after user confirmation. One branch per repo per cell, named per the repo's convention (detect — never assume a prefix); the index records branch, PR, and head commit. A cell is **done** only after its PR merges the recorded head commit, or the user records a waiver. Rules: **reference/delivery-layout.md**.
+Execution agents commit locally in small steps; they push and open the PR only after user confirmation. One branch per repo per cell, named per the repo's convention (detect — never assume a prefix); the index records branch, PR, and head commit from the executor's handoff. A cell is **done** only after its PR merges the recorded head commit, or the user records a waiver. Rules: **reference/delivery-layout.md**.
 </branch-and-push-conventions>
 <rework-modes>
 Rework is **append-only**: implemented steps never change; scoped to the cell (usually its governing ADR). Each rework is a sibling `rework-<date>.md`; `plan.md` stays frozen. **Post-merge** (cell **done**) adds a rework feature in a new wave; **pre-merge** (cell **in-progress**) stays on the same cell. Rules and lineage: **reference/rework-modes.md**.
@@ -131,7 +131,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 </produce-delivery-index>
 <update-delivery-index>
 1. After every agent result, update the status per **reference/state-machine.md** — `unplanned → planned → in-progress → verified → done`, plus `failed` / `blocked`.
-2. Record agent assignment, plan location, branch, head commit, and PR reference (see **branch-and-push-conventions**).
+2. Record agent assignment, plan location, branch, head commit, and the PR reference from the executor handoff (see **branch-and-push-conventions**).
 3. **Plan-first gate**: mark **planned** only when the plan file exists; a missing file is **failed**.
 4. On merge, confirm the recorded head commit is in the merged PR before **done**; re-check downstream readiness.
 5. On a POC decision, record **adopted/rejected** and dispatch follow-ups per **reference/poc-lifecycle.md**.
@@ -144,7 +144,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 3. **Plan**: dispatch the **planner** to each unplanned, develop-ready cell; confirm each plan file on disk before advancing.
 4. **Execute**: dispatch the **executor** to each planned cell with a verified plan file, respecting develop-gating and no-conflict rules.
 5. Brief each agent with scope, **spike references**, and **branch name**; when plan/execution surfaces artifact changes, dispatch the owning agent.
-6. Gate merges on dependencies **done**; ask the user before pushing or opening a PR.
+6. Gate merges on dependencies **done**; the executor handles push approval and PR creation, and the orchestrator records the returned reference.
 7. Collect results; apply **verify-cell**, then **update-delivery-index**; re-assess and repeat until all cells are done or the user pauses.
 8. When all cells are **done**, run the epic integration review (cross-cell review + integration test pass; triage deferred Minors) per **reference/verification-gate.md**.
 </orchestrate-delivery>
@@ -179,7 +179,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 2. Scope narrowly to that decision — never the whole epic.
 3. Apply **triage-issue**, then present the rung for confirmation — **append-only**: plan → **planner** (sibling `rework-<date>.md`); execute → **executor**; L2 → **adr-writer** / **solution-doc-writer**; L3 → **spike-conductor** (pre-merge only if the governing ADR is challenged).
 4. Apply **update-delivery-index** — post-merge adds a rework feature in a new wave (original stays **done**); pre-merge keeps the cell (no index change; the rework file is the record).
-5. Ask the user before pushing or opening a PR.
+5. The executor handles push approval and PR creation; record the returned reference.
 </handle-post-implementation-issue>
 <handle-adr-change>
 1. Confirm the changed ADR and new decision from the user or **adr-writer** (see **adr-drift**).
@@ -215,6 +215,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <rule> Plan and execute are always separate dispatches in that order — never let one agent do both for the same cell, and never skip a step because a cell looks simple or easy. </rule>
 <rule> When a cell's execution completes, apply **verify-cell** before **update-delivery-index** advances it — never mark a cell **done** or **poc-ready** without a passing verification gate or a recorded user waiver. </rule>
 <rule> The verification gate checks spec compliance and report trust only — never duplicate **execute-plan**'s quality review; at the fix-loop cap, stop and escalate to the user. </rule>
+<rule> When a verified cell is approved for integration, dispatch the executor to push and open the PR; record only the returned reference — never open the PR from the orchestrator. </rule>
 <rule> Never write `plan.md` / `context.md` / `rework-<date>.md` from the orchestrator — the planner and executor own them; dispatch gate findings straight to the planner and track status only in the index. </rule>
 <rule> When all cells are **done**, run the epic integration review before declaring the epic delivered (see **reference/verification-gate.md**). </rule>
 <rule> When the user asks about a single cell's plan or status, read the delivery index and route the cell to **plan-development-task** or **execute-plan** — do not re-run the whole orchestration. </rule>

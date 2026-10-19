@@ -43,7 +43,7 @@
 | order-service/F2 | 1234-f2-wallet | — | d4e5f6a | **verified** | code-reviewer-A | deliveries/payment-migration/order-service/wallet-service/ |
 
 - F2 awaits merge; with F1 **done**, F2 is now merge-ready.
-- Push/PR still waits for user approval per **branch-and-push-conventions**.
+- The executor handles push approval and PR creation per **branch-and-push-conventions**; the orchestrator records the reference.
 
 ## 6. Fix-round variant
 

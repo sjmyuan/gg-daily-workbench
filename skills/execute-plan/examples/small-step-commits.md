@@ -111,5 +111,6 @@ Ask user: "Push branch `1234-add-customer-validator` to remote?"
 
 - **User confirms** → `git push -u origin 1234-add-customer-validator`; success reported.
 - **User declines** → branch stays local; user is told the 3 commits are ready to push whenever they choose.
+- **User also asks for a PR** → push first, then apply **create-pull-request**; approve the full draft before creation.
 
 The plan file and context file are kept as a permanent record.
