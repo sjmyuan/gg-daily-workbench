@@ -33,7 +33,7 @@ Canonical statuses and transitions for every cell in `orchestrate-feature-delive
 |---|---|
 | **develop-ready** | All dependency cells are **planned** (contracts agreed) |
 | **execute-ready** | Cell is **planned** AND its plan file is verified on disk |
-| **verify-ready** | Cell is **in-progress** AND `plan.md` shows every step ✅ with the `## Execution` handoff recorded |
+| **verify-ready** | Cell is **in-progress** AND `plan.md` shows every step ✅ or ⏭ with the `## Execution` handoff recorded |
 | **merge-ready** | Cell is **verified** AND all dependency cells are **done** |
 
 ## Gate waiver

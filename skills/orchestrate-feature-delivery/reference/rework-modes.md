@@ -1,6 +1,6 @@
 # Rework Modes
 
-Rework rules for `orchestrate-feature-delivery`. Rework is **always append-only** — implemented steps never change; scoped to the cell (usually its governing ADR), never the whole epic. Each rework is a sibling `rework-<date>.md` — `plan.md` stays the frozen original. Execution runs **only** the rework file's steps. `context.md` holds a `## Reworks` manifest (date, mode, cell, file, status) so resume finds the active file. The index records **state only** — the rework cell + plan pointer; details live in the rework file.
+Rework rules for `orchestrate-feature-delivery`. Rework is **always append-only** — implemented steps never change; scoped to the cell (usually its governing ADR), never the whole epic. Each rework is a sibling `rework-<date>.md` — `plan.md` stays the frozen original. Execution runs **only** the rework file's steps. Pending-step defects are **amendments** to the same `plan.md`, never reworks and never a new plan folder. `context.md` holds a `## Reworks` manifest (date, mode, cell, file, status) and an `## Amendments` table so resume finds the active record. The index records **state only** — the rework cell + plan pointer; details live in the rework file.
 
 | Mode | When | Handling |
 |---|---|---|

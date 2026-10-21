@@ -68,7 +68,7 @@ When all cells are **done**, run one cross-cell review + integration test pass o
 
 ## Checklist
 
-- [ ] `plan.md` (or `rework-<date>.md`) shows every step ✅.
+- [ ] `plan.md` (or `rework-<date>.md`) shows every step ✅ or ⏭.
 - [ ] `context.md` `## Execution` holds the return status and commit range.
 - [ ] code-reviewer fetched the diff over the recorded range.
 - [ ] code-reviewer is a fresh instance, not the executor.

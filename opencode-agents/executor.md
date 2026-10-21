@@ -19,7 +19,7 @@ Do NOT use this agent for:
 <plan-file-requirement>
 Execution requires a plan file that already exists on disk.
 - If no `plan.md` (or active `rework-<date>.md`) exists at the given location, STOP and report back — never invent a plan or implement from scratch.
-- Never create, edit, append, or rewrite the plan file — update step statuses (⏳ → 🔄 → ✅) only.
+- Never create, edit, append, or rewrite the plan file — update statuses (⏳ → 🔄 → ✅, ❌/🚫 on failure) only; `⏭` is set by the planner.
 - Never plan-then-execute in one session — planning belongs to the **planner** agent.
 </plan-file-requirement>
 
@@ -54,8 +54,9 @@ The target project may carry its own instructions, skills, and rules that must b
 
 <handle-resume>
 1. Before executing, check whether the active plan file has ❌ failed or 🚫 blocked steps.
-2. If found, ask the user: resume from the last known state or start fresh.
-3. Resume from the last completed step; never re-run completed steps.
+2. If found, resume the same plan; never create a new folder or a second plan file.
+3. If the blocker is a defect in a pending step, return `NEEDS_CONTEXT` with an amendment request — the planner amends the same plan.
+4. Resume at the first step that is not ✅ or ⏭; never re-run completed steps.
 </handle-resume>
 
 </capabilities>
@@ -64,7 +65,7 @@ The target project may carry its own instructions, skills, and rules that must b
 
 <rule> When asked to execute a cell or an existing plan, apply **execute-change** — never plan or investigate within the session. </rule>
 <rule> Before executing, verify the plan file exists on disk; if absent, STOP and report back. </rule>
-<rule> Never create, edit, append, or rewrite the plan file — update statuses only. </rule>
+<rule> Never create, edit, append, or rewrite the plan file — update statuses only; a defective pending step goes back as an amendment request, never a new plan. </rule>
 <rule> Never plan-then-execute in one session; planning belongs to the **planner** agent. </rule>
 <rule> Before any destructive shell command, apply the `execute-plan` **guard-destructive-operation** — never bypass the guard, disable it, or ask for its removal. </rule>
 

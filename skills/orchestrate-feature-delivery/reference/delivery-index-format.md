@@ -100,14 +100,14 @@ Canonical transitions and readiness predicates: **reference/state-machine.md**.
 - **in-progress** → **verified**: the independent verification gate passed (**verify-cell**)
 - **verified** → **done**: PR merged (with the recorded head commit) / code verified
 - POC cells: **in-progress** → **verified** → **poc-ready** (evaluation report written, gate passed) → **adopted** (promote → merge → done) or **rejected** (closed); a replaced feature is marked **superseded**
-- any → **failed** (reason): recover by re-plan or retry
+- any → **failed** (reason): recover by retry, by amending the same plan (pending-step defect), or by rework (executed behavior)
 - any → **blocked** (blocker): waits for a dependency merge or user decision
 
 ## Ready-to-dispatch predicate
 
 - **Ready to develop**: all dependency cells are **planned** (contracts agreed — contract-first and independent cells develop in parallel; merge-blocked cells wait for the dependency's contract).
 - **Ready to execute**: cell is **planned** AND its plan file is verified on disk at the recorded Plan location (the plan-first gate).
-- **Ready to verify**: cell is **in-progress** AND `plan.md` shows every step ✅ with the `## Execution` handoff recorded in `context.md` (→ code-reviewer).
+- **Ready to verify**: cell is **in-progress** AND `plan.md` shows every step ✅ or ⏭ with the `## Execution` handoff recorded in `context.md` (→ code-reviewer).
 - **Ready to merge**: cell is **verified** AND all dependency cells are **done** (merged).
 
 ## Status semantics
@@ -123,7 +123,7 @@ Canonical transitions and readiness predicates: **reference/state-machine.md**.
 | **rejected** | POC failed the criteria | Close the cell; delivery proceeds on the other option |
 | **superseded** | Existing implementation replaced by an adopted POC | Skip; keep as history |
 | **done** | Merged / user-confirmed (PR + head commit recorded) | Skip; unlock downstream cells |
-| **failed** | Agent error (reason recorded) | Ask user: re-plan or retry |
+| **failed** | Agent error (reason recorded) | Ask user: retry; dispatch the **planner** to amend the same plan for a pending-step defect; rework for executed behavior |
 | **blocked** | Waiting on blocker (recorded) | Wait; re-check when blocker clears |
 
 ## POC cells
@@ -137,6 +137,8 @@ ADRs are **versionless** — drift is signaled by the **adr-writer** agent's ret
 ## Rework after implementation
 
 The index tracks **state only** — rework never adds work history to a status cell. Record rework per the cell's status (see **rework-modes** in the SKILL.md knowledge); the details (trigger, ADR focus, boundary, steps) live in a sibling `rework-<date>.md` — written by **plan-development-task**, never repeated in the index. `plan.md` is the frozen original; each rework gets its own file so it never grows. A `## Reworks` manifest in `context.md` lists every rework file + status (see **plan-file-format.md** in **plan-development-task**).
+
+An **amendment** is not a rework: it adjusts pending steps in the same `plan.md`, keeps the same plan location, and never adds a cell, wave, or status change. It is recorded in `context.md` `## Amendments`.
 
 **Post-merge (cell done)** — original cell unchanged, rework is its own cell:
 

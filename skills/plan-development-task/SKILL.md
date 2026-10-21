@@ -1,6 +1,6 @@
 ---
 name: plan-development-task
-description: Classify, clarify, and generate TDD-based step-by-step plans for bug fixes, features, refactors, or POCs. Use when fixing bugs, adding features, refactoring, exploring feasibility, planning a POC, or reworking.
+description: Classify, clarify, and generate TDD-based step-by-step plans for bug fixes, features, refactors, or POCs, and amend in-flight plans. Use when fixing bugs, adding features, refactoring, exploring feasibility, planning a POC, reworking, or amending a plan mid-execution.
 ---
 
 <when-to-use-this-skill>
@@ -18,10 +18,12 @@ description: Classify, clarify, and generate TDD-based step-by-step plans for bu
 - User wants to reduce technical debt or improve code organization
 - User requests improvements to maintainability, readability, or performance without changing behavior
 - User wants to plan rework for an already-implemented feature — write a sibling `rework-<date>.md`, a focused rework triggered by orchestrate-feature-delivery's handle-post-implementation-issue flow
+- An in-flight plan needs steps added, removed, or reordered before they run — amend the existing plan, never create a second one
 
 **Differentiation rules** (when multiple skills could apply):
 - **Multi-feature / multi-repo decomposition?** → Do NOT plan the whole breakdown here — apply **orchestrate-feature-delivery** first, then plan each feature × repo cell with this skill
 - **Rework for an already-delivered feature?** → Apply this skill per **rework-plan-convention** — write a sibling `rework-<date>.md`; orchestrate-feature-delivery triggers it; never rewrite the implemented plan
+- **Defect in a plan that is mid-execution?** → Apply **amend-plan** — adjust pending steps in the same `plan.md`; never create a second plan file
 </when-to-use-this-skill>
 
 <knowledge>
@@ -88,8 +90,17 @@ A POC plan (from **orchestrate-feature-delivery**'s **poc-definition**) is a **s
 | **Scope Boundary** | **May change** = the option's target area; **Must not change** = other options and ADRs |
 </poc-plan-definition>
 
+<plan-amendment>
+Adjust an in-flight plan **in place** — never fork a second plan file:
+- Amend when the defect is in steps that have **not run**; rework when executed behavior must change.
+- ✅ steps are frozen; append with the next number or insert with a letter suffix (`3a`); mark obsolete pending steps `⏭ abandoned — <reason>`; never renumber.
+- Record one `## Amendments` row in `context.md`; plan path and cell status stay unchanged.
+Full rules: **[reference/plan-amendment.md](reference/plan-amendment.md)**.
+</plan-amendment>
+
 <rework-plan-convention>
 A rework (triggered by **orchestrate-feature-delivery**'s **handle-post-implementation-issue**) is written as a new sibling file `rework-<date>.md` in the feature folder — `plan.md` is the frozen original and is never modified:
+- Applies only when executed or delivered behavior must change; pending-step defects are amended in place via **amend-plan**
 - Each file opens with `# Rework <date>` + one-line trigger, then its own **Scope Boundary** and numbered steps
 - Inherits and tightens the original **Scope Boundary** to the governing ADR decision
 - Refuses and asks the user only on a material change: original **Must not change** behavior, a protected zone, or reopening another ADR (likely a new feature cell)
@@ -116,8 +127,10 @@ Load only the examples directly relevant to the current change type to minimize 
 | Generating refactor plan | Detailed steps for plan-refactor | [reference/plan-refactor.md](reference/plan-refactor.md) |
 | Validating plan quality | Checklist: coverage, sequencing, steps, TDD, clarity | [reference/plan-quality-checklist.md](reference/plan-quality-checklist.md) |
 | Writing or ratifying the Scope Boundary block | Three zones, materiality test, stop-vs-log rubric | [reference/scope-boundary.md](reference/scope-boundary.md) |
+| Amending an in-flight plan (defective pending steps) | Amend-vs-rework rule, ⏭ abandoned status, `## Amendments` row | [reference/plan-amendment.md](reference/plan-amendment.md) |
 | Writing a rework plan (`rework-<date>.md`) for an implemented feature | Sibling rework file + manifest (shared with the orchestrator) | [../orchestrate-feature-delivery/examples/post-implementation-rework.md](../orchestrate-feature-delivery/examples/post-implementation-rework.md) |
 | Rework that risks changing **Must not change** behavior | Boundary definition + refusal with decision options | [examples/rework-scope-boundary.md](examples/rework-scope-boundary.md) |
+| Amending an in-flight plan after execution stops | Amend-in-place walkthrough with ⏭ abandoned and `## Amendments` row | [examples/amend-mid-execution.md](examples/amend-mid-execution.md) |
 | Bug: simple logic / timing errors | Full workflow example | [examples/bug-fix-simple-logic.md](examples/bug-fix-simple-logic.md) |
 | Bug: slow responses, N+1 queries | Full workflow example | [examples/bug-fix-performance.md](examples/bug-fix-performance.md) |
 | Feature: complex algorithms or business rules | Full workflow example | [examples/feature-complex-transformation.md](examples/feature-complex-transformation.md) |
@@ -187,14 +200,24 @@ Load **[reference/plan-poc.md](reference/plan-poc.md)** and follow its steps.
 6. Hand the ratified boundary to the plan for inclusion as a `## Scope Boundary` block and to **export-plan** for persistence.
 </define-scope-boundary>
 
+<amend-plan>
+1. Read the active plan, its statuses, and `context.md` `## Amendments`.
+2. Confirm the defect sits in pending steps; if it changes executed behavior, apply **rework-plan-convention**.
+3. Freeze every ✅ step and its notes byte-for-byte.
+4. Add steps with the next number, or insert with a letter suffix (`3a`, `3b`) when the new work must run earlier; mark obsolete pending steps `⏭ abandoned — <reason>`; never renumber or delete.
+5. Tighten the boundary; widen it only with user ratification (see **define-scope-boundary**).
+6. Record one `## Amendments` row, validate the amendment checks in **reference/plan-quality-checklist.md**, and show the step diff.
+</amend-plan>
+
 <export-plan>
-1. After the user confirms the plan, ask whether they would like to persist it to a feature folder for later execution by **execute-plan**.
-2. Determine the storage location: for an **orchestrate-feature-delivery** cell use `deliveries/<epic-name>/{repo}/{feature-name}/`; otherwise resolve the artifact base via `resolve-artifact-location` and use `{base}/feature-implementations/` (no silent default).
-3. Derive a short kebab-case feature name from the plan's objective (e.g., `fix-null-pointer-in-transformer`).
-4. Use the **repo-first** layout `{location}/{repo}/{feature-name}/` when a repo applies (the delivery folder already exists); else `{location}/{feature-name}/`.
-5. Write `plan.md` + `context.md` per **[reference/plan-file-format.md](reference/plan-file-format.md)**.
-6. Validate conciseness (see **concise-writing**): one objective per step sentence, one claim per scope-boundary bullet, context.md prose ≤3 sentences per paragraph, no banned phrases.
-7. Inform the user of the saved location so they can invoke **execute-plan** to carry it out.
+1. If the feature folder already holds a `plan.md`, do not write a second plan — apply **amend-plan** instead.
+2. After the user confirms the plan, ask whether they would like to persist it to a feature folder for later execution by **execute-plan**.
+3. Determine the storage location: for an **orchestrate-feature-delivery** cell use `deliveries/<epic-name>/{repo}/{feature-name}/`; otherwise resolve the artifact base via `resolve-artifact-location` and use `{base}/feature-implementations/` (no silent default).
+4. Derive a short kebab-case feature name from the plan's objective (e.g., `fix-null-pointer-in-transformer`).
+5. Use the **repo-first** layout `{location}/{repo}/{feature-name}/` when a repo applies (the delivery folder already exists); else `{location}/{feature-name}/`.
+6. Write `plan.md` + `context.md` per **[reference/plan-file-format.md](reference/plan-file-format.md)**.
+7. Validate conciseness (see **concise-writing**): one objective per step sentence, one claim per scope-boundary bullet, context.md prose ≤3 sentences per paragraph, no banned phrases.
+8. Inform the user of the saved location so they can invoke **execute-plan** to carry it out.
 </export-plan>
 
 </capabilities>
@@ -211,6 +234,7 @@ Load **[reference/plan-poc.md](reference/plan-poc.md)** and follow its steps.
 <rule> When generating any plan, apply **plan-prerequisites** and **define-scope-boundary**. </rule>
 <rule> When planning a rework for an implemented feature, apply **rework-plan-convention** and **export-plan** to write a sibling `rework-<date>.md` — never overwrite implemented steps. </rule>
 <rule> When a rework would materially change the original **Must not change** behavior or touch a protected zone, refuse and ask the user — never write silently. </rule>
+<rule> When an in-flight plan has a defect in steps that have not run, apply **amend-plan** — never write a second plan file or folder. </rule>
 <rule> When writing or validating any test step, apply **test-quality** — each test names the break it catches and exercises real behavior. </rule>
 <rule> When a plan uses a streamlined or test-skipping path, confirm the change is non-behavioral and record the justification in `context.md`. </rule>
 <rule> When testability blocks planning, apply **plan-refactor** before **plan-feature-implementation**. </rule>

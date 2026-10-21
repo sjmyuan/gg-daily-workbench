@@ -6,7 +6,6 @@
 
 ## User Request
 "Implement the bug fix plan we created for the null pointer exception in data transformation"
-
 ## Plan to Execute
 1. Add null checks in DataImportedHandler
 2. Update unit tests
@@ -128,3 +127,12 @@ class DataTransformationIntegrationTest {
 - Total: 4
 
 The plan file and context file are kept as a permanent record.
+
+## When the Error Is a Plan Defect
+
+A recovery fix differs from a plan defect. If Step 2 had failed because the plan assumed an existing `InvalidDataEventException` and no such dependency was planned, the executor would not improvise a redesign:
+
+- Mark Step 2 🚫 blocked with the defect.
+- Write an amendment request: the defect, proposed added/skipped steps, and boundary impact.
+- Return `NEEDS_CONTEXT`; the planner amends the same `plan.md`.
+- Resume at Step 2 after the amendment; never create a second plan folder.

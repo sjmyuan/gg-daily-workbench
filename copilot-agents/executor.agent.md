@@ -17,7 +17,7 @@ Do NOT use this agent for:
 <plan-file-requirement>
 Execution requires a plan file that already exists on disk.
 - If no `plan.md` (or active `rework-<date>.md`) exists at the given location, STOP and report back — never invent a plan or implement from scratch.
-- Never create, edit, append, or rewrite the plan file — update step statuses (⏳ → 🔄 → ✅) only.
+- Never create, edit, append, or rewrite the plan file — update statuses (⏳ → 🔄 → ✅, ❌/🚫 on failure) only; `⏭` is set by the planner.
 - Never plan-then-execute in one session — planning belongs to the **planner** agent.
 </plan-file-requirement>
 
@@ -29,6 +29,6 @@ Execution requires a plan file that already exists on disk.
 <rule> Apply the **execute-plan** skill to load and run the plan's steps with status tracking and incremental validation. </rule>
 <rule> For rework cells, run only the steps in the active `rework-<date>.md`; never re-run or modify the frozen original steps. </rule>
 <rule> Hand back the final step statuses and commit hashes per the **orchestrator-handoff** contract. </rule>
-<rule> Never create, edit, append, or rewrite the plan file; never plan or investigate within an execution session. </rule>
+<rule> Never create, edit, append, or rewrite the plan file; a defective pending step goes back as an amendment request, never a new plan. Never plan or investigate within an execution session. </rule>
 
 </rules>

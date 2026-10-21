@@ -68,7 +68,7 @@ Delegate every delivery task. Map: answer (L0, in-session) · investigate → **
 Execution agents commit locally in small steps; they push and open the PR only after user confirmation. One branch per repo per cell, named per the repo's convention (detect — never assume a prefix); the index records branch, PR, and head commit from the executor's handoff. A cell is **done** only after its PR merges the recorded head commit, or the user records a waiver. Rules: **reference/delivery-layout.md**.
 </branch-and-push-conventions>
 <rework-modes>
-Rework is **append-only**: implemented steps never change; scoped to the cell (usually its governing ADR). Each rework is a sibling `rework-<date>.md`; `plan.md` stays frozen. **Post-merge** (cell **done**) adds a rework feature in a new wave; **pre-merge** (cell **in-progress**) stays on the same cell. Rules and lineage: **reference/rework-modes.md**.
+Rework is **append-only**: implemented steps never change; scoped to the cell (usually its governing ADR). Each rework is a sibling `rework-<date>.md`; `plan.md` stays frozen. Pending-step defects are amended in place by the planner — never reworked or moved to a new plan folder. **Post-merge** (cell **done**) adds a rework feature in a new wave; **pre-merge** (cell **in-progress**) stays on the same cell. Rules and lineage: **reference/rework-modes.md**.
 </rework-modes>
 <adr-drift>
 ADRs are **versionless** — drift comes from the **adr-writer** return or the user, never a file diff. Route cells by status per **reference/orchestration-guide.md** (ADR changes).
@@ -161,7 +161,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <resume-delivery>
 1. Load the index from the recorded base (`scope.md` `Artifact root:` → `deliveries/<epic-name>/index.md`) plus the spike output.
 2. Confirm ADR currency with the user; if a governing ADR changed, apply **handle-adr-change** first.
-3. Determine state: skip completed waves; resume in-progress from the last step (active `rework-<date>.md`, else `plan.md`); failed → ask re-plan/retry; blocked → wait; unplanned → plan.
+3. Determine state: skip completed waves; resume in-progress from the last step (active `rework-<date>.md`, else `plan.md`), skipping ✅ and ⏭ steps; failed → retry, or dispatch the planner to **amend** a defective pending step in the same plan; blocked → wait; unplanned → plan.
 4. Apply **orchestrate-delivery** from that state; tell the user what is resumed vs skipped before dispatching.
 </resume-delivery>
 <triage-issue>

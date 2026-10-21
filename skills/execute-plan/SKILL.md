@@ -9,6 +9,7 @@ description: Execute structured development plans with progress tracking, valida
 - A previously started plan needs to be resumed after interruption or context reset
 - All plan steps are complete and a post-execution review with the review-code skill is needed
 - A step has failed or is blocked and needs error recovery before proceeding
+- A pending step is defective and needs an amendment request instead of a new plan
 - A delivery index from orchestrate-feature-delivery points to planned feature × repo cells ready for execution
 - You need to execute a POC plan (a standalone feature proving one ADR option) and stop at an evaluation report for the decision gate
 - You need to execute a rework plan (`rework-<date>.md`, triggered by orchestrate-feature-delivery) — run only the rework file's steps, never re-run the completed original steps
@@ -27,6 +28,7 @@ Status emojis used to track each step:
 | Completed | ✅ | Successfully finished |
 | Failed | ❌ | Encountered errors (include error details) |
 | Blocked | 🚫 | Cannot proceed (include blocker details) |
+| Abandoned | ⏭ | Deliberately not executed (reason required, no commit); ignored by completion checks |
 </step-status-definitions>
 
 <step-tracking-format>
@@ -101,7 +103,7 @@ All prose written into `plan.md` / `context.md` follows **reference/writing-styl
 </concise-writing>
 
 <orchestrator-handoff>
-When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), append the execution handoff to `context.md` `## Execution` — return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`; base is the branch point on first execution, the previous head for a rework), test evidence, the `review-code` outcome, the PR reference (number/URL) when one is opened or `push/PR: pending approval`, and concerns — so the orchestrator's verification gate can read it. Record the actual commit range; a count or hash that differs from the plan is not a failure. Append each fix round to the same section. A POC's completion routes to the decision gate.
+When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), append the execution handoff to `context.md` `## Execution` — return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`; base is the branch point on first execution, the previous head for a rework), test evidence, the `review-code` outcome, the PR reference (number/URL) when one is opened or `push/PR: pending approval`, and concerns — plus the amendment request when the status is `NEEDS_CONTEXT` — so the orchestrator's verification gate can read it. Record the actual commit range; a count or hash that differs from the plan is not a failure. Append each fix round to the same section. A POC's completion routes to the decision gate.
 </orchestrator-handoff>
 
 <context-loading-guide>
@@ -115,7 +117,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 | Executing a small, focused plan (single component or focused task) | Output model: detailed progress updates for a simple focused execution | [examples/single-component-refactor.md](examples/single-component-refactor.md) |
 | Executing a plan that spans multiple files and architectural layers | Output model: execution tracking across multiple files and layers | [examples/multi-file-implementation.md](examples/multi-file-implementation.md) |
 | Executing a plan that should validate after each change and at milestones | Output model: incremental validation checkpoints across a plan | [examples/validation-checkpoints.md](examples/validation-checkpoints.md) |
-| A step fails with compilation errors or unexpected output | Output model: error recovery, ❌→✅ status transitions, and retry patterns | [examples/handling-failed-steps.md](examples/handling-failed-steps.md) |
+| A step fails with compilation errors or unexpected output | Output model: error recovery, ❌→✅ transitions, retry patterns, plan-defect amendment request | [examples/handling-failed-steps.md](examples/handling-failed-steps.md) |
 | Executing a plan with 10+ steps requiring context preservation | Output model: long plan progress tracking and context continuity | [examples/long-plan-execution.md](examples/long-plan-execution.md) |
 | All plan steps are complete and post-execution review is needed | Output model: applying review-code after completion, adding fix steps, keeping plan as permanent record | [examples/post-execution-review.md](examples/post-execution-review.md) |
 | Executing a plan with prerequisite checks, one commit per step, and push approval at the end | Output model: verify-prerequisites, commit-step, and request-push-approval in action | [examples/small-step-commits.md](examples/small-step-commits.md) |
@@ -136,13 +138,13 @@ Load only the example most relevant to the current execution scenario to minimiz
 <track-plan>
 1. Locate or create the feature folder and its two files (`plan.md` + `context.md`) per **reference/feature-folder-structure.md**; for an **orchestrate-feature-delivery** cell use the existing `deliveries/<epic-name>/{repo}/{feature-name}/`, otherwise resolve the artifact base via `resolve-artifact-location` and use `{base}/feature-implementations/{feature-name}/`.
 2. Derive a short kebab-case feature name from the plan's objective (e.g., `add-auth-system`, `fix-null-pointer-in-transformer`) per **reference/feature-folder-structure.md**.
-3. Before creating a new plan, check whether the feature folder already exists with a plan file.
+3. Before creating a new plan, check whether the feature folder already exists with a plan file; if it does, resume or amend it — never create a second plan folder.
 4. If the folder contains a sibling `rework-<date>.md` (per the `context.md` manifest), execute only the active rework file's steps (see **rework-plan-execution**); never re-run or modify the completed original steps.
-5. If a plan file has steps with ❌ failed or 🚫 blocked status, ask the user whether to **resume** from the last known state or **start fresh** (create a new folder/overwrite).
+5. If a plan file has steps with ❌ failed or 🚫 blocked status, ask whether to **resume** the same plan or **start fresh**. Prefer resume; start fresh only when the plan is unusable (wrong feature, nothing executed) and the user confirms. Never create a second plan folder for the same feature — a defective pending step is amended in place by the planner.
 6. Materialize the plan into `plan.md` per **reference/plan-input-schema.md**: list each step with its number, title, objective (one sentence each, see **concise-writing**), and initial status ⏳ pending, per **reference/step-tracking-format.md**.
 7. Populate `context.md` concisely (see **concise-writing**): one bolded takeaway per section, tables for requirements/constraints, compact bullet lists for references — requirements docs, ADRs, user stories, spike findings, codebase references, constraints, assumptions, decisions.
 8. Update step status in the plan file immediately after each state change (⏳ → 🔄 → ✅, or ❌/🚫 on failure); keep each note to one line per fact. Refer to **step-status-definitions** for emoji meanings.
-9. Never modify plan structure, objectives, steps, or the **Scope Boundary** block except to update statuses or add clarifying notes.
+9. Never modify plan structure, objectives, steps, or the **Scope Boundary** block except to update statuses, add clarifying notes, or record `⏭` markers set by an approved amendment.
 10. Report progress at plan start: show all steps with ⏳ pending.
 11. After each step completion, show the full list with current statuses and per-step details (files, implementation, validation); never summarize multiple steps together.
 12. At plan end, show the final all-✅ list with a summary of accomplishments.
@@ -166,7 +168,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 4. Apply **check-scope-boundary** to the recovery fix: incidental or in-boundary → apply, log, retry. Material or protected-zone → hold, refuse, and ask with options instead of changing it silently.
 5. After two failed attempts on the same objective, stop and ask rather than retrying a third time.
 6. Update step status to ✅ if resolved, or 🚫 blocked if unresolvable.
-7. If blocked, consult the user before proceeding.
+7. If blocked, consult the user before proceeding. When the blocker is a defective pending step, write an **amendment request** — defect, proposed added/skipped steps, boundary impact — and return `NEEDS_CONTEXT`; never fork the plan or create a new folder.
 8. Display the updated full step list with current statuses.
 9. Never skip a failed step or failed validation — address issues before proceeding.
 </handle-errors>
@@ -271,6 +273,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 <rule> **When a Step Fails**: Apply **handle-errors** immediately. </rule>
 <rule> **At Validation Points**: Apply **run-validation-checkpoints** — validate incrementally, not just at the end. </rule>
 <rule> **When a Step Writes or Modifies Tests**: Apply **place-tests** before writing test code. </rule>
+<rule> **When a Pending Step Is Defective**: Return `NEEDS_CONTEXT` with an amendment request — never fork the plan or create a second plan folder. </rule>
 <rule> **When Facing Ambiguity or Blockers**: Apply **manage-user-interaction** — pause and ask rather than assuming. </rule>
 <rule> **After All Steps Complete**: Apply **review-post-execution**. </rule>
 <rule> **Before Starting the First Step**: Apply **verify-prerequisites** — raise and wait if the environment is not ready. </rule>

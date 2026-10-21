@@ -61,7 +61,7 @@ ADRs are **versionless** — drift is signaled by the **adr-writer** agent's ret
 |---|---|
 | unplanned | no action — planned against the current ADR when dispatched |
 | planned | re-plan in place (**plan-development-task**) — nothing implemented, no history to preserve |
-| in-progress | pre-merge rework if the change touches the cell's decision (sibling `rework-<date>.md`) |
+| in-progress | amend pending steps in place if only unexecuted work is affected; pre-merge rework if executed work is affected (sibling `rework-<date>.md`) |
 | done | post-merge rework (new rework feature `F2-r1`) |
 | poc cell | surface to the user — the change may invalidate success criteria |
 
@@ -69,16 +69,17 @@ Never dispatch a planned cell on a stale decision.
 
 ## Resume
 
-- On resume, confirm ADR currency first (apply **handle-adr-change** if changed). Skip completed waves; resume in-progress from the active `rework-<date>.md` (or `plan.md`); re-plan/retry failed; wait on blocked.
+- On resume, confirm ADR currency first (apply **handle-adr-change** if changed). Skip completed waves; resume in-progress from the active `rework-<date>.md` (or `plan.md`), skipping ✅ and ⏭; retry failed; amend a defective pending step in the same plan; wait on blocked.
 - Report what is resumed vs skipped before dispatching.
 
 ## Failure handling
 
-| State | Meaning | Recovery |
+| Signal | Meaning | Recovery |
 |---|---|---|
-| **failed** | agent hit an error (record reason) | ask the user: re-plan (plan-development-task) or retry |
+| **failed** | agent hit an error (record reason) | ask the user: retry, or dispatch the planner to amend the same plan when the error is a plan defect |
 | **blocked** | waiting on an unmerged dependency or a user decision (record blocker) | do not dispatch until the blocker clears |
-| **in-progress** | agent was interrupted mid-execution | resume from the last completed step in the active `rework-<date>.md` (or `plan.md` if no rework) |
+| **plan defect** | a pending step is wrong, missing, or obsolete | dispatch the planner to **amend** the same `plan.md`; the cell stays **in-progress** — no new plan folder, file, or cell |
+| **in-progress** | agent was interrupted mid-execution | resume from the last completed step in the active `rework-<date>.md` (or `plan.md` if no rework), skipping ✅ and ⏭ |
 
 ## POC cells
 

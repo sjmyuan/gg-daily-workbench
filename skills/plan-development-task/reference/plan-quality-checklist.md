@@ -14,6 +14,15 @@ Before presenting a development plan to the user, verify all items below.
 - [ ] Stop triggers are material only (see **scope-boundary**)
 - [ ] Rework files (`rework-<date>.md`) carry their own boundary — inherits the original zones, tightened to the governing ADR; `plan.md` untouched
 
+## Amendment
+- [ ] Every ✅ step and its notes are byte-for-byte unchanged
+- [ ] New steps appended with the next number or inserted with a letter suffix; no step renumbered
+- [ ] Obsolete pending steps marked `⏭ abandoned — <reason>`, not deleted
+- [ ] No abandoned step has a commit
+- [ ] `context.md` holds one `## Amendments` row for the change
+- [ ] Boundary tightened, or widened with user ratification
+- [ ] No second plan file or folder created for the same feature
+
 ## Coverage
 - [ ] Every identified issue/functionality/objective has a corresponding TDD cycle in the plan
 - [ ] All acceptance criteria from the user request are addressed

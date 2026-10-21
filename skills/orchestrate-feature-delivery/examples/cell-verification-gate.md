@@ -6,7 +6,7 @@
 
 ## 1. Require the executor handoff
 
-- `deliveries/payment-migration/order-service/wallet-service/plan.md` — every step ✅, each with its commit.
+- `deliveries/payment-migration/order-service/wallet-service/plan.md` — every step ✅ or ⏭, each ✅ with its commit.
 - `context.md` `## Execution` — `DONE_WITH_CONCERNS` · range `a1b2c3d..d4e5f6a` · tests `18/18 passing, output pristine` · `review-code` clean (2 Blocker/Major fixed) · concern: "retry cap hard-coded".
 
 ## 2. Dispatch a fresh code-reviewer
