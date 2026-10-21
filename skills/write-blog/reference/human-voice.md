@@ -43,6 +43,8 @@ The reader should feel a natural breathing rhythm. Two failure modes to avoid:
 
 **Rule**: alternate sentence length. Do not write 3+ consecutive short sentences; after a short punch sentence, follow with a longer explanation or connecting thought. Glue ideas with connectives that carry the argument forward: 那么 / 也就是说 / 例如 / 这个时候 / 从而 / 进而 / 但 / 所以 / 不过. Do **not** reach for filler openers that only add warmth (说白了 / 你会发现 / 说实话 / 关键在于) — see §7.4.
 
+**Too tight is also a tell.** Telegraph mode is only one half of the rhythm failure. A draft of uniformly 30–45-character sentences, each carrying exactly one claim, passes a clean blacklist and still reads as AI: the mean can match the author's posts while the median sits low and the long sentences go missing. Measured floors from the full body of the author's hand-written posts (mean 41.5–48.1 字, median 40–45, 19–25% of sentences over 60 字, paragraph median 86–99), the deletion test that separates 啰嗦 from 豆包味, and the deep-dive and verifiable-quantity budgets: [prose-density.md](prose-density.md).
+
 **Example (telegraph → human):**
 
 > ✗ 这个问题很难。它需要很多经验。很多人都做不好。
@@ -133,12 +135,14 @@ Warm-up words that add no meaning.
 Executable checklist — not "does it feel okay", but these checks:
 
 1. **Blacklist scan**: no AI-flavor words from the table survive in the body. Count them; if > 0, rewrite those sentences.
-2. **Telegraph scan**: find the longest run of consecutive short sentences (≤ 12 characters). If ≥ 3, add connecting thought or merge sentences.
+2. **Density scan (both directions)**: find the longest run of consecutive short sentences (≤ 12 characters). If ≥ 3, add a connecting thought or merge them. Then check the over-compression floors in [prose-density.md](prose-density.md) §3 — sentence mean **and median**, sentence-length standard deviation, share of ≥ 60-character sentences, paragraph median. A draft can pass on the mean and still fail on the median and the long tail; report all four numbers.
 3. **Florification scan**: no flourish-only parallel triplets, no aphorism closing any section, no 总结腔 transition inside prose. Parallels used to enumerate aspects, and a deliberate 总结 section, are allowed when the author's own samples use them.
 4. **Anchor scan**: every section has at least one concrete anchor (scene, number, example, tool), and **every first-person detail traces to material the author supplied** — a composed anecdote is not an anchor, it is a gap. If missing, mark a gap and ask the user.
 5. **Voice scan**: first-person present ("我") present; reader addressed at least once (this author's register: "你有没有……？" when addressing the reader, "我们／带过团队的人" when sharing team experience).
 6. **Ending scan**: the ending is a question, open thought, or action — not a summary (unless the author deliberately asked for a 总结 section).
 7. **Chatty scan** (§7): count the four classes — emotional self-narration, debate/reassurance register, suspense beats, filler openers. Also count em-dashes (target ≤ 2). If > 0, rewrite those sentences as flat statements.
 8. **Exemption log**: list every point where the author's own sample overrode a heuristic (stacked questions, a 总结 ending, enumeration parallels, a "需要注意的是"-style device, bold density, reader address). Each exemption needs the sample as its evidence; a documented exemption passes.
+9. **Deletion scan**: for every sentence the draft carries over a terse version of the same idea, name what the reader loses by deleting it. No answer = delete the sentence; if that drops a section under a density floor, log a gap instead of padding.
+10. **Depth scan**: each section has one paragraph that survives "delete it — is the argument still intact?" (a file's real contents, a status list, a timeline, a pile of numbers) and one verifiable quantity — a number, file name, command, status symbol, or quote the reader could check. Both must trace to supplied material; a missing one is a gap.
 
 Report the results per check: pass / fixed (what changed) / gap (ask user). Only deliver when all checks pass or the gaps are explicitly deferred with the user's consent.
