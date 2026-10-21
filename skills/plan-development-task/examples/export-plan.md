@@ -18,12 +18,11 @@
 
 ```markdown
 ## Scope Boundary
-**In scope**: `DataImportedHandler` null-guard logic and its tests
-**Out of scope**: transformer, publisher, other handlers
-**Rule**: no step, error-recovery fix, or review fix may change anything beyond **In scope**
-**Minor exceptions**: doc/comment-only edits; test-only changes for this plan's own tests
+**May change**: `DataImportedHandler` null-guard behavior
+**Expected files**: handler + its tests (advisory)
+**Must not change**: transformer behavior, publisher behavior, other handlers
 
-1. **Prepare Environment** — branch `fix-null-pointer` off `main`; clean tree; deps installed; baseline tests pass
+1. **Prepare Environment** — branch `fix-null-pointer` off `main`; no overlapping dirt; deps installed; affected-area baseline passes
 2. **Write tests** for null-safety in `DataImportedHandler`
 3. **Confirm test failure (RED)** — fails, not errors, for the expected reason
 4. **Fix code** — guard the null pointer on missing payload

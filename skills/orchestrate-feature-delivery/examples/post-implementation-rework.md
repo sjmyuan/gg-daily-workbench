@@ -45,10 +45,9 @@ New **Wave 3**: `F2-r1` (after F2 merged). The rework traces to the revised `adr
 Mode: post-merge   ·   Cell: order-service/F2-r1   ·   ADR focus: adr-wallet-01-payment-failure-handling.md
 
 ## Scope Boundary
-**In scope**: wallet-service `application/` + `test/`; compensating-transaction rollback per the revised ADR decision
-**Out of scope**: other ADRs, other modules — original **Out of scope** unchanged
-**Rule**: no step or fix may change code beyond **In scope**; refuse and ask if it does
-**Minor exceptions**: doc/comment-only edits; test-only changes for this plan's own tests
+**May change**: wallet-service `application/` + `test/` behavior; compensating-transaction rollback per the revised ADR decision
+**Expected files**: wallet application + tests (advisory)
+**Must not change**: other ADRs, other modules
 
 ## Steps
 - [ ] Add compensating-transaction rollback on partial failure

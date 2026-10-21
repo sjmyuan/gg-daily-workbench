@@ -13,9 +13,9 @@
 
 ```markdown
 ## Scope Boundary
-**In scope**: wallet-service read path + caching layer for the Redis option (`adr-caching-01-cache-option.md`)
-**Out of scope**: the in-process option, other ADRs, unrelated modules
-**Rule**: no step may change anything beyond **In scope**
+**May change**: wallet-service read path and caching-layer behavior (Redis option only)
+**Expected files**: read path, cache layer, their tests (advisory)
+**Must not change**: in-process option, other ADRs, unrelated modules
 
 1. Prepare Environment — POC branch `poc-adr-caching-01-redis` per repo convention
 2. Write focused tests for cache get/set/evict (Redis)

@@ -19,10 +19,9 @@
 Mode: pre-merge   ·   Cell: order-service/F4   ·   ADR focus: adr-wallet-01-payment-failure-handling.md
 
 ## Scope Boundary
-**In scope**: checkout timeout → error-code mapping in the unmerged F4 work
-**Out of scope**: original **Out of scope** unchanged; no other ADR decisions
-**Rule**: no step or fix may change code beyond **In scope**; refuse and ask if it does
-**Minor exceptions**: doc/comment-only edits; test-only changes for this plan's own tests
+**May change**: checkout timeout → error-code mapping behavior in the unmerged F4 work
+**Expected files**: checkout mapping + its tests (advisory)
+**Must not change**: other ADR decisions, other modules
 
 ## Steps
 - [ ] Fix payment-gateway timeout → correct error code mapping

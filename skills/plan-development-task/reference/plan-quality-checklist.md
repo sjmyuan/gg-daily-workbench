@@ -3,14 +3,16 @@
 Before presenting a development plan to the user, verify all items below.
 
 ## Prerequisites
-- [ ] Plan starts with a **Prepare Environment** step (branch exists or to be created, clean working tree, dependencies installed, baseline tests/lint/type-check pass)
+- [ ] Plan starts with a **Prepare Environment** step (branch, no overlapping dirt, dependencies, affected-area baseline)
 - [ ] Branch name and base branch are captured (for export-plan persistence)
-- [ ] If any prerequisite is not ready, the plan raises it to the user rather than starting execution
+- [ ] Only necessary checks gate execution — unrelated dirt and unrelated failures are noted, not blocking
 
 ## Scope Boundary
-- [ ] Plan includes a `## Scope Boundary` block with **In scope** and **Out of scope** lists
-- [ ] Boundary derived from the change type and governing ADR (for orchestrator cells) and ratified by the user
-- [ ] Rework files (`rework-<date>.md`) carry their own boundary — inherits the original **In scope**, tightened to the governing ADR; `plan.md` untouched
+- [ ] Plan includes a `## Scope Boundary` block with **May change**, **Expected files**, and **Must not change**
+- [ ] Boundary is behavior-based; **Expected files** is advisory, never a gate
+- [ ] Protected zones are inherited or extended, never dropped
+- [ ] Stop triggers are material only (see **scope-boundary**)
+- [ ] Rework files (`rework-<date>.md`) carry their own boundary — inherits the original zones, tightened to the governing ADR; `plan.md` untouched
 
 ## Coverage
 - [ ] Every identified issue/functionality/objective has a corresponding TDD cycle in the plan
@@ -47,4 +49,5 @@ Before presenting a development plan to the user, verify all items below.
 - [ ] Each step description is actionable and unambiguous
 - [ ] File paths and class names are specified where known
 - [ ] Validation criteria are explicit (e.g., "all tests pass", "no lint errors", "p99 latency < 500 ms")
+- [ ] Validation criteria are behavioral — no step asserts a diff, commit hash, or byte-identical file
 - [ ] Prose follows concise writing (see **concise-writing**): one objective per step sentence, one claim per scope-boundary bullet, no banned phrases

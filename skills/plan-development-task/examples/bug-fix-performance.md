@@ -42,9 +42,9 @@ Applies **define-scope** (bug fix).
 Applies **plan-bug-fix**.
 
 ### Scope Boundary
-**In scope**: `ProductRepository` query and its tests
-**Out of scope**: serializer, controller, other endpoints
-**Rule**: no step may change anything beyond **In scope**
+**May change**: `ProductRepository` search-query behavior (query count, latency)
+**Expected files**: `ProductRepository` + its tests (advisory)
+**Must not change**: serializer behavior, controller behavior, other endpoints
 
 **Root Cause**: `ProductRepository.findByKeyword()` returns product entities with lazy-loaded `category` and `tags` associations; the serializer triggers one additional query per product
 

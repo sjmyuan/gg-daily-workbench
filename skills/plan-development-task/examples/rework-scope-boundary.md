@@ -1,6 +1,6 @@
 # Example: Rework That Risks Exceeding the Feature Scope
 
-**Scenario**: A rework is requested for a delivered feature, but the rework would change code listed in the original plan's **Out of scope**. Demonstrates **define-scope-boundary** and the rework guard — refuse and ask, never write silently.
+**Scenario**: A rework is requested for a delivered feature, but the rework would change behavior the original plan listed under **Must not change**. Demonstrates **define-scope-boundary** and the rework guard — refuse and ask, never write silently.
 
 **Applies**: **define-scope-boundary**, **rework-plan-convention**
 
@@ -14,17 +14,18 @@ Original boundary (from the existing `plan.md`):
 
 ```
 ## Scope Boundary
-**In scope**: wallet-service `application/` + `test/`; `adr-wallet-01-payment-failure-handling.md` payment-failure decision
-**Out of scope**: `payment-gateway/` client code; `adr-cutover-01-service-cutover.md` cutover; other modules
+**May change**: wallet-service `application/` + `test/` behavior; `adr-wallet-01-payment-failure-handling.md` payment-failure decision
+**Expected files**: wallet application + tests (advisory)
+**Must not change**: `payment-gateway/` client behavior; `adr-cutover-01-service-cutover.md` cutover; other modules
 ```
 
-The rework request requires changing `payment-gateway/` credential retry logic — **Out of scope**.
+The rework request changes `payment-gateway/` credential-retry behavior — **Must not change**.
 
 ## Refusal + Decision Options
 
-The rework exceeds the original boundary, so the planner refuses to write silently and presents options:
+The rework is a material change to the original boundary, so the planner refuses to write silently and presents options:
 
-> "This rework requires changing `payment-gateway/` credential retry logic, which is **Out of scope** (original boundary). Options: (a) extend the boundary to include `payment-gateway/` credential handling, (b) keep it out and file a follow-up feature, (c) treat it as a new feature cell `F2-r2` instead of a rework."
+> "This rework changes `payment-gateway/` credential-retry behavior, which is **Must not change** (original boundary). Options: (a) extend the boundary to include `payment-gateway/` credential handling, (b) keep it out and file a follow-up feature, (c) treat it as a new feature cell `F2-r2` instead of a rework."
 
 **User decision**: (a) extend the boundary for this rework only.
 
@@ -37,10 +38,9 @@ The rework is written as a new sibling `rework-2026-08-10.md`; the original `pla
 Mode: post-merge   ·   Cell: order-service/F2-r1   ·   ADR focus: adr-wallet-01-payment-failure-handling.md
 
 ## Scope Boundary
-**In scope**: original **In scope** + `payment-gateway/` credential retry (user-approved extension)
-**Out of scope**: original **Out of scope** otherwise unchanged
-**Rule**: no step or fix may change code beyond **In scope**; refuse and ask if it does
-**Minor exceptions**: doc/comment-only edits; test-only changes for this plan's own tests
+**May change**: original **May change** + `payment-gateway/` credential-retry behavior (user-approved extension)
+**Expected files**: original **Expected files** + `payment-gateway/` client (advisory)
+**Must not change**: original **Must not change** otherwise unchanged
 
 ## Steps
 - [ ] Fix credential retry selection in compensating rollback

@@ -12,7 +12,7 @@ The executor inspects the scope boundary and sees `src` is source code, not gene
 
 - Plan step: `rm -rf src`
 - Resolved target: `/repo/src` — 38 tracked files
-- Boundary: `In scope: src/**` (files may change, but not be deleted wholesale)
+- Boundary: `Expected files: src/**` (files may change, but not be deleted wholesale)
 - Recovery: `refs/checkpoints/step-3` at `abc1234`
 
 ### Output

@@ -1,8 +1,8 @@
 # plan-bug-fix
 
-1. **Prepare Environment (Prerequisites)**: Apply **plan-prerequisites** from the SKILL.md — ensure the feature branch exists, named per the **repo's branch convention** (detect from existing branches / git config / team docs, or ask the user; never assume a prefix), based on the correct base; the working tree is clean, dependencies and toolchain are installed, and baseline tests, linting, and type-checking pass. If any check is not ready, stop and raise it to the user before continuing.
+1. **Prepare Environment (Prerequisites)**: Apply **plan-prerequisites** from the SKILL.md — ensure the feature branch exists, named per the **repo's branch convention** (detect from existing branches / git config / team docs, or ask the user; never assume a prefix), based on the correct base; no uncommitted changes overlapping the plan's work; dependencies and toolchain installed; affected-area baseline tests, linting, and type-checking pass. Raise only necessary blockers to the user before continuing.
 2. Break down the identified bug root cause into specific, independently testable issues.
-3. **Define Scope Boundary**: Apply **define-scope-boundary** — derive the **In scope**/**Out of scope** lists from the bug scope and the governing ADR (for **orchestrate-feature-delivery** cells); present to the user for ratification.
+3. **Define Scope Boundary**: Apply **define-scope-boundary** — derive the **May change**/**Must not change** behaviors from the bug scope and the governing ADR (for **orchestrate-feature-delivery** cells); present to the user for ratification.
 4. Map out dependencies between issues to establish an efficient bug-fixing sequence.
 5. **Consolidate Steps**: Group related issues together when they share context or can be tested together, reducing the total step count while maintaining clarity.
 6. Load **reference/tdd-approach-selection.md** to select the appropriate TDD variant for each issue. Document the rationale.

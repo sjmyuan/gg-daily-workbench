@@ -1,9 +1,9 @@
 # plan-poc
 
-1. **Prepare Environment (Prerequisites)**: apply **plan-prerequisites** — a **POC branch** per the repo's branch convention, clean tree, deps installed, baseline green; stop and raise if not ready.
+1. **Prepare Environment (Prerequisites)**: apply **plan-prerequisites** — a **POC branch** per the repo's branch convention, no overlapping dirt, deps installed, affected-area baseline green; raise necessary blockers only.
 2. Load the ADR and the option's **tech details** (draft-adr's **detail-options-tech**): target-state diagrams + code change profile (file:line, current code, proposed diff, how-to).
 3. Clarify with the user: the option under proof, the **success criteria** (measurable, tied to the ADR's decision drivers), and the standalone feature slice that demonstrates it end-to-end.
-4. **Define Scope Boundary**: the option's target area is **In scope**; other options, other ADRs, and unrelated modules are **Out of scope**; ratify with the user.
+4. **Define Scope Boundary**: the option's target area is **May change**; other options, other ADRs, and unrelated modules are **Must not change**; ratify with the user.
 5. Break the slice into independently testable functionalities; order by dependencies; consolidate per plan-feature-implementation step 5.
 6. Load **reference/tdd-approach-selection.md**; choose the TDD variant per functionality and document the rationale.
 7. Create the plan (starting with the ratified `## Scope Boundary` block): TDD steps per functionality (Write Focused Tests → Confirm Test Failure (true failure, expected reason) → Implement Minimal Code → Verify → Refactor → Validate → Clean Up → Verify Cleanup → Quality Gate).

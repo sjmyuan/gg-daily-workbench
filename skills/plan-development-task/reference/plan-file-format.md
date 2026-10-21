@@ -4,7 +4,7 @@ Layout for the files **export-plan** writes into a feature folder.
 
 ## plan.md
 
-1. Start with the ratified `## Scope Boundary` block (see **scope-boundary**): **In scope**, **Out of scope**, **Rule**, **Minor exceptions**.
+1. Start with the ratified `## Scope Boundary` block (see **scope-boundary**): **May change**, **Expected files**, **Must not change**, **Protected zones**.
 2. Follow with the complete numbered step list; each step states one objective in one sentence.
 3. A rework is a **new sibling file** `rework-<date>.md` (per **rework-plan-convention**): `# Rework <date>` + one-line trigger, its own **Scope Boundary**, and numbered steps — `plan.md` is the frozen original and is never modified.
 

@@ -41,9 +41,9 @@ Applies **define-scope** (refactor).
 Applies **plan-refactor**.
 
 ### Scope Boundary
-**In scope**: `EventPublisher` interface extraction, `EventPublisherImpl`, `DataImportedHandler`, Spring config, `FakeEventPublisher`, tests
-**Out of scope**: behavior change, other modules
-**Rule**: no step may change anything beyond **In scope**
+**May change**: internal structure of event publishing (interface extraction, injection)
+**Expected files**: `EventPublisher`, `EventPublisherImpl`, `DataImportedHandler`, Spring config, `FakeEventPublisher`, tests (advisory)
+**Must not change**: observable publishing behavior, other modules
 
 **TDD Approach**: Green-to-green — interface extraction doesn't change behavior; existing tests validate correctness
 

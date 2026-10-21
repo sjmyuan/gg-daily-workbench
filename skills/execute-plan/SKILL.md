@@ -68,10 +68,13 @@ POC mode: run like a feature on a **POC branch**, stop after the final **evaluat
 </poc-execution-mode>
 
 <scope-boundary-check>
-The plan file's `## Scope Boundary` block (written by **export-plan** in plan-development-task) defines what execution may change. If the plan has no boundary block, treat the plan's listed steps and files as the boundary.
-- Within **In scope** or a **Minor exception** → proceed without asking.
-- Beyond **In scope** (touching an **Out of scope** file, behavior, or ADR decision) → STOP, refuse, and ask the user with options: (a) extend the boundary, (b) record as a follow-up and stay in scope, (c) proceed anyway with a recorded deviation note.
-- Never adapt silently to out-of-scope changes.
+The plan's `## Scope Boundary` gates on **behavior**, never file paths. **May change / Must not change** is the gate; **Protected zones** (schema, infrastructure, secrets, public API, other ADRs) stop unless **May change** names them; **Expected files** is advisory.
+- Incidental (formatting, whitespace, imports, lockfiles, generated, comments/docs, own tests) → proceed; note when unplanned.
+- Material (behavior outside **May change**, protected-zone touch, objective unverified after two attempts, irreversible action, changes *what* is built) → hold and ask once.
+- Ambiguous → finish the step, batch questions at the step boundary.
+- Commits are not contractual — never compare hashes, messages, or counts to the plan.
+
+Rubric, normalized-diff commands, stop list, note format: **reference/scope-boundary-check.md**.
 </scope-boundary-check>
 <destructive-operation-policy>
 A plan step is not consent for destruction. Classify every shell command before running it.
@@ -98,7 +101,7 @@ All prose written into `plan.md` / `context.md` follows **reference/writing-styl
 </concise-writing>
 
 <orchestrator-handoff>
-When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), append the execution handoff to `context.md` `## Execution` — return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`; base is the branch point on first execution, the previous head for a rework), test evidence, the `review-code` outcome, the PR reference (number/URL) when one is opened or `push/PR: pending approval`, and concerns — so the orchestrator's verification gate can read it. Append each fix round to the same section. A POC's completion routes to the decision gate.
+When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), append the execution handoff to `context.md` `## Execution` — return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`; base is the branch point on first execution, the previous head for a rework), test evidence, the `review-code` outcome, the PR reference (number/URL) when one is opened or `push/PR: pending approval`, and concerns — so the orchestrator's verification gate can read it. Record the actual commit range; a count or hash that differs from the plan is not a failure. Append each fix round to the same section. A POC's completion routes to the decision gate.
 </orchestrator-handoff>
 
 <context-loading-guide>
@@ -119,7 +122,9 @@ Load only the example most relevant to the current execution scenario to minimiz
 | Executing a rework plan (`rework-<date>.md` — run only the rework steps) | Rework execution walkthrough (shared with the orchestrator) | [../orchestrate-feature-delivery/examples/post-implementation-rework.md](../orchestrate-feature-delivery/examples/post-implementation-rework.md) |
 | Executing a POC plan (stop at evaluation report, no merge) | POC execution mode + evaluation report walkthrough | [examples/execute-adr-option-poc.md](examples/execute-adr-option-poc.md) |
 | POC round from dispatch to decision gate (shared with the orchestrator) | End-to-end POC walkthrough | [../orchestrate-feature-delivery/examples/adr-option-poc.md](../orchestrate-feature-delivery/examples/adr-option-poc.md) |
-| A step, recovery fix, or review fix risks exceeding the plan's scope boundary | Output model: refusal + decision options | [examples/refusing-out-of-scope-rework.md](examples/refusing-out-of-scope-rework.md) |
+| A step, recovery fix, or review fix may be material against the plan's boundary | Output model: refusal + decision options | [examples/refusing-out-of-scope-rework.md](examples/refusing-out-of-scope-rework.md) |
+| A change touches unlisted files, looks cosmetic, or a commit differs from the plan | Three zones, materiality test, closed stop list, normalized diff, note format | [reference/scope-boundary-check.md](reference/scope-boundary-check.md) |
+| Formatting, whitespace, lockfile, or commit-message drift appears mid-step | Output model: proceed-and-log instead of stopping | [examples/incidental-deviation.md](examples/incidental-deviation.md) |
 | A step runs a shell command that deletes, moves, or overwrites files | Classification table, approval template, recovery ref, rationalizations | [reference/destructive-operation-policy.md](reference/destructive-operation-policy.md) |
 | A plan step itself asks for a destructive command | Output model: refusal, options, blocked status | [examples/refuse-destructive-command.md](examples/refuse-destructive-command.md) |
 </context-loading-guide>
@@ -144,7 +149,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 </track-plan>
 
 <execute-step>
-1. Before starting a step, mark it as 🔄 in-progress in the plan file and briefly explain your approach. Apply **check-scope-boundary** — if the step's required changes exceed the plan's scope boundary, refuse and ask instead of adapting.
+1. Before starting a step, mark it as 🔄 in-progress in the plan file and briefly explain your approach. Apply **check-scope-boundary** — hold and ask only when the step requires a material change; proceed on incidental drift.
 2. Execute the step fully — no partial implementations.
 3. When writing or modifying code, restate the repo's comment policy + exemplar from the plan note (see **code-comment-conventions**), then write comment-minimal: default to zero comments, prefer renaming/extracting over commenting, add why-comments only on a second pass (≤ 15 words each).
 4. If the step writes or modifies tests, apply **place-tests** before writing any test code — locate existing tests and prefer extending them over creating new files.
@@ -158,19 +163,20 @@ Load only the example most relevant to the current execution scenario to minimiz
 1. Mark the failed step as ❌ with error details in the plan file.
 2. Document the error clearly.
 3. Analyze the root cause.
-4. Apply **check-scope-boundary** to the recovery fix; if the only viable fix exceeds the plan's scope boundary, refuse and ask the user (with options) instead of silently changing out-of-scope code. Otherwise fix and retry the step.
-5. Update step status to ✅ if resolved, or 🚫 blocked if unresolvable.
-6. If blocked, consult the user before proceeding.
-7. Display the updated full step list with current statuses.
-8. Never skip a failed step or failed validation — address issues before proceeding.
+4. Apply **check-scope-boundary** to the recovery fix: incidental or in-boundary → apply, log, retry. Material or protected-zone → hold, refuse, and ask with options instead of changing it silently.
+5. After two failed attempts on the same objective, stop and ask rather than retrying a third time.
+6. Update step status to ✅ if resolved, or 🚫 blocked if unresolvable.
+7. If blocked, consult the user before proceeding.
+8. Display the updated full step list with current statuses.
+9. Never skip a failed step or failed validation — address issues before proceeding.
 </handle-errors>
 
 <check-scope-boundary>
-1. Read the plan's **Scope Boundary** block (see **scope-boundary-check**); fall back to the plan's steps/files if absent.
-2. Evaluate the required change (a planned step, an error-recovery fix, or a review fix) against **In scope** and **Minor exceptions**.
-3. If within scope → proceed normally.
-4. If beyond scope → mark the step 🚫 blocked (or hold), refuse, and ask the user with options: extend the boundary, file a follow-up and stay in scope, or proceed anyway with a recorded deviation.
-5. Act on the user's decision; if the boundary is extended, update the plan's boundary block and proceed.
+1. Read the **Scope Boundary**; if absent, infer **May change** from the plan's objectives (see **scope-boundary-check**).
+2. Classify by the behavior the change alters: incidental, in-boundary, material, or protected zone.
+3. Incidental or in-boundary → proceed; add a one-line `Deviation:` note when unplanned.
+4. Material → hold, refuse, and ask once with options; protected zone not named in **May change** → hold and ask.
+5. Ambiguous → finish the step, batch the question at the step boundary; extend the boundary block when the user agrees.
 </check-scope-boundary>
 <guard-destructive-operation>
 1. Split the command at `&&`, `||`, `;`, `|`, `$(...)`, and backticks.
@@ -202,7 +208,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 1. After ALL plan steps are marked ✅ completed, apply the **review-code** skill on all files changed or created during execution.
 2. Evaluate correctness, security, performance, maintainability, and test coverage.
 3. If 🚫 Blocker or 🔴 Major issues are found:
-   1. Apply **check-scope-boundary** to each finding's required fix — if a fix exceeds the plan's scope boundary, refuse and ask the user before adding it. Otherwise record the finding as a new fix step in the plan file with ⏳ pending status.
+   1. Apply **check-scope-boundary** to each finding's required fix — if a fix is material against the plan's boundary, hold and ask the user before adding it. Otherwise record the finding as a new fix step in the plan file with ⏳ pending status.
    2. Apply **execute-step** for each fix step.
    3. Re-run the **review-code** skill on the affected files.
    4. Repeat until no 🚫 Blockers or 🔴 Majors remain.
@@ -214,20 +220,20 @@ Load only the example most relevant to the current execution scenario to minimiz
 
 <verify-prerequisites>
 1. Verify the correct feature branch is checked out; create it if the plan requires one and the user confirms the branch name and base, naming it per the repo's branch convention (detect from existing branches / git config / team docs, or ask; never assume a prefix).
-2. Verify the working tree has no unrelated uncommitted changes; verify dependencies and toolchain are available; verify baseline tests/lint pass.
+2. Check only what execution needs: dependencies and toolchain resolve for the plan's commands; the affected area's baseline tests/lint pass. Unrelated dirt and unrelated failures are noted, not blocking — leave them untouched.
 3. Detect the repo's comment style per **code-comment-conventions** (sample recently modified files, `.editorconfig`, CONTRIBUTING docs) and record a one-line policy + one exemplar comment in the plan note (e.g., `Policy: sparse, why-only, no docstrings · Exemplar: "// keep-alive: pooling beats TLS re-handshake"`).
-4. If anything is missing or failing, STOP and raise it to the user: state exactly what is not ready, what is needed to proceed, and ask how to proceed; do not start executing steps until it is resolved.
+4. If a necessary check fails (wrong branch, missing dependency, affected-area baseline broken), STOP and raise it to the user: state what is not ready, what is needed, and ask how to proceed. Never stash, revert, or commit the user's unrelated changes.
 5. Record the outcome (ready or blockers) in the plan file before execution begins.
 </verify-prerequisites>
 
 <commit-step>
 1. After a step is validated and marked ✅, run `git status` and `git diff` to identify the files changed by this step.
-2. Stage only those files — never unrelated or pre-existing changes.
+2. Stage only the files this step changed — including its formatter or lockfile side effects — never pre-existing or unrelated changes.
 3. Scan the staged diff against **code-comment-conventions** — grep for known narration/restatement patterns (`// ====`, `// step N`, `// added|generated|fixed`, AI/tool names) and treat any hit as a blocker for that file.
 4. Remove or shorten every flagged comment, any restating comment, and comments exceeding the repo's density; re-stage after trimming.
-5. Write a small commit message following **reference/commit-conventions.md**: repo convention if known, else `type(scope): summary`, describing the change neutrally.
+5. Write a small commit message following **reference/commit-conventions.md**: repo convention if known, else `type(scope): summary`, describing the change neutrally. Treat the plan's message as illustrative, never verbatim.
 6. Scan the message for AI-related words (see **reference/commit-conventions.md**) and rewrite until none remain.
-7. Commit locally; report the commit hash and message. Never push.
+7. Commit locally; report the actual commit hash and message. Never push. Hashes, wording, and commit counts are not contractual — drift from the plan is not a failure.
 8. If the step produced no code change (e.g., documentation-only), note that no commit is needed.
 </commit-step>
 
@@ -275,7 +281,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 <rule> **When Executed as a Dispatched Agent** (orchestrate-feature-delivery): Apply **orchestrator-handoff** — append the `## Execution` handoff to `context.md` before reporting. </rule>
 <rule> **When the Plan is a POC** (type: poc): Apply **track-plan** and **execute-step**; never merge before the decision gate. </rule>
 <rule> **After the Final Evaluation Step of a POC**: Apply **produce-poc-report** and route to the decision gate. </rule>
-<rule> **When a Step, Recovery Fix, or Review Fix Exceeds the Boundary, or When Deviating from the Plan**: Apply **check-scope-boundary** — refuse and ask with options. </rule>
+<rule> **When a Step, Recovery Fix, or Review Fix Is Material Against the Boundary, or When Deviating from the Plan**: Apply **check-scope-boundary** — hold and ask with options; log incidental drift instead of stopping. </rule>
 <rule> **Before Running Any Shell Command**: Apply **guard-destructive-operation** — refuse catastrophic commands and ask before irreversible ones. </rule>
 
 </rules>

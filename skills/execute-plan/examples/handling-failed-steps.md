@@ -64,7 +64,7 @@ void shouldThrowExceptionForNullData() {
 
 **Analysis**: `InvalidDataEventException` doesn't exist yet; the tests need it to compile.
 
-**Recovery** — per **handle-errors** step 4, applying **check-scope-boundary** first: the plan has no boundary block, so the fallback boundary (plan steps/files) governs; adding the missing exception is a required dependency of Step 2's tests and touches no out-of-scope file, so the fix proceeds and is recorded as a clarifying note.
+**Recovery** — per **handle-errors** step 4, applying **check-scope-boundary** first: the plan has no boundary block, so the **May change** behaviors inferred from the plan's objectives govern; adding the missing exception is behavior-neutral and a required dependency of Step 2's tests, so the fix proceeds and is recorded as a clarifying note.
 
 **Files**: Creating `domain/exceptions/InvalidDataEventException.java`
 ```java

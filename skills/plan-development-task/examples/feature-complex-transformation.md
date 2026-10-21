@@ -43,9 +43,9 @@ Applies **define-scope** (feature).
 Applies **plan-feature-implementation**.
 
 ### Scope Boundary
-**In scope**: `LocaleAttributeTransformer`, `FallbackLocaleResolver`, handler integration, their tests
-**Out of scope**: product catalog, serialization, other locale logic
-**Rule**: no step may change anything beyond **In scope**
+**May change**: locale transformation and fallback-resolution behavior; handler integration
+**Expected files**: `LocaleAttributeTransformer`, `FallbackLocaleResolver`, handler, their tests (advisory)
+**Must not change**: product catalog, serialization, other locale logic
 
 **TDD Approach**: Full TDD cycle for each major component — complex business logic requires rigorous testing
 

@@ -42,9 +42,9 @@ Applies **define-scope** (bug fix).
 Applies **plan-bug-fix**.
 
 ### Scope Boundary
-**In scope**: `DataImportedHandler` ID-passing logic and its tests
-**Out of scope**: transformer logic, publisher, other handlers
-**Rule**: no step may change anything beyond **In scope**
+**May change**: `DataImportedHandler` ID-passing behavior
+**Expected files**: `DataImportedHandler.java` + its tests (advisory)
+**Must not change**: transformer logic, publisher behavior, other handlers
 
 **Root Cause**: Using transformed ID instead of original ID in the outgoing message
 

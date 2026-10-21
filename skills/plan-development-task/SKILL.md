@@ -52,29 +52,30 @@ No behavior change without a failing test first; only non-behavioral changes may
 </tdd-guardrails>
 
 <plan-prerequisites>
-Every plan starts with a **Prepare Environment** step (Step 1) that covers:
+Every plan starts with a **Prepare Environment** step (Step 1) covering only the checks execution needs:
 
 | Check | Not ready → |
 |---|---|
-| Feature branch exists, based on the correct base branch, named per the **repo's branch convention** (detect from existing branches / git config / team docs, or ask the user — never assume a prefix) | Ask the user for the branch name and base; create the branch as part of Step 1 |
-| Working tree is clean (no unrelated uncommitted changes) | Stop and raise to the user before proceeding |
-| Dependencies and toolchain installed | Stop and raise to the user (request install or confirmation) |
-| Baseline tests / lint / type-check pass | Stop and raise to the user (decide: fix baseline first or proceed) |
+| Feature branch exists, based on the correct base branch, named per the **repo's branch convention** (detect from existing branches / git config / team docs, or ask — never assume a prefix) | Ask the user for the branch name and base; create the branch as part of Step 1 |
+| No uncommitted changes overlapping the plan's work | Ask before proceeding; leave unrelated changes untouched |
+| Dependencies and toolchain resolve for the plan's commands | Stop and raise to the user (request install or confirmation) |
+| Baseline tests / lint / type-check pass for the affected area | Stop and raise to the user (decide: fix baseline first or proceed) |
 
-If any check is not ready, the agent must **stop and raise it to the user** — never start execution silently. The branch name and base are recorded so **export-plan** can persist them to `context.md`.
+Do not require a pristine tree or a green full suite. Never stash, revert, or commit the user's unrelated changes. The branch name and base are recorded so **export-plan** can persist them to `context.md`.
 </plan-prerequisites>
 
 <scope-boundary>
-Every plan carries an explicit **Scope Boundary** that the executor checks during execution:
+Every plan carries a **Scope Boundary** that gates on behavior, never file paths:
 
-| Field | Content |
-|---|---|
-| **In scope** | Files/areas, behaviors, and (for **orchestrate-feature-delivery** cells) ADR decisions the plan may change |
-| **Out of scope** | Files/areas, behaviors, and ADR decisions that must NOT change — the plan's non-goals |
-| **Rule** | No step, error-recovery fix, or review fix may require changes beyond **In scope**. If one does, the executor refuses and asks the user — never adapts silently |
-| **Minor exceptions** | Proceed without asking: doc/comment-only edits; changes confined to files already in **In scope**; test-only changes for this plan's own tests |
+| Zone | Content | Executor action |
+|---|---|---|
+| **Behavior gate** | **May change** / **Must not change** behaviors, contracts, ADR decisions | Change outside **May change** → stop and ask |
+| **Protected zones** | Schema/migrations, infrastructure, secrets, public API, other ADRs | Any touch → stop and ask, unless **May change** names it |
+| **Expected files** | Files likely to change — advisory | Unlisted, behavior-neutral change → proceed and log |
 
-The boundary derives from the classified change type, the confirmed scope, and (for orchestrator cells) the governing ADR decision. The user ratifies it before **export-plan** persists it. Rework files inherit the original boundary and tighten it to the governing ADR.
+Stop only on **material** change: behavior outside **May change**, protected-zone touch, objective unverified after two attempts, irreversible action, or a change to *what* is built. Incidental changes (formatting, whitespace, imports, lockfiles, comments/docs, own tests) proceed with a one-line note. Validation stays behavioral; commit hashes and messages are never contractual.
+
+The boundary derives from the change type, confirmed scope, and governing ADR; the user ratifies it before **export-plan** persists it. Reworks inherit and tighten it. Full rubric: **[reference/scope-boundary.md](reference/scope-boundary.md)**.
 </scope-boundary>
 <poc-plan-definition>
 A POC plan (from **orchestrate-feature-delivery**'s **poc-definition**) is a **standalone feature** proving one ADR option, never a snippet:
@@ -84,14 +85,14 @@ A POC plan (from **orchestrate-feature-delivery**'s **poc-definition**) is a **s
 | `type` | `poc` |
 | **Success criteria** | Measurable evidence for the decision gate |
 | **Evaluation step** | Final step that collects that evidence |
-| **Scope Boundary** | Option's target area **In scope**; other options and ADRs **Out of scope** |
+| **Scope Boundary** | **May change** = the option's target area; **Must not change** = other options and ADRs |
 </poc-plan-definition>
 
 <rework-plan-convention>
 A rework (triggered by **orchestrate-feature-delivery**'s **handle-post-implementation-issue**) is written as a new sibling file `rework-<date>.md` in the feature folder — `plan.md` is the frozen original and is never modified:
 - Each file opens with `# Rework <date>` + one-line trigger, then its own **Scope Boundary** and numbered steps
 - Inherits and tightens the original **Scope Boundary** to the governing ADR decision
-- Refuses and asks the user if it would change the original **Out of scope** or reopen another ADR (likely a new feature cell)
+- Refuses and asks the user only on a material change: original **Must not change** behavior, a protected zone, or reopening another ADR (likely a new feature cell)
 - Runs on its own branch (see **plan-prerequisites**)
 - Registers a row in the feature's `## Reworks` manifest in `context.md` (date, mode, cell, trigger, file, status) so resume finds the active file
 
@@ -114,8 +115,9 @@ Load only the examples directly relevant to the current change type to minimize 
 | Generating feature implementation plan | Detailed steps for plan-feature-implementation | [reference/plan-feature-implementation.md](reference/plan-feature-implementation.md) |
 | Generating refactor plan | Detailed steps for plan-refactor | [reference/plan-refactor.md](reference/plan-refactor.md) |
 | Validating plan quality | Checklist: coverage, sequencing, steps, TDD, clarity | [reference/plan-quality-checklist.md](reference/plan-quality-checklist.md) |
+| Writing or ratifying the Scope Boundary block | Three zones, materiality test, stop-vs-log rubric | [reference/scope-boundary.md](reference/scope-boundary.md) |
 | Writing a rework plan (`rework-<date>.md`) for an implemented feature | Sibling rework file + manifest (shared with the orchestrator) | [../orchestrate-feature-delivery/examples/post-implementation-rework.md](../orchestrate-feature-delivery/examples/post-implementation-rework.md) |
-| Rework that risks exceeding the feature's scope boundary | Boundary definition + refusal with decision options | [examples/rework-scope-boundary.md](examples/rework-scope-boundary.md) |
+| Rework that risks changing **Must not change** behavior | Boundary definition + refusal with decision options | [examples/rework-scope-boundary.md](examples/rework-scope-boundary.md) |
 | Bug: simple logic / timing errors | Full workflow example | [examples/bug-fix-simple-logic.md](examples/bug-fix-simple-logic.md) |
 | Bug: slow responses, N+1 queries | Full workflow example | [examples/bug-fix-performance.md](examples/bug-fix-performance.md) |
 | Feature: complex algorithms or business rules | Full workflow example | [examples/feature-complex-transformation.md](examples/feature-complex-transformation.md) |
@@ -177,11 +179,12 @@ Load **[reference/plan-poc.md](reference/plan-poc.md)** and follow its steps.
 </plan-poc>
 
 <define-scope-boundary>
-1. Derive the boundary from the classified change type, the confirmed scope, and (for **orchestrate-feature-delivery** cells) the governing ADR decision.
-2. List **In scope**: the files/areas, behaviors, and ADR decisions the plan may change.
-3. List **Out of scope**: non-goals — other behaviors, other ADRs, other modules, unrelated cleanup.
-4. Present both lists to the user and request ratification or adjustment.
-5. Hand the ratified boundary to the plan for inclusion as a `## Scope Boundary` block and to **export-plan** for persistence.
+1. Derive the three zones from the classified change type, the confirmed scope, and (for **orchestrate-feature-delivery** cells) the governing ADR decision.
+2. List **May change** behaviors/contracts and **Must not change** behaviors/contracts — name observable effects, not just paths.
+3. List **Expected files** as advisory, plus any **Protected zone** additions.
+4. Apply the materiality test (see **scope-boundary**) to every candidate exclusion; keep stop triggers material-only.
+5. Present the zones to the user and request ratification or adjustment.
+6. Hand the ratified boundary to the plan for inclusion as a `## Scope Boundary` block and to **export-plan** for persistence.
 </define-scope-boundary>
 
 <export-plan>
@@ -207,7 +210,7 @@ Load **[reference/plan-poc.md](reference/plan-poc.md)** and follow its steps.
 <rule> After the plan is confirmed: optionally apply **export-plan** to persist it for execution by **execute-plan**. </rule>
 <rule> When generating any plan, apply **plan-prerequisites** and **define-scope-boundary**. </rule>
 <rule> When planning a rework for an implemented feature, apply **rework-plan-convention** and **export-plan** to write a sibling `rework-<date>.md` — never overwrite implemented steps. </rule>
-<rule> When a rework would exceed the original boundary, refuse and ask the user — never write silently. </rule>
+<rule> When a rework would materially change the original **Must not change** behavior or touch a protected zone, refuse and ask the user — never write silently. </rule>
 <rule> When writing or validating any test step, apply **test-quality** — each test names the break it catches and exercises real behavior. </rule>
 <rule> When a plan uses a streamlined or test-skipping path, confirm the change is non-behavioral and record the justification in `context.md`. </rule>
 <rule> When testability blocks planning, apply **plan-refactor** before **plan-feature-implementation**. </rule>

@@ -11,4 +11,4 @@ Before writing any test code for a step, decide where tests belong — check exi
 | New test is a different level than the natural existing file (unit vs integration) | Create a file at the right level |
 | Existing test file is unfocused or bloated (mixed concerns) | Create a new focused test file |
 
-Reuse the existing test's fixtures and mocks instead of duplicating setup. Extending an existing test file is a test-only change for this plan's own tests — within the **Scope Boundary**'s Minor exceptions. Record the placement decision in the plan file's step notes.
+Reuse the existing test's fixtures and mocks instead of duplicating setup. Extending an existing test file is a test-only change for this plan's own tests — an incidental change under the **Scope Boundary**. Record the placement decision in the plan file's step notes.

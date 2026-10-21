@@ -42,9 +42,9 @@ Applies **define-scope** (refactor).
 Applies **plan-refactor**.
 
 ### Scope Boundary
-**In scope**: `DataImportedHandler` decomposition into `CategoryMappingService` + `PriceTransformationService`, tests
-**Out of scope**: behavior change, other handlers
-**Rule**: no step may change anything beyond **In scope**
+**May change**: internal structure of `DataImportedHandler` (decomposition into two services)
+**Expected files**: `DataImportedHandler`, `CategoryMappingService`, `PriceTransformationService`, tests (advisory)
+**Must not change**: observable behavior, other handlers
 
 **TDD Approach**: Green-to-green for each service extraction — existing tests stay green throughout; characterization tests added only where coverage is missing
 
