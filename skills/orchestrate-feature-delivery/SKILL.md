@@ -13,6 +13,7 @@ description: Orchestrate spiked-epic delivery by decomposing, sequencing, triagi
 - User asks a question about a delivered feature or reports unexpected behavior — answer from the record before investigating
 - User found an issue after a feature was implemented (a cell is done, or implemented but not yet pushed/merged) and wants rework — focused spike on the governing ADR, a sibling rework file, and its execution
 - User reports an ADR decision changed mid-delivery — re-route the cells governed by it (see **handle-adr-change**)
+- User asks to revert a delivered change or keep a file as the base branch has it — route it as a mechanical rework
 - Do NOT load before a spike's solution doc / ADRs exist — let conduct-spike produce them first
 - Do NOT load to plan or execute a single, already-scoped change — plan-development-task and execute-plan handle single cells
 - Do NOT load to run a standalone spike — conduct-spike runs spikes; this skill only triggers focused rework spikes
@@ -88,6 +89,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 | Handling rework after implementation (post-merge or pre-merge) | Rework modes, lineage, index handling | [reference/rework-modes.md](reference/rework-modes.md) |
 | Choosing between answering an issue and running a spike | L0–L3 triage walkthrough | [examples/issue-triage.md](examples/issue-triage.md) |
 | Handling a post-merge or pre-merge rework | Sibling rework file, spike routing, execution | [post-implementation-rework.md](examples/post-implementation-rework.md) · [pre-merge-rework.md](examples/pre-merge-rework.md) |
+| Handling a revert, restore, copy, or keep request | Mechanical vs behavioral routing, Source enum, ladder, proof | [../plan-development-task/reference/provenance-first.md](../plan-development-task/reference/provenance-first.md) |
 | Running a full end-to-end decomposition from spike output to index | End-to-end multi-repo example | [examples/multi-repo-feature-decomposition.md](examples/multi-repo-feature-decomposition.md) |
 | Running one orchestration round with parallel agents | Dispatch + status-update walkthrough | [examples/orchestration-round.md](examples/orchestration-round.md) |
 | Running the verification gate | Handoff, verdicts, fix-loop cap, breaker | [reference/verification-gate.md](reference/verification-gate.md) |
@@ -176,10 +178,11 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 </triage-issue>
 <handle-post-implementation-issue>
 1. Identify the affected cell, its governing ADR, and status — **done** or **in-progress**.
-2. Scope narrowly to that decision — never the whole epic.
-3. Apply **triage-issue**, then present the rung for confirmation — **append-only**: plan → **planner** (sibling `rework-<date>.md`); execute → **executor**; L2 → **adr-writer** / **solution-doc-writer**; L3 → **spike-conductor** (pre-merge only if the governing ADR is challenged).
-4. Apply **update-delivery-index** — post-merge adds a rework feature in a new wave (original stays **done**); pre-merge keeps the cell (no index change; the rework file is the record).
-5. The executor handles push approval and PR creation; record the returned reference.
+2. Classify the request: mechanical (revert / restore / copy / keep) per [provenance-first](../plan-development-task/reference/provenance-first.md), or behavioral. A mechanical request needs a `Source`, not a feature plan.
+3. Scope narrowly to that decision — never the whole epic.
+4. Apply **triage-issue**, then present the rung for confirmation — **append-only**: plan → **planner** (sibling `rework-<date>.md`); execute → **executor**; L2 → **adr-writer** / **solution-doc-writer**; L3 → **spike-conductor** (pre-merge only if the governing ADR is challenged).
+5. Apply **update-delivery-index** — post-merge adds a rework feature in a new wave (original stays **done**); pre-merge keeps the cell (no index change; the rework file is the record).
+6. The executor handles push approval and PR creation; record the returned reference.
 </handle-post-implementation-issue>
 <handle-adr-change>
 1. Confirm the changed ADR and new decision from the user or **adr-writer** (see **adr-drift**).
@@ -220,6 +223,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <rule> When all cells are **done**, run the epic integration review before declaring the epic delivered (see **reference/verification-gate.md**). </rule>
 <rule> When the user asks about a single cell's plan or status, read the delivery index and route the cell to **plan-development-task** or **execute-plan** — do not re-run the whole orchestration. </rule>
 <rule> When an issue surfaces after a feature was implemented (a cell is **done** or **in-progress**), apply **handle-post-implementation-issue** — never re-run **decompose-change-into-features** on the whole epic. </rule>
+<rule> When the request is to revert, restore, copy, or keep code unchanged, treat it as mechanical per [provenance-first](../plan-development-task/reference/provenance-first.md) — dispatch a rework with a `Source`. </rule>
 <rule> Before any investigation dispatch, apply **triage-issue** — answer from recorded artifacts first (L0); dispatch an investigator or a spike only when a higher rung is justified. </rule>
 <rule> When the user reports an ADR change or an **adr-writer** agent returns a revision, apply **handle-adr-change** — never dispatch a planned cell on a stale decision. </rule>
 <rule> When decomposing change items and an ADR option needs proof before a decision, apply **define-poc-scope** to flag and sequence POC cells. </rule>

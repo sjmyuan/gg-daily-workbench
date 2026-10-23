@@ -11,7 +11,7 @@ NO BEHAVIOR CHANGE WITHOUT A FAILING TEST FIRST
 Applies to bug fixes, features, and behavior-changing refactors.
 
 - Streamlined (fewer, consolidated steps) is allowed when a test is still written first and watched to fail.
-- Skipping test creation is allowed only for non-behavioral changes — config values with no logic, type-only additions, docs. Record the justification in `context.md`.
+- Skipping test creation is allowed only for non-behavioral changes — config values with no logic, type-only additions, docs, and mechanical restores or ports (see **change-provenance**). Record the justification in `context.md`.
 
 ## Rationalizations to Reject
 
@@ -26,6 +26,7 @@ Applies to bug fixes, features, and behavior-changing refactors.
 | "TDD will slow me down" | TDD catches bugs before commit; shortcuts mean debugging in production |
 | "Existing code has no tests" | Add tests for the existing code you are about to change |
 | "Skip TDD just this once" | Stop — this is rationalization |
+| "Revert it and skip the test" | A restore needs an equality proof; a behavior change still needs its failing test |
 
 ## Red Flags — Stop and Rewrite the Plan
 

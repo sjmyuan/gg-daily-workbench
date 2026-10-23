@@ -10,6 +10,7 @@ Before presenting a development plan to the user, verify all items below.
 ## Scope Boundary
 - [ ] Plan includes a `## Scope Boundary` block with **May change**, **Expected files**, and **Must not change**
 - [ ] Boundary is behavior-based; **Expected files** is advisory, never a gate
+- [ ] Every restored or ported path appears under `Must match` with its pinned ref — the only zone that requires byte equality
 - [ ] Protected zones are inherited or extended, never dropped
 - [ ] Stop triggers are material only (see **scope-boundary**)
 - [ ] Rework files (`rework-<date>.md`) carry their own boundary — inherits the original zones, tightened to the governing ADR; `plan.md` untouched
@@ -24,7 +25,10 @@ Before presenting a development plan to the user, verify all items below.
 - [ ] No second plan file or folder created for the same feature
 
 ## Coverage
-- [ ] Every identified issue/functionality/objective has a corresponding TDD cycle in the plan
+- [ ] Every identified issue/functionality/objective has a corresponding TDD cycle, or a declared `Source` for a mechanical step
+- [ ] Every step touching existing code declares `Source`, `Ref`, and `Equality` per **change-provenance**
+- [ ] No step uses `Source: generate` for a request phrased as revert, keep, restore, or copy
+- [ ] Mechanical restore plans name the git operation per path and skip RED/GREEN
 - [ ] All acceptance criteria from the user request are addressed
 - [ ] Each acceptance criterion maps to at least one test step that names the production change it catches
 - [ ] Edge cases and error scenarios are covered in the test steps
@@ -39,6 +43,7 @@ Before presenting a development plan to the user, verify all items below.
 - [ ] For bug fix plans: total step count ≤ 20
 - [ ] For feature implementation plans: total step count ≤ 25
 - [ ] For refactor plans: total step count ≤ 20
+- [ ] For mechanical restore plans: total step count ≤ 5
 - [ ] Related items are consolidated where they share context or can be tested together
 - [ ] Each step has a clear, single objective
 
@@ -53,10 +58,11 @@ Before presenting a development plan to the user, verify all items below.
 - [ ] Each "Confirm Test Failure" step requires a true failure (not an error) for the expected reason; a test that passes immediately is rewritten
 - [ ] Mutation check: each realistic mutation (wrong branch, wrong constant, missing side effect, missing validation) is caught by at least one test
 - [ ] Refactor plans never introduce a failing test — existing tests stay green; characterization tests are added only where coverage is missing
+- [ ] Mechanical restore plans skip RED/GREEN and record the non-behavioral justification per **tdd-guardrails**
 
 ## Clarity
 - [ ] Each step description is actionable and unambiguous
 - [ ] File paths and class names are specified where known
 - [ ] Validation criteria are explicit (e.g., "all tests pass", "no lint errors", "p99 latency < 500 ms")
-- [ ] Validation criteria are behavioral — no step asserts a diff, commit hash, or byte-identical file
+- [ ] Validation criteria are behavioral — no step asserts a commit hash; byte equality only where `Must match` names it
 - [ ] Prose follows concise writing (see **concise-writing**): one objective per step sentence, one claim per scope-boundary bullet, no banned phrases

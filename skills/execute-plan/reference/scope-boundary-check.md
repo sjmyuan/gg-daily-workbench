@@ -2,11 +2,12 @@
 
 Used by **check-scope-boundary** and **verify-prerequisites**.
 
-## Three zones
+## Zones
 
 | Zone | Holds | Action |
 |---|---|---|
 | **May change / Must not change** | Behaviors, contracts, ADR decisions | Outside **May change** → material |
+| **Must match** (opt-in) | Paths declared equal to a pinned ref | Diff against the ref non-empty → material |
 | **Protected zones** | Schema/migrations, infrastructure, secrets, public API, other ADRs | Material unless **May change** names them |
 | **Expected files** | Likely files (advisory) | Unlisted and behavior-neutral → proceed |
 
@@ -15,8 +16,9 @@ Used by **check-scope-boundary** and **verify-prerequisites**.
 1. List the changed paths and the behavior each edit alters.
 2. Normalize cosmetics: `git diff -w --ignore-blank-lines --stat <base>`. An empty normalized diff is cosmetic.
 3. Compare commit content, not identity: `git diff <base>..HEAD -- <expected paths>`. Hashes, messages, and commit counts are not contractual.
-4. Apply the materiality test — behavior outside **May change**, protected-zone touch, objective still unverified after two attempts, irreversible action, or a change to *what* is built.
-5. Any hit → hold and ask. No hit → proceed; add a one-line note when the change was unplanned.
+4. Check every `Must match` path: `git diff --exit-code <ref> -- <path>` exits non-zero → residual hunks.
+5. Apply the materiality test — behavior outside **May change**, protected-zone touch, `Must match` drift, objective still unverified after two attempts, irreversible action, or a change to *what* is built.
+6. Any hit → hold and ask. No hit → proceed; add a one-line note when the change was unplanned.
 
 ## Closed stop list
 
@@ -24,6 +26,7 @@ Stop and ask only for:
 
 - material behavior change outside **May change**
 - protected-zone touch
+- `Must match` drift on a declared path
 - necessary environment blocker (branch, dependency, affected-area baseline)
 - objective unverified after two attempts
 - irreversible or destructive command
@@ -58,3 +61,4 @@ Note format in the step: `Deviation: <what> — cosmetic, no behavior change`.
 | "The commit hash differs" | Compare content, never identity |
 | "Ask to be safe" | The stop list is closed; log the rest |
 | "Ignore it, it is small" | Cosmetic is ignorable; a behavior change is not |
+| "The hand-written version behaves the same" | Behavior equality is not `Must match`; diff against the pinned ref |

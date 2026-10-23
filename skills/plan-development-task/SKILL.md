@@ -1,6 +1,6 @@
 ---
 name: plan-development-task
-description: Classify, clarify, and generate TDD-based step-by-step plans for bug fixes, features, refactors, or POCs, and amend in-flight plans. Use when fixing bugs, adding features, refactoring, exploring feasibility, planning a POC, reworking, or amending a plan mid-execution.
+description: Classify, clarify, and generate TDD-based step-by-step plans for bug fixes, features, refactors, or POCs, and amend in-flight plans. Use when fixing bugs, adding features, refactoring, exploring feasibility, planning a POC, restoring, copying, or keeping code, reworking, or amending a plan mid-execution.
 ---
 
 <when-to-use-this-skill>
@@ -19,17 +19,27 @@ description: Classify, clarify, and generate TDD-based step-by-step plans for bu
 - User requests improvements to maintainability, readability, or performance without changing behavior
 - User wants to plan rework for an already-implemented feature — write a sibling `rework-<date>.md`, a focused rework triggered by orchestrate-feature-delivery's handle-post-implementation-issue flow
 - An in-flight plan needs steps added, removed, or reordered before they run — amend the existing plan, never create a second one
+- User asks to revert, restore, copy, or keep code unchanged ("same as main") — plan a mechanical restore
+- A change already exists in another branch, commit, or PR and must be brought over as-is
 
 **Differentiation rules** (when multiple skills could apply):
 - **Multi-feature / multi-repo decomposition?** → Do NOT plan the whole breakdown here — apply **orchestrate-feature-delivery** first, then plan each feature × repo cell with this skill
 - **Rework for an already-delivered feature?** → Apply this skill per **rework-plan-convention** — write a sibling `rework-<date>.md`; orchestrate-feature-delivery triggers it; never rewrite the implemented plan
 - **Defect in a plan that is mid-execution?** → Apply **amend-plan** — adjust pending steps in the same `plan.md`; never create a second plan file
+- **Target state already exists in a ref, commit, or file?** → Plan a mechanical restore per **change-provenance**
 </when-to-use-this-skill>
 
 <knowledge>
 
+<change-provenance>
+Every code step declares where its code comes from: `no-op` · `base` · `port` · `copy` · `edit` · `generate`.
+Generate only when no cheaper source reaches the target state.
+A revert, "same as main", or "leave it" request is a mechanical restore, not a TDD change.
+Enum, intent router, ladder, restore-plan shape: **[reference/provenance-first.md](reference/provenance-first.md)**.
+</change-provenance>
+
 <change-type-classification>
-Classify the user's request into one of three types:
+Classify the user's request into one of these types; a mechanical target is detected first and routes to **plan-mechanical-restore**.
 
 | Signal | Type | Reasoning |
 |---|---|---|
@@ -119,6 +129,8 @@ Load only the examples directly relevant to the current change type to minimize 
 
 | Load when | Provides | File |
 |---|---|---|
+| Planning a revert, restore, port, copy, or no-op change | Source enum, intent router, ladder, restore-plan shape, anti-patterns | [reference/provenance-first.md](reference/provenance-first.md) |
+| Writing a mechanical restore plan end to end | Revert-to-base walkthrough with `Must match` and equality proof | [examples/mechanical-restore-plan.md](examples/mechanical-restore-plan.md) |
 | Selecting TDD variant per sub-type | 15-row TDD approach selection table | [reference/tdd-approach-selection.md](reference/tdd-approach-selection.md) |
 | Writing or validating test steps | Test-quality rules and the mutation check | [reference/test-quality.md](reference/test-quality.md) |
 | Choosing a streamlined path or hitting testability problems | Iron Law, rationalizations to reject, red flags, design signals | [reference/tdd-guardrails.md](reference/tdd-guardrails.md) |
@@ -126,7 +138,7 @@ Load only the examples directly relevant to the current change type to minimize 
 | Generating feature implementation plan | Detailed steps for plan-feature-implementation | [reference/plan-feature-implementation.md](reference/plan-feature-implementation.md) |
 | Generating refactor plan | Detailed steps for plan-refactor | [reference/plan-refactor.md](reference/plan-refactor.md) |
 | Validating plan quality | Checklist: coverage, sequencing, steps, TDD, clarity | [reference/plan-quality-checklist.md](reference/plan-quality-checklist.md) |
-| Writing or ratifying the Scope Boundary block | Three zones, materiality test, stop-vs-log rubric | [reference/scope-boundary.md](reference/scope-boundary.md) |
+| Writing or ratifying the Scope Boundary block | Zones (incl. `Must match`), materiality test, stop-vs-log rubric | [reference/scope-boundary.md](reference/scope-boundary.md) |
 | Amending an in-flight plan (defective pending steps) | Amend-vs-rework rule, ⏭ abandoned status, `## Amendments` row | [reference/plan-amendment.md](reference/plan-amendment.md) |
 | Writing a rework plan (`rework-<date>.md`) for an implemented feature | Sibling rework file + manifest (shared with the orchestrator) | [../orchestrate-feature-delivery/examples/post-implementation-rework.md](../orchestrate-feature-delivery/examples/post-implementation-rework.md) |
 | Rework that risks changing **Must not change** behavior | Boundary definition + refusal with decision options | [examples/rework-scope-boundary.md](examples/rework-scope-boundary.md) |
@@ -156,21 +168,35 @@ Writes are confined to plan docs — `plan.md`, `context.md`, and sibling `rewor
 <capabilities>
 
 <classify-change-type>
-1. Read the user's request and identify keywords and signals that indicate the type of change.
-2. Consult **change-type-classification** knowledge to map signals to a change type (bug fix, feature, or refactor).
-3. If the type is ambiguous, ask the user targeted clarifying questions to disambiguate.
-4. Present the classified type and reasoning to the user.
-5. Route to the appropriate pair of capabilities based on the classified type:
+1. Detect a mechanical target first per **change-provenance**; route reverts, restores, ports, copies, and keeps to **plan-mechanical-restore**.
+2. Read the user's request and identify keywords and signals that indicate the type of change.
+3. Consult **change-type-classification** knowledge to map signals to a change type (bug fix, feature, or refactor).
+4. If the type is ambiguous, ask the user targeted clarifying questions to disambiguate.
+5. Present the classified type and reasoning to the user.
+6. Route to the appropriate pair of capabilities based on the classified type:
+   - **Mechanical (revert / restore / port / copy / no-op)** → apply **define-scope**, then **plan-mechanical-restore**
    - **Bug Fix** → apply **define-scope**, then **plan-bug-fix**
    - **Feature** → apply **define-scope**, then **plan-feature-implementation**
    - **Refactor** → apply **define-scope**, then **plan-refactor**
    - **POC** → apply **plan-poc**
 </classify-change-type>
 
+<plan-mechanical-restore>
+**Objective**: Plan a revert, restore, port, copy, or no-op without regenerating code.
+
+1. Apply **change-provenance**: record the trigger verbatim, the pinned `Ref`, and `Source`/`Equality` per path.
+2. Ask for the source ref when the request names none; never infer the baseline.
+3. Apply **define-scope-boundary**: list every restored path under `Must match` with its ref.
+4. Skip RED/GREEN; record the non-behavioral justification per **tdd-guardrails**.
+5. Write steps as prepare environment → per-path restore naming the git operation → equality proof → test run.
+6. Validate against the restore checks in **[reference/provenance-first.md](reference/provenance-first.md)**.
+</plan-mechanical-restore>
+
 <define-scope>
 1. Gather relevant information from the codebase, knowledge base, test results, and user input to define the scope for the classified change type.
 2. **Bug fix**: analyze root-cause patterns and test hypotheses through code inspection, debugging, or logging.
    **Feature / refactor**: identify and clarify ambiguous terms and implicit assumptions.
+   **Mechanical**: confirm the source ref, the exact paths, and whether any other commit touched them since.
 3. Ask the user targeted questions until the scope is well-defined — root cause confirmed for bugs; requirement or constraints confirmed for features/refactors.
 4. Present the result (root cause + reasoning, or a structured scope summary) and request confirmation or refinements.
 5. Hand the confirmed scope to the corresponding plan capability and **define-scope-boundary**.
@@ -192,12 +218,13 @@ Load **[reference/plan-poc.md](reference/plan-poc.md)** and follow its steps.
 </plan-poc>
 
 <define-scope-boundary>
-1. Derive the three zones from the classified change type, the confirmed scope, and (for **orchestrate-feature-delivery** cells) the governing ADR decision.
+1. Derive the zones from the classified change type, the confirmed scope, and (for **orchestrate-feature-delivery** cells) the governing ADR decision.
 2. List **May change** behaviors/contracts and **Must not change** behaviors/contracts — name observable effects, not just paths.
-3. List **Expected files** as advisory, plus any **Protected zone** additions.
-4. Apply the materiality test (see **scope-boundary**) to every candidate exclusion; keep stop triggers material-only.
-5. Present the zones to the user and request ratification or adjustment.
-6. Hand the ratified boundary to the plan for inclusion as a `## Scope Boundary` block and to **export-plan** for persistence.
+3. Add `Must match` for every restored or ported path with its ref — the only zone requiring byte equality (see **change-provenance**).
+4. List **Expected files** as advisory, plus any **Protected zone** additions.
+5. Apply the materiality test (see **scope-boundary**) to every candidate exclusion; keep stop triggers material-only.
+6. Present the zones to the user and request ratification or adjustment.
+7. Hand the ratified boundary to the plan for inclusion as a `## Scope Boundary` block and to **export-plan** for persistence.
 </define-scope-boundary>
 
 <amend-plan>
@@ -224,7 +251,9 @@ Load **[reference/plan-poc.md](reference/plan-poc.md)** and follow its steps.
 
 <rules>
 
-<rule> When the user makes a request about code changes, first apply **classify-change-type** to determine whether it is a bug fix, feature, refactor, or POC. </rule>
+<rule> When the user makes a request about code changes, first apply **classify-change-type** to determine whether it is a mechanical restore, bug fix, feature, refactor, or POC. </rule>
+<rule> When the request is to revert, restore, port, copy, or keep code unchanged, apply **plan-mechanical-restore** — never regenerate equivalent code. </rule>
+<rule> When a step touches existing code, declare its `Source` per **change-provenance**; `generate` needs a justification and ratification. </rule>
 <rule> If the classified type is **Bug Fix**: apply **define-scope**, then **plan-bug-fix**. </rule>
 <rule> If the classified type is **Feature**: apply **define-scope**, then **plan-feature-implementation**. </rule>
 <rule> If the classified type is **Refactor**: apply **define-scope**, then **plan-refactor**. </rule>

@@ -4,7 +4,7 @@ description: Execute structured development plans with progress tracking, valida
 ---
 
 <when-to-use-this-skill>
-- You need to execute an outlined plan (implementation plan, refactoring plan, or bug-fix plan)
+- You need to execute an outlined plan (implementation, refactoring, bug-fix, or mechanical restore plan)
 - A structured plan from plan-development-task needs to be carried out with progress tracking and validation checkpoints
 - A previously started plan needs to be resumed after interruption or context reset
 - All plan steps are complete and a post-execution review with the review-code skill is needed
@@ -71,13 +71,20 @@ POC mode: run like a feature on a **POC branch**, stop after the final **evaluat
 
 <scope-boundary-check>
 The plan's `## Scope Boundary` gates on **behavior**, never file paths. **May change / Must not change** is the gate; **Protected zones** (schema, infrastructure, secrets, public API, other ADRs) stop unless **May change** names them; **Expected files** is advisory.
+**Must match** (opt-in) is the exception: a path declared equal to a pinned ref is verified by diff, and any residual hunk is material.
 - Incidental (formatting, whitespace, imports, lockfiles, generated, comments/docs, own tests) → proceed; note when unplanned.
-- Material (behavior outside **May change**, protected-zone touch, objective unverified after two attempts, irreversible action, changes *what* is built) → hold and ask once.
+- Material (behavior outside **May change**, protected-zone touch, `Must match` drift, objective unverified after two attempts, irreversible action, changes *what* is built) → hold and ask once.
 - Ambiguous → finish the step, batch questions at the step boundary.
 - Commits are not contractual — never compare hashes, messages, or counts to the plan.
 
 Rubric, normalized-diff commands, stop list, note format: **reference/scope-boundary-check.md**.
 </scope-boundary-check>
+<change-provenance>
+Every step touching existing code carries a `Source`: `no-op` · `base` · `port` · `copy` · `edit` · `generate`.
+Try the cheapest source first; generating code is the last rung.
+A revert, keep, or copy step is proven by a diff against the pinned ref, never by regenerated equivalent behavior.
+Enum, ladder, and proof commands: **[../plan-development-task/reference/provenance-first.md](../plan-development-task/reference/provenance-first.md)**.
+</change-provenance>
 <destructive-operation-policy>
 A plan step is not consent for destruction. Classify every shell command before running it.
 
@@ -125,7 +132,8 @@ Load only the example most relevant to the current execution scenario to minimiz
 | Executing a POC plan (stop at evaluation report, no merge) | POC execution mode + evaluation report walkthrough | [examples/execute-adr-option-poc.md](examples/execute-adr-option-poc.md) |
 | POC round from dispatch to decision gate (shared with the orchestrator) | End-to-end POC walkthrough | [../orchestrate-feature-delivery/examples/adr-option-poc.md](../orchestrate-feature-delivery/examples/adr-option-poc.md) |
 | A step, recovery fix, or review fix may be material against the plan's boundary | Output model: refusal + decision options | [examples/refusing-out-of-scope-rework.md](examples/refusing-out-of-scope-rework.md) |
-| A change touches unlisted files, looks cosmetic, or a commit differs from the plan | Three zones, materiality test, closed stop list, normalized diff, note format | [reference/scope-boundary-check.md](reference/scope-boundary-check.md) |
+| A change touches unlisted files, looks cosmetic, or a commit differs from the plan | Zones (incl. `Must match`), materiality test, closed stop list, normalized diff, note format | [reference/scope-boundary-check.md](reference/scope-boundary-check.md) |
+| A step reverts, restores, ports, copies, or must stay unchanged | Source ladder, proof commands, no-op receipt, anti-patterns | [../plan-development-task/reference/provenance-first.md](../plan-development-task/reference/provenance-first.md) |
 | Formatting, whitespace, lockfile, or commit-message drift appears mid-step | Output model: proceed-and-log instead of stopping | [examples/incidental-deviation.md](examples/incidental-deviation.md) |
 | A step runs a shell command that deletes, moves, or overwrites files | Classification table, approval template, recovery ref, rationalizations | [reference/destructive-operation-policy.md](reference/destructive-operation-policy.md) |
 | A plan step itself asks for a destructive command | Output model: refusal, options, blocked status | [examples/refuse-destructive-command.md](examples/refuse-destructive-command.md) |
@@ -152,13 +160,14 @@ Load only the example most relevant to the current execution scenario to minimiz
 
 <execute-step>
 1. Before starting a step, mark it as 🔄 in-progress in the plan file and briefly explain your approach. Apply **check-scope-boundary** — hold and ask only when the step requires a material change; proceed on incidental drift.
-2. Execute the step fully — no partial implementations.
-3. When writing or modifying code, restate the repo's comment policy + exemplar from the plan note (see **code-comment-conventions**), then write comment-minimal: default to zero comments, prefer renaming/extracting over commenting, add why-comments only on a second pass (≤ 15 words each).
-4. If the step writes or modifies tests, apply **place-tests** before writing any test code — locate existing tests and prefer extending them over creating new files.
-5. After completing the step, validate the outcome meets the step's objectives.
-6. Mark the step as ✅ completed; document files changed, implementation details, and validation results in the plan file.
-7. Confirm the prerequisite step is fully ✅ completed before starting a step that depends on it.
-8. Display the full updated step list with current statuses after each completion.
+2. Resolve the step's `Source` per **change-provenance** — record the rung reached and why every cheaper rung failed.
+3. Execute the step fully — no partial implementations.
+4. When writing or modifying code, restate the repo's comment policy + exemplar from the plan note (see **code-comment-conventions**), then write comment-minimal: default to zero comments, prefer renaming/extracting over commenting, add why-comments only on a second pass (≤ 15 words each).
+5. If the step writes or modifies tests, apply **place-tests** before writing any test code — locate existing tests and prefer extending them over creating new files.
+6. After completing the step, validate the outcome meets the step's objectives and its provenance proof.
+7. Mark the step as ✅ completed; document files changed, `Source` receipt, implementation details, and validation results in the plan file.
+8. Confirm the prerequisite step is fully ✅ completed before starting a step that depends on it.
+9. Display the full updated step list with current statuses after each completion.
 </execute-step>
 
 <handle-errors>
@@ -175,10 +184,11 @@ Load only the example most relevant to the current execution scenario to minimiz
 
 <check-scope-boundary>
 1. Read the **Scope Boundary**; if absent, infer **May change** from the plan's objectives (see **scope-boundary-check**).
-2. Classify by the behavior the change alters: incidental, in-boundary, material, or protected zone.
+2. Classify by the behavior the change alters: incidental, in-boundary, material, protected zone, or `Must match` drift.
 3. Incidental or in-boundary → proceed; add a one-line `Deviation:` note when unplanned.
-4. Material → hold, refuse, and ask once with options; protected zone not named in **May change** → hold and ask.
-5. Ambiguous → finish the step, batch the question at the step boundary; extend the boundary block when the user agrees.
+4. `Must match` path differs from its ref → treat every residual hunk as material; hold and ask before keeping it.
+5. Material → hold, refuse, and ask once with options; protected zone not named in **May change** → hold and ask.
+6. Ambiguous → finish the step, batch the question at the step boundary; extend the boundary block when the user agrees.
 </check-scope-boundary>
 <guard-destructive-operation>
 1. Split the command at `&&`, `||`, `;`, `|`, `$(...)`, and backticks.
@@ -230,13 +240,14 @@ Load only the example most relevant to the current execution scenario to minimiz
 
 <commit-step>
 1. After a step is validated and marked ✅, run `git status` and `git diff` to identify the files changed by this step.
-2. Stage only the files this step changed — including its formatter or lockfile side effects — never pre-existing or unrelated changes.
-3. Scan the staged diff against **code-comment-conventions** — grep for known narration/restatement patterns (`// ====`, `// step N`, `// added|generated|fixed`, AI/tool names) and treat any hit as a blocker for that file.
-4. Remove or shorten every flagged comment, any restating comment, and comments exceeding the repo's density; re-stage after trimming.
-5. Write a small commit message following **reference/commit-conventions.md**: repo convention if known, else `type(scope): summary`, describing the change neutrally. Treat the plan's message as illustrative, never verbatim.
-6. Scan the message for AI-related words (see **reference/commit-conventions.md**) and rewrite until none remain.
-7. Commit locally; report the actual commit hash and message. Never push. Hashes, wording, and commit counts are not contractual — drift from the plan is not a failure.
-8. If the step produced no code change (e.g., documentation-only), note that no commit is needed.
+2. Verify the `Source` receipt per **change-provenance**: diff against the pinned ref when one is declared, then record the command and result.
+3. Stage only the files this step changed — including its formatter or lockfile side effects — never pre-existing or unrelated changes.
+4. Scan the staged diff against **code-comment-conventions** — grep for known narration/restatement patterns (`// ====`, `// step N`, `// added|generated|fixed`, AI/tool names) and treat any hit as a blocker for that file.
+5. Remove or shorten every flagged comment, any restating comment, and comments exceeding the repo's density; re-stage after trimming.
+6. Write a small commit message following **reference/commit-conventions.md**: repo convention if known, else `type(scope): summary`, describing the change neutrally. Treat the plan's message as illustrative, never verbatim.
+7. Scan the message for AI-related words (see **reference/commit-conventions.md**) and rewrite until none remain.
+8. Commit locally; report the actual commit hash and message. Never push. Hashes, wording, and commit counts are not contractual — drift from the plan is not a failure.
+9. If the step produced no code change (e.g., a documented `no-op`), record the empty-diff proof and note that no commit is needed.
 </commit-step>
 
 <produce-poc-report>
@@ -269,6 +280,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 
 <rule> **At Plan Start**: Apply **track-plan** before executing any step. </rule>
 <rule> **During Each Step**: Apply **execute-step**. </rule>
+<rule> **When a Step Reverts, Restores, Ports, Copies, or Must Stay Unchanged**: Apply **change-provenance** — descend the ladder and prove the result against the pinned ref; never regenerate equivalent code. </rule>
 <rule> **Throughout Execution**: Apply **track-plan** — keep the step list current and show it after every step. </rule>
 <rule> **When a Step Fails**: Apply **handle-errors** immediately. </rule>
 <rule> **At Validation Points**: Apply **run-validation-checkpoints** — validate incrementally, not just at the end. </rule>

@@ -8,7 +8,7 @@
 6. Load **reference/tdd-approach-selection.md** to select the appropriate TDD variant for each objective; existing tests stay green throughout. Document the rationale.
 7. Create a detailed step-by-step refactor plan (starting with the ratified `## Scope Boundary` block). For each objective, include the following steps:
    1. **Confirm Existing Coverage**: Verify existing tests cover the behavior being restructured; add characterization tests (which pass immediately) only where coverage is missing.
-   2. **Refactor in Small Steps**: Apply one structural change at a time without changing behavior.
+   2. **Refactor in Small Steps**: Apply one structural change at a time without changing behavior, using the tooling's move/extract operation instead of retyping code (see **reference/provenance-first.md**).
    3. **Verify Green**: Re-run all tests after each step; any failure means behavior changed — revert it.
    4. **Clean Up Unused Code**: Remove obsolete or redundant code left by the restructure.
    5. **Clean Up Tests**: Update or remove tests made irrelevant by the restructure.

@@ -6,8 +6,9 @@ Record each step in the plan file using this format (each line one fact):
 ### Step N[letter]: [Step Title] [Status Emoji]
 **Objective**: [What this step achieves — 1 sentence]
 **Files**: [Files created, modified, or deleted]
-**Implementation**: [Key changes — 1 line]
-**Validation**: [Test results / verification — 1 line]
+**Source**: [no-op | base | port | copy | edit | generate] · [pinned ref or origin path] · [equality mode]
+**Implementation**: [Key changes or the git operation — 1 line]
+**Validation**: [Equality proof / test results — 1 line]
 **Status**: [Status emoji] [Status description — 1 line]
 ```
 
