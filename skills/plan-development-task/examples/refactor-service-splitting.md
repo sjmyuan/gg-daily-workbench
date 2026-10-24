@@ -1,74 +1,103 @@
-# Example: Refactor — Split Large Handler into Focused Services
+# Example: Refactor — Split a Large Handler into Focused Services
 
-**Scenario**: Split a large `DataImportedHandler` into smaller, focused service classes following Single Responsibility Principle.
+**Scenario**: Split `DataImportedHandler` into category-mapping and price-transformation services.
+**Applies**: **classify-change-type** → **define-scope** → **plan-refactor**
 
----
-
-## Change Classification
-
-Applies **classify-change-type**.
+## Classification
 
 **User request:**
-> "DataImportedHandler is getting too big — it handles category mapping, price transformation, and localization all in one class. We want to split it up."
+> "`DataImportedHandler` handles category mapping, price transformation, and localization in one class. Split it up."
 
-**Agent classifies** — keywords: "split", "refactor without behavior change" → **Refactor** (internal restructuring, no new behavior).
+Keywords "split", "too big" → **Refactor** (internal restructuring, no new behavior). *User confirms: ✅*
 
-*User confirms classification: ✅*
+## Scope
 
----
+**Agent asks:**
+> 1. Stateless utilities or injected beans?
+> 2. Should the handler become a pure orchestrator?
+> 3. Must existing handler tests stay green?
+> 4. Any service naming convention?
 
-## Refactor Scope Definition
+**User:** Spring beans, injected. Pure orchestrator. Existing tests stay green. `<Domain>Service` naming.
 
-Applies **define-scope** (refactor).
+**Scope confirmed:** extract `CategoryMappingService` and `PriceTransformationService`; the handler delegates to both; observable behavior is unchanged. *User confirms: ✅*
 
-**Agent asks clarifying questions:**
-> 1. Should the extracted services be stateless utilities or Spring-managed beans injected into the handler?
-> 2. Is the goal for the handler to become a pure orchestrator, or should it retain some logic?
-> 3. Are there existing tests for `DataImportedHandler` we must keep green throughout?
-> 4. Any naming convention already established for service classes in this package?
+## Generated plan.md
 
-**User responds:**
-> Spring beans, injected. Pure orchestrator. Yes, existing tests must pass. Follow `<Domain>Service` naming.
+```markdown
+# Plan: split-data-imported-handler — one service per transformation concern
+**Type**: refactor
+**Branch**: `split-data-imported-handler` off `main`
+**TDD variant**: Green-to-green — existing tests prove behavior is preserved; characterization tests only where coverage is missing.
 
-**Agent confirms refactor scope:**
-> Extract `CategoryMappingService` and `PriceTransformationService` from `DataImportedHandler`. The handler becomes a pure orchestrator delegating to these services. All existing handler tests must remain green. Each extraction keeps tests green; characterization tests are added only where coverage is missing.
-
-*User confirms: ✅*
-
----
-
-## Refactoring Plan
-
-Applies **plan-refactor**.
-
-### Scope Boundary
+## Scope Boundary
 **May change**: internal structure of `DataImportedHandler` (decomposition into two services)
 **Expected files**: `DataImportedHandler`, `CategoryMappingService`, `PriceTransformationService`, tests (advisory)
 **Must not change**: observable behavior, other handlers
+**Protected zones**: none added
 
-**TDD Approach**: Green-to-green for each service extraction — existing tests stay green throughout; characterization tests added only where coverage is missing
+## Steps
 
-**Steps:**
-- Step 1: Prepare Environment (run tests, mvn spotless:check, mvn checkstyle:check, mvn compile)
-- Step 2: Confirm existing handler tests cover category mapping; add characterization tests if missing
-- Step 3: Extract CategoryMappingService from DataImportedHandler
-- Step 4: Verify all tests stay green
-- Step 5: Clean Up unused code in DataImportedHandler
-- Step 6: Clean Up Tests
-- Step 7: Verify Cleanup
-- Step 8: Validate Linting, Formatting and Type Checking
-- Step 9: Confirm existing handler tests cover price transformation; add characterization tests if missing
-- Step 10: Extract PriceTransformationService from DataImportedHandler
-- Step 11: Verify all tests stay green
-- Step 12: Clean Up unused code in DataImportedHandler
-- Step 13: Clean Up Tests
-- Step 14: Verify Cleanup
-- Step 15: Validate Linting, Formatting and Type Checking
+### Step 1: Prepare environment ⏳
+**Objective**: Confirm the branch and a fully green handler suite.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve.
+**Validation**: Handler tests, Spotless, Checkstyle, and compile pass.
+**Status**: ⏳ Pending
 
-## Key Characteristics
+### Step 2: Confirm coverage for category mapping ⏳
+**Objective**: Prove category-mapping behavior is pinned by tests.
+**Files**: `DataImportedHandlerTest.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: Add characterization tests only for uncovered category-mapping cases; they pass immediately.
+**Validation**: Suite green; every mapping branch asserted.
+**Status**: ⏳ Pending
 
-- **Complexity**: Medium — involves extracting business logic into new services
-- **TDD Approach**: Green-to-green for each service extraction
-- **Focus**: Single Responsibility Principle, service layer separation
-- **Testing Strategy**: Existing handler tests stay green throughout; characterization tests added only where coverage is missing
-- **Total Steps**: 15
+### Step 3: Extract CategoryMappingService ⏳
+**Objective**: Move category mapping into an injected service.
+**Files**: `CategoryMappingService.java`, `DataImportedHandler.java`
+**Source**: copy · `DataImportedHandler.java:48-71` · ast-equal
+**Implementation**: Move the block with the IDE extract operation; record the adaptation list (constructor injection only).
+**Validation**: All handler tests stay green.
+**Status**: ⏳ Pending
+
+### Step 4: Confirm coverage for price transformation ⏳
+**Objective**: Prove price-transformation behavior is pinned by tests.
+**Files**: `DataImportedHandlerTest.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: Add characterization tests only for uncovered price cases.
+**Validation**: Suite green; rounding and currency branches asserted.
+**Status**: ⏳ Pending
+
+### Step 5: Extract PriceTransformationService ⏳
+**Objective**: Move price transformation into an injected service.
+**Files**: `PriceTransformationService.java`, `DataImportedHandler.java`
+**Source**: copy · `DataImportedHandler.java:73-96` · ast-equal
+**Implementation**: Move the block with the IDE extract operation; keep the handler as orchestrator.
+**Validation**: All handler tests stay green.
+**Status**: ⏳ Pending
+
+### Step 6: Clean up ⏳
+**Objective**: Remove code and tests left obsolete by the extraction.
+**Files**: `DataImportedHandler.java`, test suites
+**Source**: edit · n/a · behavior-equal
+**Implementation**: Delete the leftover private helpers and tests that asserted the pre-split structure.
+**Validation**: Affected-area suite green.
+**Status**: ⏳ Pending
+
+### Step 7: Quality gate ⏳
+**Objective**: Confirm linting, formatting, and type checking pass.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run Spotless, Checkstyle, and the type checker.
+**Validation**: All checks exit 0.
+**Status**: ⏳ Pending
+```
+
+## Validation
+
+- [x] No step introduces a failing test — behavior stays unchanged
+- [x] Extraction uses `copy` with an origin and adaptation list, not retyping from memory
+- [x] Every step is one six-field block with a `⏳` status
+- [x] 7 steps — under the refactor cap of 20

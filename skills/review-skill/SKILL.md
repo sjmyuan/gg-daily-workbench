@@ -32,6 +32,7 @@ Steps cite these standards by name; load the Details file.
 | **platform-agnostic-writing** | No platform tool names, no concrete context paths, detect-don't-assume. | [reference/platform-agnostic-writing.md](reference/platform-agnostic-writing.md) |
 | **script-and-cli-policy** | Automation decision order, four script tests, Python-stdlib rule, contracts, anti-pattern severities. | [reference/script-and-cli-policy.md](reference/script-and-cli-policy.md) |
 | **pipeline-integration** | Skill↔skill and skill↔sub-agent integration checklists. | [reference/pipeline-integration.md](reference/pipeline-integration.md) |
+| **artifact-consistency** | One literal template per schema; examples reproduce its shape; identifiers/counts stay continuous; shared examples update together. | [reference/artifact-consistency.md](reference/artifact-consistency.md) |
 | **same-name-live-copy-ban** | Review only the user-provided file; never a live same-named copy. An installed copy needs its exact path. | — |
 </named-standards>
 
@@ -47,6 +48,8 @@ Steps cite these standards by name; load the Details file.
 | Writing-style findings dominant | Style model | [examples/writing-style-review.md](examples/writing-style-review.md) |
 | Skill references another skill, or dispatches / is loaded by sub-agents | Integration checklist (skill-skill + skill-agent) | [reference/pipeline-integration.md](reference/pipeline-integration.md) |
 | Sub-agent dispatch or embedded-execution findings dominant | Agent-integration model | [examples/agent-integration-review.md](examples/agent-integration-review.md) |
+| Examples ship artifact templates, or several examples share one scenario | Template fidelity, identifier continuity, machine checker | [reference/artifact-consistency.md](reference/artifact-consistency.md) |
+| Reviewing example consistency | Findings model: schema drift, identifier/count mismatch, shared-example gap | [examples/artifact-consistency-review.md](examples/artifact-consistency-review.md) |
 
 </context-loading-guide>
 
@@ -93,7 +96,12 @@ Steps cite these standards by name; load the Details file.
     d. No contradiction with a rule or knowledge entry; contradiction → 🔴 Major.
     e. Current capability name referenced; stale name → 🟢 Nit.
     f. Apply the example budget and line guard; overrun → 🟡 Minor, remediate per **reference/size-remediation.md**.
-12. Surface inconsistencies — mixed styles or differing procedural detail. Present both variants and ask which is canonical; never pick silently.
+    g. Load **reference/artifact-consistency.md**; when the skill ships artifact templates, run
+       `scripts/check_artifacts.py` with its field/zone lists and report each hit.
+    h. Verify template fidelity: same headings, field labels, field order, statuses; abridged output labelled.
+    i. Verify set-level continuity: shared identifiers, counts, statuses, and doctrine order across examples.
+12. Surface inconsistencies — mixed styles, differing procedural detail, or artifact schemas that disagree
+    across examples or skills. Present both variants and ask which is canonical; never pick silently.
 13. Include **Positive Highlights** naming at least one well-structured aspect.
 14. Include **Risks & Assumptions** stating format assumptions (e.g., four-section semantics) and that no runtime evaluation ran.
 15. Format findings with severity per **reference/severity-levels.md**; load **examples/skill-file-review.md** for output structure.

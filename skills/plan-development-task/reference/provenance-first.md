@@ -71,11 +71,13 @@ A `no-op` / `base` / `port` request introduces no behavior, so it is not a TDD c
 Skip RED/GREEN. Add no test that asserts the restore itself.
 
 ```markdown
-### Step 1: Restore the sync worker to base
-**Source**: base · origin/main@3f2a1c · identical
+### Step 1: Restore the sync worker to base ⏳
+**Objective**: Make the sync worker identical to the base ref.
 **Files**: src/sync/worker.ts
+**Source**: base · origin/main@3f2a1c · identical
 **Implementation**: `git restore --source=origin/main@3f2a1c -- src/sync/worker.ts`
 **Validation**: `git diff --exit-code origin/main@3f2a1c -- src/sync/worker.ts`; suite green
+**Status**: ⏳ Pending
 ```
 
 ## Anti-patterns
@@ -91,7 +93,7 @@ Skip RED/GREEN. Add no test that asserts the restore itself.
 
 ## Validation
 
-- [ ] Every step touching existing code declares `Source`
+- [ ] Every step declares `Source` — `no-op · n/a · n/a` when nothing changes
 - [ ] `Ref` is a SHA or tag, never a moving branch
 - [ ] `Equality` proof recorded in the step note
 - [ ] No step uses `generate` for a request phrased as revert, keep, restore, or copy

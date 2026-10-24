@@ -1,6 +1,6 @@
 # Example: Resuming an Interrupted Epic
 
-**Scenario**: Delivery of the payment-migration epic was interrupted (context reset / new session). The delivery index shows mixed statuses. The user says: "Continue where we left off."
+**Scenario**: Delivery of the wallet-migration epic was interrupted (context reset / new session). The delivery index shows mixed statuses. The user says: "Continue where we left off."
 
 **Applies**: **resume-delivery** → **orchestrate-delivery** → **update-delivery-index**
 
@@ -28,16 +28,16 @@
 - **Executor A** → resume `order-service/F2` from step 4 (execute-plan) — works from plan.md + context.md (spike references embedded); reloads `adr-wallet-01-payment-failure-handling.md` / solution-doc from the index's Spike References if a step needs more detail
 - **Planner B** → amend `api-gateway/F3`'s existing `plan.md` (insert the missing step, mark obsolete pending steps ⏭) — same path, no second plan
 - **Executor B** → resume F3 at the first ⏳ step after the amendment (execute-plan), same cell
-- **Agent C** (solution-doc-writer / adr-writer) → update solution-doc §Wallet and `adr-wallet-01-payment-failure-handling.md` if F2's execution surfaces artifact changes — the orchestrator never edits them itself
+- **Agent C** (solution-doc-writer / adr-writer) → update solution-doc §2 System Topology and §3 Interaction Details (wallet slice) and `adr-wallet-01-payment-failure-handling.md` if F2's execution surfaces artifact changes — the orchestrator never edits them itself
 - Both F4 cells wait
 
 ## 4. Update index
 
-| Cell | Branch | PR | Commit | Status | Agent | Location |
+| Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|
-| shared-contracts/F1 | 1234-f1-contracts | #1 | a1b2c3d | done | executor-A | deliveries/payment-migration/shared-contracts/wallet-contracts/ |
-| order-service/F2 | 1234-f2-wallet | — | d4e5f6a | in-progress (step 4 🔄) | executor-A | deliveries/payment-migration/order-service/wallet-service/ |
-| api-gateway/F3 | 1234-f3-gateway | — | — | in-progress (amended; same plan) | planner-B → executor-B | deliveries/payment-migration/api-gateway/gateway-service/ |
+| shared-contracts/F1 | 1234-f1-contracts | #1 | a1b2c3d | done | executor-A | deliveries/wallet-migration/shared-contracts/wallet-contracts/ |
+| order-service/F2 | 1234-f2-wallet | — | d4e5f6a | in-progress (step 4 🔄) | executor-A | deliveries/wallet-migration/order-service/wallet-service/ |
+| api-gateway/F3 | 1234-f3-gateway | — | — | in-progress (amended; same plan) | planner-B → executor-B | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
 | order-service/F4 | — | — | — | unplanned (blocked-by F2/F3) | — | — |
 | api-gateway/F4 | — | — | — | unplanned (blocked-by F2/F3) | — | — |
 

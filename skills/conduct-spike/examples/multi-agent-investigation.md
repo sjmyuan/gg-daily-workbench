@@ -16,7 +16,7 @@
 |---|---|---|
 | 1 | Service decomposition boundaries | How to split the monolith? |
 | 2 | Inter-service communication | How to handle service-to-service communication? |
-| 3 | Database decomposition strategy | How to break up the monolithic database? |
+| 3 | Database decomposition strategy | How to break up the monolithic database? · How to migrate the schema safely? |
 | 4 | Migration strategy | How to transition with zero downtime? |
 
 > *User confirms. 4 areas → parallel dispatch for investigation (per area) and ADR drafting (per problem).*
@@ -60,23 +60,23 @@
 
 *(one findings pair per area, always; four pairs dispatched concurrently, each area's evidence map recorded in its evidence doc.)*
 
-### `docs/evidence-communication.md` (evidence map detail)
+### `docs/evidence-communication.md` (excerpt — full schema per `document-findings`)
 
 **Current State**: all calls in-process; external REST/gRPC/SOAP; no message broker; no circuit breaker.
 **Constraints**: no async experience on team; SOAP contract must stay.
 
 **Claim ledger**:
 
-| Claim / Question | Verdict | Evidence (`file:line`) | Confidence |
-|---|---|---|---|
-| Circuit breaker around external calls? | No | `grep "CircuitBreaker\|Resilience4j\|fallback"` across `payment-service` — no matches | Verified (negative) |
-| All internal calls in-process? | Yes | `service/PaymentOrchestrator.java:88` — no internal HTTP client found | Verified |
+| Claim ID | Claim | Verdict | Evidence (file:line) | Confidence |
+|---|---|---|---|---|
+| communication/present#c1 | Circuit breaker around external calls? | No | `grep "CircuitBreaker\|Resilience4j\|fallback"` across `payment-service` — no matches | ❓ Gap |
+| communication/present#c2 | All internal calls in-process? | Yes | `PaymentOrchestrator.java:88` | ✅ Verified |
 
-**Searched-Negatives**: `grep -ri "kafka\|rabbit\|mq"` in `payment-service` — no broker usage.
+**Searched-negatives**: `grep -ri "kafka\|rabbit\|mq"` in `payment-service` — no broker usage.
 
-*(The other three evidence docs follow the same shape — current state, constraints, claim ledger.)*
+*(The other three evidence docs follow the same shape — metadata block, topic map, claim ledger, searched-negatives, coverage.)*
 
-**Cross-area constraints**: `evidence-service-decomposition.md` ↔ `evidence-database.md` (shared `transactions`/`accounts`/`audit_log`); `evidence-communication.md` ↔ `evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
+**Cross-area constraints**: `docs/evidence-service-decomposition.md` ↔ `docs/evidence-database.md` (shared `transactions`/`accounts`/`audit_log`); `docs/evidence-communication.md` ↔ `docs/evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
 
 ---
 
@@ -91,11 +91,12 @@
 | Service decomposition → split the monolith | Payment-type services (Wallet, Bank Transfer, Credit Card) |
 | Inter-service communication → service communication | Hybrid: REST for queries, Kafka events for commands |
 | Database decomposition → break up the database | Database per service, phased by payment type |
+| Database decomposition → migrate the schema safely | Expand-contract migrations |
 | Migration strategy → zero-downtime migration | Strangler Fig, starting with Wallet payments |
 
 ### Orchestrator: Prepare Briefs
 
-4 briefs — one per problem (the database area batches both problems into one brief since they share evidence):
+4 briefs — one per problem, except the database area batches both of its problems into one brief since they share evidence:
 
 **Brief 1 — ADR for Service Decomposition (problem: split the monolith)**:
 ```
@@ -117,11 +118,12 @@ Load draft-adr skill and produce a complete ADR tagged Area: Service Decompositi
 **`adr-service-decomposition-01-split-monolith.md`**: Payment-type services
 **`adr-communication-01-service-communication.md`**: Hybrid sync/async
 **`adr-database-01-break-up-database.md`**: Database per service
+**`adr-database-02-schema-migration.md`**: Expand-contract
 **`adr-migration-01-zero-downtime-migration.md`**: Strangler Fig
 
 ### Orchestrator: Synthesize
 
-> All 4 ADRs reviewed: decomposition + database are consistent; communication + migration are complementary; migration cross-references decomposition correctly. No conflicts — presenting for review.
+> All 5 ADRs reviewed: decomposition + database are consistent; communication + migration are complementary; migration cross-references decomposition correctly. No conflicts — presenting for review.
 
 ---
 
@@ -131,7 +133,7 @@ Load draft-adr skill and produce a complete ADR tagged Area: Service Decompositi
 
 > "Dispatching solution-doc compilation to a sub-agent."
 
-**Final bundle**: `scope.md` · `docs/findings-<area>.md` (one per area) · `solution.md` (decision-only, ADR decisions grouped by area) · the 4 area-prefixed ADRs in `adrs/`.
+**Final bundle**: `scope.md` · `docs/findings-<area>.md` (one per area) · `solution.md` (decision-only; each ADR decision mirrored into its canonical section) · the 5 area-prefixed ADRs in `adrs/`.
 
 ---
 

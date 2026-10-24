@@ -52,14 +52,14 @@
 
 | Findings human doc | Current-state orientation | Representative topic answers |
 |---|---|---|
-| `findings-service-decomposition.md` | Monolithic Spring Boot app (~200K LOC), package-by-layer; `PaymentOrchestrator` (1200 lines) couples all types | Redeploy on any change; wallet can't scale; 3 teams contend |
-| `findings-communication.md` | All calls in-process; external REST/gRPC/SOAP; no broker; no circuit breaker | No async experience; SOAP must be maintained |
-| `findings-database.md` | Single PostgreSQL (~80 tables); `transactions`/`accounts`/`audit_log` shared; 12 settlement procedures | No per-type access control; procedures block decomposition |
-| `findings-migration.md` | K8s (3 replicas) behind Kong; GitHub Actions canary CI/CD; routes `/api/payments/*` | No feature flags or traffic splitting |
+| `docs/findings-service-decomposition.md` | Monolithic Spring Boot app (~200K LOC), package-by-layer; `PaymentOrchestrator` (1200 lines) couples all types | Redeploy on any change; wallet can't scale; 3 teams contend |
+| `docs/findings-communication.md` | All calls in-process; external REST/gRPC/SOAP; no broker; no circuit breaker | No async experience; SOAP must be maintained |
+| `docs/findings-database.md` | Single PostgreSQL (~80 tables); `transactions`/`accounts`/`audit_log` shared; 12 settlement procedures | No per-type access control; procedures block decomposition |
+| `docs/findings-migration.md` | K8s (3 replicas) behind Kong; GitHub Actions canary CI/CD; routes `/api/payments/*` | No feature flags or traffic splitting |
 
 Each area's `evidence-<area>.md` holds the claim ledger (IDs, `file:line`, confidence) and searched-negatives.
 
-**Cross-area constraints**: `evidence-database.md` ↔ `evidence-service-decomposition.md` (shared tables); `evidence-communication.md` ↔ `evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
+**Cross-area constraints**: `docs/evidence-database.md` ↔ `docs/evidence-service-decomposition.md` (shared tables); `docs/evidence-communication.md` ↔ `docs/evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
 
 > *Findings = a human explanation + an evidence doc per area; ADRs cite the evidence doc's stable IDs; the solution doc is authored target-state and references the evidence docs for evidence.*
 
@@ -79,28 +79,56 @@ Each area's `evidence-<area>.md` holds the claim ledger (IDs, `file:line`, confi
 
 **ADR output** (`adrs/`, each tagged with its `Area:`): `adr-service-decomposition-01-split-monolith.md`, `adr-communication-01-service-communication.md`, `adr-database-01-break-up-database.md`, `adr-database-02-schema-migration.md`, `adr-migration-01-zero-downtime-migration.md`.
 
-Example — `adr-service-decomposition-01-split-monolith.md`:
-- **Title**: Decompose Payment Monolith into Payment-Type Microservices
-- **Status**: Draft
-- **Problem**: The monolith couples three independent payment domains, preventing independent deployment and scaling.
-- **Decision Drivers**: Hard — maintain 99.9% SLA; no payment-data loss. Soft — align with existing teams; prefer incremental.
-- **Chosen Option**: A — payment-type services (Wallet, Bank Transfer, Credit Card) with a shared utility library.
-- **Consequences**: (+) independent deploy/scale; (+) incremental strangler extraction; (−) shared-lib coupling risk; (−) duplicated cross-cutting concerns.
+Example — `adr-service-decomposition-01-split-monolith.md` (abridged; full record per `draft-adr`'s template):
+
+```markdown
+# 2026-10-24-Decompose Payment Monolith into Payment-Type Microservices
+
+* Status: draft
+* Area: Service decomposition
+* Owners: adr-writer · reviewed by the payment team
+* Date: 2026-10-24
+
+## Context and Problem Statement
+
+**Decision:** Split the monolith into Wallet, Bank Transfer, and Credit Card services?
+
+The monolith couples three independent payment domains, preventing independent deployment and scaling.
+
+## Decision Outcome
+
+**Chosen:** "Option A: payment-type services" — independent deploy/scale with a shared utility library.
+
+## Consequences
+
+**Trade-off:** independent delivery for shared-lib coupling.
+
+### Risks
+
+* Shared library becomes a coordination point
+
+## Decision Drivers
+
+* Maintain 99.9% SLA
+* No payment-data loss
+* Align with existing teams
+* Prefer incremental migration
+```
 
 ---
 
 ## Compile Solution Doc
 
-*(write-solution-doc applied — target-state, decision-only, ADR decisions grouped by area.)*
+*(write-solution-doc applied — target-state, decision-only; each ADR decision mirrored into the canonical sections.)*
 
 **Solution Document**: `solution.md`
-- C2: API Gateway → Wallet, Bank Transfer, Credit Card services, each with own DB; Kafka event bus
-- C3 + sequence diagrams per service (target state); payment initiation/settlement/migration flows
-- API contracts: REST endpoints for queries, Kafka topic schemas for events
-- RAID: risks (data consistency), assumptions (Kafka adoption), issues (SOAP legacy); RACI per service
+- §2 System Topology (C4 Model): C2 — API Gateway → Wallet, Bank Transfer, Credit Card services, each with its own DB; Kafka event bus; C3 per service
+- §3 Interaction Details: payment initiation, settlement, and migration sequences
+- §4 API / Event Schema: REST contracts for queries, Kafka topic schemas for events
+- §8 RAID Analysis: risks (data consistency), assumptions (Kafka adoption), issues (SOAP legacy); §9 RACI per service
 
 **Final bundle**: `scope.md` · `adrs/` (5 area-prefixed ADRs) · `solution.md` · `docs/findings-<area>.md` + `docs/evidence-<area>.md` (4 pairs).
 
 ### Wrap-Up (conversation level — not written into any artifact)
 
-> All five chosen options are adopted into the solution doc, mirrored **grouped by area** per `scope.md`. If an ADR decision changes during review, the corresponding area section is rewritten in place. Artifacts version together in `spikes/payment-migration/` (see `examples/spike-artifact-layout.md`).
+> All five chosen options are adopted into the solution doc, each mirrored in the canonical section it governs. `scope.md` remains the only area-grouped view. If an ADR decision changes during review, the affected solution-doc section is rewritten in place. Artifacts version together in `spikes/payment-migration/` (see `examples/spike-artifact-layout.md`).

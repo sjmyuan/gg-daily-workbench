@@ -6,14 +6,24 @@
 
 ## Plan in Execution
 
+Excerpt of the active `rework-<date>.md`; header and `## Steps` heading are unchanged.
+
 ```markdown
 ## Scope Boundary
 **May change**: `application/` behavior + `test/`
 **Expected files**: `application/`, `test/` (advisory)
 **Must not change**: `infrastructure/` behavior (DB schema, external client calls)
+**Protected zones**: none added
 ```
 
-### Step 2: Update Compensating Rollback Tests 🔄
+### Step 2: Update Compensating Rollback Tests 🚫
+
+**Objective**: Cover the compensating-rollback retry path.
+**Files**: `test/CompensatingRollbackTest.java` (new)
+**Source**: generate · n/a · behavior-equal
+**Implementation**: new test for partial-failure retries.
+**Validation**: blocked — the test cannot compile against current client behavior.
+**Status**: 🚫 Blocked — the only viable fix crosses **Must not change**
 
 **Error**: `infrastructure/PaymentGatewayClient.java` throws on partial failure; the new test cannot compile without handling it.
 
@@ -27,4 +37,4 @@ Applying **check-scope-boundary**: the fix is material, so the executor holds th
 
 **User decision**: (a) extend the boundary.
 
-The executor updates the boundary block in the active `rework-<date>.md`, retries the step, and marks it ✅.
+The executor returns `NEEDS_CONTEXT`; the **planner** rewrites the boundary in the active `rework-<date>.md` (planner-owned) and records the extension. The executor then resumes Step 2 — it never edits the boundary itself.

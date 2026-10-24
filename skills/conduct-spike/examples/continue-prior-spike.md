@@ -4,7 +4,7 @@
 
 **Applies**: `continue-prior-spike` → `investigate-per-area` → `compile-findings-doc` → `draft-problem-adrs` (evaluation via `draft-adr`) → `sync-update-artifacts`
 
-**What makes this distinct**: A continuation round — one area revisited **plus a new problem added** under it. The scope-map delta drives which ADRs change and how `solution.md`'s area section grows.
+**What makes this distinct**: A continuation round — one area revisited **plus a new problem added** under it. The scope-map delta drives which ADRs change and which canonical solution-doc sections are refreshed.
 
 ---
 
@@ -90,14 +90,16 @@
 
 ### ADRs written (rewritten in place — old drafts deleted, no version markers; see `reference/artifact-maintenance-guide.md`)
 
+*(Abridged summaries; each full record follows `draft-adr`'s template with its `Area:` tag and `Status: draft`.)*
+
 **`adr-database-01-break-up-database.md` — Gradual Database Decomposition with Settlement Extraction** (revised)
 - **Problem**: Single PostgreSQL DB (~80 tables) shared across all payment types; the nightly settlement batch (45 min, 500K transactions) is the critical coupling point.
-- **Chosen Option**: Phase 1 — payment-type services own type-specific tables; settlement service owns `transactions` + `accounts`; events via Kafka. Phase 2 — further decompose.
+- **Decision Outcome**: Phase 1 — payment-type services own type-specific tables; settlement service owns `transactions` + `accounts`; events via Kafka. Phase 2 — further decompose.
 - **Consequences**: (+) incremental; (+) settlement scales independently; (+) reuses Kafka; (−) settlement is a critical runtime dependency; (−) eventual consistency needs monitoring.
 
 **`adr-database-02-schema-migration.md` — Schema Migration via Expand-Contract** (new)
 - **Problem**: Splitting the DB needs a schema-migration approach that keeps the 2000+ line stored procedures working during the phased transition.
-- **Chosen Option**: Expand-contract — additive columns, backfill, then drop; each migration ships with its owning service.
+- **Decision Outcome**: Expand-contract — additive columns, backfill, then drop; each migration ships with its owning service.
 - **Consequences**: (+) reversible; (+) no downtime; (+) matches the phased split; (−) temporary dual-schema window; (−) backfill volume needs batching.
 
 ---
@@ -106,21 +108,20 @@
 
 *(sync-update-artifacts — the database area now has two decided ADRs)*
 
-> "The database area now has two decisions. The C2 diagram needs a Settlement Service container, and the solution doc's `Database decomposition` section gains a schema-migration subsection. I'll refresh the solution document."
+> "The database area now has two decisions. The C2 diagram needs a Settlement Service container, and the solution doc's topology and interaction sections need the schema-migration change. I'll refresh the solution document."
 
 **Solution doc** (via `write-solution-doc`, rewritten in place):
-- `Database decomposition` section: settlement-extraction + schema-migration decisions (grouped by area per `scope.md`).
-- C2: Settlement Service container (inbound Kafka events; owns `transactions` + `accounts`).
-- Sequence (nightly settlement): Payment Services → Kafka → Settlement Service → PostgreSQL.
-- RAID: Risk — Settlement Service is a critical dependency; Assumption — Kafka topic partitioning aligns with payment types.
+- §2 System Topology: Settlement Service container added (inbound Kafka events; owns `transactions` + `accounts`).
+- §3 Interaction Details: nightly settlement sequence (Payment Services → Kafka → Settlement Service → PostgreSQL).
+- §8 RAID Analysis: the settlement-extraction and expand-contract decisions reflected in risks/assumptions.
 
-**Consistency check**: [x] ADRs cite updated findings [x] solution doc mirrors both decisions grouped by area [x] no-note scan passes.
+**Consistency check**: [x] ADRs cite updated findings [x] solution doc mirrors both decisions in its canonical sections [x] no-note scan passes.
 
 ---
 
 ## Step 6: Present Results + Next Round
 
-**Revised**: `adr-database-01-break-up-database.md` (resolved — Option C). **Added**: `adr-database-02-schema-migration.md` (expand-contract). **Updated**: `scope.md` (new problem), solution doc's database area section. **Unchanged**: the other three ADRs.
+**Revised**: `adr-database-01-break-up-database.md` (resolved — Option C). **Added**: `adr-database-02-schema-migration.md` (expand-contract). **Updated**: `scope.md` (new problem), solution doc's topology, interaction, and RAID sections. **Unchanged**: the other three ADRs.
 
 > "Database decomposition is resolved: shared DB + settlement extraction, phased; and schema migration via expand-contract. Would you like to continue with another round, or is this sufficient?"
 

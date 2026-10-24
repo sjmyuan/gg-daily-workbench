@@ -10,6 +10,7 @@ Drafted `skills/data-validator/SKILL.md` with 2 capabilities (`<validate-data>`,
 ## Reference Extraction (create-skill-references)
 The validation-criteria table is a large rubric — extract to `reference/validation-rubric.md`, then add a `<context-loading-guide>` entry:
 `Load when validating data or reporting errors | Validation criteria rubric | reference/validation-rubric.md`
+If the rubric defines an output artifact, emit one literal fenced skeleton with fixed field order; examples reproduce it.
 
 ## Example Creation (create-skill-examples)
 One example per capability:

@@ -2,8 +2,6 @@
 
 **Scenario**: A 4-step feature plan executes with one small commit per step, and the branch is pushed only after explicit user confirmation. Demonstrates **verify-prerequisites**, **commit-step**, **request-push-approval**, and **manage-user-interaction** (branch-creation ask, push approval).
 
----
-
 ## User Request
 
 "Execute the plan to add a `CustomerValidator`, commit after each step, and don't push anything until I confirm."
@@ -15,7 +13,13 @@
 3. Add unit tests for validator
 4. Run lint, formatting and type checks
 
----
+```markdown
+## Scope Boundary
+**May change**: customer validation behavior and its tests
+**Expected files**: validator, service, tests (advisory)
+**Must not change**: public API signatures, other services
+**Protected zones**: none added
+```
 
 ## Prerequisites Check (verify-prerequisites)
 
@@ -30,13 +34,14 @@ git branch        → on main; feature branch missing
 - Missing: that feature branch. Raise to user: "Create branch `1234-add-customer-validator` from `main` before starting?" User confirms. Branch created.
 - Dependencies present, baseline tests pass → **ready**.
 
-Recorded in plan file: `Prerequisites: ready (branch created, baseline green)`.
+Recorded in Step 1's **Validation** line: branch created, baseline green.
 
----
+### Step 1: Create CustomerValidator Class ✅
 
-## Step 1: Create CustomerValidator Class ✅
-
-**Files**: `src/validation/CustomerValidator.java`
+**Objective**: Add a validator class for customer fields.
+**Files**: `src/validation/CustomerValidator.java` (new)
+**Source**: generate · n/a · behavior-equal
+**Implementation**: id/name/email validation rules; no prior class.
 **Validation**: class compiles; no tests changed.
 **Status**: ✅ Completed
 
@@ -48,16 +53,19 @@ git commit -m "feat(validation): add CustomerValidator class"
 Commit `a1b2c3d` created locally. Not pushed.
 
 #### Plan Status After Step 1
-### Step 1: Create CustomerValidator class ✅
-### Step 2: Wire validator into CustomerService ⏳
-### Step 3: Add unit tests for validator ⏳
-### Step 4: Run lint, formatting and type checks ⏳
+```
+Step 1 Create CustomerValidator class ✅
+Step 2 Wire validator into CustomerService ⏳
+Step 3 Add unit tests for validator ⏳
+Step 4 Run lint, formatting and type checks ⏳
+```
 
----
+### Step 2: Wire Validator into CustomerService ✅
 
-## Step 2: Wire Validator into CustomerService ✅
-
+**Objective**: Call the validator before persisting a customer.
 **Files**: `src/service/CustomerService.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: inject `CustomerValidator`; validate at the service boundary.
 **Validation**: existing tests pass — no regressions.
 **Status**: ✅ Completed
 
@@ -68,11 +76,12 @@ git commit -m "refactor(service): use CustomerValidator in CustomerService"
 ```
 Commit `e4f5g6h7` created locally. Not pushed.
 
----
+### Step 3: Add Unit Tests for Validator ✅
 
-## Step 3: Add Unit Tests for Validator ✅
-
-**Files**: `test/CustomerValidatorTest.java`
+**Objective**: Cover validator rules and edge cases.
+**Files**: `test/CustomerValidatorTest.java` (new)
+**Source**: generate · n/a · behavior-equal
+**Implementation**: valid, null, invalid-id, and invalid-email cases.
 **Validation**: all 12 tests pass.
 **Status**: ✅ Completed
 
@@ -83,17 +92,16 @@ git commit -m "test(validation): cover CustomerValidator edge cases"
 ```
 Commit `i8j9k0l1` created locally. Not pushed.
 
----
+### Step 4: Validate Linting, Formatting and Type Checks ✅
 
-## Step 4: Validate Linting, Formatting and Type Checks ✅
-
-**Files**: none changed
+**Objective**: Confirm the change passes repo quality gates.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: run the gates; no edits.
 **Validation**: lint, format, type-check all clean.
 **Status**: ✅ Completed
 
 Applying **commit-step**: step produced no code change — no commit needed.
-
----
 
 ## Final Summary & Push Approval (request-push-approval)
 

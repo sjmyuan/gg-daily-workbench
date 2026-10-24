@@ -24,11 +24,11 @@ A spike reduces uncertainty via research and analysis; its output is **documente
 |---|---|
 | **Findings Docs** (per area) | A publishable human doc (question-style explanation) + an evidence doc (ledger, `file:line`, confidence, searched-negatives) |
 | **ADRs** | One per problem — a "How to …" decision — tagged with its area |
-| **1 Solution Document** | Target-state architecture (C4, API contracts, RAID, RACI) — decision-only, ADR decisions mirrored grouped by area |
+| **1 Solution Document** | Target-state architecture (C4, API contracts, RAID, RACI) — decision-only; ADRs mirrored into canonical sections |
 </spike-definition>
 
 <spike-artifact-layout>
-One folder per spike — `spikes/<spike-name>/` with `scope.md`, `adrs/adr-<area>-<NN>-<problem>.md`, `solution.md`, `docs/findings-<area>.md` + `docs/evidence-<area>.md`, cross-referenced by relative path. `spikes/` anchors the write boundary. Unnamed root → `resolve-artifact-location`; record `Artifact root:` atop `scope.md`.
+One folder per spike — `spikes/<spike-name>/` with `scope.md`, `adrs/adr-<area>-<NN>-<problem>.md`, `solution.md`, `docs/findings-<area>.md` + `docs/evidence-<area>.md`. `spikes/` anchors the write boundary. Unnamed root → `resolve-artifact-location`; record `Artifact root:` atop `scope.md`.
 </spike-artifact-layout>
 
 <write-boundary>
@@ -36,7 +36,7 @@ Writes are confined to the spike folder (`**/spikes/**`) — never code, config,
 </write-boundary>
 
 <scope-map>
-The spike's **area → problem map** and live status dashboard. Each problem maps to one ADR; each ADR carries its `Area:` tag; `solution.md` renders the map grouped by area. Record at **define-spike-scope**; edit at **continue-prior-spike**.
+The spike's **area → problem map** and status dashboard. Each problem maps to one ADR with its `Area:` tag; `scope.md` groups by area, `solution.md` mirrors decisions into canonical sections. Record at **define-spike-scope**; edit at **continue-prior-spike**.
 </scope-map>
 
 <scope-map-status>
@@ -90,7 +90,7 @@ Dependency chain — **Findings Docs → ADRs → Solution Doc** — kept at the
 |---|---|
 | Evidence doc (new evidence) | ADR → solution doc |
 | ADR decision change | Solution doc |
-| Scope-map delta | Affected ADR(s) → solution doc area section |
+| Scope-map delta | Affected ADR(s) → affected solution-doc section(s) |
 
 Propagation stops at the first unaffected artifact. Full protocol: **reference/artifact-maintenance-guide.md**.
 </artifact-maintenance-doctrine>

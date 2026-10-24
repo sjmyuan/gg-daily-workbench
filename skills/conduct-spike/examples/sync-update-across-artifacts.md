@@ -24,23 +24,23 @@ Artifacts after the original spike:
 
 | Origin | Affected downstream |
 |---|---|
-| Findings doc (new evidence: 3K/sec measured limit) | `adr-communication-01-service-communication.md` → solution doc's communication area section |
+| Findings doc (new evidence: 3K/sec measured limit) | `adr-communication-01-service-communication.md` → solution doc §2 System Topology and §3 Interaction Details |
 
 ## What the assistant does, artifact by artifact
 
 1. **Findings pair** (via `document-findings`): the evidence doc's ledger row for the peak-load claim moves from 💭 Assumption to ✅ Verified with `file:line`; the human doc's communication topic is refreshed only if its reader-facing answer changed.
 2. **`adr-communication-01-service-communication.md`** (via `draft-adr`): decision changes to "Event-driven Kafka" — chosen option, justification, and consequences rewritten in place.
 
-   **Before** (as drafted):
+   **Before** (as drafted, abridged):
    ```markdown
-   Chosen option: "Synchronous REST", because the team is familiar with it and it is the simplest option.
+   **Chosen:** "Synchronous REST" — the team is familiar with it and it is the simplest option.
    ```
 
    **After** (rewritten in place — old text deleted, not annotated):
    ```markdown
-   Chosen option: "Event-driven Kafka", because the measured 10K orders/sec peak exceeds REST's throttling limits, and Kafka provides the replay and redelivery semantics the audit path requires.
+   **Chosen:** "Event-driven Kafka" — the measured 10K orders/sec peak exceeds REST's throttling limits, and Kafka provides the replay and redelivery semantics the audit path requires.
    ```
-3. **Solution doc** (via `write-solution-doc`): inter-service communication section evolves from REST contracts to Kafka topics; C4/sequence diagrams updated; no "changed from REST" language.
+3. **Solution doc** (via `write-solution-doc`): §2 System Topology and §3 Interaction Details evolve from REST contracts to Kafka topics; C4/sequence diagrams updated; no "changed from REST" language.
 
 ## Consistency check
 
@@ -50,7 +50,7 @@ Artifacts after the original spike:
 
 ## What the assistant says (in conversation)
 
-> "The prototype measured 3K/sec — below the 10K peak. I updated the findings pair with the measurement, flipped the communication ADR to Kafka in place, and refreshed the solution doc's communication section and diagrams. All three artifacts now agree."
+> "The prototype measured 3K/sec — below the 10K peak. I updated the findings pair with the measurement, flipped the communication ADR to Kafka in place, and refreshed the affected solution-doc sections and diagrams. All three artifacts now agree."
 
 ## What is deliberately absent from the artifacts
 

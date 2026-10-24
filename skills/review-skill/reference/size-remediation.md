@@ -31,6 +31,7 @@ Apply each lever before the next; stop once the char budget is met.
 ### Cut weight — eliminate, don't shrink
 4. Delete meta-narration ("this capability…", "note that"), why-explanations, redundant preambles, low-value edge cases.
 5. Run the "So what?" test on every line; delete lines that fail.
+6. Never drop required artifact fields, status vocabulary, or schema labels to meet a budget. Remove decorative separators (`---`), duplicated prose, and summarized non-schema sections first; an over-budget example missing a required field is still a 🔴 Major.
 
 ### Redistribute — move content, don't cut it (fixes the per-file budget)
 6. **Extract to `reference/`** — Move large rubrics, tables, criteria, or API lists out of `<knowledge>` and out of capability steps into `reference/*.md`;

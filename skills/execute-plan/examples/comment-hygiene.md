@@ -2,8 +2,6 @@
 
 **Scenario**: A plan adds a retry handler to a repo with sparse, why-only comments. **verify-prerequisites** records the policy + an exemplar; **execute-step** writes comment-minimal from the start (zero default, why-comments on a second pass); **commit-step**'s deterministic pattern scan confirms clean. Demonstrates **verify-prerequisites** (policy detection), **execute-step** (write-time zero-default), and **commit-step** (pattern-scan gate).
 
----
-
 ## User Request
 
 "Execute the plan to add a `RetryHandler` for the payment client, committing after each step."
@@ -14,7 +12,13 @@
 2. Wire RetryHandler into PaymentClient
 3. Add unit tests for retry logic
 
----
+```markdown
+## Scope Boundary
+**May change**: payment-client retry behavior and its tests
+**Expected files**: `src/client/RetryHandler.java`, `PaymentClient`, tests (advisory)
+**Must not change**: public client API, other clients
+**Protected zones**: none added
+```
 
 ## Prerequisites Check (verify-prerequisites)
 
@@ -27,11 +31,12 @@ src/client/HttpClientFactory.java  → one why-comment ("// keep-alive: pooling 
 
 - Policy + exemplar recorded in plan note: `Policy: sparse, why-only, no docstrings · Exemplar: "// keep-alive: pooling beats TLS re-handshake"`.
 
----
+### Step 1: Create RetryHandler Class ✅
 
-## Step 1: Create RetryHandler Class ✅
-
-**Files**: `src/client/RetryHandler.java`
+**Objective**: Add a retry handler for the payment client.
+**Files**: `src/client/RetryHandler.java` (new)
+**Source**: generate · n/a · behavior-equal
+**Implementation**: retry on 429/5xx with the configured backoff; no prior handler.
 **Validation**: compiles; unit tests pass.
 **Status**: ✅ Completed
 
@@ -61,6 +66,8 @@ git commit -m "feat(client): add retry handler for payment client"
 Commit `ab12cd3` created locally. Not pushed.
 
 #### Plan Status After Step 1
-### Step 1: Create RetryHandler class ✅
-### Step 2: Wire RetryHandler into PaymentClient ⏳
-### Step 3: Add unit tests for retry logic ⏳
+```
+Step 1 Create RetryHandler class ✅
+Step 2 Wire RetryHandler into PaymentClient ⏳
+Step 3 Add unit tests for retry logic ⏳
+```

@@ -13,17 +13,17 @@
 ## 2. Dispatch — Phase 1 (planners only)
 
 - **Planner A** → plan `shared-contracts/F1` (plan-development-task)
-  - Brief: the cell brief from `index.md` + spike references by **path** — `adr-wallet-01-payment-failure-handling.md` (`spikes/payment-migration/adrs/`), solution-doc §Wallet; the wave/gating state **inline**. Agent loads the paths on demand for full context.
+  - Brief: the cell brief from `index.md` + spike references by **path** — `adr-wallet-01-payment-failure-handling.md` (`spikes/wallet-migration/adrs/`), solution-doc §2 System Topology and §3 Interaction Details (wallet slice); the wave/gating state **inline**. Agent loads the paths on demand for full context.
 
 > **Plan-first gate**: no executor may touch `F1` until Planner A's `plan.md` exists on disk. The gate forbids the reverse order — never implement first and back-fill a plan.
 
 ## 3. Verify the gate + update index
 
-- Planner A returns: `deliveries/payment-migration/shared-contracts/wallet-contracts/plan.md` exists (verified on disk) → `F1` may advance.
+- Planner A returns: `deliveries/wallet-migration/shared-contracts/wallet-contracts/plan.md` exists (verified on disk) → `F1` may advance.
 
-| Cell | Branch | PR | Commit | Status | Agent | Location |
+| Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|
-| shared-contracts/F1 | 1234-f1-contracts | — | — | **planned** | planner-A | deliveries/payment-migration/shared-contracts/wallet-contracts/ |
+| shared-contracts/F1 | 1234-f1-contracts | — | — | **planned** | planner-A | deliveries/wallet-migration/shared-contracts/wallet-contracts/ |
 
 F2 and F3 become develop-ready (F1 planned; contract-first allows planning in parallel).
 
@@ -43,11 +43,11 @@ F1's execution completes → the orchestrator applies **verify-cell**: a fresh *
 
 Per **branch-and-push-conventions**, the executor pushes and opens the PR after user approval — F1 becomes **done** only after the PR merges with the recorded head commit.
 
-| Cell | Branch | PR | Commit | Status | Agent | Location |
+| Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|
-| shared-contracts/F1 | 1234-f1-contracts | #1 | a1b2c3d | **done** (verified, then PR merged) | code-reviewer-A | deliveries/payment-migration/shared-contracts/wallet-contracts/ |
-| order-service/F2 | 1234-f2-wallet | — | — | **planned** | planner-B | deliveries/payment-migration/order-service/wallet-service/ |
-| api-gateway/F3 | 1234-f3-gateway | — | — | **planned** | planner-C | deliveries/payment-migration/api-gateway/wallet-api-gateway/ |
+| shared-contracts/F1 | 1234-f1-contracts | #1 | a1b2c3d | **done** (verified, then PR merged) | code-reviewer-A | deliveries/wallet-migration/shared-contracts/wallet-contracts/ |
+| order-service/F2 | 1234-f2-wallet | — | — | **planned** | planner-B | deliveries/wallet-migration/order-service/wallet-service/ |
+| api-gateway/F3 | 1234-f3-gateway | — | — | **planned** | planner-C | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
 | order-service/F4 | — | — | — | unplanned | — | — |
 | api-gateway/F4 | — | — | — | unplanned | — | — |
 

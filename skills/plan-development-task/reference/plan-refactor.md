@@ -6,7 +6,7 @@
 4. Identify and map dependencies between objectives to establish an efficient and logical refactoring sequence.
 5. **Consolidate Steps**: Group related objectives together when they share context or can be tested together, reducing the total step count while maintaining clarity. Consolidation strategies: (a) merge coverage-confirmation and refactor steps for simple extractions or renames into a single step, (b) combine Clean Up Unused Code + Clean Up Tests + Verify Cleanup into one cleanup step when changes are small, (c) group Validate Linting, Formatting and Type Checking across multiple objectives into one final quality gate step.
 6. Load **reference/tdd-approach-selection.md** to select the appropriate TDD variant for each objective; existing tests stay green throughout. Document the rationale.
-7. Create a detailed step-by-step refactor plan (starting with the ratified `## Scope Boundary` block). For each objective, include the following steps:
+7. Create a detailed step-by-step refactor plan using the template in **reference/plan-file-format.md** — title + metadata, the ratified `## Scope Boundary`, optional `## Decisions`, then one six-field `### Step N: <title> ⏳` block per step. For each objective, include the following steps:
    1. **Confirm Existing Coverage**: Verify existing tests cover the behavior being restructured; add characterization tests (which pass immediately) only where coverage is missing.
    2. **Refactor in Small Steps**: Apply one structural change at a time without changing behavior, using the tooling's move/extract operation instead of retyping code (see **reference/provenance-first.md**).
    3. **Verify Green**: Re-run all tests after each step; any failure means behavior changed — revert it.

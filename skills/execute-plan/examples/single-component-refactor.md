@@ -19,12 +19,11 @@
 ## Initial Plan Status
 **Status**: Steps 1–7 ⏳
 
----
-
-### Step 1: Create DataValidator Class 🔄 → ✅
+### Step 1: Create DataValidator Class ✅
 
 **Objective**: Create a dedicated validator class for data record validation
-**Files**: Creating `domain/validation/DataValidator.java`
+**Files**: `domain/validation/DataValidator.java`
+**Source**: generate · n/a · behavior-equal
 **Implementation**:
 ```java
 @Component
@@ -44,32 +43,29 @@ public class DataValidator {
 **Validation**: Class compiles successfully
 **Status**: ✅ Completed · Steps 2–7 ⏳
 
----
-
 ### Step 2: Move Validation Logic from Handler to Validator ✅
 
 **Objective**: Remove the inline validation block from DataImportedHandler
-**Files**: Modifying `application/service/DataImportedHandler.java`
+**Files**: `application/service/DataImportedHandler.java`
+**Source**: copy · `application/service/DataImportedHandler.java:40-79` · ast-equal
 **Implementation**: deleted the 40-line inline validation block; handler reduced from 70 to ~30 lines; all validation logic now lives in `DataValidator`.
 **Validation**: Handler compiles; existing handler tests pass — no regressions
 **Status**: ✅ Completed · Steps 3–7 ⏳
 
----
-
 ### Step 3: Inject Validator ✅
 
 **Objective**: Add DataValidator dependency injection to DataImportedHandler
-**Files**: Modifying `application/service/DataImportedHandler.java`
+**Files**: `application/service/DataImportedHandler.java`
+**Source**: edit · n/a · behavior-equal
 **Implementation**: constructor now takes `DataValidator`, `DataTransformer`, `EventPublisher`; all fields final.
 **Validation**: Handler compiles with validator injection
 **Status**: ✅ Completed · Steps 4–7 ⏳
 
----
-
 ### Step 4: Update Handler to Use Validator ✅
 
 **Objective**: Replace inline validation with a `validator.validate()` call
-**Files**: Modifying `application/service/DataImportedHandler.java`
+**Files**: `application/service/DataImportedHandler.java`
+**Source**: edit · n/a · behavior-equal
 **Implementation**:
 ```java
 public void handle(DataImported event) {
@@ -81,37 +77,32 @@ public void handle(DataImported event) {
 **Validation**: Handler compiles and runs successfully; code reduced 70 → 35 lines
 **Status**: ✅ Completed · Steps 5–7 ⏳
 
----
-
 ### Step 5: Write Unit Tests for Validator ✅
 
 **Objective**: Create comprehensive unit tests for DataValidator
-**Files**: Creating `domain/validation/DataValidatorTest.java`
+**Files**: `domain/validation/DataValidatorTest.java`
+**Source**: generate · n/a · behavior-equal
 **Implementation**: 4 tests — valid record passes; null record throws; invalid ID throws; negative value throws.
 **Validation**: All 12 tests passing ✓
 **Status**: ✅ Completed · Steps 6–7 ⏳
 
----
-
 ### Step 6: Update Existing Handler Tests ✅
 
 **Objective**: Update handler tests to mock validator and verify integration
-**Files**: Modifying `application/service/DataImportedHandlerTest.java`
+**Files**: `application/service/DataImportedHandlerTest.java`
+**Source**: edit · n/a · behavior-equal
 **Implementation**: `@Mock DataValidator` + `@InjectMocks handler`; tests assert delegation (`verify(dataValidator).validate(...)`) and exception propagation.
 **Validation**: All 18 handler tests passing ✓
 **Status**: ✅ Completed · Step 7 ⏳
 
----
-
 ### Step 7: Update Documentation ✅
 
 **Objective**: Document the new validation architecture
-**Files**: Modifying `docs/architecture.md`
+**Files**: `docs/architecture.md`
+**Source**: edit · n/a · behavior-equal
 **Implementation**: added a `## Validation Layer` section — validation rules (ID required/alphanumeric-hyphen, name required, value non-negative) + usage snippet + benefits.
 **Validation**: Documentation reviewed and accurate
 **Status**: ✅ Completed
-
----
 
 ## Final Plan Status
 **Status**: Steps 1–7 ✅

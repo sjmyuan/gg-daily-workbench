@@ -69,7 +69,7 @@ files carry process narration. A full style pass is required.
 ### 🟢 Nits / Suggestions
 
 #### Example scenario runs long
-- **File**: [examples/release-notes-from-log.md](examples/release-notes-from-log.md#L1-L6)
+- **File**: `examples/release-notes-from-log.md` lines 1–6
 - **Issue**: The scenario paragraph is six sentences; the convention is
   1–2.
 - **Recommendation**: Trim to two sentences naming the trigger and the

@@ -6,17 +6,24 @@
 
 ## Plan in Execution
 
+Excerpt of the plan file; header, metadata, and `## Steps` heading are unchanged.
+
 ```markdown
 ## Scope Boundary
 **May change**: `DataImportedHandler` ID-passing behavior
 **Expected files**: `DataImportedHandler.java` + its tests (advisory)
 **Must not change**: transformer logic, publisher behavior, other handlers
+**Protected zones**: none added
 ```
 
 ### Step 2: Fix ID mapping logic in DataImportedHandler ✅
 
+**Objective**: Publish the original source ID.
 **Files**: `DataImportedHandler.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: pass `record.getId()` to the publisher.
 **Validation**: `mvn test -Dtest=DataImportedHandlerTest` passes.
+**Status**: ✅ Completed
 
 Running the repo formatter rewrote `build.gradle.kts` and `docs/operations.md`:
 

@@ -10,6 +10,7 @@ When a skill references or is referenced by another skill, verify 4 points:
 2. **Shared schema** — the downstream skill documents the format it accepts (minimum fields, formats). Mismatched format → 🟡 Minor.
 3. **Bidirectional awareness** — each skill names the other in its description, skill-boundary, or rules. Missing cross-reference → 🟡 Minor.
 4. **Guard clauses** — the downstream skill's when-to-use prevents premature loading (e.g., "Do NOT load when no plan has been generated yet"). Absence → 🟡 Minor (both skills could load simultaneously).
+5. **Artifact schema conformance** — the consumer owns the schema; the producer's examples reproduce the consumer's template (headings, fields, order, statuses) or are labelled abridged. Any drift → 🔴 Major (downstream parsing/execution breaks). Shared examples are updated in both skills. Details: **artifact-consistency**.
 
 ## Axis 2 — Skill↔Sub-agent integration
 

@@ -6,13 +6,22 @@
 
 ## 1. Require the executor handoff
 
-- `deliveries/payment-migration/order-service/wallet-service/plan.md` — every step ✅ or ⏭, each ✅ with its commit.
-- `context.md` `## Execution` — `DONE_WITH_CONCERNS` · range `a1b2c3d..d4e5f6a` · tests `18/18 passing, output pristine` · `review-code` clean (2 Blocker/Major fixed).
+- `deliveries/wallet-migration/order-service/wallet-service/plan.md` — every step ✅ or ⏭.
+- `context.md` `## Execution` — latest round only:
+
+  | Field | Value |
+  |---|---|
+  | Status | `DONE_WITH_CONCERNS` |
+  | Commits | `a1b2c3d..d4e5f6a` |
+  | PR | — (not opened) |
+  | Test evidence | `18/18 passing, output pristine` |
+  | Review outcome | `review-code` clean; 2 Blocker/Major fixed |
+
 - `context.md` `## Open concerns` — "retry cap hard-coded" (deferred Minor).
 
 ## 2. Dispatch a fresh code-reviewer
 
-- **code-reviewer A** (**review-code**) — inputs: `plan.md`, `context.md`, recorded range `a1b2c3d..d4e5f6a`, `adr-wallet-01-payment-failure-handling.md`, solution-doc §Wallet, global constraints.
+- **code-reviewer A** (**review-code**) — inputs: `plan.md`, `context.md`, recorded range `a1b2c3d..d4e5f6a`, `adr-wallet-01-payment-failure-handling.md`, solution-doc §2 System Topology and §3 Interaction Details (wallet slice), global constraints.
 - code-reviewer A fetches the diff from git over the range — no diff file, and the output never enters the orchestrator's context.
 - Not executor-B, the agent that produced the work.
 
@@ -39,9 +48,9 @@
 
 ## 5. Update the index
 
-| Cell | Branch | PR | Commit | Status | Agent | Location |
+| Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|
-| order-service/F2 | 1234-f2-wallet | — | d4e5f6a | **verified** | code-reviewer-A | deliveries/payment-migration/order-service/wallet-service/ |
+| order-service/F2 | 1234-f2-wallet | — | d4e5f6a | **verified** | code-reviewer-A | deliveries/wallet-migration/order-service/wallet-service/ |
 
 - F2 awaits merge; with F1 **done**, F2 is now merge-ready.
 - The executor handles push approval and PR creation per **branch-and-push-conventions**; the orchestrator records the reference.

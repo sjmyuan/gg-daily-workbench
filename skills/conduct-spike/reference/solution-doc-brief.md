@@ -21,11 +21,11 @@ You are the `solution-doc-writer`. Deliver: the spike's target-state solution do
 
 ## 4. Tasks
 1. Load `write-solution-doc` and produce a **target-state** document.
-2. Mirror each ADR's chosen option, grouped by area.
+2. Mirror each ADR's chosen option into the solution doc's canonical sections.
 3. Reference evidence-doc IDs wherever current-state evidence is needed; keep the document decision-only.
 
 ## 5. Output contract
-- Solution doc: target-state architecture, decision-only, ADR decisions grouped by area (per `write-solution-doc` structure).
+- Solution doc: target-state architecture, decision-only; every ADR decision mirrored into its canonical section (per `write-solution-doc` structure).
 
 ## 6. Constraints
 - Write only `<spike-folder>/solution.md`; never modify code or any file outside the spike folder.

@@ -1,6 +1,6 @@
 # Example: ADR Change Mid-Delivery
 
-**Scenario**: The payment-migration epic is mid-delivery — `order-service/F2` is **done**, `api-gateway/F3` is **planned**, `order-service/F4` is **in-progress**. Integration testing of F2 reveals the payment gateway does not reject atomically; the team revises `adr-wallet-01-payment-failure-handling.md` (compensating transactions). The user says: "The payment-failure decision changed — route what's affected."
+**Scenario**: The wallet-migration epic is mid-delivery — `order-service/F2` is **done**, `api-gateway/F3` is **planned**, `order-service/F4` is **in-progress**. Integration testing of F2 reveals the payment gateway does not reject atomically; the team revises `adr-wallet-01-payment-failure-handling.md` (compensating transactions). The user says: "The payment-failure decision changed — route what's affected."
 
 **Applies**: **handle-adr-change** → **update-delivery-index**
 
@@ -29,12 +29,12 @@
 
 | Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|
-| order-service/F2 | 1234-f2-wallet | #42 (merged) | e5f6a7b | done | — | deliveries/payment-migration/order-service/wallet-service/ |
-| order-service/F2-r1 (Rework of F2) | — | — | — | unplanned | — | deliveries/payment-migration/order-service/wallet-service/rework-2026-08-24.md |
-| api-gateway/F3 | 1234-f3-gateway | — | — | planned → re-planning | planner-A | deliveries/payment-migration/api-gateway/wallet-api-gateway/ |
-| order-service/F4 | 1234-f4 | — | d4e5f6a | in-progress (rework) | executor-B | deliveries/payment-migration/order-service/order-wallet-integration/ |
+| order-service/F2 | 1234-f2-wallet | #42 (merged) | e5f6a7b | done | — | deliveries/wallet-migration/order-service/wallet-service/ |
+| order-service/F2-r1 | — | — | — | unplanned | — | deliveries/wallet-migration/order-service/wallet-service/rework-2026-08-24.md |
+| api-gateway/F3 | 1234-f3-gateway | — | — | planned → re-planning | planner-A | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
+| order-service/F4 | 1234-f4 | — | d4e5f6a | in-progress (rework) | executor-B | deliveries/wallet-migration/order-service/order-wallet-integration/ |
 
-Recorded per **update-delivery-index**: F3 → re-planning, F4 keeps **in-progress** (sibling rework file is the record), `F2-r1` added in a new wave — then **rewrite-concise**.
+Recorded per **update-delivery-index**: F3 → re-planning, F4 keeps **in-progress** (sibling rework file is the record), `F2-r1` added in a new wave — the Features table records `Rework of: F2`. Then **rewrite-concise**.
 
 ## 5. Next actions
 

@@ -12,11 +12,11 @@ mixes background, plan rationale, investigation evidence, and execution history.
 |---|---|---|
 | Takeaway (50-word sentence) | Rewrite | `Outcome` — one line |
 | Why this cell exists | Keep, compress | `Why` — ≤3 lines |
-| The corrected mechanism | Plan rationale | `plan.md` §Plan decisions (PD8) |
+| The corrected mechanism | Plan rationale | `plan.md` `## Decisions` (PD8) |
 | Install-aware filter table | Implementation detail | `plan.md` steps + code |
 | Hard constraints (user-cut) | Keep | `Must hold` |
-| Plan decisions PD1–PD12 | Duplicate | `plan.md` §Plan decisions — delete |
-| TDD rationale | Duplicate | `plan.md` §TDD variant — delete |
+| Plan decisions PD1–PD12 | Duplicate | `plan.md` `## Decisions` — delete |
+| TDD rationale | Duplicate | `plan.md` `**TDD variant**` line — delete |
 | Grounded pre-flight findings (32 lines) | Investigation | Resolved → plan decision; unresolved → `Unknowns`; raw table deleted |
 | Success criteria → verification | Keep | `Done means` |
 | Constraints for the executor | Keep | `Must hold` |
@@ -90,8 +90,8 @@ is the differentiator. Option 3 adopted 2026-10-16 — do not re-litigate.
 
 | Metric | Draft | Charter |
 |---|---:|---:|
-| Lines | 182 | 54 |
-| Chars | 21,749 | ~1,900 |
+| Lines | 182 | 53 |
+| Chars | 21,749 | ~2,050 |
 | Duplicated plan content | 8 lines | 0 |
 | Pre-flight evidence | 32 lines | 0 |
 | Execution history | 72 lines | 6 rows |
@@ -109,3 +109,10 @@ unknowns, done criteria, pointers, concerns, and state.
 | `plan.md` | How, in what order | scope, TDD, decisions, steps |
 | `rework-<date>.md` | What changed after delivery | delta steps + fix criteria |
 | Git / PR / CI | What happened, and can it be reproduced? | commits, diff, test logs |
+
+## 5. Validation
+
+- [x] Every kept line passes survival, uniqueness, action, and reader
+- [x] Plan decisions, TDD rationale, and branch metadata live in `plan.md`, not here
+- [x] Resolved unknowns and concerns are deleted, not archived
+- [x] Charter is within 40–60 lines and 8,000 chars

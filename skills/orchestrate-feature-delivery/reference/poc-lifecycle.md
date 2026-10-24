@@ -8,12 +8,12 @@ A POC is a **temporary implementation** of one ADR option, delivered as an MR. T
 
 | Field | Meaning |
 |---|---|
-| `type` | `poc` — the cell implements one ADR option |
-| `adr` | Governing ADR |
-| `option` | The option under test (from the ADR's considered options) |
-| `success-criteria` | Optional — the user's review checklist; never a gate or plan step |
-| `replaces` | Optional — existing feature/implementation superseded on adoption |
-| `compare` | Optional — sibling POC cells for other options (run in parallel) |
+| `Type` | `poc` in the feature row — the cell implements one ADR option |
+| `adr` | Governing ADR — recorded in the cell's `plan.md` header (`**ADR**`) |
+| `option` | The option under test — recorded in `plan.md` (`**Option**`) |
+| `success-criteria` | Optional — the user's review checklist, recorded in `plan.md` (`**Success criteria**`); never a gate or plan step |
+| `replaces` | Optional index metadata — existing feature/implementation superseded on adoption |
+| `compare` | Optional index metadata — sibling POC cells for other options (run in parallel) |
 
 ## Status transitions
 

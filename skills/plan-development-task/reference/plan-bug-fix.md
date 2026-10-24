@@ -6,7 +6,7 @@
 4. Map out dependencies between issues to establish an efficient bug-fixing sequence.
 5. **Consolidate Steps**: Group related issues together when they share context or can be tested together, reducing the total step count while maintaining clarity.
 6. Load **reference/tdd-approach-selection.md** to select the appropriate TDD variant for each issue. Document the rationale.
-7. Create a detailed step-by-step bug-fixing plan (starting with the ratified `## Scope Boundary` block). For each issue, include the following steps:
+7. Create a detailed step-by-step bug-fixing plan using the template in **reference/plan-file-format.md** — title + metadata, the ratified `## Scope Boundary`, optional `## Decisions`, then one six-field `### Step N: <title> ⏳` block per step. For each issue, include the following steps:
    1. **Write Focused Tests**: Create precise tests for one bug issue that name the break they catch and assert real behavior — see **reference/test-quality.md**.
    2. **Confirm Test Failure (RED)**: Run the tests and confirm each **fails** — not errors — for the expected reason because the behavior is missing. A test that passes immediately tests existing behavior: rewrite it. A test that errors: fix it and re-run until it fails correctly.
    3. **Materialize Fix**: restore the target from the step's `Source` ref or minimally edit; generate only when the fix is genuinely new (see **reference/provenance-first.md**).

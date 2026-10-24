@@ -73,7 +73,7 @@ Every plan starts with a **Prepare Environment** step (Step 1) covering only the
 | Dependencies and toolchain resolve for the plan's commands | Stop and raise to the user (request install or confirmation) |
 | Baseline tests / lint / type-check pass for the affected area | Stop and raise to the user (decide: fix baseline first or proceed) |
 
-Do not require a pristine tree or a green full suite. Never stash, revert, or commit the user's unrelated changes. The branch name and base are recorded so **export-plan** can persist them to `context.md`.
+Do not require a pristine tree or a green full suite. Never stash, revert, or commit the user's unrelated changes. The branch name and base are recorded in the plan header so **export-plan** can persist them to `plan.md`; `index.md` mirrors the branch as cell state.
 </plan-prerequisites>
 
 <scope-boundary>
@@ -94,9 +94,9 @@ A POC plan (from **orchestrate-feature-delivery**'s **poc-definition**) is a **n
 
 | Property | Content |
 |---|---|
-| `type` | `poc` |
+| **Type** | `poc` |
 | **ADR / Option** | The decision under test and the option implemented |
-| **Success criteria** (optional) | The user's review checklist; not a plan step |
+| **Success criteria** (optional) | The user's review checklist, recorded as `**Success criteria**` in the plan header; not a plan step |
 | **Scope Boundary** | **May change** = the option's target area; **Must not change** = other options and ADRs |
 
 The plan implements the option exactly like a feature. It never measures or evaluates; the MR is the user's evaluation vehicle.
@@ -113,7 +113,7 @@ Full rules: **[reference/plan-amendment.md](reference/plan-amendment.md)**.
 <rework-plan-convention>
 A rework (triggered by **orchestrate-feature-delivery**'s **handle-post-implementation-issue**) is written as a new sibling file `rework-<date>.md` in the feature folder — `plan.md` is the frozen original and is never modified:
 - Applies only when executed or delivered behavior must change; pending-step defects are amended in place via **amend-plan**
-- Each file opens with `# Rework <date>` + one-line trigger, then its own **Scope Boundary**, **Done means**, and numbered delta steps
+- Each file opens with `# Rework <date> — <trigger>`, a `**Mode**`/`**Cell**` line, a `**Branch**` line, and the ADR focus, then its own **Scope Boundary**, **Done means**, and six-field delta steps
 - Carries only the delta — never restates the original plan or the charter; inherits `context.md` **Must hold** / **Pointers** by reference and never creates a second `context.md`
 - Inherits and tightens the original **Scope Boundary** to the governing ADR decision
 - Refuses and asks the user only on a material change: original **Must not change** behavior, a protected zone, or reopening another ADR (likely a new feature cell)
@@ -142,6 +142,7 @@ Load only the examples directly relevant to the current change type to minimize 
 | Generating bug fix plan | Detailed steps for plan-bug-fix | [reference/plan-bug-fix.md](reference/plan-bug-fix.md) |
 | Generating feature implementation plan | Detailed steps for plan-feature-implementation | [reference/plan-feature-implementation.md](reference/plan-feature-implementation.md) |
 | Generating refactor plan | Detailed steps for plan-refactor | [reference/plan-refactor.md](reference/plan-refactor.md) |
+| Emitting `plan.md` / `rework-<date>.md` in the executor's schema | Canonical template, section order, six-field step blocks | [reference/plan-file-format.md](reference/plan-file-format.md) |
 | Validating plan quality | Checklist: coverage, sequencing, steps, TDD, clarity | [reference/plan-quality-checklist.md](reference/plan-quality-checklist.md) |
 | Writing or ratifying the Scope Boundary block | Zones (incl. `Must match`), materiality test, stop-vs-log rubric | [reference/scope-boundary.md](reference/scope-boundary.md) |
 | Amending an in-flight plan (defective pending steps) | Amend-vs-rework rule, ⏭ abandoned status, `## Amendments` row | [reference/plan-amendment.md](reference/plan-amendment.md) |
@@ -196,7 +197,7 @@ Writes are confined to plan docs — `plan.md`, `context.md`, and sibling `rewor
 2. Ask for the source ref when the request names none; never infer the baseline.
 3. Apply **define-scope-boundary**: list every restored path under `Must match` with its ref.
 4. Skip RED/GREEN; record the non-behavioral justification per **tdd-guardrails**.
-5. Write steps as prepare environment → per-path restore naming the git operation → equality proof → test run.
+5. Write steps as the six-field blocks in **reference/plan-file-format.md** — prepare environment → per-path restore naming the git operation → equality proof → test run.
 6. Validate against the restore checks in **[reference/provenance-first.md](reference/provenance-first.md)**.
 </plan-mechanical-restore>
 
@@ -250,7 +251,7 @@ Load **[reference/plan-poc.md](reference/plan-poc.md)** and follow its steps.
 3. Determine the storage location: for an **orchestrate-feature-delivery** cell use `deliveries/<epic-name>/{repo}/{feature-name}/`; otherwise resolve the artifact base via `resolve-artifact-location` and use `{base}/feature-implementations/` (no silent default).
 4. Derive a short kebab-case feature name from the plan's objective (e.g., `fix-null-pointer-in-transformer`).
 5. Use the **repo-first** layout `{location}/{repo}/{feature-name}/` when a repo applies (the delivery folder already exists); else `{location}/{feature-name}/`.
-6. Write `plan.md` + `context.md` per **[reference/plan-file-format.md](reference/plan-file-format.md)** and the template in **reference/doc-budgets.md**.
+6. Write `plan.md` with the template in **[reference/plan-file-format.md](reference/plan-file-format.md)** — title, metadata, `## Scope Boundary`, six-field `⏳` step blocks — and `context.md` with the charter template in **reference/doc-budgets.md**.
 7. Validate conciseness (see **concise-writing**): one objective per step sentence, one claim per scope-boundary bullet, context.md prose ≤3 sentences per paragraph, no banned phrases.
 8. Curate `context.md` to the charter: target **40–60 lines** (hard ceiling 8,000 chars / 120 lines). Apply the **admission test** — pre-flight evidence is synthesized into a plan decision or an Unknown, never pasted. Over budget → remove duplication with `plan.md`. Never create a log file; git/PR are the history. Re-measure before writing.
 9. Inform the user of the saved location so they can invoke **execute-plan** to carry it out.
@@ -271,6 +272,7 @@ Load **[reference/plan-poc.md](reference/plan-poc.md)** and follow its steps.
 <rule> After the plan is confirmed: optionally apply **export-plan** to persist it for execution by **execute-plan**. </rule>
 <rule> When generating any plan, apply **plan-prerequisites** and **define-scope-boundary**. </rule>
 <rule> When planning a rework for an implemented feature, apply **rework-plan-convention** and **export-plan** to write a sibling `rework-<date>.md` — never overwrite implemented steps. </rule>
+<rule> When writing any `plan.md` or `rework-<date>.md`, follow the template in **reference/plan-file-format.md** — fixed section order and six-field step blocks with status emojis. </rule>
 <rule> When writing, amending, or validating `context.md`, apply **doc-budgets** — make it a 40–60-line charter, discard pre-flight evidence, delete resolved unknowns, and never restate a fact that lives in `plan.md`. </rule>
 <rule> When a rework would materially change the original **Must not change** behavior or touch a protected zone, refuse and ask the user — never write silently. </rule>
 <rule> When an in-flight plan has a defect in steps that have not run, apply **amend-plan** — never write a second plan file or folder. </rule>

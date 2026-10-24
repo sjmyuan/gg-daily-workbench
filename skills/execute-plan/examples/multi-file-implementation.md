@@ -19,12 +19,11 @@
 ## Initial Plan Status
 **Status**: Steps 1–7 ⏳
 
----
-
-### Step 1: Create Domain Model 🔄 → ✅
+### Step 1: Create Domain Model ✅
 
 **Objective**: Create domain model class for Category with validation
-**Files**: Creating `domain/model/Category.java`
+**Files**: `domain/model/Category.java` (new)
+**Source**: generate · n/a · behavior-equal
 **Implementation**:
 ```java
 public class Category {
@@ -42,22 +41,20 @@ public class Category {
 **Validation**: Class compiles with validation logic
 **Status**: ✅ Completed · Steps 2–7 ⏳
 
----
-
 ### Step 2: Add Category Transformation Logic ✅
 
 **Objective**: Integrate category transformation into the handler
-**Files**: Modifying `application/service/DataImportedHandler.java`
+**Files**: `application/service/DataImportedHandler.java`
+**Source**: edit · n/a · behavior-equal
 **Implementation**: `handle()` maps `record.getCategoryIds()` via `categoryTransformer.transformCategories(...)` and builds `ExternalApiData` with `categories(...)`.
 **Validation**: Handler compiles and integrates category transformation
 **Status**: ✅ Completed · Steps 3–7 ⏳
 
----
-
 ### Step 3: Create Category Adapter ✅
 
 **Objective**: Create adapter to fetch category data from external API
-**Files**: Creating `infrastructure/adapter/CategoryAdapterImpl.java`
+**Files**: `infrastructure/adapter/CategoryAdapterImpl.java` (new)
+**Source**: generate · n/a · behavior-equal
 **Implementation**:
 ```java
 @Component
@@ -75,42 +72,38 @@ public class CategoryAdapterImpl implements CategoryAdapter {
 **Validation**: Adapter compiles and correctly maps API responses
 **Status**: ✅ Completed · Steps 4–7 ⏳
 
----
-
 ### Step 4: Update Event Publisher ✅
 
 **Objective**: Add category data to published events
-**Files**: Modifying `infrastructure/externaladapter/EventPublisherImpl.java`
+**Files**: `infrastructure/externaladapter/EventPublisherImpl.java`
+**Source**: edit · n/a · behavior-equal
 **Implementation**: `publishDataTransformed` maps `data.getCategories()` to category IDs in the published event.
 **Validation**: Event publisher includes category data in events
 **Status**: ✅ Completed · Steps 5–7 ⏳
 
----
-
 ### Step 5: Add Configuration ✅
 
 **Objective**: Add configuration properties for category mapping
-**Files**: Modifying `resources/application.yaml`; Creating `infrastructure/config/CategoryMappingConfig.java`
+**Files**: `resources/application.yaml`, `infrastructure/config/CategoryMappingConfig.java` (new)
+**Source**: edit · n/a · behavior-equal
 **Implementation**: `category.mapping.{enabled, default-locale, fetch-hierarchy}` YAML + `@ConfigurationProperties` class.
 **Validation**: Configuration loads successfully on application startup
 **Status**: ✅ Completed · Steps 6–7 ⏳
 
----
-
 ### Step 6: Write Unit Tests ✅
 
 **Objective**: Create comprehensive unit tests for all new components
-**Files**: Creating `application/service/CategoryTransformerTest.java`, `infrastructure/adapter/CategoryAdapterImplTest.java`
+**Files**: `application/service/CategoryTransformerTest.java` (new), `infrastructure/adapter/CategoryAdapterImplTest.java` (new)
+**Source**: generate · n/a · behavior-equal
 **Implementation**: transformer happy-path + empty-list cases; adapter response-mapping tests.
 **Validation**: All unit tests passing (24 tests) ✓
 **Status**: ✅ Completed · Step 7 ⏳
 
----
-
 ### Step 7: Write Integration Test ✅
 
 **Objective**: Create end-to-end integration test for category transformation
-**Files**: Creating `presentation/CategoryTransformationIntegrationTest.java`
+**Files**: `presentation/CategoryTransformationIntegrationTest.java` (new)
+**Source**: generate · n/a · behavior-equal
 **Implementation**:
 ```java
 @SpringBootTest
@@ -130,8 +123,6 @@ class CategoryTransformationIntegrationTest {
 ```
 **Validation**: Integration test passing ✓
 **Status**: ✅ Completed
-
----
 
 ## Final Plan Status
 **Status**: Steps 1–7 ✅

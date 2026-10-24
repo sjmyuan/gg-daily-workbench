@@ -1,6 +1,6 @@
 # Example: Multi-Repo Feature Decomposition
 
-**Scenario**: A payment-migration spike just finished. Its solution doc defines ~18 target-state changes across `api-gateway`, `order-service`, and `shared-contracts`. The user asks: "Split the spiked work into features, align which can be done in parallel, and give me an index so agents can plan and execute in parallel."
+**Scenario**: A wallet-migration spike just finished. Its solution doc defines ~18 target-state changes across `api-gateway`, `order-service`, and `shared-contracts`. The user asks: "Split the spiked work into features, align which can be done in parallel, and give me an index so agents can plan and execute in parallel."
 
 **Applies**: **decompose-change-into-features** → **map-features-to-repos** → **order-feature-delivery** → **produce-delivery-index**
 
@@ -36,28 +36,53 @@
 
 **Wave 0**: F1 · **Wave 1 (parallel)**: F2, F3 · **Wave 2**: F4 (after F2 + F3 merge)
 
-## 4. Delivery index (excerpt, initial state)
+## 4. Delivery index (initial state)
 
-Written to `deliveries/payment-migration/index.md` (see **delivery-layout**); plan folders will appear under `deliveries/payment-migration/{repo}/{feature-name}/` — the feature folder uses the kebab-case name (e.g. `wallet-contracts`), never the ID (`F1`).
+Written to `deliveries/wallet-migration/index.md` (see **delivery-layout**); plan folders are `deliveries/wallet-migration/{repo}/{feature-name}/` — the feature folder uses the kebab-case name (e.g. `wallet-contracts`), never the ID (`F1`).
 
 ```markdown
-# Delivery Index: Payment Migration
+# Delivery Index: Wallet Migration
+
+Artifact base: `~/work/my-work` · migrate wallet services out of the monolith
 
 ## Summary
 4 features · 3 repos · 3 waves · critical path: F1 → F2/F3 → F4
 
 ## Spike References
-- **Solution doc**: spikes/payment-migration/solution.md
-- **ADRs**: spikes/payment-migration/adrs/adr-wallet-01-payment-failure-handling.md · adr-cutover-01-service-cutover.md
+- **Solution doc**: spikes/wallet-migration/solution.md — §2 topology, §4 contracts
+- **ADRs**: spikes/wallet-migration/adrs/adr-wallet-01-payment-failure-handling.md · adr-cutover-01-service-cutover.md
+
+## Repos
+- `shared-contracts` — wallet DTOs + envelope schema
+- `order-service` — wallet service, ledger, order integration
+- `api-gateway` — token endpoint + wallet route
+
+## Features
+| ID | Name | Wave | Repos | Dependencies | ADRs | Rework of | Goal |
+|---|---|---|---|---|---|---|---|
+| F1 | wallet-contracts | 0 | shared-contracts | — | adr-wallet-01 | — | Wallet DTOs + envelope |
+| F2 | wallet-service | 1 | order-service | F1 (contract-first) | adr-wallet-01 | — | Wallet service + ledger |
+| F3 | wallet-api-gateway | 1 | api-gateway | F1 (contract-first) | adr-wallet-01 | — | Token endpoint + route |
+| F4 | order-wallet-integration | 2 | order-service, api-gateway | F2, F3 | adr-cutover-01 | — | Order flow uses wallet |
+
+## Waves
+| Wave | Features | Merge gate |
+|---|---|---|
+| 0 | F1 | — |
+| 1 | F2, F3 | after F1 merges |
+| 2 | F4 | after F2 + F3 merge |
 
 ## Cell plan status
 | Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|
-| shared-contracts/F1 | — | — | — | unplanned | — | — |
-| order-service/F2 | — | — | — | unplanned | — | — |
-| api-gateway/F3 | — | — | — | unplanned | — | — |
-| order-service/F4 | — | — | — | unplanned | — | — |
-| api-gateway/F4 | — | — | — | unplanned | — | — |
+| shared-contracts/F1 | — | — | — | unplanned | — | deliveries/wallet-migration/shared-contracts/wallet-contracts/ |
+| order-service/F2 | — | — | — | unplanned | — | deliveries/wallet-migration/order-service/wallet-service/ |
+| api-gateway/F3 | — | — | — | unplanned | — | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
+| order-service/F4 | — | — | — | unplanned | — | deliveries/wallet-migration/order-service/order-wallet-integration/ |
+| api-gateway/F4 | — | — | — | unplanned | — | deliveries/wallet-migration/api-gateway/order-wallet-integration/ |
+
+## Notes
+- All 5 cells start **unplanned**; none is ready to execute before its plan file exists.
 ```
 
 Branches are assigned when a cell is planned and the head **Commit** is recorded on the first execution handoff (per **branch-and-push-conventions**) — both columns are empty here because all 5 cells start **unplanned**.

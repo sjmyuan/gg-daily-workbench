@@ -19,11 +19,15 @@ Freshly created `skills/commit-message-writer/SKILL.md` plus its examples and re
 | Conciseness | ✅ one line = one idea |
 | Evaluation process | ✅ `<write-commit-message>` ends with a verify step |
 | Example coverage | 🔴 `<verify-message>` has no linked example |
+| Template fidelity | 🔴 `reference/commit-format.md` describes the format in prose; no literal skeleton |
+| Example continuity | 🟡 examples use different subject IDs (`CM-1` vs `MSG-1`) |
 | Rules routing | ✅ "when → capability", no content restated |
 
 ## Issues Found & Fix
 - Size overrun (🟡 Minor) → apply **size-remediation**: extract the footer-format table to `reference/commit-format.md`, re-measure, then re-validate.
 - Missing example for `<verify-message>` (🔴 Major) → return to **create-skill-examples**, add `examples/verify-message.md`, then re-validate.
+- Prose-only template (🔴 Major) → replace the description with a fenced skeleton (field order fixed), then make both examples reproduce it.
+- Identifier mismatch (🟡 Minor) → reuse one subject ID across examples, then run `scripts/check_artifacts.py`.
 
 ## Final
 Validation passes after the fixes; report the final file tree to the user.

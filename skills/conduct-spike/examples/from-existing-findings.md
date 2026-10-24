@@ -4,10 +4,6 @@
 
 **Applies**: `define-spike-scope` → `compile-findings-doc` → `draft-problem-adrs` (option evaluation via `draft-adr`) → `compile-solution-doc` (skipping `investigate-per-area`; compile-findings-doc formalizes the provided findings)
 
-**What makes this distinct**: Investigation is skipped because the user already has findings. The spike starts from ADR drafting (evaluation included), demonstrating **pre-existing-findings**.
-
----
-
 ## Define Spike Scope
 
 ### User Input
@@ -26,42 +22,55 @@
 | 1 | Cache topology | How to position caches in the architecture? (application-level, distributed, CDN) |
 | 2 | Cache invalidation strategy | How to keep cached data consistent with the source of truth? |
 
----
-
-## Investigate Per Area — SKIPPED
-
-*User provided pre-existing investigation findings. Skipping investigation per **pre-existing-findings**.*
-
----
-
 ## Compile Findings Documents
 
 *(compile-findings-doc applied to the user's pre-existing notes — one findings pair per area, always: `docs/findings-<area>.md` (human) + `docs/evidence-<area>.md` (evidence). Two areas → two pairs, compiled via `document-findings`.)*
 
-### Cache topology — human doc `docs/findings-cache-topology.md`
+### Cache topology — human doc `docs/findings-cache-topology.md` (excerpt)
 
-Orientation index: Product Catalog Service → `ProductCatalogService.java:64`.
+```markdown
+---
+title: Findings: Cache topology
+area: cache-topology
+status: investigating
+---
 
-**Is there a caching layer today?**
+# Findings: Cache topology
+
+**Summary:** The product catalog read path queries PostgreSQL directly; no cache exists at any tier.
+
+## 3. Is there a caching layer today?
 **TL;DR:** No — the read path queries PostgreSQL directly.
+```
 
-### Cache topology — evidence doc `docs/evidence-cache-topology.md`
+### Cache topology — evidence doc `docs/evidence-cache-topology.md` (excerpt — full schema per `document-findings`)
+
+```markdown
+<!-- evidence-doc
+area: cache-topology
+spike: caching-strategy
+status: investigating
+scope: current caching state of the product catalog service
+related-areas: [cache-invalidation]
+human-doc: docs/findings-cache-topology.md
+-->
+```
 
 | Claim ID | Claim | Verdict | Evidence (file:line) | Confidence |
 |---|---|---|---|---|
-| cache-topology/present#c1 | No cache exists at any tier | No | `ProductCatalogService.java:64` | ✅ Verified |
+| cache-topology/present#c1 | No cache exists at any tier | Yes | `ProductCatalogService.java:64` | ✅ Verified |
 | cache-topology/present#c2 | Reads query PostgreSQL directly | Yes | `ProductRepository.java:112` | ✅ Verified |
-| cache-topology/load#c1 | 200:1 read-to-write ratio; DB CPU >80% at peak; P99 450ms | Assumed | user notes | 💭 Assumption |
-| cache-topology/infra#c1 | No Redis/ElastiCache infrastructure exists | Assumed | user notes | 💭 Assumption |
+| cache-topology/load#c1 | 200:1 read-to-write ratio; DB CPU >80% at peak; P99 450ms | Unverified | user notes | 💭 Assumption |
+| cache-topology/infra#c1 | No Redis/ElastiCache infrastructure exists | Unverified | user notes | 💭 Assumption |
 
 Coverage: caching tier, load profile, cache infrastructure. Searched-negatives: none (notes only).
 
-### Cache invalidation — human doc `docs/findings-cache-invalidation.md`
+### Cache invalidation — human doc `docs/findings-cache-invalidation.md` (excerpt)
 
 **Is there any invalidation mechanism today?**
 **TL;DR:** No caching tier exists, so no invalidation mechanism is present.
 
-### Cache invalidation — evidence doc `docs/evidence-cache-invalidation.md`
+### Cache invalidation — evidence doc `docs/evidence-cache-invalidation.md` (excerpt)
 
 | Claim ID | Claim | Verdict | Evidence (file:line) | Confidence |
 |---|---|---|---|---|
@@ -72,8 +81,6 @@ Coverage: caching tier, load profile, cache infrastructure. Searched-negatives: 
 Coverage: invalidation mechanisms, write path. Cross-area reference: `docs/evidence-cache-topology.md`.
 
 > *Findings formalized from your pre-existing notes: code-verifiable facts are ✅ Verified, note-only metrics remain 💭 Assumption. Evaluation will compare options against each area's constraints. No re-investigation was needed.*
-
----
 
 ## Draft Problem ADRs — Evaluate + Draft
 
@@ -99,15 +106,13 @@ Coverage: invalidation mechanisms, write path. Cross-area reference: `docs/evide
 
 **Chosen Option**: Option C (Cache-aside with CDC) — services write to DB only; Debezium CDC captures changes and publishes invalidation events to Kafka; cache consumers listen and invalidate affected keys.
 
----
-
 ### ADR: Cache topology — position caches
 
-*(draft-adr applied — full ADR produced; saved as `adr-cache-topology-01-position-caches.md`)*
+*(draft-adr applied — full ADR produced; saved as `adr-cache-topology-01-position-caches.md`. Summary below; the full record follows `draft-adr`'s template with `Area: Cache topology` and `Status: draft`.)*
 
 **Title**: Adopt Two-Tier Caching (In-Memory + Redis) for Product Catalog
 
-**Status**: Draft
+**Status**: draft
 
 **Problem**: The product catalog service experiences 10K reads/second with only 50 writes/second. Database CPU regularly exceeds 80% during peak traffic. A caching layer is needed to reduce database load and improve P99 latency (currently 450ms).
 
@@ -115,19 +120,9 @@ Coverage: invalidation mechanisms, write path. Cross-area reference: `docs/evide
 - Hard: Must reduce DB CPU below 50%; Must maintain < 100ms P99 for cache hits
 - Soft: Prefer solutions that don't require application restarts for cache changes
 
-**Chosen Option**: Two-tier cache: application-level Caffeine (30s TTL) + Redis cluster (5min TTL)
+**Chosen:** Two-tier cache: application-level Caffeine (30s TTL) + Redis cluster (5min TTL)
 
-### ADR: Cache invalidation — keep cached data consistent
-
-*(draft-adr applied — full ADR produced; saved as `adr-cache-invalidation-01-invalidate-cached-data.md`)*
-
-**Title**: Use CDC-Based Cache Invalidation for Product Catalog
-
-**Status**: Draft
-
-**Chosen Option**: Cache-aside with Debezium CDC → Kafka → cache invalidation consumers
-
----
+The second ADR is saved as `adr-cache-invalidation-01-invalidate-cached-data.md` with the same template and `Area: Cache invalidation`.
 
 ## Compile Solution Doc
 
@@ -136,15 +131,13 @@ Coverage: invalidation mechanisms, write path. Cross-area reference: `docs/evide
 ### Final Output Bundle
 
 **Solution Document**: `solution.md`
-- C2 diagram showing Product Catalog Service with Caffeine + Redis, CDC pipeline for invalidation
-- Sequence diagrams for read path (cache hit/miss) and write path (DB write → CDC → invalidation)
-- API contracts unaffected (caching is transparent to callers)
-- RAID: risk of Redis outage, assumption about CDC pipeline reliability
+- §2 System Topology: Product Catalog Service with Caffeine + Redis; CDC pipeline for invalidation
+- §3 Interaction Details: read path (cache hit/miss) and write path (DB write → CDC → invalidation) sequences
+- §4 API / Event Schema: API contracts unaffected (caching is transparent to callers)
+- §8 RAID Analysis: risk of Redis outage, assumption about CDC pipeline reliability
 
-**ADRs** (one per problem, area-prefixed in `adrs/`, mirrored grouped by area in `solution.md`):
+**ADRs** (one per problem, area-prefixed in `adrs/`, each mirrored into the solution doc's canonical sections):
 - `adr-cache-topology-01-position-caches.md` — Two-tier (Caffeine + Redis)
 - `adr-cache-invalidation-01-invalidate-cached-data.md` — CDC-based
 
-### Wrap-Up (conversation level — not written into any artifact)
-
-> This spike skipped the investigation because you provided existing findings. If any investigation gaps are discovered during ADR review, we can re-run the investigation for specific areas.
+> *Wrap-up (conversation only): if ADR review exposes an investigation gap, re-run that area's investigation.*

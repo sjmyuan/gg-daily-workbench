@@ -18,7 +18,7 @@ Decomposition marks two POC cells (Wave 0, parallel) and one **poc-gated** imple
 
 ## 2. Plan + execute as normal features
 
-- **Planner A** → plan `F5a` with `plan-poc`: a normal feature plan carrying `type: poc`, the ADR, and the Redis option.
+- **Planner A** → plan `F5a` with `plan-poc`: a normal feature plan whose header carries `**Type**: poc`, `**ADR**`, `**Option**: Redis`, and the optional `**Success criteria**`.
 - **Executor A** → implement, commit, and open an MR after approval. No measurement step, no report.
 - **Planner B / Executor B** → the same for `F5b` (in-process); serialize or split repos if they conflict.
 

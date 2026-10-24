@@ -12,15 +12,22 @@
 3. Add integration test
 4. Update error handling documentation
 
+```markdown
+## Scope Boundary
+**May change**: `DataImportedHandler` null handling and its tests
+**Expected files**: handler, its tests, error-handling docs (advisory)
+**Must not change**: transformer behavior, publisher behavior, other endpoints
+**Protected zones**: none added
+```
+
 ## Initial Plan Status
 **Status**: Step 1 ⏳ · Step 2 ⏳ · Step 3 ⏳ · Step 4 ⏳
 
----
-
-### Step 1: Add Null Checks 🔄 → ✅
+### Step 1: Add Null Checks ✅
 
 **Objective**: Add defensive null checks to prevent null pointer exceptions
-**Files**: Modifying `application/service/DataImportedHandler.java`
+**Files**: `application/service/DataImportedHandler.java`
+**Source**: edit · n/a · behavior-equal
 **Implementation**:
 ```java
 public void handle(DataImported event) {
@@ -36,13 +43,12 @@ public void handle(DataImported event) {
 **Validation**: Handler compiles and includes null checks
 **Status**: ✅ Completed · Steps 2–4 ⏳
 
----
-
-### Step 2: Update Unit Tests 🔄 → ❌
+### Step 2: Update Unit Tests ❌
 
 **Objective**: Add unit tests to verify null check behavior
-**Files**: Modifying `application/service/DataImportedHandlerTest.java`
-**Implementation** (attempted):
+**Files**: `application/service/DataImportedHandlerTest.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: attempted the test below; blocked on a missing exception class.
 ```java
 @Test
 void shouldThrowExceptionForNullData() {
@@ -51,21 +57,20 @@ void shouldThrowExceptionForNullData() {
 }
 ```
 
-**Error Encountered**:
+**Validation**: ✗ compile error — `InvalidDataEventException` cannot be resolved.
+**Status**: ❌ Failed — missing exception class · Step 1 ✅ · Steps 3–4 ⏳
+
+Error detail:
 ```
 [ERROR] DataImportedHandlerTest.java:[45,20] cannot find symbol
   symbol:   class InvalidDataEventException
 ```
 
-**Status**: ❌ Failed — missing exception class · Step 1 ✅ · Steps 3–4 ⏳
-
----
-
 **Analysis**: `InvalidDataEventException` doesn't exist yet; the tests need it to compile.
 
-**Recovery** — per **handle-errors** step 4, applying **check-scope-boundary** first: the plan has no boundary block, so the **May change** behaviors inferred from the plan's objectives govern; adding the missing exception is behavior-neutral and a required dependency of Step 2's tests, so the fix proceeds and is recorded as a clarifying note.
+**Recovery** — per **handle-errors** step 4, applying **check-scope-boundary** first: adding the missing exception class is behavior-neutral, inside the plan's **May change** (the handler and its tests), and a required dependency of Step 2's tests, so the fix proceeds and is recorded as a clarifying note.
 
-**Files**: Creating `domain/exceptions/InvalidDataEventException.java`
+**Files**: `domain/exceptions/InvalidDataEventException.java` (new)
 ```java
 public class InvalidDataEventException extends RuntimeException {
     public InvalidDataEventException(String message) { super(message); }
@@ -79,12 +84,11 @@ import com.example.application.domain.exceptions.InvalidDataEventException;
 **Validation**: All tests compiling and passing ✓
 **Status**: ✅ Completed (after recovery) · Step 1 ✅ · Steps 3–4 ⏳
 
----
-
-### Step 3: Add Integration Test 🔄 → ✅
+### Step 3: Add Integration Test ✅
 
 **Objective**: Create end-to-end test for null data handling
-**Files**: Creating `presentation/DataTransformationIntegrationTest.java`
+**Files**: `presentation/DataTransformationIntegrationTest.java` (new)
+**Source**: generate · n/a · behavior-equal
 **Implementation**:
 ```java
 @SpringBootTest
@@ -103,17 +107,14 @@ class DataTransformationIntegrationTest {
 **Validation**: Integration test passing ✓
 **Status**: ✅ Completed · Steps 1–2 ✅ · Step 4 ⏳
 
----
-
-### Step 4: Update Documentation 🔄 → ✅
+### Step 4: Update Documentation ✅
 
 **Objective**: Document the new error handling behavior
-**Files**: Modifying `docs/operations.md`
+**Files**: `docs/operations.md`
+**Source**: edit · n/a · behavior-equal
 **Implementation**: added an `## Error Handling` section — when `InvalidDataEventException` is thrown (null event, missing record ID, null required fields) and the resolution.
 **Validation**: Documentation is clear and accurate
 **Status**: ✅ Completed
-
----
 
 ## Final Plan Status
 **Status**: Step 1 ✅ · Step 2 ✅ (recovered) · Step 3 ✅ · Step 4 ✅

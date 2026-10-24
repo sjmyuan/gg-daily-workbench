@@ -1,6 +1,6 @@
 # Example: Triage an Issue Before Dispatching
 
-**Scenario**: Epic `payment-migration` is in delivery. Cell `order-service/F2` is **done** and merged. The user raises four issues in sequence, each one rung higher than the last.
+**Scenario**: Epic `wallet-migration` is in delivery. Cell `order-service/F2` is **done** and merged. The user raises four issues in sequence, each one rung higher than the last.
 
 **Applies**: **triage-issue** → **handle-post-implementation-issue**
 

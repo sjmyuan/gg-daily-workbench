@@ -43,7 +43,7 @@ Before presenting any ADR or solution document, scan it for banned process langu
 |---|---|---|
 | Evidence doc (new evidence or correction) | ADR → solution doc | Evidence only confirms existing facts and decisions |
 | ADR decision change | Solution doc | Decision has no target-state impact |
-| Scope-map delta (add/adjust area or problem) | Affected ADR(s) → solution doc area section | New problem has no ADR drafted yet |
+| Scope-map delta (add/adjust area or problem) | Affected ADR(s) → affected solution-doc section(s) | New problem has no ADR drafted yet |
 
 Propagation always stops at the first artifact the change does not affect.
 
@@ -52,12 +52,12 @@ A fact discovered during **delivery** enters at the evidence doc via `update-fin
 ## Sync procedure
 
 1. Capture the change: what changed, which artifact is the origin (evidence doc / ADR / scope map / solution doc), and what triggered it. A changed decision reopens its problem to `deciding` in `scope.md` per the scope-map status.
-2. Trace the propagation path per the **Propagation matrix** — per area: findings → that area's ADRs → the solution doc's area section; a scope-map delta (add/adjust area or problem) propagates to the affected ADR(s) and solution sections.
+2. Trace the propagation path per the **Propagation matrix** — per area: findings → that area's ADRs → the solution doc's affected canonical section(s); a scope-map delta (add/adjust area or problem) propagates to the affected ADR(s) and solution sections.
 3. Apply the change at the origin through its owning skill — `draft-adr` for ADRs, `document-findings` for findings docs, `write-solution-doc` for the solution doc (the evidence doc carries the claim ledger). Never hand-edit.
 4. Run the **no-note scan** on each touched ADR and solution doc; rewrite until clean.
 5. Propagate downstream one artifact at a time, seeding each dispatched owning-skill agent with the current artifact — for findings, the full pair (`docs/findings-<area>.md` + `docs/evidence-<area>.md`) — the delta (inline), and any upstream constraints.
 6. Run the own-writes write-boundary check per **reference/write-boundary-guide.md** — no newly written path outside the spike folder.
-7. Validate consistency — every artifact reflects the latest facts; ADRs cite only current findings; the solution doc mirrors every ADR grouped by area — and present the delta in conversation, never inside the artifacts.
+7. Validate consistency — every artifact reflects the latest facts; ADRs cite only current findings; the solution doc mirrors every ADR's chosen option in its canonical sections — and present the delta in conversation, never inside the artifacts.
 
 ## Consistency checklist (validation gate)
 

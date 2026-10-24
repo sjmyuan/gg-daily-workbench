@@ -16,7 +16,7 @@ No separate files — the gate reuses the feature folder's existing docs (`<feat
 | Artifact | Location | Written by | Content |
 |---|---|---|---|
 | **Brief** | dispatch prompt — seeded from the index per-cell brief + `context.md` | orchestrator | Cell scope, governing ADR ref, solution-doc section, branch, plan location, global constraints |
-| **Step record** | `<feature-folder>/plan.md` (or `rework-<date>.md`) | executor | Per-step ✅/❌ status and the commit for each step |
+| **Step record** | `<feature-folder>/plan.md` (or `rework-<date>.md`) | executor | Per-step status and notes; commit range lives only in the handoff |
 | **Execution handoff** | `<feature-folder>/context.md` → `## Execution` (latest round only) | executor | Return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`), PR reference, **one-line** test evidence, **one-line** `review-code` outcome |
 | **Open concerns** | `<feature-folder>/context.md` → `## Open concerns` | executor | Persistent ≤5 deferred Minors/risks; delete when resolved. No raw log — history is git/PR |
 | **Diff** | fetched from git by the code-reviewer over the recorded `base7..head7` | code-reviewer | Commit list + stat + full diff; never enters the orchestrator's context |

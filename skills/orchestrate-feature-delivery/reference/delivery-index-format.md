@@ -52,7 +52,7 @@ Artifact base: `[<base>]` · [one-line epic scope]
 | F1 | wallet-contracts | 0 | repo-a | — | adr-wallet-01 | — | Wallet DTOs + envelope |
 | F2 | wallet-service | 1 | repo-b | F1 (merge-blocked) | adr-wallet-01 | — | Wallet service + ledger |
 
-POC cells add `Type: poc` + ADR, option, optional success criteria (the user's review checklist), replaces, compare per **reference/poc-lifecycle.md**.
+POC cells add `Type: poc` to the feature row; see **POC cells** below for where each field lives.
 
 ## Waves
 | Wave | Features | Merge gate |
@@ -126,7 +126,7 @@ Transitions: **reference/state-machine.md**. POC fork: **verified** → **poc-re
 
 ## POC cells
 
-Record `Type: poc` in the feature row; ADR, option, optional success criteria (the user's checklist), replaces, and compare live in the feature folder's `context.md`. Decision gate and adoption models: **reference/poc-lifecycle.md** (see **poc-definition** in the SKILL.md knowledge).
+Record `Type: poc` in the feature row and `replaces` / `compare` in the index's POC metadata. The cell's `plan.md` header carries `**Type**: poc`, `**ADR**`, `**Option**`, and the optional `**Success criteria**`; `context.md` holds the ADR/solution pointers. Lifecycle and adoption: **reference/poc-lifecycle.md** (see **poc-definition** in the SKILL.md knowledge).
 
 ## ADR changes mid-delivery
 

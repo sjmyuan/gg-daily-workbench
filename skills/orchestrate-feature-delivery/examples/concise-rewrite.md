@@ -1,6 +1,6 @@
 # Example: Concise Rewrite of Index Prose
 
-**Scenario**: An orchestration round just ran for the payment-migration epic. Agents reported; the index update drifted wordy — it narrates the process and buries facts in prose. The user asks for the updated index.
+**Scenario**: An orchestration round just ran for the wallet-migration epic. Agents reported; the index update drifted wordy — it narrates the process and buries facts in prose. The user asks for the updated index.
 
 **Applies**: **rewrite-concise**
 
@@ -23,8 +23,8 @@ I dispatched agent-A to plan shared-contracts/F1, and it was successful, so F1 i
 ## Cell plan status
 | Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|
-| shared-contracts/F1 | 1234-f1 | — | — | planned | agent-A | deliveries/payment-migration/shared-contracts/wallet-contracts/ |
-| order-service/F2 | f2-svc | — | c3d4e5f | in-progress | agent-B | deliveries/payment-migration/order-service/wallet-service/ |
+| shared-contracts/F1 | 1234-f1 | — | — | planned | agent-A | deliveries/wallet-migration/shared-contracts/wallet-contracts/ |
+| order-service/F2 | f2-svc | — | c3d4e5f | in-progress | agent-B | deliveries/wallet-migration/order-service/wallet-service/ |
 | api-gateway/F3 | — | — | — | unplanned | — | — |
 | order-service/F4 | — | — | — | unplanned | — | — |
 ```
@@ -36,5 +36,5 @@ I dispatched agent-A to plan shared-contracts/F1, and it was successful, so F1 i
 | "It is important to note that we now have 5 features…" | `5 features · 3 repos · 3 waves · critical path: F1 → F2/F3 → F4` | Delete filler; compress to the one-line Summary |
 | "I dispatched agent-A to plan… it was successful, so F1 is now planned" | Row: F1 `planned` · agent-A | Process narration → state; fact moves to the table |
 | "Agent-B reported that F2 is in-progress and it might possibly finish tomorrow" | Row: F2 `in-progress` · agent-B | Narration + hedge → state; drop the forecast (no fact) |
-| "in general we cannot merge it until F1's contract merges first" | F2's `Dependencies` line: blocked-by F1 (merge-blocked) | Fact belongs in the dependency table, not prose |
+| "in general we cannot merge it until F1's contract merges first" | F2's `Dependencies` cell in the Features table: blocked-by F1 (merge-blocked) | Fact belongs in the dependency column, not prose |
 | "As mentioned above, F3 and F4 are still unplanned" | Rows: F3, F4 `unplanned` | Banned phrase deleted; fact moves to the table |

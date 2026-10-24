@@ -6,6 +6,7 @@ When producing the final ADR document, use the exact structure below. Wrap place
 # {{YYYY-MM-DD}}-{{TITLE}}
 
 * Status: {{STATUS:draft | adopt | declined | superseded}}
+* Area: {{AREA}} <!-- optional; required for spike ADRs, matching scope.md -->
 * Owners: [ Who started and drives the ADR ]
 * Date: {{DATE}}
 

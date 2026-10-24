@@ -8,5 +8,7 @@ A well-covered examples section spans the skill's key scenarios. Check for these
 | Examples cover only simple/happy-path inputs | 🟡 Minor — edge cases are unguided |
 | Example count is fewer than distinct capabilities | 🟡 Minor — at least one scenario is unrepresented |
 | Example labels reference outdated or renamed capabilities | 🟢 Nit — drift between names |
+| An artifact template has no example instantiating it | 🔴 Major — no output model for the template |
+| A cross-skill shared artifact is demonstrated in only one skill | 🟡 Minor — other side's output model is unverified |
 
 **Minimum viable coverage**: every distinct capability (or meaningfully different scenario variant) should have at least one linked example.

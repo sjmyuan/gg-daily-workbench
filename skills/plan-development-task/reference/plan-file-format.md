@@ -1,39 +1,115 @@
-# Plan File Format
+# Plan File Format and Template
 
-Layout for the files **export-plan** writes into a feature folder.
+Single template for every plan this skill generates. The executor consumes it unchanged
+(**execute-plan** `step-tracking-format`) — never invent a variant.
 
 One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md` = execution ·
-`rework-<date>.md` = delta · git/PR/CI = record. Boundaries and budgets: **doc-budgets**.
+`rework-<date>.md` = delta · git/PR = record. Budgets: **doc-budgets**.
 
-## plan.md
+## plan.md template
 
-1. Start with the ratified `## Scope Boundary` block (see **scope-boundary**): **May change**, **Expected files**, **Must not change**, **Protected zones**.
-2. Follow with the complete numbered step list; each step states one objective in one sentence. Abandoned steps keep their number and carry `⏭` with a reason.
-3. Each step that touches existing code declares `Source`, `Ref`, and `Equality` per **change-provenance**; `generate` carries its justification.
-4. A rework is a **new sibling file** `rework-<date>.md` (per **rework-plan-convention**):
-   `# Rework <date>` + one-line trigger, its own **Scope Boundary**, **Done means**, and numbered delta steps.
-   `plan.md` is the frozen original and is never modified.
-5. An amendment adjusts the same `plan.md` in place (per **plan-amendment**): add steps by next number or letter suffix, mark obsolete pending steps `⏭ abandoned — <reason>`, never renumber.
+```markdown
+# Plan: <feature-name> — <outcome in one line>
+**Type**: bug-fix | feature | refactor | poc | restore
+**Branch**: `<branch>` off `<base>`
+**TDD variant**: Full cycle | Streamlined | Mixed | None (restore) — <one-line rationale; name groups when mixed>
+**ADR**: `adr-<name>.md` · **Option**: <option>            (POC only)
+**Success criteria**: <user review checklist>            (POC only, optional)
+
+## Scope Boundary
+**May change**: <observable behaviors and contracts this plan may alter>
+**Must match**: <path> @ <pinned ref>                    (restore/port only)
+**Expected files**: <likely files> (advisory)
+**Must not change**: <observable behaviors and contracts to preserve>
+**Protected zones**: <additions to the default set, or "none added">
+
+## Decisions
+- PD1 <decision> — <reason>                              (only when context.md cites a PD)
+
+## Steps
+
+### Step 1: Prepare environment ⏳
+**Objective**: <one sentence: what the step achieves>
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: <branch, dirt, dependency, and baseline checks>
+**Validation**: <command and pass rule>
+**Status**: ⏳ Pending
+
+### Step 2: <step title> ⏳
+**Objective**: <one sentence>
+**Files**: <created, modified, or deleted files>
+**Source**: <no-op|base|port|copy|edit|generate> · <pinned ref, origin path, or n/a> · <equality mode>
+**Implementation**: <key change or git operation — one line>
+**Validation**: <test or equality proof — one line>
+**Status**: ⏳ Pending
+```
+
+## Template rules
+
+| Element | Rule |
+|---|---|
+| Title | `# Plan: <feature> — <outcome>`; one line. |
+| Metadata | `Type` (`bug-fix` · `feature` · `refactor` · `poc` · `restore`); `Branch` as `<branch>` off `<base>`; `TDD variant` (`Full cycle` · `Streamlined` · `Mixed` · `None` for restore) + rationale; `ADR`/`Option`/`Success criteria` only for POC. |
+| Order | Title → metadata → `## Scope Boundary` → `## Decisions` (optional) → `## Steps`. |
+| Scope Boundary | Zone order fixed per **scope-boundary**; write `Protected zones: none added` when nothing is added. |
+| Steps | One `### Step N: <title> <status>` block per step, in file order; all six field lines, in order. |
+| Objective | One sentence, ≤20 words, imperative. |
+| Files | Concrete paths where known; `none` for no-edit steps. |
+| Source | Every step names `Source · Ref · Equality` per **change-provenance** — `no-op · n/a · n/a` when nothing changes; `generate` states its justification in `Implementation`, ratified when the user confirms the plan. |
+| Validation | Behavioral or `Must match` equality; never a commit hash. |
+| Status | Generated plans use `⏳`; the executor owns `🔄 ✅ ❌ 🚫`; the planner sets `⏭` only. |
+| Amendment | Append the next number or insert `3a`; never renumber (see **plan-amendment**). |
+
+Not in `plan.md`: root cause, requirement narrative, background, consolidation prose,
+per-step rationale, issue history, "key characteristics". Root cause → `context.md` **Why**;
+variant rationale → the `TDD variant` line; decisions `context.md` must not restate → `## Decisions`.
+
+## rework-<date>.md template
+
+Written when executed behavior must change; `plan.md` stays frozen (see **rework-plan-convention**).
+
+```markdown
+# Rework <date> — <one-line trigger>
+**Mode**: pre-merge | post-merge · **Cell**: <cell>
+**Branch**: `<branch>` off `<base>`
+**ADR focus**: `<adr path>`
+
+## Scope Boundary
+**May change**: <original May change, tightened or extended>
+**Must match**: <path> @ <pinned ref>                    (restore/port only)
+**Expected files**: <delta files> (advisory)
+**Must not change**: <original Must not change, plus any tightened item>
+**Protected zones**: <additions, or "none added">
+
+## Done means
+| Criterion | Verification | Pass rule |
+|---|---|---|
+| <delta criterion> | <test or diff check> | <pass rule> |
+
+## Steps
+
+### Step 1: <delta step> ⏳
+**Objective**: <one sentence>
+**Files**: <files>
+**Source**: <source> · <ref> · <equality>
+**Implementation**: <delta change — one line>
+**Validation**: <proof — one line>
+**Status**: ⏳ Pending
+```
+
+Rework step numbers restart at 1 in the rework file; the frozen `plan.md` numbering is untouched.
+The file carries only the delta and inherits `context.md` by reference.
 
 ## context.md
 
-The cell's **charter** — why it exists, what must hold, what is unknown, how done is judged.
-Target **40–60 lines**; hard cap **8,000 chars / 120 lines** (see **doc-budgets**).
+The cell's charter — why, must-hold invariants, unknowns, done criteria, pointers, state.
+Target **40–60 lines**; hard cap **8,000 chars / 120 lines**. Template, section order, and
+admission test: **doc-budgets**.
 
-- **Outcome** + **Why** (≤3 lines): problem, decision served, ADR link, adopted/do-not-re-litigate status
-- **Must hold** (≤6): user-ratified constraints + operational invariants not already in `plan.md`
-- **Unknowns** (≤5): unknown — resolving step — fallback; delete when resolved
-- **Done means** (≤5 rows): criterion, verification, pass rule
-- **Pointers** (≤6): cell-specific ADR, solution-doc section, findings, evidence — paths only, never copies
-- **Open concerns** (≤5): deferred Minor/risk — owner or next action; delete when resolved
-- **State**: active plan/rework file
-- **Execution**: latest handoff only — status, `base7..head7`, PR, 1-line evidence, 1-line review outcome
-- **Reworks** manifest (≤8 rows; drop oldest done rows — files remain): date, mode, cell, trigger, file, status
-- **Amendments** (≤8 rows; ⏭ markers are the record): date, trigger, added, abandoned, boundary, reason
-
-Not here: Scope Boundary, steps, TDD rationale, and plan decisions (`plan.md`); feature status,
-wave, branch, and PR (`index.md`); pre-flight evidence (synthesize into a decision or an Unknown);
-commit tables, test matrices, deviations, incidents — do not write them; git/PR are the history.
+Not in `context.md`: Scope Boundary, steps, TDD rationale, branch/base, plan decisions (all in
+`plan.md`); feature status, wave, PR (`index.md`); pre-flight evidence, commit tables, test
+matrices, deviations, incidents (git/PR are the history).
 
 `## Execution` is written by **execute-plan**, latest round only — never appended.
 Template and admission test: **[doc-budgets.md](doc-budgets.md)**.

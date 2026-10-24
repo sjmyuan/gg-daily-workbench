@@ -1,70 +1,96 @@
-# Example: Simple Logic Bug Fix — Wrong ID Passed to Publisher
+# Example: Bug Fix — Wrong ID Passed to Publisher
 
-**Scenario**: `DataImportedHandler` sends an incorrect (transformed) data ID to the message publisher instead of the original source ID.
+**Scenario**: `DataImportedHandler` sends a transformed data ID to the message publisher instead of the original source ID.
+**Applies**: **classify-change-type** → **define-scope** → **plan-bug-fix**
 
----
-
-## Change Classification
-
-Applies **classify-change-type**.
+## Classification
 
 **User reports:**
-> "The message publisher is receiving the wrong product ID — downstream consumers see a transformed/modified ID in the outgoing event instead of the original source ID."
+> "The message publisher is receiving the wrong product ID — downstream consumers see a transformed ID in the outgoing event instead of the original source ID."
 
-**Agent classifies** — keywords: "wrong", "incorrect", "instead of original" → **Bug Fix**.
+Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User confirms: ✅*
 
-*User confirms classification: ✅*
+## Scope
 
----
-
-## Bug Scope Definition
-
-Applies **define-scope** (bug fix).
-
-**Agent gathers information** — reads `DataImportedHandler.java` and the event publishing tests. Finds: the handler calls `dataTransformer.transform(record)` and then passes `transformedData.getId()` (the transformed ID) to the publisher instead of the original `record.getId()`.
+**Agent gathers evidence** — reads `DataImportedHandler.java` and the publishing tests. The handler calls `dataTransformer.transform(record)` and passes `transformedData.getId()` instead of `record.getId()`.
 
 **Agent asks:**
 > 1. Should the outgoing message always carry the original source ID, or the transformed ID in some scenarios?
-> 2. Are there any existing tests covering the ID field in the published message?
+> 2. Do existing tests cover the ID field in the published message?
 
-**User responds:**
-> Always the original source ID. Existing tests check the message type but not the specific ID field.
+**User:** Always the original source ID. Existing tests check the message type but not the ID field.
 
-**Agent confirms root cause:**
-> `DataImportedHandler` passes `transformedData.getId()` to the publisher instead of `record.getId()`. The transformation step changes the ID format, so the downstream consumer receives the wrong identifier. Fix: pass `record.getId()` (the original source ID) when constructing the outgoing message.
+**Root cause confirmed:** the handler publishes the transformed ID; the transformation changes the ID format. *User confirms: ✅*
 
-*User confirms: ✅*
+## Generated plan.md
 
----
+```markdown
+# Plan: fix-publisher-id — outgoing events carry the original source ID
+**Type**: bug-fix
+**Branch**: `fix-publisher-id` off `main`
+**TDD variant**: Full cycle — a data-correctness bug needs test-first proof.
 
-## Bug-Fixing Plan
-
-Applies **plan-bug-fix**.
-
-### Scope Boundary
+## Scope Boundary
 **May change**: `DataImportedHandler` ID-passing behavior
 **Expected files**: `DataImportedHandler.java` + its tests (advisory)
 **Must not change**: transformer logic, publisher behavior, other handlers
+**Protected zones**: none added
 
-**Root Cause**: Using transformed ID instead of original ID in the outgoing message
+## Steps
 
-**TDD Approach**: Full TDD cycle (simple logic error — test-first provides safety for data correctness)
+### Step 1: Prepare environment ⏳
+**Objective**: Confirm the branch and a green handler baseline.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Create `fix-publisher-id` off `main`; no overlapping dirt; toolchain resolves.
+**Validation**: `mvn test -Dtest=DataImportedHandlerTest` passes before changes.
+**Status**: ⏳ Pending
 
-**Steps:**
-- **Step 1**: Prepare Environment (run tests, Spotless, Checkstyle)
-- **Step 2**: Write Tests for correct ID handling in DataImportedHandler
-- **Step 3**: Confirm Test Failure (RED) — fails, not errors, for the expected reason
-- **Step 4**: Fix ID mapping logic in DataImportedHandler
-- **Step 5**: Verify Tests Pass
-- **Step 6**: Clean Up Unused Code
-- **Step 7**: Clean Up Tests
-- **Step 8**: Verify Cleanup
-- **Step 9**: Validate Quality (mvn spotless:check, Checkstyle)
+### Step 2: Write the ID assertion ⏳
+**Objective**: Assert the published message carries the original source ID.
+**Files**: `DataImportedHandlerTest.java`
+**Source**: generate · n/a · behavior-equal
+**Implementation**: New test feeds a record whose transformation changes the ID and captures the outgoing payload.
+**Validation**: Test compiles and joins the suite.
+**Status**: ⏳ Pending
 
-## Key Characteristics
+### Step 3: Confirm test failure (RED) ⏳
+**Objective**: Prove the new test fails for the wrong-ID reason.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run only the new test.
+**Validation**: Fails asserting the source ID — not an error.
+**Status**: ⏳ Pending
 
-- **Complexity**: Simple
-- **Approach**: Full TDD cycle
-- **Focus**: Logic correctness and data mapping
-- **Test Coverage**: ID transformation scenarios and edge cases
-- **Total Steps**: 9
+### Step 4: Pass the original ID ⏳
+**Objective**: Publish the source ID instead of the transformed ID.
+**Files**: `DataImportedHandler.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: Replace `transformedData.getId()` with `record.getId()` in the outgoing message.
+**Validation**: Step 2 test passes; handler suite green.
+**Status**: ⏳ Pending
+
+### Step 5: Clean up ⏳
+**Objective**: Remove the obsolete ID-mapping helper and stale assertions.
+**Files**: `DataImportedHandler.java`, `DataImportedHandlerTest.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: Delete the unused helper; drop assertions on the old transformed ID.
+**Validation**: Affected-area suite green after cleanup.
+**Status**: ⏳ Pending
+
+### Step 6: Quality gate ⏳
+**Objective**: Confirm the change meets repo quality gates.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run Spotless and Checkstyle.
+**Validation**: `mvn spotless:check checkstyle:check` exits 0.
+**Status**: ⏳ Pending
+```
+
+## Validation
+
+- [x] Type classified before planning; root cause confirmed by the user
+- [x] Boundary names behavior, not just files; protected zones explicit
+- [x] Every step is one six-field block with a `⏳` status
+- [x] RED precedes the fix; cleanup and quality gate precede hand-off
+- [x] 6 steps — consolidated from the 9-step full cycle, under the bug-fix cap of 20

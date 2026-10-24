@@ -2,8 +2,6 @@
 
 **Scenario**: All plan steps are ✅ complete. Demonstrates **review-post-execution** (applying review-code, adding fix steps for findings). The plan file and context file are kept as a permanent record.
 
----
-
 ## Context
 
 A 5-step refactoring plan has just finished with all steps ✅. The executor now runs the post-execution review.
@@ -17,8 +15,6 @@ A 5-step refactoring plan has just finished with all steps ✅. The executor now
 ### Step 4: Update handler tests ✅
 ### Step 5: Validate linting, formatting and type checking ✅
 ```
-
----
 
 ## Post-Execution Review
 
@@ -37,8 +33,6 @@ Applying **review-code** skill on all changed files:
 **🟡 Minor — Test only covers happy path**
 - `DataValidatorTest.java` has one test for a valid record but no test for null input or invalid ID format.
 
----
-
 ## Adding Fix Steps
 
 ```
@@ -46,10 +40,11 @@ Applying **review-code** skill on all changed files:
 ### Step 7: Add missing null and invalid-input tests for DataValidator ⏳
 ```
 
-### Step 6: Fix Null-Check Ordering 🔄
+### Step 6: Fix Null-Check Ordering ✅
 
 **Objective**: Ensure `validateNotNull` runs before any field access.
 **Files**: `domain/validation/DataValidator.java`
+**Source**: edit · n/a · behavior-equal
 **Implementation**:
 ```java
 public void validate(DataRecord record) {
@@ -73,10 +68,11 @@ public void validate(DataRecord record) {
 ### Step 7: Add missing null and invalid-input tests for DataValidator ⏳
 ```
 
-### Step 7: Add Missing Tests 🔄
+### Step 7: Add Missing Tests ✅
 
 **Objective**: Cover null input and invalid ID format in `DataValidatorTest`.
 **Files**: `test/DataValidatorTest.java`
+**Source**: generate · n/a · behavior-equal
 **Implementation**:
 ```java
 @Test
@@ -93,15 +89,11 @@ void validate_throwsWhenIdHasInvalidFormat() {
 **Validation**: All 7 tests pass including the 2 new ones.
 **Status**: ✅ Completed
 
----
-
 ## Re-Running Code Reviewer
 
 Applying **review-code** on `DataValidator.java` and `DataValidatorTest.java` again.
 
 **Result**: No 🚫 Blockers or 🔴 Major issues remain. Two 🟢 Nits (variable naming preferences) — documented in final summary, not blocking.
-
----
 
 ## Final Summary
 

@@ -29,8 +29,8 @@ A step that is deliberately not executed:
 
 1. Read the active plan, its statuses, and `context.md` `## Amendments`.
 2. Freeze every ✅ step and its notes byte-for-byte.
-3. Append new steps with the next number, or insert with a letter suffix (`3a`, `3b`) when the work must run before an existing pending step; file order is execution order; never renumber.
-4. Mark obsolete pending steps `⏭ abandoned — <reason>`; never delete.
+3. Append new steps with the next number, or insert with a letter suffix (`3a`, `3b`) when the work must run before an existing pending step; file order is execution order; never renumber. New steps use the full six-field block from **plan-file-format**.
+4. Mark obsolete pending steps `⏭ abandoned — <reason>`; keep the step's other fields and change only `Status`; never delete.
 5. Tighten the boundary freely; widen only with user ratification.
 6. Add one `## Amendments` row to `context.md`.
 7. Re-run the plan-quality checklist and show the step diff.
@@ -50,6 +50,7 @@ Resume at the first ⏳ or 🚫 step; skip ✅ and ⏭. Remaining count includes
 
 ```markdown
 ### Step 4: Migrate legacy tokens ⏭
+**Objective**: Backfill legacy tokens into the shared store.
 **Status**: ⏭ Abandoned — superseded by Step 8; token store removed
 ```
 

@@ -1,85 +1,147 @@
-# Example: Complex Feature — Multi-Locale Data Attribute Transformation
+# Example: Complex Feature — Multi-Locale Attribute Transformation
 
-**Scenario**: Implement multi-locale product attribute value transformation with fallback logic and locale validation.
+**Scenario**: Return product attribute values in the user's locale, with a fallback chain and locale validation.
+**Applies**: **classify-change-type** → **define-scope** → **plan-feature-implementation**
 
----
-
-## Change Classification
-
-Applies **classify-change-type**.
+## Classification
 
 **User request:**
-> "We need to transform product attribute values so that each attribute is returned in the user's preferred locale, with a fallback to the default locale if the translation is missing, and with validation to reject invalid locale codes."
+> "Transform product attribute values so each attribute is returned in the user's preferred locale, with a fallback to the default locale, and reject invalid locale codes."
 
-**Agent classifies** — keywords: "need to transform", "implement", "add" → **Feature** (new behavior).
+Keywords "transform", "reject invalid" → **Feature** (new behavior). *User confirms: ✅*
 
-*User confirms classification: ✅*
+## Scope
 
----
+**Agent asks:**
+> 1. BCP 47 (`en-US`) or ISO 639-1 (`en`)?
+> 2. Does "missing" mean null, empty string, or both?
+> 3. Is fallback one default locale or a priority chain?
+> 4. If the fallback also misses — null or error?
+> 5. Are values always strings?
 
-## Feature Scope Definition
+**User:** BCP 47. Both null and empty string. Chain: regional → base language → configured default. Return null if all miss. Values are strings.
 
-Applies **define-scope** (feature).
+**Requirement confirmed:** `LocaleAttributeTransformer` resolves the value through the chain; `FallbackLocaleResolver` encapsulates it; malformed codes raise a validation error. *User confirms: ✅*
 
-**Agent asks clarifying questions:**
-> 1. What format are locale codes in — BCP 47 (`en-US`) or ISO 639-1 (`en`)?
-> 2. What constitutes a "missing" translation — null value, empty string, or both?
-> 3. Is the fallback always to a single default locale, or a priority chain (e.g., `fr-CA` → `fr` → `en`)?
-> 4. What happens if the fallback locale also has no translation — return null or throw?
-> 5. Are attribute values always strings, or can they be numeric/boolean?
+## Generated plan.md
 
-**User responds:**
-> BCP 47. Both null and empty string count as missing. Two-level chain: regional → base language → configured default. Return null if all levels miss. Values are always strings.
+```markdown
+# Plan: localized-attributes — locale-aware values with a fallback chain
+**Type**: feature
+**Branch**: `localized-attributes` off `main`
+**TDD variant**: Full cycle per component — transformer and resolver share fixtures, so one cycle covers both.
 
-**Agent confirms requirement:**
-> The `LocaleAttributeTransformer` must: (1) accept an attribute map keyed by locale, (2) resolve the value by trying the exact locale, then the base language, then the configured default, (3) treat null and empty string as absent, (4) reject malformed BCP 47 codes with a validation error, (5) return null if no match is found at any level. The `FallbackLocaleResolver` encapsulates the priority chain so it can be unit-tested independently.
-
-*User confirms: ✅*
-
----
-
-## Implementation Plan
-
-Applies **plan-feature-implementation**.
-
-### Scope Boundary
+## Scope Boundary
 **May change**: locale transformation and fallback-resolution behavior; handler integration
 **Expected files**: `LocaleAttributeTransformer`, `FallbackLocaleResolver`, handler, their tests (advisory)
 **Must not change**: product catalog, serialization, other locale logic
+**Protected zones**: none added
 
-**TDD Approach**: Full TDD cycle for each major component — complex business logic requires rigorous testing
+## Decisions
+- PD1 Transformer and resolver share one TDD cycle — shared fixtures; no separate resolver cycle.
 
-**Consolidation rationale**: `LocaleAttributeTransformer` and `FallbackLocaleResolver` form a single cohesive unit — the transformer delegates entirely to the resolver and they share test fixtures. Consolidating them into one TDD cycle reduces the total step count.
+## Steps
 
-**Steps:**
-- Step 1: Prepare Environment (run tests, linting, type-checking)
-- Step 2-11: Full TDD cycle for LocaleAttributeTransformer + FallbackLocaleResolver (consolidated)
-  - Step 2: Write Tests for LocaleAttributeTransformer and FallbackLocaleResolver
-  - Step 3: Confirm Test Failure
-  - Step 4: Implement core transformation algorithm (LocaleAttributeTransformer)
-  - Step 5: Implement fallback resolution logic (FallbackLocaleResolver)
-  - Step 6: Verify Tests Pass
-  - Step 7: Refactor transformer and resolver for clarity
-  - Step 8: Validate Refactoring
-  - Step 9: Clean Up unused code and tests
-  - Step 10: Verify Cleanup
-  - Step 11: Validate Linting, Formatting and Type Checking
-- Step 12-20: Full TDD cycle for handler integration
-  - Step 12: Write Tests for handler integration
-  - Step 13: Confirm Test Failure
-  - Step 14: Integrate transformation logic with handler
-  - Step 15: Verify Tests Pass
-  - Step 16: Refactor handler integration
-  - Step 17: Validate Refactoring
-  - Step 18: Clean Up unused code and tests
-  - Step 19: Verify Cleanup
-  - Step 20: Validate Linting, Formatting and Type Checking
-- Step 21: Final Validation (run all tests, lint, and type-check)
+### Step 1: Prepare environment ⏳
+**Objective**: Confirm the branch and a green baseline for the attribute package.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve.
+**Validation**: Attribute-package tests, linting, and type checking pass.
+**Status**: ⏳ Pending
 
-## Key Characteristics
+### Step 2: Write transformation and fallback tests ⏳
+**Objective**: Cover exact-locale hit, base-language fallback, default fallback, and total miss.
+**Files**: `LocaleAttributeTransformerTest`, `FallbackLocaleResolverTest`
+**Source**: generate · n/a · behavior-equal
+**Implementation**: New tests; malformed BCP 47 codes expect a validation error.
+**Validation**: Both test classes compile.
+**Status**: ⏳ Pending
 
-- **Complexity**: High — sophisticated algorithm with locale fallback, validation, and multiple integration points
-- **TDD Approach**: Full cycle for each major component
-- **Testing Strategy**: Multi-locale scenarios, fallback chains, edge cases (missing attributes, invalid locales, empty data)
-- **Total Steps**: 21 (consolidated from 32)
-- **Separation**: Transformer layer (core + resolver) and handler integration as separate cycles
+### Step 3: Confirm test failure (RED) ⏳
+**Objective**: Prove the new tests fail because the behavior is absent.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run only the two new test classes.
+**Validation**: Every test fails on missing symbols or missing behavior — not an error for the wrong reason.
+**Status**: ⏳ Pending
+
+### Step 4: Implement the resolver ⏳
+**Objective**: Encapsulate the chain regional → base → default in one class.
+**Files**: `FallbackLocaleResolver.java`
+**Source**: generate · n/a · behavior-equal
+**Implementation**: New class; no prior source — the chain does not exist in the repo.
+**Validation**: Resolver tests pass for hit, fallback, and miss.
+**Status**: ⏳ Pending
+
+### Step 5: Implement the transformer ⏳
+**Objective**: Resolve each attribute through the resolver and reject malformed locales.
+**Files**: `LocaleAttributeTransformer.java`
+**Source**: generate · n/a · behavior-equal
+**Implementation**: Null and empty values count as missing; return null when every level misses.
+**Validation**: Transformer tests pass.
+**Status**: ⏳ Pending
+
+### Step 6: Verify both components ⏳
+**Objective**: Confirm both classes pass together.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run the full attribute-package suite.
+**Validation**: All tests pass.
+**Status**: ⏳ Pending
+
+### Step 7: Refactor both classes ⏳
+**Objective**: Simplify the resolver API and align naming.
+**Files**: `LocaleAttributeTransformer.java`, `FallbackLocaleResolver.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: Extract the locale-parsing helper; keep behavior unchanged.
+**Validation**: Suite stays green after the refactor.
+**Status**: ⏳ Pending
+
+### Step 8: Write handler integration tests ⏳
+**Objective**: Assert the handler emits localized values end to end.
+**Files**: `DataImportedHandlerLocalizationTest.java`
+**Source**: generate · n/a · behavior-equal
+**Implementation**: New test; fixtures cover a two-level fallback and a total miss.
+**Validation**: Test compiles and joins the suite.
+**Status**: ⏳ Pending
+
+### Step 9: Confirm integration failure (RED) ⏳
+**Objective**: Prove the handler does not yet localize values.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run only the integration test.
+**Validation**: Fails on unlocalized output — not an error.
+**Status**: ⏳ Pending
+
+### Step 10: Integrate with the handler ⏳
+**Objective**: Route handler attribute mapping through the transformer.
+**Files**: `DataImportedHandler.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: Replace direct attribute reads with transformer calls.
+**Validation**: Integration test passes; handler suite green.
+**Status**: ⏳ Pending
+
+### Step 11: Clean up ⏳
+**Objective**: Remove superseded mapping code and obsolete tests.
+**Files**: handler, both test suites
+**Source**: edit · n/a · behavior-equal
+**Implementation**: Delete the old attribute lookup; drop tests asserting raw values.
+**Validation**: Affected-area suite green.
+**Status**: ⏳ Pending
+
+### Step 12: Quality gate ⏳
+**Objective**: Confirm linting, formatting, and type checking pass.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run the repo formatter, linter, and type checker.
+**Validation**: All three exit 0.
+**Status**: ⏳ Pending
+```
+
+## Validation
+
+- [x] Every fallback level and the total-miss case has a test
+- [x] Consolidation rationale lives in the TDD variant and `## Decisions`, not in prose
+- [x] Every step is one six-field block with a `⏳` status
+- [x] 12 steps — under the feature cap of 25

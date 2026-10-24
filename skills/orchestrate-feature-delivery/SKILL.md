@@ -35,7 +35,7 @@ A feature is a coherent, independently valuable deliverable spanning one or more
 - IDs `F1`, `F2`, … with kebab-case names and one-line descriptions.
 </feature-definition>
 <poc-definition>
-A POC is a **temporary implementation** of one ADR option — a normal feature slice, delivered as an MR. The **user** evaluates the MR; the skill never measures, evaluates, or writes a report. Cells carry `adr` · `option` · `success-criteria` (optional review checklist) · `replaces` · `compare`. Adoption: **POC-as-implementation** (merge the MR on adopt) or **POC-as-decision-input** (close the MR and implement the chosen option). Lifecycle: **reference/poc-lifecycle.md**.
+A POC is a **temporary implementation** of one ADR option — a normal feature slice, delivered as an MR. The **user** evaluates the MR; the skill never measures, evaluates, or writes a report. Cells carry `adr`, `option`, and optional `success-criteria` (the user's review checklist) in the `plan.md` header, and `replaces` / `compare` in the index. Adoption: **POC-as-implementation** (merge the MR on adopt) or **POC-as-decision-input** (close the MR and implement the chosen option). Lifecycle: **reference/poc-lifecycle.md**.
 </poc-definition>
 <delivery-layout>
 One epic = `deliveries/<epic-name>/`, with `index.md` at the root and one `<repo>/<feature-name>/` folder per repo per feature (kebab-case name, never the ID). One artifact, one job: `index` = state · `context` = charter · `plan` = execution · `rework` = delta · git/PR = record; the orchestrator writes only the index. Spike artifacts are the knowledge plane; delivery references them, never copies — map: **[../conduct-spike/reference/artifact-map.md](../conduct-spike/reference/artifact-map.md)**. Boundaries: **doc-budgets**. Base root and ownership: **reference/delivery-layout.md**.
@@ -195,8 +195,8 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 4. Update the index, apply **rewrite-concise**, and confirm routing before dispatching.
 </handle-adr-change>
 <define-poc-scope>
-1. Flag a cell `type: poc` during **decompose-change-into-features** when an ADR option needs a working slice the user can review.
-2. Fill `adr`, `option`, optional `success-criteria` (the user's checklist), `replaces`, `compare` per **poc-definition**.
+1. Flag a cell with `Type: poc` during **decompose-change-into-features** when an ADR option needs a working slice the user can review.
+2. Fill `adr`, `option`, and optional `success-criteria` (the user's checklist, in the plan header), plus index-level `replaces` / `compare` per **poc-definition**.
 3. Sequence POCs in **Wave 0** (`compare` siblings in parallel) and add a **poc-gated** edge.
 4. Present the POC cells and optional review criteria; confirm before recording.
 </define-poc-scope>

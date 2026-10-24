@@ -19,7 +19,6 @@ Flow: `index` → dispatch brief → `context` + `plan` → execute → plan ste
 ## Evidence routing
 
 There is **no `evidence-raw.md`**. Every piece of evidence has a consumer and a home.
-**Purpose:** route each evidence type to one home, so it is not duplicated in `context.md`, `plan.md`, or a new log.
 
 | Evidence | Home | Consumed by |
 |---|---|---|
@@ -30,12 +29,9 @@ There is **no `evidence-raw.md`**. Every piece of evidence has a consumer and a 
 | History | Git commits, PR, `rework-<date>.md` | Human, auditor |
 | Deferred concern | `context.md` `## Open concerns` | Gate, integration review |
 
-- Spike artifacts (findings pair, ADR, solution doc) are owned by `conduct-spike` / `document-findings`; delivery never duplicates them. Boundary: **[artifact-map](../../conduct-spike/reference/artifact-map.md)**.
 - A reproducible test/build result is never transcribed — cite the command and the commit.
 - A new fact that changes a decision goes through the owning spike artifact (`document-findings` update → `draft-adr` → solution doc). Never a parallel raw file.
-- If you feel the urge to write a log, stop: the evidence belongs to one of the rows above.
 - Existing `evidence-raw.md` and `evaluation-report.md` files are legacy history — leave them; never create a new one.
-- A POC is a **temporary implementation**; its MR is the user's evaluation vehicle. No measurement step, report, or verdict.
 
 ## Hard budgets
 
@@ -43,8 +39,8 @@ There is **no `evidence-raw.md`**. Every piece of evidence has a consumer and a 
 |---|---|---|
 | `context.md` | 40–60 lines / 3–4k chars | 120 lines / 8k chars |
 | `index.md` | 60–100 lines / 4–6k chars | 120 lines / 8k chars |
-| `plan.md` | step-count driven | no cap here |
-| `rework-<date>.md` | delta only | no cap here |
+| `plan.md` | step-count driven (caps per **plan-quality-checklist**) | no doc-size cap |
+| `rework-<date>.md` | delta only | no doc-size cap |
 
 - **Chars are the gate** (≈ tokens × 4); lines are secondary. Measure: `wc -l`, `wc -m`.
 - **Filling the ceiling is a smell** — a charter at 8k is a workbook. Over the ceiling is a write failure.
@@ -65,7 +61,8 @@ An unresolved one becomes an **Unknown**. The raw investigation is not persisted
 
 Never write steps, plan decisions, feature status/branch/PR, pre-flight tables, commit tables,
 test matrices, deviation narratives, or incident retellings — those live in `plan.md`,
-`index.md`, or git/PR. Restated ADR text is a one-line decision + link.
+`index.md`, or git/PR. Branch and base live in the `plan.md` header, mirrored as state in `index.md`.
+Restated ADR text is a one-line decision + link.
 
 ## context.md charter template
 
@@ -105,10 +102,10 @@ test matrices, deviation narratives, or incident retellings — those live in `p
 <latest handoff only — 5 rows; see below>
 
 ## Reworks
-<≤8 rows: date | mode | cell | trigger | file | status; drop oldest done rows — files remain>
+<≤8 rows: date | mode | cell | trigger | file | status; drop oldest done rows — files remain; create with the first row>
 
 ## Amendments
-<≤8 rows: date | trigger | added | abandoned | boundary | reason; ⏭ markers are the record>
+<≤8 rows: date | trigger | added | abandoned | boundary | reason; ⏭ markers are the record; create with the first row>
 ```
 
 ## Expiry rule
@@ -118,7 +115,7 @@ Context must **shrink**, not only stop growing:
 - A resolved **Unknown** → record the outcome in the resolving step's plan note → delete it from context.
 - A resolved **Open concern** → delete it; the closing commit or rework file is the record.
 - A constraint that becomes a plan decision or Scope Boundary entry → delete it from context.
-- During execution only `## Open concerns`, `## State`, `## Execution`, and the manifests change. The charter sections are planner-owned and frozen.
+- During execution only `## Open concerns`, `## State`, and `## Execution` change. The charter sections and the manifests are planner-owned and frozen.
 
 ## Latest handoff (replaces, never appends)
 
