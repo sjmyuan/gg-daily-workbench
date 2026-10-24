@@ -1,6 +1,9 @@
 # Execution Modes
 
-Conventions for the two special plan modes this skill executes. Normal plans run steps 1–N to completion; these modes restrict or stop execution.
+Conventions for plan variants. A normal plan runs steps 1–N to completion.
+
+## POC — `type: poc`
+A POC executes **exactly like a normal feature plan** — no special mode, no measurement step, no report. The only difference is organizational: the MR is the user's evaluation vehicle, and merging waits for the user's decision.
 
 ## Rework mode — sibling `rework-<date>.md`
 A rework plan (triggered by **orchestrate-feature-delivery**'s **handle-post-implementation-issue**) is a sibling `rework-<date>.md` in the feature folder — `plan.md` is the frozen original:
@@ -10,9 +13,3 @@ A rework plan (triggered by **orchestrate-feature-delivery**'s **handle-post-imp
 - **verify-prerequisites** still applies — the rework runs on its own branch per the repo's branch convention (the original branch/PR may already be merged).
 - Commit conventions, **request-push-approval**, and **review-post-execution** apply exactly as for a normal plan.
 
-## POC mode — `type: poc`
-A POC plan (from **plan-development-task**'s **plan-poc** / an **orchestrate-feature-delivery** POC cell) executes like a normal feature on a **POC branch** — track, small-step commits, validation — but stops before merging:
-- After the final **evaluation step**, produce the evaluation report (see **produce-poc-report**) and **STOP**.
-- Pushing a POC branch is for review/evidence only — ask the user first
-- Merging happens only after the orchestrator's decision gate adopts it
-- Completion routes to the decision gate — never to plain **done**.

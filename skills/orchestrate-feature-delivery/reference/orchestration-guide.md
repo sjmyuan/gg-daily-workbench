@@ -85,9 +85,9 @@ Never dispatch a planned cell on a stale decision.
 
 A POC proves one option of one ADR as a standalone feature (see **poc-definition**). It is planned and executed like any cell, then stops at a **decision gate** instead of merging.
 
-- **Dispatch**: plan → **planner** (plan-development-task, POC mode); execute → **executor** (execute-plan, POC mode). Include `type: poc` + success criteria in the brief.
+- **Dispatch**: plan → **planner** (plan-development-task `plan-poc`); execute → **executor** (normal execution). Include `type: poc`, the ADR, the option, and optional success criteria in the brief. The executor offers an MR after approval; the user evaluates it.
 - **Compare POCs**: sibling POC cells (one per option) run in parallel in an early wave.
-- **Decision gate**: at **poc-ready**, present the evaluation report vs success criteria to the user — the user/team decides adopt/reject, never auto-decide.
+- **Decision gate**: at **poc-ready**, present the open MR to the user — they review/test it (optionally against `success-criteria`) and decide adopt/reject manually, never auto-decide.
 - **Adopt**: dispatch **adr-writer** (draft-adr) to record the validated option; **POC-as-implementation** — the executor pushes and opens the PR, merge the branch, mark the `replaces` cell **superseded**; **POC-as-decision-input** — close the POC, dispatch the **poc-gated** feature with the decided option.
 - **Reject**: dispatch **adr-writer** to record the outcome; close the cell **rejected**; archive or discard the branch (ask the user); delivery proceeds on the other option.
 - **Sequencing**: never dispatch a **poc-gated** feature before its POC's decision.

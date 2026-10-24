@@ -28,11 +28,11 @@ A spike reduces uncertainty via research and analysis; its output is **documente
 </spike-definition>
 
 <spike-artifact-layout>
-One folder per spike — `spikes/<spike-name>/` with `scope.md`, `adrs/adr-<area>-<NN>-<problem>.md`, `solution.md`, `docs/findings-<area>.md` + `docs/evidence-<area>.md`, cross-referenced by relative path. The `spikes/` segment anchors the write boundary. Unnamed root → `resolve-artifact-location`; record `Artifact root:` atop `scope.md`.
+One folder per spike — `spikes/<spike-name>/` with `scope.md`, `adrs/adr-<area>-<NN>-<problem>.md`, `solution.md`, `docs/findings-<area>.md` + `docs/evidence-<area>.md`, cross-referenced by relative path. `spikes/` anchors the write boundary. Unnamed root → `resolve-artifact-location`; record `Artifact root:` atop `scope.md`.
 </spike-artifact-layout>
 
 <write-boundary>
-Writes are confined to the spike folder (`**/spikes/**`) — never code, config, tests, or any file outside it; never build POCs (`orchestrate-feature-delivery` delivers them). Run the boundary check after every write: **reference/write-boundary-guide.md**.
+Writes are confined to the spike folder (`**/spikes/**`) — never code, config, tests, or files outside it; never build POCs (`orchestrate-feature-delivery` delivers them). Run the boundary check after every write: **reference/write-boundary-guide.md**.
 </write-boundary>
 
 <scope-map>
@@ -40,7 +40,7 @@ The spike's **area → problem map** and live status dashboard. Each problem map
 </scope-map>
 
 <scope-map-status>
-Problem (stored): `investigating` → `deciding` → `done`; area (derived): `preparing` → `spiking` → `done`. A `done` problem has its ADR; an area is never `done` with an open problem; new evidence reopens `done` → `deciding`. Full model: **reference/scope-map-guide.md**.
+Problem (stored): `investigating` → `deciding` → `done`; area (derived): `preparing` → `spiking` → `done`. A `done` problem has its ADR; an area is never `done` with an open problem; new evidence reopens `done` → `deciding`. Model: **reference/scope-map-guide.md**.
 </scope-map-status>
 
 <inappropriate-scenarios>
@@ -52,7 +52,7 @@ When the user supplies investigation material, skip **investigate-per-area** and
 </pre-existing-findings>
 
 <findings-document>
-The spike's findings pair (via `document-findings`): a human doc (resource index, topics) plus an evidence doc holding the ledger, claim IDs, and confidence — the **evidence home**. One pair per area; briefs carry both docs; cross-area constraints travel as references. Details: **reference/findings-document-guide.md**.
+The spike's findings pair (via `document-findings`): a human doc plus an evidence doc holding the ledger, claim IDs, and confidence — the **evidence home**. One pair per area; briefs carry both. Guide: **reference/findings-document-guide.md**.
 </findings-document>
 
 <continuation-mode>
@@ -80,7 +80,7 @@ During ADR discussion, suggest a spike when the decision hinges on something rea
 </adr-uncertainty-signals>
 
 <professional-doc-authoring>
-ADRs, findings docs, and the solution document are always written by their owning skills — never hand-edited: ADRs via `draft-adr`; findings docs via `document-findings`; the solution document via `write-solution-doc`. Option tech details come from `draft-adr`'s **detail-options-tech**, grounded in the evidence doc's claim ledger.
+ADRs, findings docs, and the solution document are always written by their owning skills — `draft-adr`, `document-findings`, `write-solution-doc` — never hand-edited. Option tech details come from **detail-options-tech**, grounded in the evidence ledger.
 </professional-doc-authoring>
 
 <artifact-maintenance-doctrine>
@@ -110,6 +110,7 @@ Propagation stops at the first unaffected artifact. Full protocol: **reference/a
 | ADR discussion hinging on unverified assumptions | Uncertainty-spike suggestion example | [examples/adr-uncertainty-spike-suggestion.md](examples/adr-uncertainty-spike-suggestion.md) |
 | Fact/decision change propagated through artifacts | Sync walkthrough | [examples/sync-update-across-artifacts.md](examples/sync-update-across-artifacts.md) |
 | Placing artifacts into the spike folder | Layout example | [examples/spike-artifact-layout.md](examples/spike-artifact-layout.md) |
+| Handing artifacts to delivery, or deciding where a fact belongs | Two-plane map, handoff contract, edit ownership, change routing | [reference/artifact-map.md](reference/artifact-map.md) |
 
 </context-loading-guide>
 

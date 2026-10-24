@@ -23,10 +23,17 @@ Mode: pre-merge   ·   Cell: order-service/F4   ·   ADR focus: adr-wallet-01-pa
 **Expected files**: checkout mapping + its tests (advisory)
 **Must not change**: other ADR decisions, other modules
 
+## Done means
+| Criterion | Verification | Pass rule |
+|---|---|---|
+| Timeout maps to the documented error code | checkout timeout test | pass |
+
 ## Steps
 - [ ] Fix payment-gateway timeout → correct error code mapping
 - [ ] Update checkout integration test for timeout cases
 ```
+
+The rework file carries only the delta — trigger, Scope Boundary, Done means, changed steps. It inherits the cell's charter by reference and never creates a second `context.md`.
 
 `context.md` gains a `## Reworks` manifest row:
 

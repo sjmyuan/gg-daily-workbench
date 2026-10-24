@@ -13,7 +13,7 @@ The orchestrator checks the index, `context.md`, the governing ADR, and `plan.md
 | Source | Fact |
 |---|---|
 | `adr-wallet-01-payment-failure-handling.md` | Retry up to 3 times, exponential backoff |
-| `context.md` §Execution | Retry cap hard-coded during F2; flagged Minor |
+| `context.md` §Open concerns | Retry cap hard-coded during F2; flagged Minor |
 | `plan.md` step 4 | Implemented retry policy |
 
 **Answer**: "Three attempts was the ADR decision; F2 hard-coded the cap and flagged configurability as a deferred Minor. No dispatch, no artifacts."

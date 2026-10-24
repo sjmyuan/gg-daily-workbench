@@ -15,6 +15,10 @@ Full status model for `scope.md` — backs the **scope-map** / **scope-map-statu
 
 Area status is derived from its problems + findings-pair link — never stored separately.
 
+## Scope vs delivery index
+
+`scope.md` tracks **spike areas/problems** only. Delivery features, cells, and status live in `deliveries/<epic>/index.md`. The two decompositions are not 1:1 and their statuses are never mirrored. Map: **[artifact-map.md](artifact-map.md)**.
+
 ## Transitions
 
 | From | Event | To |

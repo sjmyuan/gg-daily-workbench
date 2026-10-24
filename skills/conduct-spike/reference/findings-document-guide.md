@@ -35,3 +35,9 @@ Details: `document-findings`'s **reference/evidence-and-ids.md**.
 - **The solution document** is produced by `write-solution-doc` (target-state, decision-only), seeded with the evidence docs as the current-state evidence it references; it does not restate findings content.
 - When findings change, update the pair via `document-findings`'s **update-findings-doc**, then the ADRs and solution doc that cite it.
 - **ADRs and the solution document stay clean**: investigation detail and raw data live only in the evidence doc.
+
+## Delivery handoff
+
+The pair is the **current-state knowledge plane**. Delivery references it from the index `## Spike References` and `context.md` `## Pointers` — never copies it.
+
+A fact discovered during delivery that changes a decision re-enters here via `update-findings-doc`, then propagates to the ADR and solution doc. Delivery agents never edit the pair. Two-plane map: **[artifact-map.md](artifact-map.md)**.

@@ -7,7 +7,8 @@ Rework rules for `orchestrate-feature-delivery`. Rework is **always append-only*
 | **Post-merge** | cell **done** (merged/verified) | focused spike (**conduct-spike**) + ADR / solution-doc updates; new rework feature (e.g. `F2-r1`) in a new wave |
 | **Pre-merge** | cell **in-progress** (implemented, not pushed/merged) | spike + ADR / solution-doc updates only if the issue challenges the ADR decision; rework stays on the same cell — rework steps merge with the original work |
 
-- **Rework lineage**: `F2-r1` reworks `F2`; `F2-r2` reworks `F2-r1` (latest delivered state); `Rework of:` names it. Rework files key by date — same-day collision suffix `-2`, `-3`. The `## Reworks` manifest is the canonical chain.
+- **Rework scope**: the file carries only the delta — trigger, Scope Boundary, Done means, changed steps. It inherits `context.md` **Must hold** / **Pointers** by reference and never creates a second `context.md`.
+- **Rework lineage**: `F2-r1` reworks `F2`; `F2-r2` reworks `F2-r1` (latest delivered state); `Rework of:` names it. Rework files key by date — same-day collision suffix `-2`, `-3`. The `## Reworks` manifest is the canonical chain, one row per rework; the rework files themselves remain the history.
 - A verification-gate finding (**verify-cell**) is a **pre-merge** rework trigger while the cell is **in-progress**; the planner writes the sibling `rework-<date>.md` — the index tracks status only.
 - **Dispatched briefs**: the focused-spike / rework briefs carry the affected cell (repo + feature), the governing ADR path, the surfaced issue (inline), and the spike references — never re-scope the whole epic.
 - **Post-merge index handling**: keep the original cell exactly as-is (**done**); add the rework as a new feature/cell in a new wave with `**Rework of**: F2`.

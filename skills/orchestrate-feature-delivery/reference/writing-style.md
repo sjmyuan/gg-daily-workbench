@@ -1,6 +1,14 @@
 # Concise Writing Style
 
-Applies to all prose in the delivery index (`deliveries/<epic-name>/index.md`). Tables carry the detail; prose states takeaways.
+Applies to all prose in `index.md` and the `context.md` charter. Tables carry the detail; prose states takeaways.
+
+## Size budget
+
+`index.md`: target **60–100 lines**, ceiling **8,000 chars / 120 lines**.
+`context.md`: target **40–60 lines** (a charter, not a workbook).
+See **[doc-budgets](../../plan-development-task/reference/doc-budgets.md)**.
+Chars are the gate — a 120-line file can still hold ~14k chars.
+Over budget blocks the write: collapse rows, archive done waves, point to git/PR for history.
 
 ## Core rule: BLUF (Bottom Line Up Front)
 - The **Summary** line states the epic state in one line.
@@ -26,7 +34,8 @@ Applies to all prose in the delivery index (`deliveries/<epic-name>/index.md`). 
 - Prose's only job: one line summarizing the table.
 
 ## Rewrite transforms (apply via rewrite-concise)
-Move-then-shorten: if a fact belongs in a table (status, wave, dependency, PR), move it there first, then shorten what remains. Facts outrank brevity — never drop a fact to hit a cap; a 20-word sentence is fine if it is the shortest faithful form.
+Move-then-shorten: move facts that belong in a table (status, wave, dependency, PR) there first, then shorten.
+Facts outrank brevity — never drop a fact to hit a cap; a 20-word sentence is fine if it is the shortest faithful form.
 
 | Wordy | Concise |
 |---|---|

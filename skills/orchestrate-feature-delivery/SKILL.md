@@ -35,10 +35,10 @@ A feature is a coherent, independently valuable deliverable spanning one or more
 - IDs `F1`, `F2`, … with kebab-case names and one-line descriptions.
 </feature-definition>
 <poc-definition>
-A POC proves one ADR option as a **standalone feature** — a full slice, never a snippet. Cells carry `adr` · `option` · `success-criteria` · `replaces` · `compare`. Adoption: **POC-as-implementation** (merge and ship on adopt) or **POC-as-decision-input** (a `poc-gated` feature implements it). Lifecycle: **reference/poc-lifecycle.md**.
+A POC is a **temporary implementation** of one ADR option — a normal feature slice, delivered as an MR. The **user** evaluates the MR; the skill never measures, evaluates, or writes a report. Cells carry `adr` · `option` · `success-criteria` (optional review checklist) · `replaces` · `compare`. Adoption: **POC-as-implementation** (merge the MR on adopt) or **POC-as-decision-input** (close the MR and implement the chosen option). Lifecycle: **reference/poc-lifecycle.md**.
 </poc-definition>
 <delivery-layout>
-One epic = `deliveries/<epic-name>/`, with `index.md` at the root and one `<repo>/<feature-name>/` folder per repo per feature (kebab-case name, never the ID). Base root and ownership: **reference/delivery-layout.md**.
+One epic = `deliveries/<epic-name>/`, with `index.md` at the root and one `<repo>/<feature-name>/` folder per repo per feature (kebab-case name, never the ID). One artifact, one job: `index` = state · `context` = charter · `plan` = execution · `rework` = delta · git/PR = record; the orchestrator writes only the index. Spike artifacts are the knowledge plane; delivery references them, never copies — map: **[../conduct-spike/reference/artifact-map.md](../conduct-spike/reference/artifact-map.md)**. Boundaries: **doc-budgets**. Base root and ownership: **reference/delivery-layout.md**.
 </delivery-layout>
 <dependency-edge-types>
 Classify each feature pair (A → B):
@@ -57,7 +57,7 @@ Wave computation + intra-feature merge order: **reference/dependency-ordering-gu
 Cells follow **unplanned → planned → in-progress → verified → done**, plus recoverable **failed** / **blocked**; POCs fork **verified → poc-ready → adopted | rejected**. **Develop-ready** = dependencies **planned**; **merge-ready** = dependencies **done**. The gate is mandatory; record any user waiver. Details: **reference/state-machine.md**.
 </delivery-state-machine>
 <verification-gate>
-A cell reaches **verified** (then **done** / **poc-ready**) only after an independent gate — spec compliance + trust — passes. Quality review stays with **execute-plan**'s `review-post-execution`. Handoff, verdicts, fix-loop cap, breaker, integration review: **reference/verification-gate.md**.
+A cell reaches **verified** (then **done** / **poc-ready**) only after an independent gate — spec compliance + trust — passes. Quality review stays with **execute-plan**'s `review-post-execution`. The handoff is the **latest round only** in `context.md` `## Execution` — status, `base7..head7`, PR, one-line test evidence, one-line review outcome; deferred concerns persist in `## Open concerns`; history lives in git/PR. Handoff, verdicts, fix-loop cap, breaker, integration review: **reference/verification-gate.md**.
 </verification-gate>
 <investigation-triage>
 Before dispatching an investigation, descend the **answer → evidence → decision → spike** ladder and stop at the first rung that answers the question. L0 answers from recorded artifacts in-session; L1 is one read-only investigator; L2 is a direct ADR revision; L3 is a spike. State the rung and its justification before spending. Full triggers, routes, and artifacts: **reference/investigation-triage.md**.
@@ -69,13 +69,15 @@ Delegate every delivery task. Map: answer (L0, in-session) · investigate → **
 Execution agents commit locally in small steps; they push and open the PR only after user confirmation. One branch per repo per cell, named per the repo's convention (detect — never assume a prefix); the index records branch, PR, and head commit from the executor's handoff. A cell is **done** only after its PR merges the recorded head commit, or the user records a waiver. Rules: **reference/delivery-layout.md**.
 </branch-and-push-conventions>
 <rework-modes>
-Rework is **append-only**: implemented steps never change; scoped to the cell (usually its governing ADR). Each rework is a sibling `rework-<date>.md`; `plan.md` stays frozen. Pending-step defects are amended in place by the planner — never reworked or moved to a new plan folder. **Post-merge** (cell **done**) adds a rework feature in a new wave; **pre-merge** (cell **in-progress**) stays on the same cell. Rules and lineage: **reference/rework-modes.md**.
+Rework is **append-only**: implemented steps never change; scoped to the cell (usually its governing ADR). Each rework is a sibling `rework-<date>.md` carrying only the delta — trigger, Scope Boundary, Done means, changed steps; it inherits the cell's `context.md` charter by reference and never creates a second context. `plan.md` stays frozen. Pending-step defects are amended in place by the planner — never reworked or moved to a new plan folder. **Post-merge** (cell **done**) adds a rework feature in a new wave; **pre-merge** (cell **in-progress**) stays on the same cell. Rules and lineage: **reference/rework-modes.md**.
 </rework-modes>
 <adr-drift>
 ADRs are **versionless** — drift comes from the **adr-writer** return or the user, never a file diff. Route cells by status per **reference/orchestration-guide.md** (ADR changes).
 </adr-drift>
 <concise-writing>
 Delivery-index prose follows **reference/writing-style.md**: table-first, atomic bullets, one-sentence descriptions, no narration, So-what test. **rewrite-concise** is the final gate — move facts to tables, then shorten; never present prose that fails a cap.
+
+`index.md` is a board, not a report: **≤8,000 chars / ≤120 lines**. Detail lives in the feature folder; history lives in git/PR. Template, archive rule, and measurement: **[../plan-development-task/reference/doc-budgets.md](../plan-development-task/reference/doc-budgets.md)**.
 </concise-writing>
 <context-loading-guide>
 | Load when | Provides | File |
@@ -102,6 +104,8 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 | Rewriting wordy index prose to its shortest faithful form | Move-then-shorten walkthrough, before/after model | [examples/concise-rewrite.md](examples/concise-rewrite.md) |
 | Handling an ADR change mid-delivery, or seeing it walked through with mixed statuses | ADR-change routing, resume currency check, done/planned/in-progress walkthrough | [reference/orchestration-guide.md](reference/orchestration-guide.md) · [examples/adr-change-mid-delivery.md](examples/adr-change-mid-delivery.md) |
 | Confining orchestrator writes / running the boundary check | Allowed vs forbidden writes, enforcement layers, own-writes snapshot-delta check, delegation | [reference/write-boundary-guide.md](reference/write-boundary-guide.md) |
+| Writing or validating `index.md` size, or checking a `context.md` handoff | Char/line caps, board template, archive rule, latest-only handoff | [../plan-development-task/reference/doc-budgets.md](../plan-development-task/reference/doc-budgets.md) |
+| Deciding whether a fact belongs in the spike artifacts or the delivery docs | Two-plane map, handoff contract, edit ownership, change routing | [../conduct-spike/reference/artifact-map.md](../conduct-spike/reference/artifact-map.md) |
 </context-loading-guide>
 
 </knowledge>
@@ -109,7 +113,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <capabilities>
 <decompose-change-into-features>
 1. Load the spike artifacts: solution doc (primary), ADRs, findings.
-2. Group target-state changes into coherent, independently valuable features by ADR traceability and module boundary.
+2. Group target-state changes into coherent, independently valuable features by ADR traceability and module boundary — never 1:1 with scope-map problems (see **../conduct-spike/reference/artifact-map.md**).
 3. Apply **feature-definition**; assign an ID (`F1`, …), kebab-case name, and one-line description.
 4. Present the feature list and confirm before proceeding.
 </decompose-change-into-features>
@@ -128,7 +132,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 1. Read the recorded base (`scope.md` `Artifact root:`); write `deliveries/<epic-name>/index.md` per **reference/delivery-index-format.md** (resolve the base only when missing).
 2. Include the **Spike References** block (ADR files, solution-doc sections).
 3. Create repo-first folders `.../{repo}/{feature-name}/plan.md` + `context.md`; mark cells **unplanned** with their plan location.
-4. Verify structure, statuses, and readiness per **reference/delivery-index-format.md**; apply **rewrite-concise** and the boundary check.
+4. Verify structure, statuses, readiness, and the **≤8,000-char / 120-line** index budget per **reference/delivery-index-format.md**; apply **rewrite-concise** and the boundary check.
 5. Confirm the location with the user — **orchestrate-delivery** drives from here.
 </produce-delivery-index>
 <update-delivery-index>
@@ -138,7 +142,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 4. On merge, confirm the recorded head commit is in the merged PR before **done**; re-check downstream readiness.
 5. On a POC decision, record **adopted/rejected** and dispatch follow-ups per **reference/poc-lifecycle.md**.
 6. Inconsistent result → verify via `question-everything` before recording.
-7. Keep the index the single source of truth; verify it per **reference/delivery-index-format.md**, apply **rewrite-concise**, and run the write-boundary check.
+7. Keep the index the single source of truth; verify it per **reference/delivery-index-format.md**, apply **rewrite-concise**, measure `index.md` (**≤8,000 chars / ≤120 lines** per **doc-budgets**; collapse rows and archive completed waves), and run the write-boundary check.
 </update-delivery-index>
 <orchestrate-delivery>
 1. Load the index — or create it via **decompose-change-into-features** → **map-features-to-repos** → **order-feature-delivery** → **produce-delivery-index**.
@@ -153,7 +157,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <verify-cell>
 **Objective**: Independently verify spec compliance and report trust before **verified**; never duplicate **execute-plan**'s `review-post-execution` quality review.
 
-1. Require the handoff: `plan.md` all ✅; `context.md` `## Execution` with status, `base7..head7`, test evidence, and concerns; POC cells also `evaluation-report.md`.
+1. Require the handoff: `plan.md` all ✅; `context.md` `## Execution` with status, `base7..head7`, PR, one-line test evidence, and one-line review outcome (latest round only — a long appended log is not a pass), plus `## Open concerns`. A POC cell is verified like any other cell; its MR is the user's evaluation vehicle.
 2. Dispatch a **fresh code-reviewer** (**review-code**) with the range, plan, context, governing ADR, solution-doc section, and constraints — it fetches the diff; never the executor instance.
 3. Require two verdicts: **spec compliance** (Missing / Extra / Misunderstood) and a **trust check** of claimed review/test evidence against the diff (sample Blocker/Major fixes; no suite re-run).
 4. Pass → mark **verified** via **update-delivery-index**.
@@ -163,7 +167,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <resume-delivery>
 1. Load the index from the recorded base (`scope.md` `Artifact root:` → `deliveries/<epic-name>/index.md`) plus the spike output.
 2. Confirm ADR currency with the user; if a governing ADR changed, apply **handle-adr-change** first.
-3. Determine state: skip completed waves; resume in-progress from the last step (active `rework-<date>.md`, else `plan.md`), skipping ✅ and ⏭ steps; failed → retry, or dispatch the planner to **amend** a defective pending step in the same plan; blocked → wait; unplanned → plan.
+3. Determine state from the index, the active plan/rework, the **latest** `context.md` `## Execution`, and `## Open concerns` — there is no raw log to load; history is git/PR. Skip completed waves; resume in-progress from the last step (active `rework-<date>.md`, else `plan.md`), skipping ✅ and ⏭ steps; failed → retry, or dispatch the planner to **amend** a defective pending step in the same plan; blocked → wait; unplanned → plan.
 4. Apply **orchestrate-delivery** from that state; tell the user what is resumed vs skipped before dispatching.
 </resume-delivery>
 <triage-issue>
@@ -191,10 +195,10 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 4. Update the index, apply **rewrite-concise**, and confirm routing before dispatching.
 </handle-adr-change>
 <define-poc-scope>
-1. Flag a cell `type: poc` during **decompose-change-into-features** when an ADR option needs proof.
-2. Fill `adr`, `option`, `success-criteria`, `replaces`, `compare` per **poc-definition**.
+1. Flag a cell `type: poc` during **decompose-change-into-features** when an ADR option needs a working slice the user can review.
+2. Fill `adr`, `option`, optional `success-criteria` (the user's checklist), `replaces`, `compare` per **poc-definition**.
 3. Sequence POCs in **Wave 0** (`compare` siblings in parallel) and add a **poc-gated** edge.
-4. Present the POCs and criteria; confirm before recording.
+4. Present the POC cells and optional review criteria; confirm before recording.
 </define-poc-scope>
 <rewrite-concise>
 **Objective**: Rewrite a target doc to the shortest form preserving all facts — the final gate before presenting the index. Never drop a fact to hit a cap.
@@ -227,7 +231,9 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <rule> Before any investigation dispatch, apply **triage-issue** — answer from recorded artifacts first (L0); dispatch an investigator or a spike only when a higher rung is justified. </rule>
 <rule> When the user reports an ADR change or an **adr-writer** agent returns a revision, apply **handle-adr-change** — never dispatch a planned cell on a stale decision. </rule>
 <rule> When decomposing change items and an ADR option needs proof before a decision, apply **define-poc-scope** to flag and sequence POC cells. </rule>
-<rule> When a POC cell reaches **poc-ready**, do not evaluate or decide — wait for the user to record **adopted**/**rejected** directly in the index, then apply **update-delivery-index** to record it and dispatch the follow-ups. </rule>
+<rule> When a POC cell reaches **poc-ready**, do not evaluate or decide — the MR is the user's evaluation vehicle; wait for the user to record **adopted**/**rejected** directly in the index, then apply **update-delivery-index** to record it and dispatch the follow-ups. </rule>
 <rule> When presenting or confirming any delivery index (new or updated), apply **rewrite-concise** as the final gate — never present a draft that fails a **writing-style.md** cap. </rule>
+<rule> When writing or updating `index.md`, apply **doc-budgets** — keep it ≤8,000 chars / ≤120 lines; collapse feature sections to table rows and archive completed waves instead of growing the file. </rule>
+<rule> When verifying a cell, require the **latest** `## Execution` handoff (status, range, PR, one-line evidence, one-line review outcome) plus `## Open concerns` — never treat an appended execution log as the handoff. </rule>
 <rule> Confine every orchestrator write to the delivery folder (`**/deliveries/**`) and run the delivery write-boundary check after every index write — an own-writes snapshot delta; never modify code, config, tests, or any file outside it. </rule>
 </rules>

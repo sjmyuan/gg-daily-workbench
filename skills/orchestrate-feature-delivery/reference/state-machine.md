@@ -13,7 +13,7 @@ Canonical statuses and transitions for every cell in `orchestrate-feature-delive
 | **done** | PR merged (recorded head commit included) or user-confirmed |
 | **failed** | Agent error (reason recorded) |
 | **blocked** | Waiting on a dependency merge or user decision |
-| **poc-ready** | POC implemented + evaluation report written, gate passed |
+| **poc-ready** | POC implemented + MR open, gate passed |
 | **adopted** / **rejected** | User-recorded POC decision |
 | **superseded** | Existing implementation replaced by an adopted POC |
 

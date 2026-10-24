@@ -42,10 +42,16 @@ Mode: post-merge   ·   Cell: order-service/F2-r1   ·   ADR focus: adr-wallet-0
 **Expected files**: original **Expected files** + `payment-gateway/` client (advisory)
 **Must not change**: original **Must not change** otherwise unchanged
 
+## Done means
+| Criterion | Verification | Pass rule |
+|---|---|---|
+| Correct credentials selected on retry | payment-gateway tests | all pass |
+| No change outside the extended boundary | diff against `main` | no changes |
+
 ## Steps
 - [ ] Fix credential retry selection in compensating rollback
 - [ ] Update payment-gateway client tests for partial failures
 - [ ] Validate linting, formatting, type checking
 ```
 
-`context.md` gains a `## Reworks` manifest row for this file. Original `plan.md` steps 1–N remain byte-for-byte unchanged.
+`context.md` gains a `## Reworks` manifest row for this file; the rework carries only the delta and inherits the charter by reference. Original `plan.md` steps 1–N remain byte-for-byte unchanged.

@@ -1,6 +1,6 @@
-# Example: Proving an ADR Option with Compare-POCs
+# Example: Proving an ADR Option with Compare-POCs as MRs
 
-**Scenario**: `adr-caching-01-cache-option.md` weighs two cache options — **Redis** vs **in-process**. The team can't decide on drivers alone; the user says: "Run a POC for each option to prove which is better — then pick."
+**Scenario**: `adr-caching-01-cache-option.md` weighs two cache options — **Redis** vs **in-process**. The team can't decide on drivers alone; the user says: "Implement each option as a temporary slice and open an MR. I'll try both and pick."
 
 **Applies**: **define-poc-scope** → **orchestrate-delivery** → **update-delivery-index**
 
@@ -8,34 +8,37 @@
 
 Decomposition marks two POC cells (Wave 0, parallel) and one **poc-gated** implementation cell:
 
-| Cell | Type | ADR / Option | Success criteria | Status |
-|---|---|---|---|---|
-| order-service/F5a | poc | adr-caching-01-cache-option.md · Redis | p99 < 50ms @ 2k rps; ≤ 3 new ops deps | unplanned |
-| order-service/F5b | poc | adr-caching-01-cache-option.md · in-process | p99 < 50ms @ 2k rps; zero new deps | unplanned |
-| order-service/F5 | feature | — (poc-gated on F5a/F5b decision) | — | unplanned |
+| Cell | Type | ADR / Option | Status |
+|---|---|---|---|
+| order-service/F5a | poc | adr-caching-01-cache-option.md · Redis | unplanned |
+| order-service/F5b | poc | adr-caching-01-cache-option.md · in-process | unplanned |
+| order-service/F5 | feature | — (poc-gated on F5a/F5b decision) | unplanned |
 
-## 2. Dispatch (POC mode, parallel)
+`success-criteria` is optional — the user may note "p99 < 50ms; ≤ 3 new ops deps" as a review checklist, but it is not a plan step or a gate.
 
-- **Planner A** → plan `F5a` (plan-development-task `plan-poc`) — brief carries `type: poc`, `adr-caching-01-cache-option.md`, option Redis, success criteria; then **Executor A** runs the POC plan (execute-plan POC mode) after the gate verifies the plan file.
-- **Planner B** → plan `F5b` (in-process) in parallel, then **Executor B** runs it — same repo ⇒ serialize execution waves or split to different repos when possible.
+## 2. Plan + execute as normal features
 
-## 3. Decision gate (user-recorded)
+- **Planner A** → plan `F5a` with `plan-poc`: a normal feature plan carrying `type: poc`, the ADR, and the Redis option.
+- **Executor A** → implement, commit, and open an MR after approval. No measurement step, no report.
+- **Planner B / Executor B** → the same for `F5b` (in-process); serialize or split repos if they conflict.
 
-Both cells reach **poc-ready**. The orchestrator waits — the user reads the evaluation reports vs success criteria and records the decision directly in the index:
+## 3. Decision gate — the user reviews the MRs
 
-| Criterion | F5a (Redis) | F5b (in-process) |
-|---|---|---|
-| p99 < 50ms @ 2k rps | 34ms ✅ | 41ms ✅ |
-| New ops deps | 1 (redis client) | 0 ✅ |
+Both cells reach **poc-ready**: implemented, gate passed, MR open. The orchestrator presents the MRs and waits. The user tests/reviews them and records the decision directly in the index:
 
-User records: F5a **adopted** (Redis), F5b **rejected**.
+| Cell | MR | Decision | Rationale (user) |
+|---|---|---|---|
+| F5a (Redis) | #51 | **adopted** | Meets the latency target; one dependency is acceptable |
+| F5b (in-process) | #52 | **rejected** | Simpler, but the migration cost is not worth it |
+
+The orchestrator never evaluates or decides.
 
 ## 4. Adopt + reject
 
-- Dispatch **adr-writer** (draft-adr): `adr-caching-01-cache-option.md` records the Redis decision + POC evidence.
-- **F5a (POC-as-implementation)**: promote the branch — ask user, merge → **done**. No `replaces` target, so nothing is **superseded**.
-- **F5b**: close **rejected**, archive branch; update index.
-- **F5 (poc-gated)**: now dispatchable with the decided option — if the POC slice already ships the full feature, F5 may be dropped or reduced to the remaining scope.
+- Dispatch **adr-writer** (draft-adr): `adr-caching-01-cache-option.md` records the Redis decision + the user's rationale.
+- **F5a (POC-as-implementation)**: merge MR #51 → **done**. No `replaces` target, so nothing is **superseded**.
+- **F5b**: close MR #52 → **rejected**; update index.
+- **F5 (poc-gated)**: now dispatchable with the chosen option — if the POC slice already ships the full feature, F5 may be dropped or reduced to the remaining scope.
 
 ## 5. Next actions
 

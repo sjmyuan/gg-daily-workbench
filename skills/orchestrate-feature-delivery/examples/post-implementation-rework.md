@@ -49,11 +49,18 @@ Mode: post-merge   ·   Cell: order-service/F2-r1   ·   ADR focus: adr-wallet-0
 **Expected files**: wallet application + tests (advisory)
 **Must not change**: other ADRs, other modules
 
+## Done means
+| Criterion | Verification | Pass rule |
+|---|---|---|
+| Partial failure rolls back atomically | checkout integration test | pass |
+
 ## Steps
 - [ ] Add compensating-transaction rollback on partial failure
 - [ ] Update payment-gateway client error mapping
 - [ ] Update checkout integration test for partial failures
 ```
+
+The rework file carries only the delta — trigger, Scope Boundary, Done means, changed steps. It inherits the cell's charter (`Why`, `Must hold`, `Pointers`) by reference and never creates a second `context.md`.
 
 `context.md` gains a `## Reworks` manifest row:
 

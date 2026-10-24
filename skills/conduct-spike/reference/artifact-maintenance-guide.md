@@ -47,6 +47,8 @@ Before presenting any ADR or solution document, scan it for banned process langu
 
 Propagation always stops at the first artifact the change does not affect.
 
+A fact discovered during **delivery** enters at the evidence doc via `update-findings-doc`, then propagates as above; delivery docs record only the outcome and link. A delivery defect that changes no decision does not touch this chain. Map: **[artifact-map.md](artifact-map.md)**.
+
 ## Sync procedure
 
 1. Capture the change: what changed, which artifact is the origin (evidence doc / ADR / scope map / solution doc), and what triggered it. A changed decision reopens its problem to `deciding` in `scope.md` per the scope-map status.

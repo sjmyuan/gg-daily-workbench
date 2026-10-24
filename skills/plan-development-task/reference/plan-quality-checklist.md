@@ -66,3 +66,5 @@ Before presenting a development plan to the user, verify all items below.
 - [ ] Validation criteria are explicit (e.g., "all tests pass", "no lint errors", "p99 latency < 500 ms")
 - [ ] Validation criteria are behavioral — no step asserts a commit hash; byte equality only where `Must match` names it
 - [ ] Prose follows concise writing (see **concise-writing**): one objective per step sentence, one claim per scope-boundary bullet, no banned phrases
+- [ ] `context.md` is a 40–60-line charter (ceiling 8,000 chars / 120), passes the admission test, duplicates no `plan.md` fact, and holds no pre-flight evidence or log content (see **doc-budgets**)
+- [ ] A POC plan is a normal TDD feature plan with `type: poc` + ADR/option metadata; no measurement or evaluation step; success criteria are optional user notes

@@ -17,20 +17,22 @@ No separate files — the gate reuses the feature folder's existing docs (`<feat
 |---|---|---|---|
 | **Brief** | dispatch prompt — seeded from the index per-cell brief + `context.md` | orchestrator | Cell scope, governing ADR ref, solution-doc section, branch, plan location, global constraints |
 | **Step record** | `<feature-folder>/plan.md` (or `rework-<date>.md`) | executor | Per-step ✅/❌ status and the commit for each step |
-| **Execution handoff** | `<feature-folder>/context.md` → `## Execution` | executor | Return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`), test evidence, its `review-code` outcome, concerns |
+| **Execution handoff** | `<feature-folder>/context.md` → `## Execution` (latest round only) | executor | Return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`), PR reference, **one-line** test evidence, **one-line** `review-code` outcome |
+| **Open concerns** | `<feature-folder>/context.md` → `## Open concerns` | executor | Persistent ≤5 deferred Minors/risks; delete when resolved. No raw log — history is git/PR |
 | **Diff** | fetched from git by the code-reviewer over the recorded `base7..head7` | code-reviewer | Commit list + stat + full diff; never enters the orchestrator's context |
 | **Findings** | dispatch prompt → **planner**; recorded in `rework-<date>.md` | orchestrator → planner | Gate findings handed straight to the planner — not stored in the index |
 
-- Seed the brief from the index per-cell brief plus `context.md` (which already carries the distilled spike context and spike references).
+- Seed the brief from the index per-cell brief plus `context.md` (which carries the cell charter: why, must-hold invariants, unknowns, done criteria, and pointers).
 - `context.md` is **planner- and executor-owned** — the orchestrator never writes it; the planner registers the rework in `context.md`.
 - The index tracks **status only** — no findings record.
-- The executor appends each fix round's handoff to the same `## Execution` section.
-- POC cells add `<feature-folder>/evaluation-report.md` (see **produce-poc-report**).
+- The executor **overwrites** `## Execution` each round; deferred concerns persist in `## Open concerns`; no log is written — git/PR are the history.
+- The gate reads the latest handoff, the range, and `## Open concerns`. `context.md` stays a 40–60-line charter (ceiling 8,000 chars / 120; see **doc-budgets**).
+- A POC cell is verified exactly like any other cell. The gate checks the implementation; it never measures or judges the option — the user evaluates the MR.
 - The gate result travels **inline** to the fix-round planner — the unresolved findings and verdicts are not yet an artifact; once recorded in `rework-<date>.md`, later rounds pass that file by **path**.
 
 ## Gate inputs
 
-Dispatch a **fresh code-reviewer** agent (**review-code**) with: the cell brief (index scope + spike references), the recorded `base7..head7`, `<feature-folder>/plan.md`, `context.md`, the governing ADR, the solution-doc section, and global constraints. For a POC cell, also pass `<feature-folder>/evaluation-report.md` and its success criteria. The code-reviewer fetches the diff from git over the recorded range — no diff file. Never the executor instance that produced the work.
+Dispatch a **fresh code-reviewer** agent (**review-code**) with: the cell brief (index scope + spike references), the recorded `base7..head7`, `<feature-folder>/plan.md`, `context.md`, the governing ADR, the solution-doc section, and global constraints. A POC cell needs no special input; the same brief, plan, context, ADR, and range apply. The code-reviewer fetches the diff from git over the recorded range — no diff file. Never the executor instance that produced the work.
 
 ## Verdicts
 
@@ -58,7 +60,7 @@ Never silently discard a finding.
 
 ## Epic integration review
 
-When all cells are **done**, run one cross-cell review + integration test pass over the epic. Triage the deferred Minors from each cell's `context.md` `## Execution` handoff; surface residual load-bearing findings to the user. This is the epic-level analog of a whole-branch review — per-cell gates do not cover cross-cell interaction.
+When all cells are **done**, run one cross-cell review + integration test pass over the epic. Triage the deferred Minors from each cell's `context.md` `## Open concerns`; surface residual load-bearing findings to the user. This is the epic-level analog of a whole-branch review — per-cell gates do not cover cross-cell interaction.
 
 ## Dispatch discipline
 
@@ -69,7 +71,8 @@ When all cells are **done**, run one cross-cell review + integration test pass o
 ## Checklist
 
 - [ ] `plan.md` (or `rework-<date>.md`) shows every step ✅ or ⏭.
-- [ ] `context.md` `## Execution` holds the return status and commit range.
+- [ ] `context.md` `## Execution` is the latest round only — return status, commit range, PR, one-line test evidence, one-line review outcome.
+- [ ] `context.md` is a 40–60-line charter (ceiling 8,000 chars / 120); deferred concerns are in `## Open concerns`; no raw log exists.
 - [ ] code-reviewer fetched the diff over the recorded range.
 - [ ] code-reviewer is a fresh instance, not the executor.
 - [ ] Both verdicts present: spec compliance and trust check.
