@@ -3,7 +3,7 @@
 Full procedure for the `run-spike-workflow` capability — loaded on demand when a spike investigation starts from scratch. Pause for user confirmation after each capability; skip a pause only if the user requests it. Run the own-writes write-boundary check after every write capability per **reference/write-boundary-guide.md**; stop and report on newly written out-of-folder paths.
 
 1. Apply **define-spike-scope**.
-2. Do not proceed until the scope is confirmed.
+2. Do not proceed until the intake gate is `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS` and the scope is confirmed.
 3. Apply **investigate-per-area**, recording each area's **evidence map** — skip when the user supplied pre-existing findings (per **pre-existing-findings**).
 4. Loop to step 1 when a new investigation direction emerges.
 5. Apply **compile-findings-doc**, recording each area's evidence map in its evidence doc; run the write-boundary check.

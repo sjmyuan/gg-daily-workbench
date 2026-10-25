@@ -29,10 +29,26 @@ Area status is derived from its problems + findings-pair link — never stored s
 | Area `spiking` | All problems `done` | Area `done` |
 | Problem `done` | New evidence / changed decision | Problem `deciding` |
 
+## Accepted assumptions
+
+`scope.md` owns the intake gate's outcome. Record the gate state once, then one line per accepted default:
+
+```
+Gate: ACCEPTED-WITH-ASSUMPTIONS
+
+## Accepted assumptions
+- A1 — Assumption (user-accepted, unverified): target is p95 first-token under 300ms
+```
+
+- One line per assumption: ID, the label, the assumed value.
+- Re-open an assumption only when evidence contradicts it; rewrite the line in place when the user decides.
+- Never promote an assumption to fact without evidence — cite the evidence doc line instead.
+
 ## Validation (on save)
 
 - A `done` problem has its ADR present.
 - An area is never `done` with an open problem.
+- The gate state is recorded before any area is recorded.
 
 ## In-flight units (recovery)
 
@@ -40,6 +56,6 @@ Statuses track **saved artifacts**, not in-flight dispatches. When a spike pause
 
 ## Usage
 
-- **define-spike-scope**: record the goal (1 sentence) and each area (`preparing`, empty findings-pair link) with its problems (`investigating`).
+- **define-spike-scope**: record the gate state and accepted assumptions, then the goal (1 sentence) and each area (`preparing`, empty findings-pair link) with its problems (`investigating`).
 - **continue-prior-spike**: read statuses to surface open problems; update statuses as each step completes.
 - **sync-update-artifacts**: a changed decision reopens its problem to `deciding`.

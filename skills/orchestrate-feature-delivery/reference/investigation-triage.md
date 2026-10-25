@@ -6,6 +6,7 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 
 | Rung | Answers | Test | Action | Dispatches | Artifacts |
 |---|---|---|---|---|---|
+| **L-1 Clarify** | What is actually being asked? | Expected or actual behavior is unstated, or a term has two readings | Restate, then **challenge-the-ask** with options plus a recommendation | 0 | none |
 | **L0 Answer** | What did we decide, why, or what is the status? | Index, `context.md`, plan/rework, ADR, findings/evidence, git log settle it | Read in-session and answer | 0 | none |
 | **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | One read-only `code-investigator`, artifacts by path | 1 | none |
 | **L2 Decision** | Was exactly one ADR decision wrong or incomplete? | One decision changes; no new options | `adr-writer` revises in place; `solution-doc-writer` only if target state changes | 1–2 | ADR (+ solution section) |
@@ -13,6 +14,8 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 
 ## Escalation rules
 
+- L-1 is a precondition, not a rung: it costs nothing and runs before the ladder.
+- An assumption L-1 accepts is recorded in the cell's `context.md`, labeled `Assumption (user-accepted, unverified)`.
 - Stop at the first rung that answers; never skip a rung without naming why it failed.
 - State the question, rung, recorded evidence checked, and expected output before dispatching.
 - Escalate one rung per attempt — L0 → L1 → L2 → L3.
@@ -52,6 +55,7 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 | Anti-pattern | Why it costs | Instead |
 |---|---|---|
 | "Investigate" always means `spike-conductor` | A full conductor for a one-line answer | L0 or L1 |
+| Classifying an ambiguous report | The rung answers the wrong question | Restate expected versus actual first (L-1) |
 | Treating artifact reads as doing the work | The mandate forbids delivery work, not reading | Answer from the record at L0 |
 | Running L2 through a full spike | Scope, findings pair, and solution rebuild for one ADR | `adr-writer` directly |
 | L3 without a trigger | Weeks of artifacts for a local bug | State the trigger or drop a rung |
@@ -59,6 +63,7 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 
 ## Checklist
 
+- [ ] Report restated with expected versus actual before any rung was chosen.
 - [ ] Question stated in one sentence.
 - [ ] Recorded artifacts checked before any dispatch.
 - [ ] Rung and justification stated.

@@ -4,6 +4,7 @@ description: Orchestrate spiked-epic delivery by decomposing, sequencing, triagi
 ---
 
 <when-to-use-this-skill>
+- User reports an issue in a sentence or two and the report must be clarified before a rung is chosen
 - User finished a spike and wants to decompose its solution doc / ADRs into features or phases (creates the delivery index)
 - User wants to prove an ADR option with a POC before deciding — define and gate POC cells (see **define-poc-scope**)
 - User wants to sequence which features run in parallel and which wait for another feature's PR to merge
@@ -59,8 +60,11 @@ Cells follow **unplanned → planned → in-progress → verified → done**, pl
 <verification-gate>
 A cell reaches **verified** (then **done** / **poc-ready**) only after an independent gate — spec compliance + trust — passes. Quality review stays with **execute-plan**'s `review-post-execution`. The handoff is the **latest round only** in `context.md` `## Execution` — status, `base7..head7`, PR, one-line test evidence, one-line review outcome; deferred concerns persist in `## Open concerns`; history lives in git/PR. Handoff, verdicts, fix-loop cap, breaker, integration review: **reference/verification-gate.md**.
 </verification-gate>
+<request-intake>
+Clarify before classifying: restate the reported behavior — never the suspected cause — and run `question-everything`'s **challenge-the-ask** when the report is ambiguous. A report stating expected and actual behavior passes on the restatement. Clarification is a precondition, not an L-rung. Protocol: **reference/investigation-triage.md**.
+</request-intake>
 <investigation-triage>
-Before dispatching an investigation, descend the **answer → evidence → decision → spike** ladder and stop at the first rung that answers the question. L0 answers from recorded artifacts in-session; L1 is one read-only investigator; L2 is a direct ADR revision; L3 is a spike. State the rung and its justification before spending. Full triggers, routes, and artifacts: **reference/investigation-triage.md**.
+Restate the report first (**request-intake**), then descend the **answer → evidence → decision → spike** ladder and stop at the first rung that answers the question. L0 answers from recorded artifacts in-session; L1 is one read-only investigator; L2 is a direct ADR revision; L3 is a spike. State the rung and its justification before spending. Full triggers, routes, and artifacts: **reference/investigation-triage.md**.
 </investigation-triage>
 <agent-dispatch>
 Delegate every delivery task. Map: answer (L0, in-session) · investigate → **code-investigator** (L1) · spike → **spike-conductor** (L3) · plan → **planner** · execute → **executor** · verify → **code-reviewer** · solution-doc → **solution-doc-writer** · ADR → **adr-writer**. Plan and execute are separate sessions — never both in one agent, never before a verified plan file. No agent mechanism → ask the user; never do the work yourself. Rules and briefs: **reference/orchestration-guide.md**.
@@ -82,7 +86,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <context-loading-guide>
 | Load when | Provides | File |
 |---|---|---|
-| Answering an issue/question before dispatching an investigation | L0–L3 ladder, triggers, cost and artifacts per rung | [reference/investigation-triage.md](reference/investigation-triage.md) |
+| Answering an issue/question before dispatching an investigation | L-1 clarity check, L0–L3 ladder, triggers, cost and artifacts per rung | [reference/investigation-triage.md](reference/investigation-triage.md) |
 | Dispatching parallel agents, gating, status transitions, or failure handling | Agent dispatch, orchestration loop, resume, failure rules | [reference/orchestration-guide.md](reference/orchestration-guide.md) |
 | Classifying dependency edges, computing waves, or intra-feature merge order | Edge types, wave algorithm, develop-vs-merge | [reference/dependency-ordering-guide.md](reference/dependency-ordering-guide.md) |
 | Writing or updating the delivery index | Index schema, per-cell briefs, status lifecycle | [reference/delivery-index-format.md](reference/delivery-index-format.md) |
@@ -174,19 +178,21 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 **Objective**: Choose the cheapest rung that answers an issue before any dispatch.
 
 1. State the question in one sentence; list artifacts that may answer it — index, `context.md`, plan/rework, ADR, findings/evidence, git log.
-2. **L0 — Answer**: read them in-session; answer when the record settles it. No dispatch, no artifacts.
-3. **L1 — Evidence**: for a missing/contradicted code fact, dispatch one read-only **code-investigator** with artifacts by path; answer with `file:line`.
-4. **L2 — Decision**: for exactly one contradicted ADR decision, dispatch **adr-writer** to revise in place; add **solution-doc-writer** only if target state changes; verify new code claims once.
-5. **L3 — Spike**: dispatch **spike-conductor** only for ≥2 decisions/areas, new options, or required formal findings; scope as a **delta**.
-6. Escalate one rung at a time and state why the cheaper rung failed; if ambiguous, ask the user with each rung's cost. Record the rung only when state changes; validate L3's trigger and that L0/L1 wrote no artifacts.
+2. Apply **request-intake** — restate the reported behavior and close material ambiguity before choosing a rung.
+3. **L0 — Answer**: read them in-session; answer when the record settles it. No dispatch, no artifacts.
+4. **L1 — Evidence**: for a missing/contradicted code fact, dispatch one read-only **code-investigator** with artifacts by path; answer with `file:line`.
+5. **L2 — Decision**: for exactly one contradicted ADR decision, dispatch **adr-writer** to revise in place; add **solution-doc-writer** only if target state changes; verify new code claims once.
+6. **L3 — Spike**: dispatch **spike-conductor** only for ≥2 decisions/areas, new options, or required formal findings; scope as a **delta**.
+7. Escalate one rung at a time and state why the cheaper rung failed; if ambiguous, ask the user with each rung's cost. Record the rung only when state changes; validate L3's trigger and that L0/L1 wrote no artifacts.
 </triage-issue>
 <handle-post-implementation-issue>
 1. Identify the affected cell, its governing ADR, and status — **done** or **in-progress**.
-2. Classify the request: mechanical (revert / restore / copy / keep) per [mechanical-restore](reference/mechanical-restore.md), or behavioral. A mechanical request needs a `Source`, not a feature plan.
-3. Scope narrowly to that decision — never the whole epic.
-4. Apply **triage-issue**, then present the rung for confirmation — **append-only**: plan → **planner** (sibling `rework-<date>.md`); execute → **executor**; L2 → **adr-writer** / **solution-doc-writer**; L3 → **spike-conductor** (pre-merge only if the governing ADR is challenged).
-5. Apply **update-delivery-index** — post-merge adds a rework feature in a new wave (original stays **done**); pre-merge keeps the cell (no index change; the rework file is the record).
-6. The executor handles push approval and PR creation; record the returned reference.
+2. Restate the reported behavior per **request-intake** — expected versus actual — before classifying.
+3. Classify the request: mechanical (revert / restore / copy / keep) per [mechanical-restore](reference/mechanical-restore.md), or behavioral. A mechanical request needs a `Source`, not a feature plan.
+4. Scope narrowly to that decision — never the whole epic.
+5. Apply **triage-issue**, then present the rung for confirmation — **append-only**: plan → **planner** (sibling `rework-<date>.md`); execute → **executor**; L2 → **adr-writer** / **solution-doc-writer**; L3 → **spike-conductor** (pre-merge only if the governing ADR is challenged).
+6. Apply **update-delivery-index** — post-merge adds a rework feature in a new wave (original stays **done**); pre-merge keeps the cell (no index change; the rework file is the record).
+7. The executor handles push approval and PR creation; record the returned reference.
 </handle-post-implementation-issue>
 <handle-adr-change>
 1. Confirm the changed ADR and new decision from the user or **adr-writer** (see **adr-drift**).
@@ -214,6 +220,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 </capabilities>
 
 <rules>
+<rule> When an issue report or feature request is ambiguous, apply **request-intake** before **triage-issue** — a clarification is a precondition, never a rung. </rule>
 <rule> When spike output exists but no delivery index, apply **decompose-change-into-features** → **map-features-to-repos** → **order-feature-delivery** → **produce-delivery-index**. </rule>
 <rule> When a delivery index exists and the user wants to drive or continue delivery, apply **orchestrate-delivery**; apply **resume-delivery** when continuing an epic interrupted in a previous session. </rule>
 <rule> After any agent result that changes a cell's state, apply **update-delivery-index** before dispatching further agents — L0/L1 answers change no state. </rule>
