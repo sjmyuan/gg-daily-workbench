@@ -17,7 +17,7 @@ No separate files — the gate reuses the feature folder's existing docs (`<feat
 |---|---|---|---|
 | **Brief** | dispatch prompt — seeded from the index per-cell brief + `context.md` | orchestrator | Cell scope, governing ADR ref, solution-doc section, branch, plan location, global constraints |
 | **Step record** | `<feature-folder>/plan.md` (or `rework-<date>.md`) | executor | Per-step status and notes; commit range lives only in the handoff |
-| **Execution handoff** | `<feature-folder>/context.md` → `## Execution` (latest round only) | executor | Return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`), PR reference, **one-line** test evidence, **one-line** `review-code` outcome |
+| **Execution handoff** | `<feature-folder>/context.md` → `## Execution` (latest round only) | executor | Return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`), PR reference, **one-line** gate receipt, **one-line** `review-code` outcome |
 | **Open concerns** | `<feature-folder>/context.md` → `## Open concerns` | executor | Persistent ≤5 deferred Minors/risks; delete when resolved. No raw log — history is git/PR |
 | **Diff** | fetched from git by the code-reviewer over the recorded `base7..head7` | code-reviewer | Commit list + stat + full diff; never enters the orchestrator's context |
 | **Findings** | dispatch prompt → **planner**; recorded in `rework-<date>.md` | orchestrator → planner | Gate findings handed straight to the planner — not stored in the index |
@@ -37,7 +37,7 @@ Dispatch a **fresh code-reviewer** agent (**review-code**) with: the cell brief 
 ## Verdicts
 
 1. **Spec compliance** — Missing / Extra / Misunderstood against the brief and governing ADR.
-2. **Trust check** — verify the executor's claimed review outcome and test evidence against the diff. Do not re-run the suite; sample the claimed Blocker/Major fixes.
+2. **Trust check** — verify the executor's claimed review outcome and gate receipt against the diff. A receipt matching an earlier head is stale → back to the executor. Do not re-run the suite locally; sample the claimed Blocker/Major fixes. The gate is local — never wait for or poll a remote pipeline, and never treat pipeline status as the receipt.
 
 A full quality re-review is out of scope — `review-post-execution` already ran it.
 
@@ -70,8 +70,9 @@ When all cells are **done**, run one cross-cell review + integration test pass o
 
 ## Checklist
 
-- [ ] `plan.md` (or `rework-<date>.md`) shows every step ✅ or ⏭.
-- [ ] `context.md` `## Execution` is the latest round only — return status, commit range, PR, one-line test evidence, one-line review outcome.
+- [ ] `plan.md` (or `rework-<date>.md`) shows every step ✅ or ⏭, with the **Exit gate** last.
+- [ ] `context.md` `## Execution` is the latest round only — return status, commit range, PR, one-line gate receipt, one-line review outcome.
+- [ ] The gate receipt matches `head7`, or a user-ratified waiver is recorded.
 - [ ] `context.md` is a 40–60-line charter (ceiling 8,000 chars / 120); deferred concerns are in `## Open concerns`; no raw log exists.
 - [ ] code-reviewer fetched the diff over the recorded range.
 - [ ] code-reviewer is a fresh instance, not the executor.

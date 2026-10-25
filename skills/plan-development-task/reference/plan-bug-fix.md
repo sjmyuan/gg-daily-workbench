@@ -1,6 +1,6 @@
 # plan-bug-fix
 
-1. **Prepare Environment (Prerequisites)**: Apply **plan-prerequisites** from the SKILL.md — ensure the feature branch exists, named per the **repo's branch convention** (detect from existing branches / git config / team docs, or ask the user; never assume a prefix), based on the correct base; no uncommitted changes overlapping the plan's work; dependencies and toolchain installed; affected-area baseline tests, linting, and type-checking pass. Raise only necessary blockers to the user before continuing.
+1. **Prepare Environment (Prerequisites)**: Apply **plan-prerequisites** from the SKILL.md — ensure the feature branch exists, named per the **repo's branch convention** (detect from existing branches / git config / team docs, or ask the user; never assume a prefix), based on the correct base; no uncommitted changes overlapping the plan's work; dependencies and toolchain installed; the gate commands (`build` / `test` / `lint-type`) discovered from repo evidence (`file:line`) and run on the base, with `baseline: green` or the named failures recorded. Raise only necessary blockers to the user before continuing.
 2. Break down the identified bug root cause into specific, independently testable issues.
 3. **Define Scope Boundary**: Apply **define-scope-boundary** — derive the **May change**/**Must not change** behaviors from the bug scope and the governing ADR (for **orchestrate-feature-delivery** cells); present to the user for ratification.
 4. Map out dependencies between issues to establish an efficient bug-fixing sequence.
@@ -14,6 +14,6 @@
    5. **Clean Up Unused Code**: Remove any obsolete or redundant code that is no longer needed after the bug fix.
    6. **Clean Up Tests**: Update or remove tests that are no longer relevant due to the bug fix, ensuring the test suite remains accurate and effective.
    7. **Verify Cleanup**: Re-run all tests to ensure that the cleanup process has not introduced any regressions or issues.
-   8. **Validate Linting, Formatting and Type Checking**: Run linting, formatting and type checking tools to ensure code quality and adherence to coding standards.
-8. **Validate Plan Quality**: Load **reference/plan-quality-checklist.md** and verify — every identified issue has a corresponding fix step, the selected TDD variant is documented with rationale, dependencies between issues are correctly ordered, and the total step count does not exceed 20. Confirm that all verification checkpoints (Confirm Test Failure, Verify Fix, Verify Cleanup) are included for each issue.
+   8. **Exit Gate**: Run every recorded gate command — build, full suite, lint/type. All exit 0 with zero failures; red → repair twice, then stop and ask. See **reference/exit-gate.md**.
+8. **Validate Plan Quality**: Load **reference/plan-quality-checklist.md** and verify — every identified issue has a corresponding fix step, the selected TDD variant is documented with rationale, dependencies between issues are correctly ordered, the total step count does not exceed 20, and every **Exit Gate** item passes. Confirm that all verification checkpoints (Confirm Test Failure, Verify Fix, Verify Cleanup) are included for each issue.
 9. Summarize the complete plan to the user.

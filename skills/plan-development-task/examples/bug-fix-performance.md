@@ -29,6 +29,7 @@ Keywords "slow", "performance degradation" → **Bug Fix** (performance). *User 
 **Type**: bug-fix
 **Branch**: `fix-product-search-n-plus-one` off `main`
 **TDD variant**: Full cycle with benchmarks — a performance bug needs a failing timing and query-count assertion.
+**Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
 
 ## Scope Boundary
 **May change**: `ProductRepository` search-query behavior (query count, latency)
@@ -39,11 +40,11 @@ Keywords "slow", "performance degradation" → **Bug Fix** (performance). *User 
 ## Steps
 
 ### Step 1: Prepare environment ⏳
-**Objective**: Confirm the branch, a green baseline, and current latency.
+**Objective**: Confirm the branch, a known gate baseline, and current latency.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve.
-**Validation**: Existing repository tests pass; baseline p99 recorded in the step note.
+**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve; gate commands confirmed against `pom.xml`.
+**Validation**: Gate commands on `main` — `baseline: green`; baseline p99 recorded in the step note.
 **Status**: ⏳ Pending
 
 ### Step 2: Write the performance test ⏳
@@ -86,12 +87,12 @@ Keywords "slow", "performance degradation" → **Bug Fix** (performance). *User 
 **Validation**: Repository and search suites green.
 **Status**: ⏳ Pending
 
-### Step 7: Quality gate ⏳
-**Objective**: Confirm linting, formatting, and type checking pass.
+### Step 7: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Run the repo formatter, linter, and type checker.
-**Validation**: All three exit 0.
+**Implementation**: Run every gate command on the final tree; repair reds in place.
+**Validation**: `mvn -q compile` && `mvn test` && `mvn spotless:check checkstyle:check` — all exit 0, zero failures.
 **Status**: ⏳ Pending
 ```
 

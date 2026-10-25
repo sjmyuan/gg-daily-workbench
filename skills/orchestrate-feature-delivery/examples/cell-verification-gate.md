@@ -14,7 +14,7 @@
   | Status | `DONE_WITH_CONCERNS` |
   | Commits | `a1b2c3d..d4e5f6a` |
   | PR | — (not opened) |
-  | Test evidence | `18/18 passing, output pristine` |
+  | Gate receipt | `build=0 · test=18/18 passed · lint=0` |
   | Review outcome | `review-code` clean; 2 Blocker/Major fixed |
 
 - `context.md` `## Open concerns` — "retry cap hard-coded" (deferred Minor).
@@ -37,7 +37,7 @@
 **Trust check**:
 
 - Executor claimed a Blocker fix ("unbounded retry") — confirmed resolved in the diff (`wallet-service/retry.ts:41`).
-- Test evidence `18/18` is consistent with `## Execution`; no re-run needed.
+- Gate receipt `build=0 · test=18/18 · lint=0` matches `d4e5f6a`; no re-run needed.
 
 **Verdict**: spec compliant; report trustworthy.
 

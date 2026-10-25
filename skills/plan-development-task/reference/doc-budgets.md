@@ -25,7 +25,7 @@ There is **no `evidence-raw.md`**. Every piece of evidence has a consumer and a 
 | Current-state fact | `spikes/<spike>/docs/evidence-<area>.md` (claim ID, `file:line`, confidence) | ADRs, solution doc, planner |
 | Decision | `adrs/adr-*.md` | Planner, executor, gate |
 | Target state | `solution.md` | Planner, gate |
-| Execution proof | The step's `Validation` line in `plan.md` + commit + CI/PR | Executor, gate, human |
+| Execution proof | The step's `Validation` line + the local gate receipt in `context.md` + commit | Executor, gate, human |
 | History | Git commits, PR, `rework-<date>.md` | Human, auditor |
 | Deferred concern | `context.md` `## Open concerns` | Gate, integration review |
 
@@ -126,7 +126,7 @@ Context must **shrink**, not only stop growing:
 | Status | `DONE` · `DONE_WITH_CONCERNS` · `BLOCKED` · `NEEDS_CONTEXT` |
 | Commits | `base7..head7` |
 | PR | number/URL, or `pending approval` |
-| Test evidence | 1 line: command + pass/fail |
+| Gate receipt | 1 line: commands + exit codes + counts (`build=0 · test=412 passed · lint=0`) |
 | Review outcome | 1 line: `review-code` result |
 
 Deferred concerns go to `## Open concerns` — they persist across rounds and are deleted when resolved.
@@ -142,7 +142,7 @@ Never append a round to `context.md`.
 - [ ] `index.md` ≤8,000 chars / ≤120 lines; state only.
 - [ ] `plan.md` holds steps, TDD rationale, and decisions — context does not repeat them.
 - [ ] `rework-<date>.md` holds only the delta; the original plan is untouched.
-- [ ] No log file exists; execution proof is a plan `Validation` line + commit/CI.
+- [ ] No log file exists; execution proof is a plan `Validation` line + the local gate receipt + commit.
 - [ ] A POC is a normal implementation; its MR is the evaluation vehicle — no report or verdict.
 - [ ] `## Execution` holds the latest round only; concerns persist in `## Open concerns`.
 - [ ] Resolved unknowns and concerns are deleted, not archived.

@@ -30,6 +30,7 @@ Keywords "transform", "reject invalid" → **Feature** (new behavior). *User con
 **Type**: feature
 **Branch**: `localized-attributes` off `main`
 **TDD variant**: Full cycle per component — transformer and resolver share fixtures, so one cycle covers both.
+**Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
 
 ## Scope Boundary
 **May change**: locale transformation and fallback-resolution behavior; handler integration
@@ -43,11 +44,11 @@ Keywords "transform", "reject invalid" → **Feature** (new behavior). *User con
 ## Steps
 
 ### Step 1: Prepare environment ⏳
-**Objective**: Confirm the branch and a green baseline for the attribute package.
+**Objective**: Confirm the branch and a known gate baseline for the attribute package.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve.
-**Validation**: Attribute-package tests, linting, and type checking pass.
+**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve; gate commands confirmed against `pom.xml`.
+**Validation**: Gate commands on `main` — `baseline: green` (build=0 · 241 passed · lint=0).
 **Status**: ⏳ Pending
 
 ### Step 2: Write transformation and fallback tests ⏳
@@ -130,12 +131,12 @@ Keywords "transform", "reject invalid" → **Feature** (new behavior). *User con
 **Validation**: Affected-area suite green.
 **Status**: ⏳ Pending
 
-### Step 12: Quality gate ⏳
-**Objective**: Confirm linting, formatting, and type checking pass.
+### Step 12: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Run the repo formatter, linter, and type checker.
-**Validation**: All three exit 0.
+**Implementation**: Run every gate command on the final tree; repair reds in place.
+**Validation**: `mvn -q compile` && `mvn test` && `mvn spotless:check checkstyle:check` — all exit 0, zero failures.
 **Status**: ⏳ Pending
 ```
 

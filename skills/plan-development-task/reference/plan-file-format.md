@@ -13,6 +13,8 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 **Type**: bug-fix | feature | refactor | poc | restore
 **Branch**: `<branch>` off `<base>`
 **TDD variant**: Full cycle | Streamlined | Mixed | None (restore) — <one-line rationale; name groups when mixed>
+**Gate**: build=`<cmd>` · test=`<cmd>` · lint-type=`<cmd>`
+**Gate waiver**: <scope> — <named failures> — ratified by <user> on <date>   (only when ratified)
 **ADR**: `adr-<name>.md` · **Option**: <option>            (POC only)
 **Success criteria**: <user review checklist>            (POC only, optional)
 
@@ -32,8 +34,8 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 **Objective**: <one sentence: what the step achieves>
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: <branch, dirt, dependency, and baseline checks>
-**Validation**: <command and pass rule>
+**Implementation**: <branch, dirt, and dependency checks; record the gate commands with `file:line`>
+**Validation**: <the gate commands run on the base — `baseline: green` or named failures>
 **Status**: ⏳ Pending
 
 ### Step 2: <step title> ⏳
@@ -43,6 +45,14 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 **Implementation**: <key change or git operation — one line>
 **Validation**: <test or equality proof — one line>
 **Status**: ⏳ Pending
+
+### Step N: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run every gate command on the final tree; repair reds in place.
+**Validation**: `<build>` && `<test>` && `<lint-type>` — all exit 0, zero failures.
+**Status**: ⏳ Pending
 ```
 
 ## Template rules
@@ -51,14 +61,16 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 |---|---|
 | Title | `# Plan: <feature> — <outcome>`; one line. |
 | Metadata | `Type` (`bug-fix` · `feature` · `refactor` · `poc` · `restore`); `Branch` as `<branch>` off `<base>`; `TDD variant` (`Full cycle` · `Streamlined` · `Mixed` · `None` for restore) + rationale; `ADR`/`Option`/`Success criteria` only for POC. |
+| Gate | One `**Gate**` line — `build=` · `test=` · `lint-type=`, each evidence-backed (`file:line`); monorepos repeat the line per module. `**Gate waiver**` only when user-ratified (see **exit-gate**). |
 | Order | Title → metadata → `## Scope Boundary` → `## Decisions` (optional) → `## Steps`. |
 | Scope Boundary | Zone order fixed per **scope-boundary**; write `Protected zones: none added` when nothing is added. |
 | Steps | One `### Step N: <title> <status>` block per step, in file order; all six field lines, in order. |
 | Objective | One sentence, ≤20 words, imperative. |
 | Files | Concrete paths where known; `none` for no-edit steps. |
 | Source | Every step names `Source · Ref · Equality` per **change-provenance** — `no-op · n/a · n/a` when nothing changes; `generate` states its justification in `Implementation`, ratified when the user confirms the plan. |
-| Validation | Behavioral or `Must match` equality; never a commit hash. |
+| Validation | Behavioral or `Must match` equality; the exit gate's pass rule is every gate command exit 0 — never a commit hash. |
 | Status | Generated plans use `⏳`; the executor owns `🔄 ✅ ❌ 🚫`; the planner sets `⏭` only. |
+| Exit gate | Final step, six fields, `Source: no-op · n/a · n/a`; its `Status` receipt carries commands, exit codes, and counts. Never abandoned or deferred — only a ratified waiver removes it. |
 | Amendment | Append the next number or insert `3a`; never renumber (see **plan-amendment**). |
 
 Not in `plan.md`: root cause, requirement narrative, background, consolidation prose,
@@ -74,6 +86,7 @@ Written when executed behavior must change; `plan.md` stays frozen (see **rework
 **Mode**: pre-merge | post-merge · **Cell**: <cell>
 **Branch**: `<branch>` off `<base>`
 **ADR focus**: `<adr path>`
+**Gate**: <inherited from `plan.md`, or discovered for the delta>
 
 ## Scope Boundary
 **May change**: <original May change, tightened or extended>

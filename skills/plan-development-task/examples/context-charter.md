@@ -57,6 +57,7 @@ is the differentiator. Option 3 adopted 2026-10-16 — do not re-litigate.
 | Uninstalled stay absent | `skill.list` | both absent |
 | No native shadowed | `uniq -d` | empty |
 | Model-visible | `<available_skills>` | both announced |
+| Build, suite, static checks green | `plan.md` Exit gate (last step) | every gate command exit 0 |
 
 ## Pointers
 - ADRs: `adr-plugin-port-01`, `adr-plugin-port-02`
@@ -77,7 +78,7 @@ is the differentiator. Option 3 adopted 2026-10-16 — do not re-litigate.
 | Status | `DONE_WITH_CONCERNS` |
 | Commits | `7ce6c4f..136a9b5` |
 | PR | pending approval |
-| Test evidence | `node --test` 11/11 pass |
+| Gate receipt | `node --test` 11/11; `tsc --noEmit` 0 |
 | Review outcome | clean; 2 Major fixed |
 
 ## Reworks

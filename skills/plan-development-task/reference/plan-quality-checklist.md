@@ -3,7 +3,8 @@
 Before presenting a development plan to the user, verify all items below.
 
 ## Template conformance
-- [ ] `plan.md` matches **reference/plan-file-format.md**: `# Plan:` title, metadata (`Type`, `Branch` off `<base>`, `TDD variant`), `## Scope Boundary`, optional `## Decisions`, `## Steps`
+- [ ] `plan.md` matches **reference/plan-file-format.md**: `# Plan:` title, metadata (`Type`, `Branch` off `<base>`, `TDD variant`, `Gate`), `## Scope Boundary`, optional `## Decisions`, `## Steps`
+- [ ] The `**Gate**` line records `build`, `test`, and `lint-type` commands with repo evidence (`file:line`) — one line per module in a monorepo
 - [ ] `Type` is one of `bug-fix` · `feature` · `refactor` · `poc` · `restore`; `ADR`/`Option` appear for POC only
 - [ ] Every step is one `### Step N: <title> ⏳` block with `Objective`, `Files`, `Source`, `Implementation`, `Validation`, `Status` — all six, in that order
 - [ ] Step objectives are one imperative sentence; `Files` is `none` where nothing is edited
@@ -12,7 +13,7 @@ Before presenting a development plan to the user, verify all items below.
 - [ ] Rework files use the same step block with numbering restarted at 1; `plan.md` untouched
 
 ## Prerequisites
-- [ ] **Step 1** is **Prepare Environment** (branch, no overlapping dirt, dependencies, affected-area baseline)
+- [ ] **Step 1** is **Prepare Environment** (branch, no overlapping dirt, dependencies, gate commands, gate baseline)
 - [ ] Branch name and base branch are recorded in the plan header (mirrored as cell state in `index.md`)
 - [ ] Only necessary checks gate execution — unrelated dirt and unrelated failures are noted, not blocking
 
@@ -33,6 +34,7 @@ Before presenting a development plan to the user, verify all items below.
 - [ ] `context.md` holds one `## Amendments` row for the change
 - [ ] Boundary tightened, or widened with user ratification
 - [ ] No second plan file or folder created for the same feature
+- [ ] The Exit Gate step is neither abandoned, reordered, nor dropped — only a ratified waiver removes it
 
 ## Coverage
 - [ ] Every identified issue/functionality/objective has a corresponding TDD cycle, or a declared `Source` for a mechanical step
@@ -47,7 +49,17 @@ Before presenting a development plan to the user, verify all items below.
 ## Sequencing
 - [ ] Dependency ordering is correct — no step depends on a later step
 - [ ] Prepare Environment is always Step 1
-- [ ] Validate Linting, Formatting and Type Checking closes each issue/functionality/objective group, or one consolidated final gate covers all groups
+- [ ] Each functionality group validates its own tests; the Exit Gate closes the plan
+
+## Exit Gate
+- [ ] Step 1 runs the gate commands on the base and records `baseline: green` or `baseline: red — <named failures>`
+- [ ] A red baseline is resolved by a Restore baseline step or a user-ratified exclusion naming each failure — never left unnamed
+- [ ] The final step is the **Exit gate**, running every gate command: all exit 0, zero failures
+- [ ] The gate's `Validation` forbids narrowing — no "affected tests only", "subset", "smoke", "if available", "optional"
+- [ ] `context.md` `## Done means` cites the Exit Gate step for the build, full suite, and static-check rows
+- [ ] Any `**Gate waiver**` names the scope, the failing items, the ratifier, and the date — a blanket or agent-written waiver fails the plan
+- [ ] No step follows the Exit Gate; a later fix step invalidates its receipt and re-runs it
+- [ ] Rework files inherit the `Gate` line and close with their own Exit gate step
 
 ## Step Management
 - [ ] For bug fix plans: total step count ≤ 20

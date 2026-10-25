@@ -19,6 +19,7 @@
 **Type**: poc
 **Branch**: `poc-adr-caching-01-redis` off `main`
 **TDD variant**: Full cycle — the slice must behave like production code for the MR to be evaluable.
+**Gate**: build=`./mvnw -q compile` · test=`./mvnw test` · lint-type=`./mvnw spotless:check` — `pom.xml:112`
 **ADR**: `adr-caching-01-cache-option.md` · **Option**: Redis
 **Success criteria**: p99 < 50 ms at 2k rps; ≤3 new ops dependencies
 
@@ -31,11 +32,11 @@
 ## Steps
 
 ### Step 1: Prepare environment ⏳
-**Objective**: Confirm the POC branch and a green wallet-service baseline.
+**Objective**: Confirm the POC branch and a known gate baseline.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Branch `poc-adr-caching-01-redis` off `main`; no overlapping dirt.
-**Validation**: Wallet-service tests and build pass.
+**Implementation**: Branch `poc-adr-caching-01-redis` off `main`; no overlapping dirt; gate commands confirmed against `pom.xml`.
+**Validation**: Gate commands on `main` — `baseline: green` (build=0 · 96 passed · lint=0).
 **Status**: ⏳ Pending
 
 ### Step 2: Write cache behavior tests ⏳
@@ -70,12 +71,12 @@
 **Validation**: Wallet-service suite green; cache tests pass.
 **Status**: ⏳ Pending
 
-### Step 6: Quality gate ⏳
-**Objective**: Confirm the slice is reviewable.
+### Step 6: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green for the slice.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Run linting, formatting, type checking, and the full suite.
-**Validation**: All checks exit 0; MR ready for the user's evaluation.
+**Implementation**: Run every gate command on the final tree; repair reds in place.
+**Validation**: `./mvnw -q compile` && `./mvnw test` && `./mvnw spotless:check` — all exit 0.
 **Status**: ⏳ Pending
 ```
 

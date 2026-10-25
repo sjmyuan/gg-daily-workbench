@@ -29,6 +29,7 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 **Type**: bug-fix
 **Branch**: `fix-publisher-id` off `main`
 **TDD variant**: Full cycle — a data-correctness bug needs test-first proof.
+**Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
 
 ## Scope Boundary
 **May change**: `DataImportedHandler` ID-passing behavior
@@ -39,11 +40,11 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 ## Steps
 
 ### Step 1: Prepare environment ⏳
-**Objective**: Confirm the branch and a green handler baseline.
+**Objective**: Confirm the branch and a known gate baseline.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Create `fix-publisher-id` off `main`; no overlapping dirt; toolchain resolves.
-**Validation**: `mvn test -Dtest=DataImportedHandlerTest` passes before changes.
+**Implementation**: Create `fix-publisher-id` off `main`; no overlapping dirt; toolchain resolves; gate commands confirmed against `pom.xml`.
+**Validation**: Gate commands on `main` — `baseline: green` (build=0 · 168 passed · lint=0).
 **Status**: ⏳ Pending
 
 ### Step 2: Write the ID assertion ⏳
@@ -78,12 +79,12 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 **Validation**: Affected-area suite green after cleanup.
 **Status**: ⏳ Pending
 
-### Step 6: Quality gate ⏳
-**Objective**: Confirm the change meets repo quality gates.
+### Step 6: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Run Spotless and Checkstyle.
-**Validation**: `mvn spotless:check checkstyle:check` exits 0.
+**Implementation**: Run every gate command on the final tree; repair reds in place.
+**Validation**: `mvn -q compile` && `mvn test` && `mvn spotless:check checkstyle:check` — all exit 0, zero failures.
 **Status**: ⏳ Pending
 ```
 
@@ -92,5 +93,5 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 - [x] Type classified before planning; root cause confirmed by the user
 - [x] Boundary names behavior, not just files; protected zones explicit
 - [x] Every step is one six-field block with a `⏳` status
-- [x] RED precedes the fix; cleanup and quality gate precede hand-off
+- [x] RED precedes the fix; cleanup and the Exit gate precede hand-off
 - [x] 6 steps — consolidated from the 9-step full cycle, under the bug-fix cap of 20

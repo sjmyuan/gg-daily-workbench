@@ -29,6 +29,7 @@ Keywords "split", "too big" → **Refactor** (internal restructuring, no new beh
 **Type**: refactor
 **Branch**: `split-data-imported-handler` off `main`
 **TDD variant**: Green-to-green — existing tests prove behavior is preserved; characterization tests only where coverage is missing.
+**Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
 
 ## Scope Boundary
 **May change**: internal structure of `DataImportedHandler` (decomposition into two services)
@@ -39,11 +40,11 @@ Keywords "split", "too big" → **Refactor** (internal restructuring, no new beh
 ## Steps
 
 ### Step 1: Prepare environment ⏳
-**Objective**: Confirm the branch and a fully green handler suite.
+**Objective**: Confirm the branch and a known gate baseline.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve.
-**Validation**: Handler tests, Spotless, Checkstyle, and compile pass.
+**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve; gate commands confirmed against `pom.xml`.
+**Validation**: Gate commands on `main` — `baseline: green` (compile=0 · 168 passed · static=0).
 **Status**: ⏳ Pending
 
 ### Step 2: Confirm coverage for category mapping ⏳
@@ -86,12 +87,12 @@ Keywords "split", "too big" → **Refactor** (internal restructuring, no new beh
 **Validation**: Affected-area suite green.
 **Status**: ⏳ Pending
 
-### Step 7: Quality gate ⏳
-**Objective**: Confirm linting, formatting, and type checking pass.
+### Step 7: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Run Spotless, Checkstyle, and the type checker.
-**Validation**: All checks exit 0.
+**Implementation**: Run every gate command on the final tree; repair reds in place.
+**Validation**: `mvn -q compile` && `mvn test` && `mvn spotless:check checkstyle:check` — all exit 0, zero failures.
 **Status**: ⏳ Pending
 ```
 

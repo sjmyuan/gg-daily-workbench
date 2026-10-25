@@ -40,6 +40,7 @@ The original `plan.md` is never modified; the rework inherits the original bound
 **Mode**: post-merge · **Cell**: order-service/F2-r1
 **Branch**: `rework-f2r1-rollback-credentials` off `main`
 **ADR focus**: `adr-wallet-01-payment-failure-handling.md`
+**Gate**: inherited from `plan.md` — build=`./mvnw -q compile` · test=`./mvnw test` · lint-type=`./mvnw spotless:check`
 
 ## Scope Boundary
 **May change**: original **May change** + `payment-gateway/` credential-retry behavior (user-approved extension)
@@ -87,12 +88,12 @@ The original `plan.md` is never modified; the rework inherits the original bound
 **Validation**: All new cases pass against the fix.
 **Status**: ⏳ Pending
 
-### Step 5: Quality gate ⏳
-**Objective**: Confirm the delta meets repo quality gates.
+### Step 5: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Run linting, formatting, type checking, and the full suite.
-**Validation**: All checks exit 0.
+**Implementation**: Run every gate command on the final tree; repair reds in place.
+**Validation**: `./mvnw -q compile` && `./mvnw test` && `./mvnw spotless:check` — all exit 0, zero failures.
 **Status**: ⏳ Pending
 ```
 

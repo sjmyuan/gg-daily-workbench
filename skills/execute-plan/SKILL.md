@@ -109,7 +109,7 @@ All prose written into `plan.md` / `context.md` follows **reference/writing-styl
 </concise-writing>
 
 <orchestrator-handoff>
-When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), write the execution handoff to `context.md` `## Execution` — **latest round only, overwritten, never appended**. Fields: status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), `base7..head7` (base = branch point on first run, previous head for a rework), PR, one-line test evidence, one-line `review-code` outcome, plus the amendment request when `NEEDS_CONTEXT`. Record the actual range; drift from the plan is not a failure. Deferred concerns go to `## Open concerns` (persistent, ≤5, delete when resolved), not the handoff. Never edit the planner-owned charter sections (Why, Must hold, Unknowns, Done means, Pointers) — report a needed change instead. Do not write a log; git/PR are the history. A POC's MR is the user's evaluation vehicle.
+When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), write the execution handoff to `context.md` `## Execution` — **latest round only, overwritten, never appended**. Fields: status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), `base7..head7` (base = branch point on first run, previous head for a rework), PR, the one-line gate receipt (`build=0 · test=N passed · lint=0`, or the ratified waiver), one-line `review-code` outcome, plus the amendment request when `NEEDS_CONTEXT`. Record the actual range; drift from the plan is not a failure. Deferred concerns go to `## Open concerns` (persistent, ≤5, delete when resolved), not the handoff. Never edit the planner-owned charter sections (Why, Must hold, Unknowns, Done means, Pointers) — report a needed change instead. Do not write a log; git/PR are the history. A POC's MR is the user's evaluation vehicle.
 </orchestrator-handoff>
 
 <context-loading-guide>
@@ -203,6 +203,8 @@ Load only the example most relevant to the current execution scenario to minimiz
 2. After significant changes, run linting, formatting, and type-checking.
 3. For build-dependent projects, verify the build succeeds at key milestones.
 4. Validate incrementally — do not wait until the end of the plan.
+5. The final **Exit gate** step runs the plan's recorded `Gate` commands — build, full suite, lint/type — and all must exit 0 with zero failures. Run them **locally**; never wait for or substitute a remote pipeline. A legacy plan with no `Gate` line: resolve the commands from CI config or the build file, record them, then run them — never skip the gate.
+6. Any step added after the Exit gate (review fix, recovery) invalidates its receipt — re-run the gate before push.
 </run-validation-checkpoints>
 
 <place-tests>
@@ -222,7 +224,8 @@ Load only the example most relevant to the current execution scenario to minimiz
    3. Re-run the **review-code** skill on the affected files.
    4. Repeat until no 🚫 Blockers or 🔴 Majors remain.
 4. If only 🟡 Minor and 🟢 Nit findings remain, document them in the final summary without blocking completion.
-5. Display the final completion summary once the review passes. Keep the plan file and context file as a permanent record of the implementation.
+5. Re-run the **Exit gate** after the last fix step and record a fresh receipt on the current head; a receipt from before the fix is stale.
+6. Display the final completion summary once the review passes. Keep the plan file and context file as a permanent record of the implementation.
 </review-post-execution>
 
 <verify-prerequisites>
@@ -246,11 +249,12 @@ Load only the example most relevant to the current execution scenario to minimiz
 </commit-step>
 
 <request-push-approval>
-1. When all steps are ✅ complete — or the user asks to sync — summarize the local state: branch name, commits created, and how many commits are ahead of the remote base.
-2. Ask the user explicitly: "Push branch [branch name] to remote?" Wait for a decision.
-3. Push only after the user confirms; report success or any errors.
-4. If the user declines or defers, leave the branch local and tell them the commits are ready to push whenever they choose.
-5. When the user also asks to open a pull/merge request, apply **create-pull-request** after the push — it resolves the PR conventions via **resolve-conventions**, gets approval on the full draft, and records the returned reference (or pending state) in the `## Execution` handoff.
+1. When all steps are ✅ complete — or the user asks to sync — confirm the **Exit gate** receipt matches the current head: missing, stale, or red → re-run the gate or stop; never push on a stale receipt.
+2. Summarize the local state: branch name, commits created, and how many commits are ahead of the remote base.
+3. Ask the user explicitly: "Push branch [branch name] to remote?" Wait for a decision.
+4. Push only after the user confirms; report success or any errors.
+5. If the user declines or defers, leave the branch local and tell them the commits are ready to push whenever they choose.
+6. When the user also asks to open a pull/merge request, apply **create-pull-request** after the push — it resolves the PR conventions via **resolve-conventions**, gets approval on the full draft, and records the returned reference (or pending state) in the `## Execution` handoff.
 </request-push-approval>
 
 <manage-user-interaction>
@@ -271,6 +275,8 @@ Load only the example most relevant to the current execution scenario to minimiz
 <rule> **Throughout Execution**: Apply **track-plan** — keep the step list current and show it after every step. </rule>
 <rule> **When a Step Fails**: Apply **handle-errors** immediately. </rule>
 <rule> **At Validation Points**: Apply **run-validation-checkpoints** — validate incrementally, not just at the end. </rule>
+<rule> **At the Exit Gate**: Run the plan's recorded `Gate` commands exactly — build, full suite, lint/type; a subset, a skip, or a stale receipt is not a pass. </rule>
+<rule> **Before Any Push**: Require a green Exit gate receipt for the current head — a step added after the gate invalidates it, so re-run the gate first. </rule>
 <rule> **When a Step Writes or Modifies Tests**: Apply **place-tests** before writing test code. </rule>
 <rule> **When a Pending Step Is Defective**: Return `NEEDS_CONTEXT` with an amendment request — never fork the plan or create a second plan folder. </rule>
 <rule> **When Facing Ambiguity or Blockers**: Apply **manage-user-interaction** — pause and ask rather than assuming. </rule>

@@ -27,7 +27,8 @@ Keywords "add", "configurable" → **Feature** (new configuration capability). *
 # Plan: configurable-retry-settings — retry count and delay come from configuration
 **Type**: feature
 **Branch**: `configurable-retry-settings` off `main`
-**TDD variant**: Streamlined — configuration-only change; test writing and wiring stay separate, cleanup folds into the quality gate.
+**TDD variant**: Streamlined — configuration-only change; test writing and wiring stay separate, cleanup folds into the exit gate.
+**Gate**: build=`./mvnw compile` · test=`./mvnw test` · lint-type=`./mvnw checkstyle:check` — `pom.xml:53`
 
 ## Scope Boundary
 **May change**: retry configuration behavior (max count, delay)
@@ -38,11 +39,11 @@ Keywords "add", "configurable" → **Feature** (new configuration capability). *
 ## Steps
 
 ### Step 1: Prepare environment ⏳
-**Objective**: Confirm the branch and a green publisher baseline.
+**Objective**: Confirm the branch, toolchain, and a known gate baseline.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve.
-**Validation**: Publisher tests, linting, and type checking pass.
+**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve; gate commands confirmed against `pom.xml`.
+**Validation**: Gate commands on `main` — `baseline: green` (build=0 · 187 passed · lint=0).
 **Status**: ⏳ Pending
 
 ### Step 2: Write configuration tests ⏳
@@ -77,18 +78,27 @@ Keywords "add", "configurable" → **Feature** (new configuration capability). *
 **Validation**: Publisher tests pass.
 **Status**: ⏳ Pending
 
-### Step 6: Quality gate ⏳
-**Objective**: Confirm cleanup, linting, formatting, and type checking pass.
-**Files**: `EventPublisherImpl.java`, tests
+### Step 6: Remove the hardcoded constants ⏳
+**Objective**: Delete the retry constants now supplied by configuration.
+**Files**: `EventPublisherImpl.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**: Remove the hardcoded constants; run formatter, linter, and type checker.
-**Validation**: No unused constants; all checks exit 0; full suite green.
+**Implementation**: Remove the unused constants; no behavior change.
+**Validation**: Publisher tests pass after the removal.
+**Status**: ⏳ Pending
+
+### Step 7: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run every gate command on the final tree; repair reds in place.
+**Validation**: `./mvnw compile` && `./mvnw test` && `./mvnw checkstyle:check` — all exit 0, zero failures.
 **Status**: ⏳ Pending
 ```
 
 ## Validation
 
 - [x] Tests cover defaults and overrides — not just the happy path
-- [x] Streamlined keeps test-first; only cleanup is folded into the gate
+- [x] Streamlined keeps test-first; only cleanup is folded into the last code step
 - [x] Every step is one six-field block with a `⏳` status
-- [x] 6 steps — small enough for fast review
+- [x] The `Gate` line is evidence-backed and the Exit gate is the final step
+- [x] 7 steps — small enough for fast review

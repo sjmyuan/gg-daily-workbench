@@ -29,6 +29,7 @@ Ladder: rung 1 (`no-op`) fails — a retry block exists. Rung 2 (`base`) reaches
 **Type**: restore
 **Branch**: `revert-order-poller-retries` off `main`
 **TDD variant**: None — non-behavioral restore; an equality proof replaces RED/GREEN.
+**Gate**: build=`npm run build` · test=`npm test` · lint-type=`npm run lint` — `package.json:12`
 
 ## Scope Boundary
 **May change**: `OrderPoller` retry behavior only
@@ -40,7 +41,15 @@ Ladder: rung 1 (`no-op`) fails — a retry block exists. Rung 2 (`base`) reaches
 
 ## Steps
 
-### Step 1: Restore OrderPoller from base ⏳
+### Step 1: Prepare environment ⏳
+**Objective**: Confirm the branch and a known gate baseline.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve; gate commands confirmed against `package.json`.
+**Validation**: Gate commands on `main` — `baseline: green` (build=0 · 64 passed · lint=0).
+**Status**: ⏳ Pending
+
+### Step 2: Restore OrderPoller from base ⏳
 **Objective**: Make both poller files identical to the base ref.
 **Files**: `src/poller/order_poller.ts`, `src/poller/order_poller.test.ts`
 **Source**: base · origin/main@3f2a1c8 · identical
@@ -48,12 +57,12 @@ Ladder: rung 1 (`no-op`) fails — a retry block exists. Rung 2 (`base`) reaches
 **Validation**: `git diff --exit-code origin/main@3f2a1c8 -- <both paths>` is empty.
 **Status**: ⏳ Pending
 
-### Step 2: Confirm nothing else moved ⏳
-**Objective**: Prove the restore is the only change and the suite is green.
+### Step 3: Exit gate ⏳
+**Objective**: Prove nothing else moved and the build, suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Inspect working-tree status for the plan's paths only.
-**Validation**: `git status --porcelain` shows no other plan-path change; affected-area suite passes.
+**Implementation**: Inspect working-tree status for the plan's paths only, then run every gate command.
+**Validation**: `git status --porcelain` shows no other plan-path change; `npm run build` && `npm test` && `npm run lint` all exit 0.
 **Status**: ⏳ Pending
 ```
 
@@ -73,5 +82,6 @@ Non-behavioral justification: restores pre-existing behavior; no new behavior is
 - [x] Cheaper rung reached at 2 of 5, with the cheaper rung's failure stated
 - [x] `Must match` listed for both restored paths; protected zones explicit
 - [x] No RED/GREEN step; the non-behavioral justification is recorded
-- [x] Final step proves the restore and runs the suite
-- [x] 2 steps — under the restore cap of 5
+- [x] `Gate` line is evidence-backed; Step 1 records the baseline
+- [x] Final step proves the restore and runs the exit gate
+- [x] 3 steps — under the restore cap of 5

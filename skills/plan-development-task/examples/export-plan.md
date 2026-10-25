@@ -21,6 +21,7 @@ The single-repo workspace has no docs home or convention, so **resolve-artifact-
 **Type**: bug-fix
 **Branch**: `fix-null-pointer` off `main`
 **TDD variant**: Full cycle — a crash path needs a reproducing failing test.
+**Gate**: build=`./mvnw compile` · test=`./mvnw test` · lint-type=`./mvnw checkstyle:check` — `pom.xml:41`
 
 ## Scope Boundary
 **May change**: `DataImportedHandler` null-guard behavior
@@ -31,11 +32,11 @@ The single-repo workspace has no docs home or convention, so **resolve-artifact-
 ## Steps
 
 ### Step 1: Prepare environment ⏳
-**Objective**: Confirm the branch and a green handler baseline.
+**Objective**: Confirm the branch, toolchain, and a known gate baseline.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Create `fix-null-pointer` off `main`; no overlapping dirt; dependencies resolve.
-**Validation**: Handler suite, linting, and type checking pass.
+**Implementation**: Create `fix-null-pointer` off `main`; no overlapping dirt; dependencies resolve; gate commands confirmed against `pom.xml`.
+**Validation**: Gate commands on `main` — `baseline: green` (build=0 · 214 passed · lint=0).
 **Status**: ⏳ Pending
 
 ### Step 2: Write the null-payload test ⏳
@@ -55,19 +56,19 @@ The single-repo workspace has no docs home or convention, so **resolve-artifact-
 **Status**: ⏳ Pending
 
 ### Step 4: Guard the null result ⏳
-**Objective**: Skip publication when the transform result is null.
-**Files**: `DataImportedHandler.java`
+**Objective**: Skip publication on a null result and drop the superseded workaround.
+**Files**: `DataImportedHandler.java`, `DataImportedHandlerTest.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**: Add the null guard on the transform result before building the event.
-**Validation**: Step 2 test passes; handler suite green.
+**Implementation**: Add the null guard before building the event; delete the dead defensive check and its fixture.
+**Validation**: Step 2 test passes; handler suite green after the removal.
 **Status**: ⏳ Pending
 
-### Step 5: Clean up and gate ⏳
-**Objective**: Remove obsolete workaround code and confirm repo quality gates.
-**Files**: handler, its tests
-**Source**: edit · n/a · behavior-equal
-**Implementation**: Delete the superseded defensive check; run formatting, linting, and type checking.
-**Validation**: Affected-area suite green; all quality checks exit 0.
+### Step 5: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green.
+**Files**: none
+**Source**: no-op · n/a · n/a
+**Implementation**: Run every gate command on the final tree; repair reds in place.
+**Validation**: `./mvnw compile` && `./mvnw test` && `./mvnw checkstyle:check` — all exit 0, zero failures.
 **Status**: ⏳ Pending
 ```
 
@@ -101,6 +102,7 @@ Boundary: **plan.md** §Scope Boundary.
 |---|---|---|
 | Missing payload no longer crashes | handler test suite | all pass |
 | Transformer and publisher untouched | diff against `main` | no changes |
+| Build, full suite, static checks green | `plan.md` Step 5 (Exit gate) | every gate command exit 0 |
 
 ## Pointers
 
@@ -124,16 +126,12 @@ Boundary: **plan.md** §Scope Boundary.
 | Status | — (not executed) |
 | Commits | — |
 | PR | — |
-| Test evidence | — |
+| Gate receipt | — (not executed) |
 | Review outcome | — |
 
 ## Reworks
 
-| Date | Mode | Cell | Trigger | File | Status |
-|---|---|---|---|---|---|
-| — | — | — | — | — | — |
-
-No `## Amendments` block yet — create it with the first amendment row.
+`## Reworks` and `## Amendments` start with their first row.
 ```
 
 No branch metadata, TDD rationale, or decisions here — they live in `plan.md`. Charter ~50 lines.
@@ -146,5 +144,7 @@ Saved to `<repo-root>/feature-implementations/fix-null-pointer-in-transformer/`;
 
 - [x] Feature folder derived from the plan objective; repo-first layout applied
 - [x] `plan.md` matches the template: title, metadata, zones in fixed order, six-field steps
+- [x] The `Gate` line is evidence-backed; Step 1 records the baseline; Step 5 is the Exit gate
+- [x] `context.md` `Done means` cites the Exit gate step for the build, suite, and static-check rows
 - [x] Branch/base in `plan.md`; no branch metadata in `context.md`
 - [x] `context.md` is 40–60 lines, passes the admission test, and duplicates no plan fact

@@ -22,6 +22,7 @@ A step that is deliberately not executed:
 - Excluded from completion: every step must be ✅ **or** ⏭.
 - Never has a commit; if the work is needed later, append a new step.
 - Never abandon a step that already has commits — that is executed work; use a rework instead.
+- Never abandon, reorder, or defer the **Exit gate** step — only a user-ratified waiver removes it (see **exit-gate**).
 - Set only by the planner during an approved amendment, or by explicit user instruction.
 - Distinct from 🚫 blocked — blocked may still run; abandoned will not.
 

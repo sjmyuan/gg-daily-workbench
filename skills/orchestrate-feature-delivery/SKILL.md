@@ -58,7 +58,7 @@ Wave computation + intra-feature merge order: **reference/dependency-ordering-gu
 Cells follow **unplanned → planned → in-progress → verified → done**, plus recoverable **failed** / **blocked**; POCs fork **verified → poc-ready → adopted | rejected**. **Develop-ready** = dependencies **planned**; **merge-ready** = dependencies **done**. The gate is mandatory; record any user waiver. Details: **reference/state-machine.md**.
 </delivery-state-machine>
 <verification-gate>
-A cell reaches **verified** (then **done** / **poc-ready**) only after an independent gate — spec compliance + trust — passes. Quality review stays with **execute-plan**'s `review-post-execution`. The handoff is the **latest round only** in `context.md` `## Execution` — status, `base7..head7`, PR, one-line test evidence, one-line review outcome; deferred concerns persist in `## Open concerns`; history lives in git/PR. Handoff, verdicts, fix-loop cap, breaker, integration review: **reference/verification-gate.md**.
+A cell reaches **verified** (then **done** / **poc-ready**) only after an independent gate — spec compliance + trust — passes. Quality review stays with **execute-plan**'s `review-post-execution`. The handoff is the **latest round only** in `context.md` `## Execution` — status, `base7..head7`, PR, one-line gate receipt, one-line review outcome; deferred concerns persist in `## Open concerns`; history lives in git/PR. Handoff, verdicts, fix-loop cap, breaker, integration review: **reference/verification-gate.md**.
 </verification-gate>
 <request-intake>
 Clarify before classifying: restate the reported behavior — never the suspected cause — and run `question-everything`'s **challenge-the-ask** when the report is ambiguous. A report stating expected and actual behavior passes on the restatement. Clarification is a precondition, not an L-rung. Protocol: **reference/investigation-triage.md**.
@@ -143,7 +143,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 1. After every agent result, update the status per **reference/state-machine.md** — `unplanned → planned → in-progress → verified → done`, plus `failed` / `blocked`.
 2. Record agent assignment, plan location, branch, head commit, and the PR reference from the executor handoff (see **branch-and-push-conventions**).
 3. **Plan-first gate**: mark **planned** only when the plan file exists; a missing file is **failed**.
-4. On merge, confirm the recorded head commit is in the merged PR before **done**; re-check downstream readiness.
+4. On merge, confirm the recorded head commit is in the merged PR and its gate receipt is green or waived before **done**; re-check downstream readiness.
 5. On a POC decision, record **adopted/rejected** and dispatch follow-ups per **reference/poc-lifecycle.md**.
 6. Inconsistent result → verify via `question-everything` before recording.
 7. Keep the index the single source of truth; verify it per **reference/delivery-index-format.md**, apply **rewrite-concise**, measure `index.md` (**≤8,000 chars / ≤120 lines** per **reference/delivery-index-format.md**; collapse rows and archive completed waves), and run the write-boundary check.
@@ -161,9 +161,9 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <verify-cell>
 **Objective**: Independently verify spec compliance and report trust before **verified**; never duplicate **execute-plan**'s `review-post-execution` quality review.
 
-1. Require the handoff: `plan.md` all ✅; `context.md` `## Execution` with status, `base7..head7`, PR, one-line test evidence, and one-line review outcome (latest round only — a long appended log is not a pass), plus `## Open concerns`. A POC cell is verified like any other cell; its MR is the user's evaluation vehicle.
+1. Require the handoff: `plan.md` all ✅ with the **Exit gate** last; `context.md` `## Execution` with status, `base7..head7`, PR, the gate receipt (`build=0 · test=N passed · lint=0`, or the ratified waiver), and one-line review outcome (latest round only — a long appended log is not a pass), plus `## Open concerns`. A POC cell is verified like any other cell; its MR is the user's evaluation vehicle.
 2. Dispatch a **fresh code-reviewer** (**review-code**) with the range, plan, context, governing ADR, solution-doc section, and constraints — it fetches the diff; never the executor instance.
-3. Require two verdicts: **spec compliance** (Missing / Extra / Misunderstood) and a **trust check** of claimed review/test evidence against the diff (sample Blocker/Major fixes; no suite re-run).
+3. Require two verdicts: **spec compliance** (Missing / Extra / Misunderstood) and a **trust check** — the receipt matches `head7` (an earlier head is stale → back to the executor) and the claimed evidence matches the diff (sample Blocker/Major fixes; no local suite re-run). The gate is local: never wait for, poll, or substitute a remote pipeline.
 4. Pass → mark **verified** via **update-delivery-index**.
 5. Gap or Critical/Important → dispatch **planner** (sibling `rework-<date>.md`), then **executor**, then a scoped re-review; the cell stays **in-progress**.
 6. Cap the fix loop at 2 rounds; a finding recurring after round 1 escalates immediately. Roll deferred Minors into the integration review.
@@ -228,6 +228,8 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 <rule> Never dispatch an executor for a cell until its plan file is verified on disk (the **plan-first gate**); never write or append a plan after execution. </rule>
 <rule> Plan and execute are always separate dispatches in that order — never let one agent do both for the same cell, and never skip a step because a cell looks simple or easy. </rule>
 <rule> When a cell's execution completes, apply **verify-cell** before **update-delivery-index** advances it — never mark a cell **done** or **poc-ready** without a passing verification gate or a recorded user waiver. </rule>
+<rule> When verifying a cell, require a gate receipt matching `head7` — missing, stale, or red means back to the executor; never verify on an earlier head's receipt. </rule>
+<rule> The gate is local — never wait for, poll, or gate a cell on a remote pipeline; the local receipt is the evidence. </rule>
 <rule> The verification gate checks spec compliance and report trust only — never duplicate **execute-plan**'s quality review; at the fix-loop cap, stop and escalate to the user. </rule>
 <rule> When a verified cell is approved for integration, dispatch the executor to push and open the PR; record only the returned reference — never open the PR from the orchestrator. </rule>
 <rule> Never write `plan.md` / `context.md` / `rework-<date>.md` from the orchestrator — the planner and executor own them; dispatch gate findings straight to the planner and track status only in the index. </rule>

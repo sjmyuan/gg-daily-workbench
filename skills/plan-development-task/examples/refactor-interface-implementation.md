@@ -28,6 +28,7 @@ Keywords "extract interface", "easier to mock" → **Refactor** (structural chan
 **Type**: refactor
 **Branch**: `extract-event-publisher-interface` off `main`
 **TDD variant**: Green-to-green — interface extraction changes no behavior; existing tests are the proof.
+**Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
 
 ## Scope Boundary
 **May change**: internal structure of event publishing (interface extraction, injection)
@@ -38,11 +39,11 @@ Keywords "extract interface", "easier to mock" → **Refactor** (structural chan
 ## Steps
 
 ### Step 1: Prepare environment ⏳
-**Objective**: Confirm the branch and a green publisher baseline.
+**Objective**: Confirm the branch and a known gate baseline.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve.
-**Validation**: Publisher and handler suites, linting, and type checking pass.
+**Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve; gate commands confirmed against `pom.xml`.
+**Validation**: Gate commands on `main` — `baseline: green` (build=0 · 168 passed · lint=0).
 **Status**: ⏳ Pending
 
 ### Step 2: Create the interface ⏳
@@ -77,12 +78,12 @@ Keywords "extract interface", "easier to mock" → **Refactor** (structural chan
 **Validation**: At least one handler test uses the fake and passes.
 **Status**: ⏳ Pending
 
-### Step 6: Quality gate ⏳
-**Objective**: Confirm no behavior drift and clean tooling.
+### Step 6: Exit gate ⏳
+**Objective**: Prove the build, full suite, and static checks are green with no behavior drift.
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: Run the full suite, linting, and type checking.
-**Validation**: All pass; no production call site references the implementation type.
+**Implementation**: Run every gate command; grep production call sites for the implementation type.
+**Validation**: All gate commands exit 0; no production call site references `EventPublisherImpl`.
 **Status**: ⏳ Pending
 ```
 
