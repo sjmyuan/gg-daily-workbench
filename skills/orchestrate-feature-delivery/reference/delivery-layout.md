@@ -20,7 +20,7 @@ deliveries/<epic-name>/               # one folder per epic (epic-name = spike n
 - **plan.md** is the original plan; each rework is a sibling `rework-<date>.md` (see **reference/rework-modes.md**), implemented steps never modified.
 - **index.md** lives at the epic folder root (see **reference/delivery-index-format.md**).
 - **Handoff**: the verification gate reuses these docs — `plan.md` step statuses and `context.md` `## Execution`; the code-reviewer fetches the diff from git, and findings go to the planner as a `rework-<date>.md`.
-- **Spike boundary**: spike artifacts stay under `spikes/<spike-name>/` and are referenced by path; delivery never copies them. Map: **[artifact-map.md](../../conduct-spike/reference/artifact-map.md)**.
+- **Spike boundary**: spike artifacts stay under `spikes/<spike-name>/` and are referenced by path; delivery never copies them. Map: **reference/artifact-map.md**.
 
 ## Branch and push conventions
 

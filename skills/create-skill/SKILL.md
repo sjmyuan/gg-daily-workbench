@@ -24,14 +24,14 @@ Capability steps cite these standards by name; load the Details file.
 | **description-quality** | Domain summary + "Use when…" trigger verbs, self-scored ≥9 on five dimensions. | **reference/description-quality.md** |
 | **example-standards** | One linked example per capability: template fidelity, set-level continuity, no contradictions. | **reference/example-standards.md** |
 | **platform-agnostic-writing** | No platform tool names or concrete context paths; abstract context descriptions; detect, don't assume. | **reference/platform-agnostic-writing.md** |
-| **script-and-cli-policy** | CLI first, inline one-liner second, `scripts/` script last after four tests; Python 3 stdlib only; fixed output contract. | **../review-skill/reference/script-and-cli-policy.md** |
+| **script-and-cli-policy** | CLI first, inline one-liner second, `scripts/` script last after four tests; Python 3 stdlib only; fixed output contract. | **reference/script-and-cli-policy.md** |
 | **pipeline-integration** | 4 points: handoff, shared schema, bidirectional awareness, guard clauses. | **reference/pipeline-integration.md** |
-| **writing-style** | Directive voice, BLUF, hard caps, atomic bullets, tables over prose, no banned phrases, no narration. | **../review-skill/reference/writing-style.md** |
-| **size-limits** | SKILL.md and `reference/` ≤12,000 chars / 150 lines; `examples/` ≤9,000; >120-char lines flagged; measure with **../review-skill/scripts/measure_sizes.py**. | **../review-skill/reference/size-limits.md** |
-| **size-remediation** | Re-encode → reuse → cut weight → redistribute → reduce → escalate; chars are the only gate, never merge steps or lines (🔴). | **../review-skill/reference/size-remediation.md** |
-| **conciseness-check** | Every element justifies its existence; one line = one idea. | **../review-skill/reference/conciseness-check.md** |
-| **evaluation-process** | Every capability ends with a validation or checklist step; absence severity in file. | **../review-skill/reference/evaluation-process.md** |
-| **severity-levels** | Blocker 🚫 / Major 🔴 / Minor 🟡 / Nit 🟢 / Inconsistency ⚠️. | **../review-skill/reference/severity-levels.md** |
+| **writing-style** | Directive voice, BLUF, hard caps, atomic bullets, tables over prose, no banned phrases, no narration. | **reference/writing-style.md** |
+| **size-limits** | SKILL.md and `reference/` ≤12,000 chars / 150 lines; `examples/` ≤9,000; >120-char lines flagged; measure with the reviewer's `measure_sizes.py`. | **reference/size-limits.md** |
+| **size-remediation** | Re-encode → reuse → cut weight → redistribute → reduce → escalate; chars are the only gate, never merge steps or lines (🔴). | **reference/size-remediation.md** |
+| **conciseness-check** | Every element justifies its existence; one line = one idea. | **reference/conciseness-check.md** |
+| **evaluation-process** | Every capability ends with a validation or checklist step; absence severity in file. | **reference/evaluation-process.md** |
+| **severity-levels** | Blocker 🚫 / Major 🔴 / Minor 🟡 / Nit 🟢 / Inconsistency ⚠️. | **reference/severity-levels.md** |
 | **edit-existing-skill** | Existing-file mode: review-first, change-type routing, ripple on rename/remove, re-validate. | **reference/edit-skill-procedure.md** |
 | **same-name-live-copy-ban** | Never read, compare, or edit a live/loaded same-named skill; the user-provided files are the only subject. | — |
 </named-standards>

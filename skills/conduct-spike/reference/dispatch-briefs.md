@@ -54,7 +54,7 @@ An area's findings are **always passed as a pair** — the human doc (`docs/find
 - **Output — require an evidence map back**: every investigation brief asks the sub-agent to return a per-area evidence map (entry points, key code locations with `file:line`, call chains, evidence verdicts, searched-negatives) alongside its narrative findings — the orchestrator records it in the area's evidence doc (see **compile-findings-doc**).
 - **Searched-negatives travel with the evidence doc**: a documented "not found" tells the next sub-agent not to repeat the scan.
 - **ADR-drafting briefs** include the area's findings pair so ADRs can cite evidence locations without re-reading code.
-- **Verification briefs** carry the same contract — established `file:line`, the settled-vs-open claim split, and searched-negatives — so the verifier starts from evidence, not zero (see `question-everything`'s **reference/verification-protocol.md**).
+- **Verification briefs** carry the same contract — established `file:line`, the settled-vs-open claim split, and searched-negatives — so the verifier starts from evidence, not zero (see **reference/multi-agent-orchestration.md**, Verification questions).
 - **First pass is the seed**: when no findings pair exists yet, briefs omit the input but still require the evidence-map output — the first investigation builds the map the evidence doc records.
 
 ## Verification results in a re-dispatch brief

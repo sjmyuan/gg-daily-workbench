@@ -1,10 +1,10 @@
 # Delivery Index Format
 
-The delivery index is written at **`<base>/deliveries/<epic-name>/index.md`** — one folder per epic (no `docs/` prefix), named after the spiked epic (`<epic-name>` = spike name). The delivery base is the spike's recorded artifact base (`scope.md` `Artifact root:`), so `deliveries/` is a sibling of the spike's `spikes/`; it is inherited, never re-resolved, with `resolve-artifact-location` as fallback only when the record is missing. The spike's own artifacts stay untouched in the spike folder (`spikes/<spike-name>/`; ADRs in `adrs/`, solution doc at the root, findings in `docs/`) and are referenced from the index via **Spike References** — references only, never copies. Boundary map: **[artifact-map.md](../../conduct-spike/reference/artifact-map.md)**. The index is the epic's **single source of truth for state** — the orchestrator reads it to decide next actions, updates it as agents report, and uses its **Spike References** so every agent brief can point agents at the full spike output.
+The delivery index is written at **`<base>/deliveries/<epic-name>/index.md`** — one folder per epic (no `docs/` prefix), named after the spiked epic (`<epic-name>` = spike name). The delivery base is the spike's recorded artifact base (`scope.md` `Artifact root:`), so `deliveries/` is a sibling of the spike's `spikes/`; it is inherited, never re-resolved, with `resolve-artifact-location` as fallback only when the record is missing. The spike's own artifacts stay untouched in the spike folder (`spikes/<spike-name>/`; ADRs in `adrs/`, solution doc at the root, findings in `docs/`) and are referenced from the index via **Spike References** — references only, never copies. Boundary map: **reference/artifact-map.md**. The index is the epic's **single source of truth for state** — the orchestrator reads it to decide next actions, updates it as agents report, and uses its **Spike References** so every agent brief can point agents at the full spike output.
 
 ## Concise writing and size budget
 
-The index is a **board**, not a report: **≤8,000 chars / ≤120 lines** (see **[doc-budgets](../../plan-development-task/reference/doc-budgets.md)**). Table-first; prose states takeaways only (see **reference/writing-style.md**).
+The index is a **board**, not a report: **≤8,000 chars / ≤120 lines**. Table-first; prose states takeaways only (see **reference/writing-style.md**).
 
 - **Summary**: one line — `N features · M repos · W waves · critical path: F_x → F_y`.
 - **Feature goal**: ≤8 words; dependencies/statuses live in tables.

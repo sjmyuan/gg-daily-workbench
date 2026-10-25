@@ -6,7 +6,6 @@ Applies to all prose in `index.md` and the `context.md` charter. Tables carry th
 
 `index.md`: target **60–100 lines**, ceiling **8,000 chars / 120 lines**.
 `context.md`: target **40–60 lines** (a charter, not a workbook).
-See **[doc-budgets](../../plan-development-task/reference/doc-budgets.md)**.
 Chars are the gate — a 120-line file can still hold ~14k chars.
 Over budget blocks the write: collapse rows, archive done waves, point to git/PR for history.
 

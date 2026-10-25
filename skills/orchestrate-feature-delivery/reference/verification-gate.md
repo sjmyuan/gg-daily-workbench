@@ -26,7 +26,7 @@ No separate files — the gate reuses the feature folder's existing docs (`<feat
 - `context.md` is **planner- and executor-owned** — the orchestrator never writes it; the planner registers the rework in `context.md`.
 - The index tracks **status only** — no findings record.
 - The executor **overwrites** `## Execution` each round; deferred concerns persist in `## Open concerns`; no log is written — git/PR are the history.
-- The gate reads the latest handoff, the range, and `## Open concerns`. `context.md` stays a 40–60-line charter (ceiling 8,000 chars / 120; see **doc-budgets**).
+- The gate reads the latest handoff, the range, and `## Open concerns`. `context.md` stays a 40–60-line charter (ceiling 8,000 chars / 120).
 - A POC cell is verified exactly like any other cell. The gate checks the implementation; it never measures or judges the option — the user evaluates the MR.
 - The gate result travels **inline** to the fix-round planner — the unresolved findings and verdicts are not yet an artifact; once recorded in `rework-<date>.md`, later rounds pass that file by **path**.
 

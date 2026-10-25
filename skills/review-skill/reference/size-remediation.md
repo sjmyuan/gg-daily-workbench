@@ -26,7 +26,8 @@ Apply each lever before the next; stop once the char budget is met.
 2. Keep tables narrow (few columns, short cells) so the wide-cell exemption is not abused.
 
 ### Reuse — single owner, don't copy
-3. Before writing a rubric, grep sibling skills; if it exists (e.g., writing-style, size-limits), link it via a relative path instead of re-describing it.
+3. Before writing a rubric, check this skill's own `reference/` first; if it exists (e.g. writing-style, size-limits), point at the local file instead of re-describing it.
+4. Doctrine owned by another skill is never deep-linked — write a scoped local slice with a `Scope:` header (see the link self-containment rule).
 
 ### Cut weight — eliminate, don't shrink
 4. Delete meta-narration ("this capability…", "note that"), why-explanations, redundant preambles, low-value edge cases.

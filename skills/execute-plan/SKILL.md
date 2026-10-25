@@ -80,7 +80,7 @@ Rubric, normalized-diff commands, stop list, note format: **reference/scope-boun
 Every step carries a `Source` — `no-op` when nothing changes: `no-op` · `base` · `port` · `copy` · `edit` · `generate`.
 Try the cheapest source first; generating code is the last rung.
 A revert, keep, or copy step is proven by a diff against the pinned ref, never by regenerated equivalent behavior.
-Enum, ladder, and proof commands: **[../plan-development-task/reference/provenance-first.md](../plan-development-task/reference/provenance-first.md)**.
+Enum, ladder, and proof commands: **[reference/provenance-proof.md](reference/provenance-proof.md)**.
 </change-provenance>
 <destructive-operation-policy>
 A plan step is not consent for destruction. Classify every shell command before running it.
@@ -105,11 +105,11 @@ Full policy: **reference/destructive-operation-policy.md**.
 <concise-writing>
 All prose written into `plan.md` / `context.md` follows **reference/writing-style.md** — BLUF takeaways, hard caps (step objective 1 sentence, step note 1 line, bullet 1 claim, paragraph ≤ 3 sentences, sentence ≤ 20 words), atomic bullets, tables over prose, no banned phrases or process narration, So-what test.
 
-`context.md` is the cell's **charter**, not a workbook: target **40–60 lines**, hard ceiling **8,000 chars / 120 lines**. During execution only `## Open concerns`, `## State`, and `## Execution` change; the charter sections and manifests are planner-owned. Template, admission test, and artifact responsibilities: **[../plan-development-task/reference/doc-budgets.md](../plan-development-task/reference/doc-budgets.md)**.
+`context.md` is the cell's **charter**, not a workbook: target **40–60 lines**, hard ceiling **8,000 chars / 120 lines**. During execution only `## Open concerns`, `## State`, and `## Execution` change; the charter sections and manifests are planner-owned.
 </concise-writing>
 
 <orchestrator-handoff>
-When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), write the execution handoff to `context.md` `## Execution` — **latest round only, overwritten, never appended**. Fields: status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), `base7..head7` (base = branch point on first run, previous head for a rework), PR, one-line test evidence, one-line `review-code` outcome, plus the amendment request when `NEEDS_CONTEXT`. Record the actual range; drift from the plan is not a failure. Deferred concerns go to `## Open concerns` (persistent, ≤5, delete when resolved), not the handoff. Never edit the planner-owned charter sections (Why, Must hold, Unknowns, Done means, Pointers) — report a needed change instead. Do not write a log; git/PR are the history. A POC's MR is the user's evaluation vehicle. Contract: **doc-budgets**.
+When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), write the execution handoff to `context.md` `## Execution` — **latest round only, overwritten, never appended**. Fields: status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), `base7..head7` (base = branch point on first run, previous head for a rework), PR, one-line test evidence, one-line `review-code` outcome, plus the amendment request when `NEEDS_CONTEXT`. Record the actual range; drift from the plan is not a failure. Deferred concerns go to `## Open concerns` (persistent, ≤5, delete when resolved), not the handoff. Never edit the planner-owned charter sections (Why, Must hold, Unknowns, Done means, Pointers) — report a needed change instead. Do not write a log; git/PR are the history. A POC's MR is the user's evaluation vehicle.
 </orchestrator-handoff>
 
 <context-loading-guide>
@@ -127,16 +127,13 @@ Load only the example most relevant to the current execution scenario to minimiz
 | Executing a plan with 10+ steps requiring context preservation | Output model: long plan progress tracking and context continuity | [examples/long-plan-execution.md](examples/long-plan-execution.md) |
 | All plan steps are complete and post-execution review is needed | Output model: applying review-code after completion, adding fix steps, keeping plan as permanent record | [examples/post-execution-review.md](examples/post-execution-review.md) |
 | Executing a plan with prerequisite checks, one commit per step, and push approval at the end | Output model: verify-prerequisites, commit-step, and request-push-approval in action | [examples/small-step-commits.md](examples/small-step-commits.md) |
-| Executing a rework plan (`rework-<date>.md` — run only the rework steps) | Rework execution walkthrough (shared with the orchestrator) | [../orchestrate-feature-delivery/examples/post-implementation-rework.md](../orchestrate-feature-delivery/examples/post-implementation-rework.md) |
-| POC round from dispatch to MR review (shared with the orchestrator) | End-to-end POC walkthrough: implement normally, open an MR, user decides | [../orchestrate-feature-delivery/examples/adr-option-poc.md](../orchestrate-feature-delivery/examples/adr-option-poc.md) |
+| Executing a rework plan (`rework-<date>.md` — run only the rework steps) | Rework execution: sibling file, delta steps, plan stays frozen | [reference/feature-folder-structure.md](reference/feature-folder-structure.md) |
 | A step, recovery fix, or review fix may be material against the plan's boundary | Output model: refusal + decision options | [examples/refusing-out-of-scope-rework.md](examples/refusing-out-of-scope-rework.md) |
 | A change touches unlisted files, looks cosmetic, or a commit differs from the plan | Zones (incl. `Must match`), materiality test, closed stop list, normalized diff, note format | [reference/scope-boundary-check.md](reference/scope-boundary-check.md) |
-| A step reverts, restores, ports, copies, or must stay unchanged | Source ladder, proof commands, no-op receipt, anti-patterns | [../plan-development-task/reference/provenance-first.md](../plan-development-task/reference/provenance-first.md) |
+| A step reverts, restores, ports, copies, or must stay unchanged | Source ladder, proof commands, no-op receipt, anti-patterns | [reference/provenance-proof.md](reference/provenance-proof.md) |
 | Formatting, whitespace, lockfile, or commit-message drift appears mid-step | Output model: proceed-and-log instead of stopping | [examples/incidental-deviation.md](examples/incidental-deviation.md) |
 | A step runs a shell command that deletes, moves, or overwrites files | Classification table, approval template, recovery ref, rationalizations | [reference/destructive-operation-policy.md](reference/destructive-operation-policy.md) |
 | A plan step itself asks for a destructive command | Output model: refusal, options, blocked status | [examples/refuse-destructive-command.md](examples/refuse-destructive-command.md) |
-| Writing or updating `context.md`, or a hand-off exceeds its budget | Charter template, admission test, ownership, latest-only handoff, open concerns | [../plan-development-task/reference/doc-budgets.md](../plan-development-task/reference/doc-budgets.md) |
-| A discovered fact may belong to the spike knowledge rather than the cell docs | Two-plane map, edit ownership, change routing | [../conduct-spike/reference/artifact-map.md](../conduct-spike/reference/artifact-map.md) |
 </context-loading-guide>
 
 </knowledge>
@@ -150,7 +147,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 4. If the folder contains a sibling `rework-<date>.md` (per the `context.md` manifest), execute only the active rework file's steps (see **rework-plan-execution**); never re-run or modify the completed original steps.
 5. If a plan file has steps with ❌ failed or 🚫 blocked status, ask whether to **resume** the same plan or **start fresh**. Prefer resume; start fresh only when the plan is unusable (wrong feature, nothing executed) and the user confirms. Never create a second plan folder for the same feature — a defective pending step is amended in place by the planner.
 6. Materialize the plan into `plan.md` per **reference/plan-input-schema.md**: list each step with its number, title, objective (one sentence each, see **concise-writing**), and initial status ⏳ pending, per **reference/step-tracking-format.md**.
-7. Populate `context.md` as a **charter**: outcome, why, must-hold invariants, unknowns, done criteria, pointers, open concerns, state. When it already exists, update only `## Open concerns` / `## State` / `## Execution` — never rewrite the planner-owned charter or manifests. Do not restate `plan.md`'s Scope Boundary, TDD rationale, or decisions. Target **40–60 lines** (ceiling 8,000 chars / 120) per **doc-budgets**; pre-flight evidence becomes a decision or an Unknown; never write a log — git/PR are the history.
+7. Populate `context.md` as a **charter**: outcome, why, must-hold invariants, unknowns, done criteria, pointers, open concerns, state. When it already exists, update only `## Open concerns` / `## State` / `## Execution` — never rewrite the planner-owned charter or manifests. Do not restate `plan.md`'s Scope Boundary, TDD rationale, or decisions. Target **40–60 lines** (ceiling 8,000 chars / 120) per the charter budget; pre-flight evidence becomes a decision or an Unknown; never write a log — git/PR are the history.
 8. Update step status in the plan file immediately after each state change (⏳ → 🔄 → ✅, or ❌/🚫 on failure); keep each note to one line per fact. Refer to **step-status-definitions** for emoji meanings.
 9. Never modify plan structure, objectives, steps, or the **Scope Boundary** block except to update statuses, add clarifying notes, or record `⏭` markers set by an approved amendment.
 10. Report progress at plan start: show all steps with ⏳ pending.
@@ -284,7 +281,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 <rule> **When the User Asks to Open a PR/MR**: Apply **create-pull-request** after the push — it resolves the PR conventions and gets approval on the full draft; never reuse a generic title or body. </rule>
 <rule> **When the Folder Contains a Rework Plan**: Apply **track-plan** and **execute-step** to the active `rework-<date>.md` steps only. </rule>
 <rule> **When Executed as a Dispatched Agent** (orchestrate-feature-delivery): Apply **orchestrator-handoff** — overwrite `context.md` `## Execution` with the latest handoff and update `## Open concerns` before reporting; never write a log — git/PR are the history. </rule>
-<rule> **When Writing or Updating `context.md`**: Apply **doc-budgets** — a 40–60-line charter, planner-owned sections untouched, latest handoff only, resolved unknowns deleted; never append a round or a log. </rule>
+<rule> **When Writing or Updating `context.md`**: Apply the **charter budget** — a 40–60-line charter, planner-owned sections untouched, latest handoff only, resolved unknowns deleted; never append a round or a log. </rule>
 <rule> **When the Plan is a POC** (`**Type**: poc`): Run it as a normal plan; offer to open the MR for the user's review and never merge before the user's decision. </rule>
 <rule> **When a Step, Recovery Fix, or Review Fix Is Material Against the Boundary, or When Deviating from the Plan**: Apply **check-scope-boundary** — hold and ask with options; log incidental drift instead of stopping. </rule>
 <rule> **Before Running Any Shell Command**: Apply **guard-destructive-operation** — refuse catastrophic commands and ask before irreversible ones. </rule>

@@ -108,3 +108,20 @@ Dispatching agents and their targets:
 - **Self-dispatch / fan-out**: opencode and Claude allow an agent to invoke itself by default; VS Code Copilot requires the `chat.subagents.allowInvocationsFromSubagents` setting for a self-referential `agents` entry.
 - opencode defaults unspecified tools to `allow`; the explicit `task` allowlists above exist only where dispatch is restricted.
 
+
+## Skill self-containment
+
+Every skill is installable on its own: each markdown link resolves **inside its own
+skill folder**, and another skill is named, never deep-linked. Doctrine that several
+skills need is duplicated as a scoped local slice, not shared by path.
+
+["Skill doctrine registry"](./docs/skill-doctrine.md) maps each doctrine to its owning
+copy and every mirror, so a change knows what to propagate.
+
+```sh
+# No link may leave its skill folder
+python3 skills/review-skill/scripts/check_skill_links.py skills
+
+# Same basename in several skills — a `differ` row is a slice to check against the registry
+python3 skills/review-skill/scripts/check_skill_links.py --duplicates skills
+```

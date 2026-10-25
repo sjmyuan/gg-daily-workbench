@@ -6,7 +6,7 @@ and `rework-<date>.md`.
 ## Artifact responsibilities
 
 Delivery side only: **index = state · context = charter · plan = execution · rework = delta · git/PR = record.**
-The full two-plane matrix (spike + delivery), ownership, and lifetimes: **[artifact-map](../../conduct-spike/reference/artifact-map.md)**.
+Spike artifacts and their owners are out of scope here; a decision-changing fact is never copied into a cell doc.
 
 - **index = state.** It points to the cell; it never explains it.
 - **context = charter.** It holds invariants; it never holds steps.
@@ -134,8 +134,7 @@ Never append a round to `context.md`.
 
 ## index.md
 
-`index.md` is a **state board**, not a report — ceiling 8,000 chars / 120 lines.
-Board rules, feature table, and archive rule: **[delivery-index-format.md](../../orchestrate-feature-delivery/reference/delivery-index-format.md)**.
+`index.md` is a **state board**, not a report — ceiling 8,000 chars / 120 lines. It points to the cell; it never explains it. The orchestrator owns its template, feature table, and archive rule.
 
 ## Checklist
 

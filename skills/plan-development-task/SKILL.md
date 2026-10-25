@@ -146,7 +146,7 @@ Load only the examples directly relevant to the current change type to minimize 
 | Validating plan quality | Checklist: coverage, sequencing, steps, TDD, clarity | [reference/plan-quality-checklist.md](reference/plan-quality-checklist.md) |
 | Writing or ratifying the Scope Boundary block | Zones (incl. `Must match`), materiality test, stop-vs-log rubric | [reference/scope-boundary.md](reference/scope-boundary.md) |
 | Amending an in-flight plan (defective pending steps) | Amend-vs-rework rule, ⏭ abandoned status, `## Amendments` row | [reference/plan-amendment.md](reference/plan-amendment.md) |
-| Writing a rework plan (`rework-<date>.md`) for an implemented feature | Sibling rework file + manifest (shared with the orchestrator) | [../orchestrate-feature-delivery/examples/post-implementation-rework.md](../orchestrate-feature-delivery/examples/post-implementation-rework.md) |
+| Writing a rework plan (`rework-<date>.md`) for an implemented feature | Sibling rework file, manifest row, six-field delta steps | [examples/rework-scope-boundary.md](examples/rework-scope-boundary.md) · [reference/plan-file-format.md](reference/plan-file-format.md) |
 | Rework that risks changing **Must not change** behavior | Boundary definition + refusal with decision options | [examples/rework-scope-boundary.md](examples/rework-scope-boundary.md) |
 | Amending an in-flight plan after execution stops | Amend-in-place walkthrough with ⏭ abandoned and `## Amendments` row | [examples/amend-mid-execution.md](examples/amend-mid-execution.md) |
 | Bug: simple logic / timing errors | Full workflow example | [examples/bug-fix-simple-logic.md](examples/bug-fix-simple-logic.md) |
@@ -157,11 +157,9 @@ Load only the examples directly relevant to the current change type to minimize 
 | Refactor: interface extraction for testability | Full workflow example | [examples/refactor-interface-implementation.md](examples/refactor-interface-implementation.md) |
 | Planning a POC (normal feature implementing one ADR option) | POC metadata + feature-plan steps; no measurement step | [reference/plan-poc.md](reference/plan-poc.md) |
 | Full POC plan walkthrough | plan-poc end-to-end output | [examples/plan-adr-option-poc.md](examples/plan-adr-option-poc.md) |
-| POC round from dispatch to decision gate (shared with the orchestrator) | End-to-end POC walkthrough | [../orchestrate-feature-delivery/examples/adr-option-poc.md](../orchestrate-feature-delivery/examples/adr-option-poc.md) |
 | Persisting a confirmed plan to `plan.md` + `context.md` | plan.md + context.md layout for **export-plan** | [examples/export-plan.md](examples/export-plan.md) |
 | Turning a long planning draft into a 40–60-line charter | Section triage, before/after, responsibility check | [examples/context-charter.md](examples/context-charter.md) |
 | Writing, updating, or validating `context.md` / `index.md` size | Charter template, admission test, artifact responsibilities, caps | [reference/doc-budgets.md](reference/doc-budgets.md) |
-| Deciding whether a fact belongs in spike artifacts or the cell docs | Two-plane map, handoff contract, edit ownership | [../conduct-spike/reference/artifact-map.md](../conduct-spike/reference/artifact-map.md) |
 </context-loading-guide>
 
 <skill-boundary>

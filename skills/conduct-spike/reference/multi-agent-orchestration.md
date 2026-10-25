@@ -42,7 +42,29 @@ Verify via `question-everything`'s **verify-sub-agent-results**, with depth set 
 - The re-dispatch brief carries the **verification result** (open challenges + verdicts) so the new agent resolves them instead of redoing settled work (see **reference/dispatch-briefs.md**).
 - Each verifier brief carries the known context — established `file:line`, the settled-vs-open split, and searched-negatives.
 - `UNCERTAIN` → tag the claim **unverified** in the evidence doc and surface it; never add a round to converge.
-- At the 2-round cap, present both versions to the user. Full rules: `question-everything`'s **reference/verification-protocol.md**.
+
+### Verification questions
+
+Probe each material claim across six dimensions, ordered by impact × likelihood × scope:
+
+| Dimension | Probes |
+|---|---|
+| **Completeness** | Missing branches, edge cases, fallbacks, downstream consumers |
+| **Correctness** | Claim vs. code/docs/logs; accuracy of every cited `file:line` |
+| **Ambiguity** | Vague nouns, unstated units, scope a second reader would read differently |
+| **Consistency** | Self-contradiction, disagreement with other verified results |
+| **Evidence** | Claims with no primary source; restatements passed off as sources |
+| **Assumptions** | Silent premises that would invalidate the result if false |
+
+Emit each surviving challenge as `**C<N> (<dimension>, <priority>)** — <claim>: <why suspect>. Satisfactory answer: <what closes it>.`
+Verify only material (high/medium) challenges, capped at the top 3 by impact; note the rest without verifying.
+
+**Independence** — dispatch a NEW agent matched to the evidence that settles the challenge, never the original producer. Give it claims and citations, never a pre-written verdict. No suitable agent → verify in-session against primary sources.
+
+**Verdicts** — `AGREE` (holds, with source) · `DISAGREE` (corrected claim, with source) · `UNCERTAIN` (state what is missing).
+All material `AGREE` → accept. Any `DISAGREE` → a new evidence-matched agent repairs the affected work, then confirm only the changed claims. Any `UNCERTAIN` → tag **unverified** and surface it; never add a round. At the 2-round cap, present both versions to the user.
+
+**Traps** — a wholesale "looks fine" is not a verdict · verifying the result instead of per challenge · reusing the original instance · sending only the verdict back on repair · treating "same wording" as agreement · accepting a verdict with no cited source.
 
 ## When NOT to Dispatch
 

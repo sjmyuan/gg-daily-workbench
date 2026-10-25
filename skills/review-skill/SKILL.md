@@ -107,6 +107,8 @@ Steps cite these standards by name; load the Details file.
 15. Format findings with severity per **reference/severity-levels.md**; load **examples/skill-file-review.md** for output structure.
 16. **Check integration** — when the skill references another skill or dispatches/loads sub-agents, load
     **reference/pipeline-integration.md** and verify the applicable axes from its own declarations; skip if neither applies.
+    When it links another skill, run `python3 scripts/check_skill_links.py <skill-dir>` and report its findings per
+    Axis 1 point 6; `--duplicates` lists same-name copies across skills.
 17. **Check tooling** — when the skill ships `scripts/` or invokes a CLI, load **reference/script-and-cli-policy.md**:
     a. Each script passes the four justification tests; re-implementing a standard CLI → 🟡 Minor.
     b. Python 3 stdlib only or a stated exception; dependency, network call, or prompt → 🔴 Major.

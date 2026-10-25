@@ -1,7 +1,7 @@
 # Example Coverage and Quality Standards
 
 Used by **create-skill-examples** and **validate-created-skill** (checks 9, 15, 16).
-Mirrors **../review-skill/reference/artifact-consistency.md** for cross-skill pipelines.
+Mirrors the reviewer's **artifact-consistency** standard for cross-skill pipelines.
 
 ## Coverage requirements
 - Every distinct capability must have at least one linked example

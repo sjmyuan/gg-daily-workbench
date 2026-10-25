@@ -60,7 +60,7 @@ Another round seeded with prior artifacts: read `scope.md` for open work, confir
 </continuation-mode>
 
 <greenfield-scenarios>
-No existing implementation: research industry approaches, comparables, and constraints. Never build POCs — `orchestrate-feature-delivery` delivers any POC.
+No existing implementation: research industry approaches, comparables, and constraints.
 </greenfield-scenarios>
 
 <multi-agent-orchestration>
@@ -68,7 +68,7 @@ Dispatch every spike unit — including a single-task spike — to sub-agents. D
 </multi-agent-orchestration>
 
 <sub-agent-verification>
-Verification depth scales with blast radius, not artifact count: investigation evidence gets one independent verifier pass; findings/solution synthesis gets a fidelity check against the verified ledger; only load-bearing ADR decisions get the full loop. Cap 2 rounds — verify, repair once, confirm changed claims; residual uncertainty is tagged, not chased. Full rules: `question-everything`'s **reference/verification-protocol.md**.
+Verification depth scales with blast radius, not artifact count: investigation evidence gets one independent verifier pass; findings/solution synthesis gets a fidelity check against the verified ledger; only load-bearing ADR decisions get the full loop. Cap 2 rounds; residual uncertainty is tagged, not chased. Full rules: **reference/multi-agent-orchestration.md**.
 </sub-agent-verification>
 
 <problem-decomposition-guide>
@@ -106,7 +106,7 @@ Propagation stops at the first unaffected artifact. Full protocol: **reference/a
 | Watching statuses move through a spike | Status lifecycle walkthrough | [examples/scope-status-lifecycle.md](examples/scope-status-lifecycle.md) |
 | Continuing a spike (walkthrough) | Continuation walkthrough (revise-in-place) | [examples/continue-prior-spike.md](examples/continue-prior-spike.md) |
 | Heavy multi-area spike with parallel sub-agents | Parallel dispatch walkthrough | [examples/multi-agent-investigation.md](examples/multi-agent-investigation.md) |
-| Verifying sub-agent results | Questioning dimensions + verification protocol | [questioning-dimensions.md](../question-everything/reference/questioning-dimensions.md), [verification-protocol.md](../question-everything/reference/verification-protocol.md) |
+| Verifying sub-agent results | Questioning dimensions, independence rules, verdicts, 2-round cap | [reference/multi-agent-orchestration.md](reference/multi-agent-orchestration.md) |
 | ADR discussion hinging on unverified assumptions | Uncertainty-spike suggestion example | [examples/adr-uncertainty-spike-suggestion.md](examples/adr-uncertainty-spike-suggestion.md) |
 | Fact/decision change propagated through artifacts | Sync walkthrough | [examples/sync-update-across-artifacts.md](examples/sync-update-across-artifacts.md) |
 | Placing artifacts into the spike folder | Layout example | [examples/spike-artifact-layout.md](examples/spike-artifact-layout.md) |

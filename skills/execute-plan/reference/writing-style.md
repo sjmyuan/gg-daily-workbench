@@ -5,7 +5,6 @@ Applies to all prose written into `plan.md` / `context.md` during execution. Tab
 ## Size budget
 
 `context.md`: **40–60 lines** target, **8,000 chars / 120 lines** ceiling — a charter, not a log.
-See **[doc-budgets](../../plan-development-task/reference/doc-budgets.md)**.
 Do not write commit tables, test matrices, deviations, or per-round history — git/PR are the history.
 Overwrite `## Execution` each round; update `## Open concerns`; leave the planner-owned charter untouched.
 

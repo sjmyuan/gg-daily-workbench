@@ -11,6 +11,7 @@ When a skill references or is referenced by another skill, verify 4 points:
 3. **Bidirectional awareness** — each skill names the other in its description, skill-boundary, or rules. Missing cross-reference → 🟡 Minor.
 4. **Guard clauses** — the downstream skill's when-to-use prevents premature loading (e.g., "Do NOT load when no plan has been generated yet"). Absence → 🟡 Minor (both skills could load simultaneously).
 5. **Artifact schema conformance** — the consumer owns the schema; the producer's examples reproduce the consumer's template (headings, fields, order, statuses) or are labelled abridged. Any drift → 🔴 Major (downstream parsing/execution breaks). Shared examples are updated in both skills. Details: **artifact-consistency**.
+6. **Link self-containment** — every markdown path resolves inside the skill's own folder; another skill is named, never deep-linked (`../other-skill/reference/x.md`). A skill may be installed alone, so an escaping link resolves to nothing and fails silently. Run `scripts/check_skill_links.py <skill-dir>`; report each `ESCAPE` / `ABS` finding. Severity: 🟡 Minor as a convenience pointer, 🔴 Major when the escaping target carries a rule or template the capability step depends on. `--duplicates` lists same-basename files across skills; a diverging copy → 🟢 Nit — confirm it is a deliberate slice, not drift.
 
 ## Axis 2 — Skill↔Sub-agent integration
 

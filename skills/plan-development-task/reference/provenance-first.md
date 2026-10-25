@@ -1,6 +1,6 @@
 # Provenance-First Change Handling
 
-Used by **plan-mechanical-restore**, **define-scope-boundary**, and execute-plan's **execute-step**.
+Used by **plan-mechanical-restore** and **define-scope-boundary**. Delivery and execution keep their own scoped copies (`mechanical-restore`, `provenance-proof`).
 
 ## Rule
 
