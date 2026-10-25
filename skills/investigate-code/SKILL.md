@@ -10,8 +10,8 @@ description: Investigate codebases to answer questions about functionality, arch
 - User wants to investigate code across multiple repositories and their interactions
 - User wants to visualize architecture with C4 diagrams, sequence diagrams, or call stack traces
 - User wants to discover implementation patterns or detect inconsistencies across the codebase
-- User is conducting a spike investigation (via the `conduct-spike` skill) and needs current-state investigation of an area
-- User is drafting an ADR via the `draft-adr` skill and needs an evidence map (entry points, `file:line` locations, call chains) to ground per-option tech details
+- A spike area needs current-state investigation before decisions are drafted
+- An ADR needs an evidence map (entry points, `file:line` locations, call chains) to ground per-option details
 </when-to-use-this-skill>
 
 <knowledge>
@@ -72,7 +72,7 @@ Every finding must carry an epistemic status tag so the user can judge completen
 Detailed presentation format: [reference/confidence-and-coverage-guide.md](reference/confidence-and-coverage-guide.md)
 </finding-confidence-model>
 <spike-integration>
-When invoked from the `conduct-spike` skill for a spike investigation, scope the investigation to the spike's area and read its existing evidence before re-scanning: load the spike folder's evidence doc (`docs/evidence-<area>.md`), then update its evidence map per `conduct-spike`'s **reference/findings-document-guide.md** (entry points `file:line`, sequence diagrams for call chains, evidence ledger with the 5-tag confidence model, searched-negatives). The human doc (`docs/findings-<area>.md`) carries no ledger. Do not load when no spike area has been defined yet.
+For a spike investigation, scope the investigation to the spike's area and read its existing evidence before re-scanning: load the spike folder's evidence doc (`docs/evidence-<area>.md`), then update its evidence map per the findings-document guide in **conduct-spike** (entry points `file:line`, sequence diagrams for call chains, evidence ledger with the 5-tag confidence model, searched-negatives). The human doc (`docs/findings-<area>.md`) carries no ledger. Do not load when no spike area has been defined yet.
 </spike-integration>
 <concise-writing>
 All investigation prose and reports follow BLUF (conclusion first), hard caps, atomic bullets, and tables-over-prose. Every section opens with a bolded one-line takeaway; no banned phrases; every sentence passes the "so what?" test. Load **reference/writing-style.md** for the full rules (caps table, banned-phrase list, sentence surgery).

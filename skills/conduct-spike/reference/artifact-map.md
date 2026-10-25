@@ -1,7 +1,7 @@
 # Spike → Delivery Artifact Map
 
 One artifact, one question. The two pipelines meet by **reference**, never by copying content.
-Delivery keeps a scoped slice of this map (`orchestrate-feature-delivery/reference/artifact-map.md`); this copy owns it.
+Delivery keeps its own scoped slice of this map inside `orchestrate-feature-delivery`; this copy owns it.
 
 ## Two planes
 

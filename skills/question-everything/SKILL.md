@@ -9,7 +9,7 @@ description: Question and verify agent-reported information like a skeptic — r
 - A result will be consumed downstream (decision, commit, merge, release) and being wrong is costly
 - Two agents or sub-agents return conflicting results and a resolution is needed
 - User asks to validate the correctness, completeness, or clarity of a returned result
-- Inside a spike pipeline (via `conduct-spike`) or a delivery pipeline (inconsistent results via `orchestrate-feature-delivery`) — question or verify sub-agent results before acceptance
+- Inside a multi-step pipeline — question or verify a sub-agent result before it is accepted downstream
 - Do NOT load for plain ADR drafting, solution-doc writing, or code investigation — use `draft-adr`, `write-solution-doc`, or `investigate-code` instead
 </when-to-use-this-skill>
 
@@ -81,5 +81,5 @@ Every verifier brief carries known context — established `file:line`, the sett
 <rule>When the user asks to verify or accept a returned result before using it, apply **verify-sub-agent-results**.</rule>
 <rule>When a result will be consumed downstream and being wrong is costly, apply **question-the-result**, then **verify-sub-agent-results** before the result is accepted.</rule>
 <rule>When two agents or sub-agents return conflicting results, apply **question-the-result** to each, then **verify-sub-agent-results** to resolve the conflict.</rule>
-<rule>When verifying sub-agent results inside a spike pipeline (via `conduct-spike`) or an inconsistent delivery result (via `orchestrate-feature-delivery`), apply **verify-sub-agent-results**.</rule>
+<rule>When a sub-agent result will be consumed downstream, or two returned results conflict, apply **verify-sub-agent-results**.</rule>
 </rules>

@@ -35,6 +35,18 @@ Apply consistently when categorizing review findings.
 - **Neither side is assumed correct** — the reviewer presents both and requests a decision
 - Escalate to 🔴 Major if the inconsistency affects a widely-used pattern or public API surface
 
+## Challenges (orthogonal to severity)
+
+A challenge is an unresolved question, not a defect. It carries no severity — it carries `Blocking`.
+
+| Blocking | Verdict effect |
+|---|---|
+| `yes` | Verdict becomes `No` or `With fixes` until answered |
+| `maybe` | Verdict may stand; state that the answer can still flip it |
+| `no` | Advisory; listed, never dropped |
+
+Never demote a challenge to 🟢 Nit because context is missing — missing context is why it is raised.
+
 ## Confidence labels (orthogonal to severity)
 
 Every finding carries a confidence label; severity is assigned independently of it.

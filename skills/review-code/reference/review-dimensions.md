@@ -90,6 +90,7 @@ Assume the change is wrong and hunt for the evidence that proves it right — th
    - ✓ Parallel paths (other code doing the same job that the change did not update)
    - ✓ Downstream consumers (services, jobs, reports, exports, dashboards reading the changed data)
    - ✓ Lifecycle fit (deploy order, migration order, rollback, data backfill, cache warm-up)
+   - ✓ Physical move (a file, package, or module added, moved, or renamed — verify the referent before judging it, per **referent-grounding.md**)
 
    **For every changed symbol**: name its callers, the callers' assumptions, and the evidence that each still holds.
 
@@ -101,6 +102,7 @@ Assume the change is wrong until the code proves it right.
 - Treat a guard absent from the diff as a guard that does not exist, not as one that lives elsewhere
 - Name concrete evidence for every "safe" verdict: the existing guard, test, or invariant at `file:line`
 - Re-read the change once as an attacker (abuse, injection, bypass, exhaustion) and once as a careless maintainer (misuse, missed update, stale assumption)
+- Challenge the change's shape, not only its behavior: whether it should exist, live there, be named that, or be that large
 - Keep every unproven suspicion in the report at its true confidence — never drop it silently
 
 ## Failure-mode enumeration
@@ -135,3 +137,9 @@ List what the change should have included but does not.
 | Observability | A new external call, cache, queue, or job ships without logs or metrics |
 | Documentation | A config key, flag, endpoint, or env var is added |
 | Feature gate | A risky or broad change ships unguarded |
+
+## Searched negatives
+
+An "absent" claim is evidence only when the search is named: `rg "<pattern>" <scope> → 0 hits`.
+Unsearched absence is a gap in the review, not a finding about the code — raise it as a challenge.
+

@@ -25,7 +25,7 @@ Capability steps cite these standards by name; load the Details file.
 | **example-standards** | One linked example per capability: template fidelity, set-level continuity, no contradictions. | **reference/example-standards.md** |
 | **platform-agnostic-writing** | No platform tool names or concrete context paths; abstract context descriptions; detect, don't assume. | **reference/platform-agnostic-writing.md** |
 | **script-and-cli-policy** | CLI first, inline one-liner second, `scripts/` script last after four tests; Python 3 stdlib only; fixed output contract. | **reference/script-and-cli-policy.md** |
-| **pipeline-integration** | 4 points: handoff, shared schema, bidirectional awareness, guard clauses. | **reference/pipeline-integration.md** |
+| **pipeline-integration** | 5 points: handoff, shared schema, one-way awareness (caller → callee), guard clauses, link self-containment. | **reference/pipeline-integration.md** |
 | **writing-style** | Directive voice, BLUF, hard caps, atomic bullets, tables over prose, no banned phrases, no narration. | **reference/writing-style.md** |
 | **size-limits** | SKILL.md and `reference/` ≤12,000 chars / 150 lines; `examples/` ≤9,000; >120-char lines flagged; measure with the reviewer's `measure_sizes.py`. | **reference/size-limits.md** |
 | **size-remediation** | Re-encode → reuse → cut weight → redistribute → reduce → escalate; chars are the only gate, never merge steps or lines (🔴). | **reference/size-remediation.md** |
@@ -66,7 +66,7 @@ Capability steps cite these standards by name; load the Details file.
 
 1. Create the target directory with `examples/`, `reference/`, and — only when justified — `scripts/`.
 2. Write the frontmatter: action-verb `name`; `description` per the two-part template, self-scored ≥ 9 per **description-quality**.
-3. Write `<when-to-use-this-skill>` as 3–7 bullet scenarios whose intent verbs appear in the `description` trigger phrase.
+3. Write `<when-to-use-this-skill>` as 3–7 bullet scenarios whose intent verbs appear in the `description` trigger phrase; phrase each as an input condition, never as a caller name.
 4. Budget each section to ≤ **size-limits**.
 5. Write knowledge as tables/lists; extract large rubrics to `reference/` and route them inline from the using step.
 6. Write each capability with a unique action-verb name and numbered steps; no embedded reference tables or constraint bullets.
@@ -74,7 +74,7 @@ Capability steps cite these standards by name; load the Details file.
 8. Write all prose per **writing-style**.
 9. Write prose per **platform-agnostic-writing**.
 10. Validate the draft against **section-semantics** (violations, section order, naming).
-11. If the skill is part of a multi-skill pipeline, verify the 4 integration points per **pipeline-integration**.
+11. If the skill is part of a multi-skill pipeline, verify the 5 integration points per **pipeline-integration**, keeping every dependency caller → callee.
 12. Measure per **size-limits**; if over, apply **size-remediation**.
 13. Write to the user-provided `<target>/SKILL.md` (per **same-name-live-copy-ban**).
 </create-skill-file>
@@ -85,7 +85,7 @@ Capability steps cite these standards by name; load the Details file.
 1. Determine one realistic scenario per capability per **example-standards**.
 2. If the capability emits an artifact, load its canonical template; reproduce headings, field order, and statuses; label abridged output.
 3. Create one `.md` per scenario under `examples/` with scenario heading, setup, `Applies **[capability]**`, input, and expected output.
-4. Validate the set per **example-standards** — identifier/count continuity, no contradictions — then run `../review-skill/scripts/check_artifacts.py` with the template's fields.
+4. Validate the set per **example-standards** — identifier/count continuity, no contradictions — then run `check_artifacts.py` from `review-skill` with the template's fields.
 5. Write example prose per **writing-style**.
 6. Measure per **size-limits**; if over, apply **size-remediation** (trim prose or low-value examples, never required fields).
 7. Write each example to its file.

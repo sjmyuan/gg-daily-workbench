@@ -6,7 +6,8 @@ Usage:
 
 PATH is a skill directory (holds SKILL.md), a skills root whose subdirectories
 are skills, or a .md file (its nearest SKILL.md ancestor is the skill). Every
-*.md under a skill is scanned; fenced blocks and inline code are ignored.
+*.md under a skill is scanned. Link parsing skips fenced blocks and inline code;
+the CROSSPATH scan reads every line, including commands inside fences.
 
 Options:
     --list          Print each offending link as `path:line: -> target [CODE]`.
@@ -18,6 +19,8 @@ Default output: one finding per line, `path:line: CODE message`, sorted, with th
 path relative to the skill's parent folder (e.g. `conduct-spike/SKILL.md:109`).
     ESCAPE   link target resolves outside the skill folder (any `../` escape)
     ABS      link target is absolute or a file:// URL — not portable
+    CROSSPATH  a path or command points into a sibling skill's folder; name the
+               skill instead so this one still works when installed alone
 
 Codes are stable field names. Missing relative targets are not reported here —
 check_artifacts.py owns that. Exit codes: 0 clean, 1 findings, 2 usage error.
@@ -83,6 +86,31 @@ def escaping(path: Path, root: Path) -> list[tuple[int, str, str]]:
     return findings
 
 
+def sibling_names(root: Path) -> set[str]:
+    """Skill names installed beside this skill; empty when it stands alone."""
+    parent = root.parent
+    if not parent.is_dir():
+        return set()
+    return {d.name for d in parent.iterdir()
+            if d.is_dir() and d != root and (d / "SKILL.md").is_file()}
+
+
+def cross_paths(path: Path, names: set[str]) -> list[tuple[int, str]]:
+    """(line, skill name) for a reference into a sibling skill's folder."""
+    if not names:
+        return []
+    pattern = re.compile(
+        r"(?:\.\./)?(" + "|".join(sorted(map(re.escape, names)))
+        + r")/(?:reference|examples|scripts)/")
+    found: list[tuple[int, str]] = []
+    for number, line in enumerate(
+            path.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+        match = pattern.search(line)
+        if match and f"]({match.group(0)}" not in line:
+            found.append((number, match.group(1)))
+    return found
+
+
 def duplicates(roots: list[Path]) -> list[tuple[Path, str, str]]:
     """(origin, basename, detail) for basenames appearing under more than one skill."""
     seen: dict[str, list[tuple[Path, Path]]] = {}
@@ -129,11 +157,16 @@ def main(argv: list[str]) -> int:
     rows = [(str(md.relative_to(root.parent)), n, code, target)
             for root in roots for md in sorted(root.rglob("*.md"))
             for n, code, target in escaping(md, root)]
+    rows += [(str(md.relative_to(root.parent)), n, "CROSSPATH", name)
+             for root in roots for md in sorted(root.rglob("*.md"))
+             for n, name in cross_paths(md, sibling_names(root))]
     for path, number, code, target in sorted(rows):
         if mode == "list":
             print(f"{path}:{number}: -> {target} [{code}]")
         elif code == "ABS":
             print(f"{path}:{number}: ABS absolute link target {target}")
+        elif code == "CROSSPATH":
+            print(f"{path}:{number}: CROSSPATH points into sibling skill '{target}'")
         else:
             print(f"{path}:{number}: ESCAPE link escapes skill folder: {target}")
     return 0 if mode == "list" or not rows else 1

@@ -18,11 +18,9 @@ change chars; line count is a secondary scanability signal.
 
 ## Measure
 
-```sh
-python3 ../review-skill/scripts/measure_sizes.py <skill-dir-or-file>
-```
-
-Reports chars, bytes, lines, long-line hits, and budget status per file type.
+Run `measure_sizes.py` from the installed `review-skill` folder against the target file or skill.
+It reports chars, bytes, lines, long-line hits, and budget status per file type.
+When `review-skill` is not installed, count with `wc -c` and `wc -l` — the budgets are absolute.
 
 Manual fallback — `wc -m` counts chars, `wc -c` counts **bytes** (never use it);
 exclude table rows and the frontmatter `description` from the long-line scan.

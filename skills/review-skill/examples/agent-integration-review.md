@@ -42,7 +42,7 @@
 ---
 
 ## Positive Highlights
-- The skill names the agent type it expects (`document-drafter`) and states the dispatch brief's minimum content — partial bidirectional awareness.
+- The skill names the agent type it dispatches (`document-drafter`) and states the dispatch brief's minimum content — caller-side awareness done right.
 - Per-chapter dispatch preserves the orchestrator's context; the rationale is stated in knowledge.
 - Merge rules for parallel results (de-duplicate headings, resolve conflicting sections) are explicit.
 

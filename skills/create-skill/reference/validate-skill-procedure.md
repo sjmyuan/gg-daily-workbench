@@ -15,7 +15,7 @@ Used by **validate-created-skill** (step 2). Run the checks in order and report 
 | 9 | Every capability has a linked example; examples meet **example-standards**, stay traceable, and contradict no rule. | 🔴 Major (subset-only: 🟡 Minor) |
 | 10 | Rules route "when → capability" without restating capability content. | 🟡 Minor |
 | 11 | Each capability ends with a validation or checklist step per **evaluation-process**. | 🟡 Minor (with no validation example: 🔴 Major) |
-| 12 | Declared pipeline and sub-agent integration points hold per **pipeline-integration**; check only relationships the files declare themselves. | 🟡 Minor |
+| 12 | Declared pipeline and sub-agent integration points hold per **pipeline-integration**; check only relationships the files declare themselves. A callee naming the skill or agent that loads it → 🟡 Minor. | 🟡 Minor |
 | 13 | Scripts and CLI steps meet **script-and-cli-policy**: justified, Python stdlib only or stated exception, fields documented, named by a step, no dependencies/network/prompts. | 🔴 Major (orphan script) / 🟡 Minor |
 | 14 | Findings reported with **severity-levels**; each has an actionable fix. | — |
 | 15 | Artifact templates are literal, single-owner skeletons; examples reproduce headings, field labels, order, and statuses; abridged output is labelled. | 🔴 Major (label-only: 🟡 Minor) |
@@ -28,7 +28,7 @@ Used by **validate-created-skill** (step 2). Run the checks in order and report 
 3. Revert to the last valid state on a 🔴 Blocker and redo with a real lever.
 4. Stop when the gates pass; do not keep trimming a passing file.
 5. Separate **introduced** from **pre-existing** findings; report both, but never block a scoped fix on a pre-existing budget failure.
-6. When artifact templates exist, run `../review-skill/scripts/check_artifacts.py` with the template's field and zone lists before the manual checks.
+6. When artifact templates exist, run `review-skill`'s `check_artifacts.py` with the template's field and zone lists before the manual checks; if the tool is absent, say so in the report.
 
 ## Structural-integrity gate
 

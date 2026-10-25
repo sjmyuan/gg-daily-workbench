@@ -36,6 +36,7 @@ Each example file must meet:
 
 ## Machine check
 If the skill ships artifact templates, run
-`../review-skill/scripts/check_artifacts.py` with the template's field and zone lists.
+`review-skill`'s `check_artifacts.py` with the template's field and zone lists.
+When `review-skill` is not installed, state in the validation report that the machine check did not run.
 It covers links, fences, step fields, zone order, and duplicate step numbers; template fidelity
 and set-level continuity remain manual.

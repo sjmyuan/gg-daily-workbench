@@ -10,7 +10,7 @@ description: Produce solution documentation with C4/sequence/flowchart diagrams,
 - User needs API or event schemas
 - User wants RAID analysis or a RACI matrix
 - User wants to compile a multi-section solution document
-- User is running a spike (via `conduct-spike`) and needs the target-state solution document
+- A decided option needs its target-state solution documented
 </when-to-use-this-skill>
 
 <knowledge>

@@ -14,6 +14,8 @@
 **Reviewed**: 2 files, +38/-6 — `src/events/EventPublisherImpl.java` (+31/-4), `src/events/EventPublisherImplTest.java` (+7/-2)
 **Overall Assessment**: Requires a bounded cache and a regression test before merge
 **Ready to merge?**: With fixes — the dedup guard works for a single instance but leaks memory and drops duplicates without a trace
+**Repo expertise**: `AGENTS.md`, `CONTRIBUTING.md`
+**Open challenges**: 0 open, 0 blocking · **Unverified referents**: 0
 
 ---
 

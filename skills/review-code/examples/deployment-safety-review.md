@@ -12,6 +12,9 @@
 **Scope**: `feature/order-summary-endpoint` — new REST endpoint, DB migration, and Redis caching
 **Focus Areas**: Observability, deployment safety, correctness, security
 **Overall Assessment**: Requires two blockers to be addressed before merge; deployment sequence must be documented
+**Ready to merge?**: No — the migration is not backward-compatible and the cache has no eviction path
+**Repo expertise**: `AGENTS.md`, `docs/adr/`, `.github/workflows/`
+**Open challenges**: 0 open, 0 blocking · **Unverified referents**: 0
 
 ---
 

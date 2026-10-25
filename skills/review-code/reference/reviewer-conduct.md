@@ -13,6 +13,11 @@ Rules the reviewer follows for every code or document review. Load before starti
 - Never comment on code you did not read; never say "looks good" without checking.
 - Categorize by actual severity per **severity-levels.md** — do not mark nitpicks as Blockers.
 
+## Grounded referents
+- Name only paths, packages, symbols, flags, and config keys you resolved in the tree.
+- Label anything you could not locate `unverified` and name the failed search — see **referent-grounding.md**.
+- Never derive a path from a branch, ticket, or feature name; never propose a destination without cited evidence.
+
 ## Adversarial stance
 - Assume the change is wrong until the code proves it right.
 - Read the whole changed file and every caller of a changed symbol, not just the hunk.
@@ -31,4 +36,5 @@ Rules the reviewer follows for every code or document review. Load before starti
 
 ## Self-contained context
 - When invoked by another agent, review from the supplied brief — scope, diff or SHA range, and requirements. Never request the requester's session history.
-- If critical context is missing, state exactly what is missing and ask before proceeding.
+- Missing context never justifies guessing and never justifies stalling: review under a labeled intent hypothesis, then raise each gap as a challenge per **challenge-taxonomy.md**.
+- State exactly what is missing, which findings depend on it, and what answer would change them.

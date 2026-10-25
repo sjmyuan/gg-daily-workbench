@@ -54,6 +54,7 @@ A rename or removal must update every mention in the edited skill and its declar
 - `<context-loading-guide>` rows
 - `<rules>` routing and `<knowledge>` self-links
 - sibling files the skill itself declares (never fetch other skills)
+- every skill or agent name in the edited skill — keep the ones it invokes, drop the ones that only load it
 - shared examples another skill declares — update both sides in the same change
 - the canonical artifact template when a field, zone, or status vocabulary changes
 

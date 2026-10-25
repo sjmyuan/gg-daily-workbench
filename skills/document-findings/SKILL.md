@@ -43,7 +43,7 @@ A findings doc pair explains what exists in a code **area** today: a human findi
 - Details and linking: **reference/evidence-and-ids.md**.
 </evidence-doc>
 <pipeline-integration>
-Pipeline: `investigate-code` → doc pair → `draft-adr` → `write-solution-doc`, seeded by `conduct-spike`; details in **reference/pipeline-integration.md**.
+Pipeline: an area investigation → doc pair → `draft-adr` → `write-solution-doc`; details in **reference/pipeline-integration.md**.
 </pipeline-integration>
 
 <context-loading-guide>
@@ -146,5 +146,5 @@ Pipeline: `investigate-code` → doc pair → `draft-adr` → `write-solution-do
 <rule>When new evidence changes an existing area, apply **update-findings-doc** to both docs.</rule>
 <rule>Before saving or delivering a pair, apply **validate-findings-doc**.</rule>
 <rule>When the user wants target-state architecture or a decision record, do NOT use this skill — apply `write-solution-doc` or `draft-adr`.</rule>
-<rule>When running inside a spike, seed both docs from `conduct-spike`'s area investigation per **reference/pipeline-integration.md**.</rule>
+<rule>When a spike area investigation exists, seed both docs from its evidence per **reference/pipeline-integration.md**.</rule>
 </rules>
