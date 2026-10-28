@@ -37,7 +37,6 @@ Capability steps cite these standards by name; load the Details file.
 </named-standards>
 
 <context-loading-guide>
-
 | Load when | Provides | File |
 |---|---|---|
 | Walking through a greenfield create flow | End-to-end create-skill-file walkthrough | [examples/create-skill-file.md](examples/create-skill-file.md) |
@@ -46,7 +45,6 @@ Capability steps cite these standards by name; load the Details file.
 | Validating a newly created skill before delivery | Validation-report walkthrough | [examples/validate-new-skill.md](examples/validate-new-skill.md) |
 | Editing an existing skill (merge, retire, rename ripple) | Edit walkthrough | [examples/editing-existing-skill.md](examples/editing-existing-skill.md) |
 | A capability step needs automation (CLI vs script) | Automation-decision walkthrough | [examples/create-skill-scripts.md](examples/create-skill-scripts.md) |
-
 </context-loading-guide>
 
 </knowledge>
@@ -56,9 +54,11 @@ Capability steps cite these standards by name; load the Details file.
 <collect-skill-requirements>
 **Objective**: Gather what defines the new skill's purpose, scope, and capabilities.
 
-1. Ask for: **skill name** (action verb), **description** (domain + trigger), **when-to-use bullets** (3–7), **capabilities** (action verbs), **knowledge** (tables, constraints), **rules** (routing), **examples** (≥1 per capability), **references** (large rubrics).
-2. Present a summary of the collected information for confirmation.
-3. If the user provides source materials (agent prompts, code, docs), extract knowledge from them instead of asking; never fetch a same-named live skill (per **same-name-live-copy-ban**).
+1. Run `grill-user`'s intake gate on the ask; its acceptance record replaces the question list.
+2. Fill that record with **name** (action verb), **description**, **when-to-use** (3–7), **capabilities**, **knowledge**, **rules**, **examples**, **references**.
+3. Set the gate state and one `Assumption (user-accepted, unverified)` per default; `BLOCKED` → write no SKILL.md.
+4. Extract from supplied materials instead of asking; never fetch a same-named live skill (per **same-name-live-copy-ban**).
+5. Validate: every inference is a field or a labeled assumption; name, description, and triggers agree both ways.
 </collect-skill-requirements>
 
 <create-skill-file>
@@ -138,10 +138,10 @@ Capability steps cite these standards by name; load the Details file.
 </capabilities>
 
 <rules>
-<rule>When the user requests to create a new skill, use **collect-skill-requirements** to gather name, description, scenarios, capabilities, knowledge, and example needs.</rule>
+<rule>When the user requests a new skill, use **collect-skill-requirements** — it owns the intake gate and the requirements record.</rule>
 <rule>After requirements are confirmed, use **create-skill-file** to generate SKILL.md, and **create-skill-examples** plus **create-skill-references** in parallel as needed.</rule>
 <rule>After creating or editing all files, use **validate-created-skill** before presenting the result.</rule>
-<rule>When creating or validating a skill, operate only on the user-provided files per **same-name-live-copy-ban** — never read, compare, or edit a live/loaded skill with the same name.</rule>
+<rule>When creating or validating a skill, operate only on the user-provided files per **same-name-live-copy-ban**.</rule>
 <rule>When the user asks to edit, improve, or revise an existing skill, use **edit-skill**; run an open-ended "improve" through `review-skill` first per **reference/edit-skill-procedure.md**.</rule>
 <rule>When the user asks for a read-only review of an existing skill file, delegate to the `review-skill` skill instead.</rule>
 <rule>When a capability step needs automation, use **create-skill-scripts** — pick an installed CLI before a script, and Python 3 stdlib before any other language.</rule>

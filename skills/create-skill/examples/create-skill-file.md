@@ -12,13 +12,15 @@ User request: "Create a skill that writes consistent git commit messages with co
 |---|---|
 | Skill name | `write-commit-message` (imperative verb, kebab-case) |
 | Description | "Write consistent git commit messages with conventional prefixes and a 72-char subject limit. Use when writing, fixing, or refining a commit message." |
-| When-to-use scenarios | bug fix, feature, breaking change, multi-file change |
+| When-to-use scenarios | bug fix, feature, breaking change, refining an existing message |
 | Capabilities | `<write-commit-message>` |
 | Knowledge | prefix table, 72-char wrap rule, footer format |
 | Rules | 1 rule routing commit-writing requests |
 | Reference needs | none — rubrics are small |
+| Gate state | `ACCEPTED-WITH-ASSUMPTIONS` — "consistent" inferred as subject-only, body only for breaking changes |
+| Accepted assumptions | `Assumption (user-accepted, unverified)`: subject-only commits; body added only for breaking changes |
 
-The user confirms this summary before creation proceeds.
+The gate ran before creation: the one inference was shown back in the restatement above and accepted, not assumed privately.
 
 ## Post-Write Checks
 - Prose written per **writing-style** — directive voice, BLUF, hard caps, no banned phrases.
