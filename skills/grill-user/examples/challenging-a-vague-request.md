@@ -2,7 +2,7 @@
 
 **Scenario**: A user opens a spike with one sentence and expects investigation to start. The choice of metric changes the area split, so the gate runs before `scope.md` exists.
 
-Applies **challenge-the-ask**.
+Applies **grill-the-ask**.
 
 ## Input / Context
 - **Request**: "Our checkout is slow, spike what we should do."
@@ -10,7 +10,14 @@ Applies **challenge-the-ask**.
 - **Known**: three open tickets mention waiting on the first token; none mention query time.
 
 ## Restatement
-"In your words: checkout is slow and you want a spike on options. Inferred: the goal is user-perceived speed, not infrastructure cost."
+"In your words: checkout is slow and you want a spike on options."
+
+**Inferred** — shown back before any work starts:
+1. The goal is user-perceived speed, not infrastructure cost.
+2. The surface is web checkout.
+3. "Slow" is one latency path, not all of them.
+
+Three inferences → the gate cannot pass privately; round 1 runs.
 
 ## Findings before filtering
 | # | Dimension | Finding | Material? |
@@ -53,9 +60,10 @@ Default if unanswered: A.
 | Item | Value |
 |---|---|
 | Gate state | `ACCEPTED-WITH-ASSUMPTIONS` |
+| Inferences shown back | 3 — all confirmed or resolved by the answers |
 | Handed to the calling skill | goal = reduce first-token latency on web checkout; scope = one repo, one area |
 | Assumption A1 | `Assumption (user-accepted, unverified)` — target is p95 first-token under 300ms, per the Q3 default |
-| Recorded in | `scope.md` → `## Accepted assumptions` |
+| Recorded in | `scope.md` — gate state, restatement, inference list, then `## Accepted assumptions` |
 | Round 2 | Not due — no re-challenge trigger |
 
-Validation: three questions, each with options, a recommendation, and a default; every surviving finding passed the materiality test; one blocking question held the gate until answered.
+Validation: the inference list was shown before any question; three questions, each with options, a recommendation, and a default; every surviving finding passed the materiality test; one blocking question held the gate until answered.

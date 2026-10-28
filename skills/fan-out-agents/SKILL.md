@@ -67,3 +67,10 @@ Detect whether the platform lets the host spawn copies of itself as sub-agents. 
 </fan-out-tasks>
 
 </capabilities>
+
+<rules>
+<rule>When a task splits into several independent, similar, read-only sub-tasks, apply **fan-out-tasks**.</rule>
+<rule>Never fan out work that writes shared files or state — clones are read-only and leave no artifact.</rule>
+<rule>Never let a clone re-fan-out — fan-out is one level deep.</rule>
+</rules>
+

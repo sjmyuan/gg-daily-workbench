@@ -1,53 +1,32 @@
 ---
 name: question-everything
-description: Challenge unverified claims from a user or an agent with questions, options, and verification. Use when challenging a vague request, re-challenging after evidence conflicts, questioning, validating, or verifying a result.
+description: Verify results returned by agents and sub-agents by challenging each claim against primary sources and routing it to an evidence-matched verifier. Use when questioning, validating, or verifying a returned result, repairing a challenged result, resolving conflicting agent results, or verifying before a downstream decision.
 ---
 
 <when-to-use-this-skill>
-- User hands over a request, spike brief, or issue report that must be made decidable before work is accepted
-- The request is ambiguous, overloaded, or has several plausible readings — and the user needs options plus a recommendation
-- Investigation evidence contradicts an accepted goal, constraint, or vocabulary and the request must be re-challenged
-- User asks to question or challenge a result returned by an agent or sub-agent
-- User asks to verify a returned result before accepting it — run the question → verify → accept/requestion loop
-- A result will be consumed downstream (decision, commit, merge, release) and being wrong is costly
-- Two agents or sub-agents return conflicting results and a resolution is needed
-- User asks to validate the correctness, completeness, or clarity of a returned result
-- Inside a multi-step pipeline — question or verify a sub-agent result before it is accepted downstream
-- Do NOT load for a clear single-decision request, plain ADR drafting, solution-doc writing, or code investigation — `draft-adr`, `write-solution-doc`, and `investigate-code` handle those
+- A result returned by an agent or sub-agent must be checked before it is consumed downstream (decision, commit, merge, release)
+- A returned result reads confident and detailed but no claim has been corroborated against primary sources
+- Two agents or sub-agents return conflicting results and one must be chosen
+- A returned result must be validated for correctness, completeness, or clarity before acceptance
+- A repair is needed after a DISAGREE verdict, with only the changed claims re-confirmed
+- Do NOT load to accept a user-supplied request — `grill-user` owns the intake gate
+- Do NOT load for plain ADR drafting, solution-doc writing, or code investigation — `draft-adr`, `write-solution-doc`, and `investigate-code` own those
 </when-to-use-this-skill>
 
 <knowledge>
 
 <skeptic-mindset>
-Treat every returned result and every user-supplied request as an unverified claim. Default to suspicion; trust is earned through questioning and independent verification. Never accept a request or a result because it is confident, detailed, or from a capable-looking source.
+Treat every returned result as an unverified claim. Default to suspicion; trust is earned through questioning and independent verification. Never accept a result because it is confident, detailed, or from a capable-looking source.
 </skeptic-mindset>
 
-<questioning-targets>
-Two targets share one doctrine — restate, probe, prioritize, close — and differ in what closes a challenge:
+<result-doctrine>
+A result **has** primary sources — code, docs, data, logs — so it is verified, never merely clarified. Two rules follow:
 
-| Target | Evidence that settles it | Closer | Who runs it |
-|---|---|---|---|
-| **Request** (user-supplied) | The user's intent, plus repo state and prior artifacts | A recorded decision | The calling session only |
-| **Result** (agent-supplied) | Primary sources — code, docs, data, logs | A per-challenge verdict | A NEW evidence-matched agent |
+- **Independence**: the producing instance never verifies its own work; a NEW evidence-matched agent closes every material challenge.
+- **Traceability**: one verdict per challenge, each citing its primary source.
 
-A request has no primary source: clarify it or push back, never "verify" it.
-</questioning-targets>
-
-<intake-gate>
-Accept a request only through a gate with three states:
-
-| State | Meaning | Proceed? |
-|---|---|---|
-| `ACCEPTED` | No material ambiguity, or the user answered it | Yes |
-| `ACCEPTED-WITH-ASSUMPTIONS` | Ambiguity remains; a stated default is taken | Yes — label each default `Assumption (user-accepted, unverified)` |
-| `BLOCKED` | A material ambiguity has no safe default | No — ask, then re-run the gate |
-
-Budget: ≤3 material questions per round, ≤2 rounds, then accept with assumptions and say so. Every question carries 2–3 options, a recommendation, and a default. A one-sentence, single-decision request passes on a restatement alone. Protocol: **reference/user-challenge-protocol.md**.
-</intake-gate>
-
-<re-challenge-triggers>
-Re-open the gate after evidence arrives only on a named trigger: evidence contradicts a stated constraint; a goal term maps to two code realities; the reported symptom's cause is elsewhere; evidence makes the stated scope disproportionate; two areas' evidence disagree. Re-open the affected claims only, narrower than round 1.
-</re-challenge-triggers>
+A user-supplied request is the opposite case — it has no primary source and closes when nothing material is left to ask, not on a verdict. That target belongs to `grill-user`.
+</result-doctrine>
 
 <questioning-dimensions>
 Question results across six dimensions: **Completeness** (missing paths/cases), **Correctness** (accuracy vs. primary sources), **Ambiguity** (vague wording), **Consistency** (self-contradiction), **Evidence** (claims backed by sources), **Assumptions** (silent premises). Load [reference/questioning-dimensions.md](reference/questioning-dimensions.md) for the per-dimension rubric.
@@ -64,10 +43,8 @@ Every verifier brief carries known context — established `file:line`, the sett
 <context-loading-guide>
 | Load when | Provides | File |
 |---|---|---|
-| Clarifying a request before accepting it | Intake dimensions, materiality test, question format | [reference/intake-dimensions.md](reference/intake-dimensions.md) |
-| Running or exiting the intake gate | Gate states, round cap, tone, assumption labeling | [reference/user-challenge-protocol.md](reference/user-challenge-protocol.md) |
-| Seeing a vague request challenged with options | Worked 3-question gate | [examples/challenging-a-vague-request.md](examples/challenging-a-vague-request.md) |
-| Seeing a post-investigation re-challenge | Trigger, narrowed round 2, artifact update | [examples/re-challenging-after-investigation.md](examples/re-challenging-after-investigation.md) |
+| Raising challenges on a returned result | Six-dimension rubric, challenge output format, prioritization | [reference/questioning-dimensions.md](reference/questioning-dimensions.md) |
+| Running an accept, repair, or contradict round | Verdict vocabulary, traps list, round cap, brief template | [reference/verification-protocol.md](reference/verification-protocol.md) |
 | Seeing a worked questioning pass on a returned result | End-to-end example of raising prioritized challenges only | [examples/raising-challenges.md](examples/raising-challenges.md) |
 | Seeing a worked verification round that accepts | Verification accept example | [examples/confirming-result.md](examples/confirming-result.md) |
 | Seeing a worked contradict + reinvestigate round | Verification contradict example (two rounds) | [examples/contradicting-result.md](examples/contradicting-result.md) |
@@ -76,22 +53,6 @@ Every verifier brief carries known context — established `file:line`, the sett
 </knowledge>
 
 <capabilities>
-
-<challenge-the-ask>
-**Objective**: Turn an ambiguous request into an accepted one — material ambiguities resolved or recorded as labeled assumptions.
-
-1. Restate the request in one sentence, in the user's own words, and label what you had to infer.
-2. Load [reference/intake-dimensions.md](reference/intake-dimensions.md).
-3. Split each claim into goal, scope, constraints, success criteria, and non-goals.
-4. Probe each claim across the intake dimensions; label a finding **clarify** (the user was unclear) or **push back** (the user is clear but evidence disagrees).
-5. Keep only material findings — a different answer would change the split, the options compared, the done criteria, or the investigation budget.
-6. Order by impact; keep the top 3 per round.
-7. Ask them as one batch: each with 2–3 options, a recommendation with its evidence, and a default.
-8. Record each answer; re-ask only what is still undecidable — max 2 rounds.
-9. Set the gate state per **intake-gate**, and hand the accepted assumptions to the calling skill for recording in its own artifact.
-10. Apply **re-challenge-triggers** when new evidence arrives; re-open only the affected claims.
-11. Validate: every question carried options plus a recommendation; no material finding was dropped unrecorded; each remaining ambiguity is labeled `Assumption (user-accepted, unverified)`; a trivial request took the fast path.
-</challenge-the-ask>
 
 <question-the-result>
 **Objective**: Apply a skeptic's lens to a returned result and produce concrete, prioritized challenges.
@@ -120,19 +81,16 @@ Every verifier brief carries known context — established `file:line`, the sett
 8. If any material verdict is DISAGREE, dispatch a NEW evidence-matched agent to repair the affected work (code facts → `code-investigator`; documents → the producer's type), then confirm only the changed claims. On UNCERTAIN, tag the claim unverified and surface it — no further round.
 9. Cap the loop at **2 rounds** — verify once, repair once, confirm only the changed claims.
 10. At the cap, present both versions and the residual uncertainty to the user — never silently pick one.
-11. Hand the verified result back to the caller for synthesis only after verification.
+11. Validate: every material challenge has a verdict citing a primary source; no verdict came from the producing instance; the round count is ≤2; residual uncertainty is stated rather than implied.
+12. Hand the verified result back to the caller for synthesis only after validation.
 </verify-sub-agent-results>
 
 </capabilities>
 
 <rules>
-<rule>When a user hands over a request, spike brief, or issue report, apply **challenge-the-ask** before any work is accepted — a clear request passes on the restatement alone.</rule>
-<rule>When investigation evidence contradicts an accepted goal, constraint, or vocabulary, apply **challenge-the-ask** on the affected claims only.</rule>
-<rule>Never run **challenge-the-ask** from a dispatched sub-agent — user dialogue belongs to the calling session.</rule>
-<rule>When the user asks to question, challenge, or act as a skeptic toward an agent- or sub-agent-returned result, apply **question-the-result**.</rule>
-<rule>When the user asks to validate the correctness, completeness, or clarity of a returned result, apply **question-the-result**.</rule>
-<rule>When the user asks to verify or accept a returned result before using it, apply **verify-sub-agent-results**.</rule>
-<rule>When a result will be consumed downstream and being wrong is costly, apply **question-the-result**, then **verify-sub-agent-results** before the result is accepted.</rule>
+<rule>When a returned result will be consumed downstream and being wrong is costly, apply **question-the-result**, then **verify-sub-agent-results** before it is accepted.</rule>
 <rule>When two agents or sub-agents return conflicting results, apply **question-the-result** to each, then **verify-sub-agent-results** to resolve the conflict.</rule>
-<rule>When a sub-agent result will be consumed downstream, or two returned results conflict, apply **verify-sub-agent-results**.</rule>
+<rule>When the user asks to question, challenge, validate, or verify a returned result, apply **question-the-result**, adding **verify-sub-agent-results** when acceptance is required.</rule>
+<rule>Never verify a result in the agent that produced it — a NEW evidence-matched verifier closes every material challenge.</rule>
+<rule>Never apply this skill to a user-supplied request — it has no primary source and belongs to `grill-user`'s intake gate.</rule>
 </rules>

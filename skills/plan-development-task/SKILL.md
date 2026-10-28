@@ -31,6 +31,12 @@ description: Classify, clarify, and generate TDD-based step-by-step plans for bu
 
 <knowledge>
 
+<request-intake>
+Gate every planning request through `grill-user`'s **grill-the-ask** before classifying: restate it, then itemize every inference — change type, expected behavior, triggering input, done criteria, and the ref or paths for a restore. Show the list; zero inferences → classify. Anything inferred → ask the top 3 with options, a recommendation, and a default.
+A symptom-only request ("checkout is broken") always infers the expected behavior — ask it; never plan from the suspected cause.
+Record the outcome in `context.md`: the restatement becomes the plan objective, and each accepted default goes under `## Unknowns` as `Assumption (user-accepted, unverified): <default> — Step N verifies — fallback <…>`. No new charter section, no second checkpoint.
+</request-intake>
+
 <change-provenance>
 Every code step declares where its code comes from: `no-op` · `base` · `port` · `copy` · `edit` · `generate`.
 Generate only when no cheaper source reaches the target state.
@@ -142,11 +148,11 @@ Writes are confined to plan docs — `plan.md`, `context.md`, and sibling `rewor
 <capabilities>
 
 <classify-change-type>
-1. Detect a mechanical target first per **change-provenance**; route reverts, restores, ports, copies, and keeps to **plan-mechanical-restore**.
+1. Gate the request per **request-intake** — restate it and show every inference before the signal table decides; then detect a mechanical target per **change-provenance** and route reverts, restores, ports, copies, and keeps to **plan-mechanical-restore**.
 2. Read the user's request and identify keywords and signals that indicate the type of change.
 3. Consult **change-type-classification** knowledge to map signals to a change type (bug fix, feature, or refactor).
-4. If the type is ambiguous, ask the user targeted clarifying questions to disambiguate.
-5. Present the classified type and reasoning to the user.
+4. If two change types still fit, ask one material question with options, a recommendation, and a default — never pick silently.
+5. Present the restatement, the inferences, the classified type, and the reasoning to the user.
 6. Route to the appropriate pair of capabilities based on the classified type:
    - **Mechanical (revert / restore / port / copy / no-op)** → apply **define-scope**, then **plan-mechanical-restore**
    - **Bug Fix** → apply **define-scope**, then **plan-bug-fix**
@@ -169,9 +175,9 @@ Writes are confined to plan docs — `plan.md`, `context.md`, and sibling `rewor
 <define-scope>
 1. Gather relevant information from the codebase, knowledge base, test results, and user input to define the scope for the classified change type.
 2. **Bug fix**: analyze root-cause patterns and test hypotheses through code inspection, debugging, or logging.
-   **Feature / refactor**: identify and clarify ambiguous terms and implicit assumptions.
+   **Feature / refactor**: name every loaded term and silent premise; each becomes a question or a labeled assumption per **request-intake**.
    **Mechanical**: confirm the source ref, the exact paths, and whether any other commit touched them since.
-3. Ask the user targeted questions until the scope is well-defined — root cause confirmed for bugs; requirement or constraints confirmed for features/refactors.
+3. Ask the material questions the inference list surfaced — each with options, a recommendation, and a default; stop when the scope is decidable, not when it is complete.
 4. Present the result (root cause + reasoning, or a structured scope summary) and request confirmation or refinements.
 5. Hand the confirmed scope to the corresponding plan capability and **define-scope-boundary**.
 </define-scope>
@@ -226,7 +232,7 @@ Load **[reference/plan-poc.md](reference/plan-poc.md)** and follow its steps.
 
 <rules>
 
-<rule> When the user makes a request about code changes, first apply **classify-change-type** to determine whether it is a mechanical restore, bug fix, feature, refactor, or POC. </rule>
+<rule> When the user makes a request about code changes, gate it per **request-intake**, then apply **classify-change-type** to determine whether it is a mechanical restore, bug fix, feature, refactor, or POC. </rule>
 <rule> When the request is to revert, restore, port, copy, or keep code unchanged, apply **plan-mechanical-restore** — never regenerate equivalent code. </rule>
 <rule> When a step touches existing code, declare its `Source` per **change-provenance**; `generate` needs a justification and ratification. </rule>
 <rule> If the classified type is **Bug Fix**: apply **define-scope**, then **plan-bug-fix**. </rule>

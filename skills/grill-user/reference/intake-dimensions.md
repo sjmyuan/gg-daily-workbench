@@ -1,6 +1,6 @@
 # Intake Dimensions Rubric
 
-Use with **challenge-the-ask** to probe a user-supplied request. A request has no primary source: the closer is the user's decision, never a verdict.
+Use with **grill-the-ask** to probe a user-supplied request. A request has no primary source: the closer is that nothing material is left to ask, not a verdict on facts.
 
 ## Dimensions
 
@@ -14,6 +14,12 @@ Use with **challenge-the-ask** to probe a user-supplied request. A request has n
 | **Conflict** | Contradiction with repo state or prior decisions | The ADR chose polling; this asks for events — which wins? |
 | **Feasibility** | Whether the ask is possible as written | Is the data available to measure that? |
 | **Consumer** | Who uses the output | Who signs off: you, a team, a reviewer? |
+
+## Minimum probe
+
+Probe five dimensions on every request before acceptance: **Goal**, **Scope**, **Success criteria**, **Constraints**, **Conflict**. A dimension may close without a question, but only by naming what closed it — the user's words, a repo artifact, or a recorded inference. Any dimension closed by inference lands in the inference list shown back to the user.
+
+**Ambiguity**, **Feasibility**, and **Consumer** are probe-on-signal: open them when a term has two readings, the ask may be impossible as written, or the approval boundary is unclear.
 
 ## Materiality test
 
@@ -63,5 +69,6 @@ Default if unanswered: <A | B>.
 
 - [ ] Every question names its dimension and its blocking status.
 - [ ] Every question carries 2–3 options, a recommendation, and a default.
+- [ ] All five minimum-probe dimensions are closed, each with what closed it.
 - [ ] Every surviving finding passes the materiality test.
 - [ ] No question asks what the repo already answers.

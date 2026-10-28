@@ -61,7 +61,7 @@ Cells follow **unplanned → planned → in-progress → verified → done**, pl
 A cell reaches **verified** (then **done** / **poc-ready**) only after an independent gate — spec compliance + trust — passes. Quality review stays with **execute-plan**'s `review-post-execution`. The handoff is the **latest round only** in `context.md` `## Execution` — status, `base7..head7`, PR, one-line gate receipt, one-line review outcome; deferred concerns persist in `## Open concerns`; history lives in git/PR. Handoff, verdicts, fix-loop cap, breaker, integration review: **reference/verification-gate.md**.
 </verification-gate>
 <request-intake>
-Clarify before classifying: restate the reported behavior — never the suspected cause — and run `question-everything`'s **challenge-the-ask** when the report is ambiguous. A report stating expected and actual behavior passes on the restatement. Clarification is a precondition, not an L-rung. Protocol: **reference/investigation-triage.md**.
+Every inbound request — issue, feature ask, spike handoff, rework, revert, ADR change — passes `grill-user`'s **grill-the-ask** before any capability classifies or decomposes it; never gate on self-judged ambiguity. The gate returns an acceptance record — restatement, itemized inferences, gate state. Restate the ask — never the suspected cause — show the inference list, and ask when anything was inferred; nothing inferred → proceed on the restatement. Accepted defaults go in the index cell brief, labeled `Assumption (user-accepted, unverified)` — never `context.md`. A precondition, not an L-rung. Protocol: **reference/investigation-triage.md**.
 </request-intake>
 <investigation-triage>
 Restate the report first (**request-intake**), then descend the **answer → evidence → decision → spike** ladder and stop at the first rung that answers the question. L0 answers from recorded artifacts in-session; L1 is one read-only investigator; L2 is a direct ADR revision; L3 is a spike. State the rung and its justification before spending. Full triggers, routes, and artifacts: **reference/investigation-triage.md**.
@@ -116,10 +116,11 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 
 <capabilities>
 <decompose-change-into-features>
-1. Load the spike artifacts: solution doc (primary), ADRs, findings.
-2. Group target-state changes into coherent, independently valuable features by ADR traceability and module boundary — never 1:1 with scope-map problems (see **reference/artifact-map.md**).
-3. Apply **feature-definition**; assign an ID (`F1`, …), kebab-case name, and one-line description.
-4. Present the feature list and confirm before proceeding.
+1. Gate the request per **request-intake** — restate the delivery ask and show every inference before grouping anything.
+2. Load the spike artifacts: solution doc (primary), ADRs, findings.
+3. Group target-state changes into coherent, independently valuable features by ADR traceability and module boundary — never 1:1 with scope-map problems (see **reference/artifact-map.md**).
+4. Apply **feature-definition**; assign an ID (`F1`, …), kebab-case name, and one-line description.
+5. Present the feature list and confirm before proceeding.
 </decompose-change-into-features>
 <map-features-to-repos>
 1. Inventory the repos each feature's target-state changes touch.
@@ -149,7 +150,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 7. Keep the index the single source of truth; verify it per **reference/delivery-index-format.md**, apply **rewrite-concise**, measure `index.md` (**≤8,000 chars / ≤120 lines** per **reference/delivery-index-format.md**; collapse rows and archive completed waves), and run the write-boundary check.
 </update-delivery-index>
 <orchestrate-delivery>
-1. Load the index — or create it via **decompose-change-into-features** → **map-features-to-repos** → **order-feature-delivery** → **produce-delivery-index**.
+1. Gate the request per **request-intake**; then load the index — or create it via **decompose-change-into-features** → **map-features-to-repos** → **order-feature-delivery** → **produce-delivery-index**.
 2. Assess statuses, completed waves, ready cells, and blockers.
 3. **Plan**: dispatch the **planner** to each unplanned, develop-ready cell; confirm each plan file on disk before advancing.
 4. **Execute**: dispatch the **executor** to each planned cell with a verified plan file, respecting develop-gating and no-conflict rules.
@@ -220,7 +221,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 </capabilities>
 
 <rules>
-<rule> When an issue report or feature request is ambiguous, apply **request-intake** before **triage-issue** — a clarification is a precondition, never a rung. </rule>
+<rule> Every issue report, feature request, spike handoff, rework ask, or ADR change passes **request-intake** before any capability classifies it — clarify whenever anything was inferred; a clarification is a precondition, never a rung. </rule>
 <rule> When spike output exists but no delivery index, apply **decompose-change-into-features** → **map-features-to-repos** → **order-feature-delivery** → **produce-delivery-index**. </rule>
 <rule> When a delivery index exists and the user wants to drive or continue delivery, apply **orchestrate-delivery**; apply **resume-delivery** when continuing an epic interrupted in a previous session. </rule>
 <rule> After any agent result that changes a cell's state, apply **update-delivery-index** before dispatching further agents — L0/L1 answers change no state. </rule>

@@ -64,7 +64,7 @@ Steps cite these standards by name; load the Details file.
 
 **Steps**:
 1. Apply **same-name-live-copy-ban**; read the full skill and apply **reference/section-semantics.md** for purposes and violations.
-   a. Verify frontmatter, when-to-use, knowledge, and capabilities are present; missing → 🔴 Major.
+   a. Verify frontmatter, when-to-use, knowledge, capabilities, and rules are present; missing → 🔴 Major.
    b. Verify order frontmatter → when-to-use → knowledge → capabilities → rules; out-of-order → 🟡 Minor.
    c. Measure size with `scripts/measure_sizes.py`, else chars and lines, per **reference/size-limits.md**.
       Over budget → recommend per **reference/size-remediation.md**; line/step-merging → 🔴 Blocker.
@@ -81,7 +81,7 @@ Steps cite these standards by name; load the Details file.
    a. Writing style — load **reference/writing-style.md**; flag per its severity table.
    b. Platform-agnostic writing — load **reference/platform-agnostic-writing.md**; tool names or context paths → 🟡 Minor.
    c. Growth audit — count the elements, then report merge candidates, superseded elements, and orphans per **reference/conciseness-check.md**.
-6. Verify each rule answers "when X → use capability Y"; restating capability content → 🟡 Minor. Single-capability skill without rules: do not flag.
+6. Verify a `<rules>` section exists — missing → 🔴 Major. Each rule answers "when X → use capability Y" or states a guard ("never …"); restating capability content → 🟡 Minor.
 7. Verify knowledge holds reference material; rubrics embedded in SKILL.md instead of `reference/` → 🔴 Major.
 8. **Check naming** — load **reference/naming-conventions.md**:
    a. Frontmatter `name` uses an action verb (`edit-svg`, not `svg-editor`); noun phrase → 🔴 Major.

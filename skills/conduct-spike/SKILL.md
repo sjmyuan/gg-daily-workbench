@@ -37,7 +37,7 @@ Writes are confined to the spike folder (`**/spikes/**`) — never code, config,
 </write-boundary>
 
 <scope-acceptance-gate>
-No `scope.md` before the request passes `question-everything`'s **challenge-the-ask** — `ACCEPTED`, or `ACCEPTED-WITH-ASSUMPTIONS` with each default recorded under `## Accepted assumptions` as `Assumption (user-accepted, unverified)`. The gate replaces the scope confirmation; never add a second checkpoint. Procedure: **reference/define-spike-scope-procedure.md**.
+No `scope.md` and no findings compilation until the request passes `grill-user`'s **grill-the-ask** — on **every** entry path: new, continued, user-supplied, uncertainty. The gate returns an acceptance record: restatement, itemized inferences, gate state. Nothing inferred → `ACCEPTED`; anything inferred → show the list and ask before decomposing. Record each default under `## Accepted assumptions` as `Assumption (user-accepted, unverified)`. It replaces the scope confirmation — never a second checkpoint. Procedure: **reference/define-spike-scope-procedure.md**.
 </scope-acceptance-gate>
 
 <scope-map>
@@ -52,20 +52,16 @@ Problem (stored): `investigating` → `deciding` → `done`; area (derived): `pr
 Do NOT use for quick answers, already-decided implementation work, trivial scope, immediate POC builds, or plain ADR drafting / solution-doc writing / code investigation — `draft-adr`, `write-solution-doc`, `investigate-code` own those.
 </inappropriate-scenarios>
 
-<pre-existing-findings>
-When the user supplies investigation material, skip **investigate-per-area** and seed **compile-findings-doc** directly; treat it as the area's evidence map. See **examples/from-existing-findings.md**.
-</pre-existing-findings>
-
 <findings-document>
-The spike's findings pair (via `document-findings`): a human doc plus an evidence doc holding the ledger, claim IDs, and confidence — the **evidence home**. One pair per area; briefs carry both. Guide: **reference/findings-document-guide.md**.
+The spike's findings pair (via `document-findings`): a human doc plus an evidence doc holding the ledger, claim IDs, and confidence. One pair per area. Guide: **reference/findings-document-guide.md**.
 </findings-document>
 
 <continuation-mode>
-Another round seeded with prior artifacts: read `scope.md` for open work, confirm area/problem changes, run **revise-in-place**, then **sync-update-artifacts**.
+Another round seeded with prior artifacts: read `scope.md` for open work, gate the delta, run **revise-in-place**, then **sync-update-artifacts**.
 </continuation-mode>
 
 <greenfield-scenarios>
-No existing implementation: research industry approaches, comparables, and constraints.
+No existing implementation: research approaches, comparables, constraints.
 </greenfield-scenarios>
 
 <multi-agent-orchestration>
@@ -73,7 +69,7 @@ Dispatch every spike unit — including a single-task spike — to sub-agents. D
 </multi-agent-orchestration>
 
 <sub-agent-verification>
-Depth scales with blast radius, not artifact count: evidence gets one independent verifier pass; synthesis gets a fidelity check against the verified ledger; only load-bearing ADR decisions get the full loop. Cap 2 rounds; tag residual uncertainty. Full rules: **reference/multi-agent-orchestration.md**.
+Depth scales with blast radius: one independent verifier pass for evidence, a fidelity check against the verified ledger for synthesis, the full loop only for load-bearing ADR decisions. Cap 2 rounds; tag residual uncertainty. Rules: **reference/multi-agent-orchestration.md**.
 </sub-agent-verification>
 
 <problem-decomposition-guide>
@@ -89,7 +85,7 @@ ADRs, findings docs, and the solution doc are always written by `draft-adr`, `do
 </professional-doc-authoring>
 
 <artifact-maintenance-doctrine>
-Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rewrite changed sections in place, delete superseded content (git is history), no version markers or changelogs. Notes live only in evidence docs and conversation. Propagation stops at the first unaffected artifact. Chain, propagation matrix, and no-note scan: **reference/artifact-maintenance-guide.md**.
+Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rewrite changed sections in place, delete superseded content (git is history), no version markers or changelogs. Notes live only in evidence docs and conversation. Propagation stops at the first unaffected artifact. Guide: **reference/artifact-maintenance-guide.md**.
 </artifact-maintenance-doctrine>
 
 <context-loading-guide>
@@ -117,18 +113,18 @@ Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rew
 </run-spike-workflow>
 
 <continue-prior-spike>
-1. Apply the continuation procedure per **reference/continue-prior-spike-procedure.md** — load prior artifacts, confirm the scope delta, run revise-in-place, sync downstream.
+1. Apply the continuation procedure per **reference/continue-prior-spike-procedure.md** — load prior artifacts, gate the scope delta per **scope-acceptance-gate**, run revise-in-place, sync downstream.
 </continue-prior-spike>
 
 <define-spike-scope>
-1. Ask: "What technical problem or feature do you want to spike?"
-2. Apply **scope-acceptance-gate** — run `question-everything`'s **challenge-the-ask** before decomposing; stop while `BLOCKED`.
+1. Restate the request as given and itemize every inference it left open — ask nothing yet.
+2. Apply **scope-acceptance-gate** — show the inference list and ask before decomposing; stop while `BLOCKED`.
 3. Apply the scope-definition procedure per **reference/define-spike-scope-procedure.md** — clarify goal, decompose, record `scope.md`, validate, note greenfield.
 </define-spike-scope>
 
 <investigate-per-area>
 1. Apply the investigation procedure per **reference/investigate-per-area-procedure.md** — dispatch, brief, verify, hand off evidence maps.
-2. When an evidence map contradicts an accepted goal or constraint, re-challenge the affected claims via **challenge-the-ask** and rewrite `scope.md`.
+2. When an evidence map contradicts an accepted goal or constraint, re-challenge the affected claims via `grill-user`'s **re-challenge-the-ask** and rewrite `scope.md`.
 </investigate-per-area>
 
 <draft-problem-adrs>
@@ -140,7 +136,8 @@ Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rew
 </compile-solution-doc>
 
 <compile-findings-doc>
-1. Apply the findings-doc compilation procedure per **reference/findings-doc-compilation.md** — one per area: dispatch → verify → validate → save (mark each area `spiking` per **scope-map-status**).
+1. Gate the supplied material per **scope-acceptance-gate** before compiling — user-provided notes are a request, not a settled scope.
+2. Apply the findings-doc compilation procedure per **reference/findings-doc-compilation.md** — one per area: dispatch → verify → validate → save (mark each area `spiking` per **scope-map-status**).
 </compile-findings-doc>
 
 <sync-update-artifacts>
@@ -149,7 +146,7 @@ Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rew
 
 <suggest-spike-on-adr-uncertainty>
 1. Detect uncertainty signals via **adr-uncertainty-signals**.
-2. Offer: "Would you like to spike this before finalizing the ADR?" — never start without explicit confirmation.
+2. Offer: "Would you like to spike this before finalizing the ADR?" — never start without explicit confirmation, then gate the scope per **scope-acceptance-gate**.
 3. Apply the procedure per **reference/suggest-spike-on-adr-uncertainty-procedure.md**.
 </suggest-spike-on-adr-uncertainty>
 
@@ -157,8 +154,8 @@ Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rew
 
 <rules>
 <rule>When the user initiates a spike investigation from scratch, apply **run-spike-workflow**.</rule>
-<rule>Before `scope.md` is written or a contradicting evidence map is compiled, apply **scope-acceptance-gate** — accept only `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS`.</rule>
-<rule>When the user supplies pre-existing investigation material, apply **compile-findings-doc** directly, skipping **investigate-per-area** per **pre-existing-findings**.</rule>
+<rule>Before `scope.md` is written, a continuation starts, user-supplied material is compiled, or an uncertainty spike begins, apply **scope-acceptance-gate** — accept only `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS`, and only after the inference list was shown.</rule>
+<rule>When the user supplies pre-existing investigation material, apply **compile-findings-doc** directly, skipping **investigate-per-area** — after the gate.</rule>
 <rule>When the user resumes a prior spike or re-investigates a decided ADR, apply **continue-prior-spike**.</rule>
 <rule>When a fact or decision changes after spike artifacts exist, apply **sync-update-artifacts**.</rule>
 <rule>When ADR discussion hinges on unverified assumptions or missing evidence, apply **suggest-spike-on-adr-uncertainty** before finalizing the ADR.</rule>

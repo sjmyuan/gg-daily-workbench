@@ -4,7 +4,7 @@ Used by **validate-created-skill** (step 2). Run the checks in order and report 
 
 | # | Check | Fail severity |
 |---|---|---|
-| 1 | Required sections present and in order: frontmatter, when-to-use, knowledge, capabilities, optional rules. | 🔴 Major (order: 🟡 Minor) |
+| 1 | Required sections present and in order: frontmatter, when-to-use, knowledge, capabilities, rules. | 🔴 Major (order: 🟡 Minor) |
 | 2 | `description` scores ≥9 per **description-quality** and covers every when-to-use scenario both ways. | 🟡 Minor |
 | 3 | Capabilities use action-verb names, ordered steps, and carry no embedded reference data. | 🔴 Major |
 | 4 | Knowledge holds reference material; large rubrics extracted; context-loading-guide is condition-first. | 🔴 Major |

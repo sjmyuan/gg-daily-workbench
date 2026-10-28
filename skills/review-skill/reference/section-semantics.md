@@ -8,12 +8,13 @@ A well-formed copilot skill file uses these sections with distinct, non-overlapp
 | `<when-to-use-this-skill>` | Post-load scope check | Bullet list of user-facing scenarios that confirm this skill applies; must align with the frontmatter `description` |
 | `<knowledge>` | Facts the agent recalls | Reference tables, directory layouts, API signatures, platform constraints, banned practices, selection guides; large rubrics extracted to `reference/` files and loaded on demand. One-line entries may share a single `<named-standards>` table (`name` \| rule \| reference), with capability steps citing the name |
 | `<capabilities>` | Procedures the agent executes | Ordered step-by-step instructions for *how* to accomplish a task; named with an action verb |
-| `<rules>` | Internal routing triggers | "When [scenario] → use [capability]"; must not repeat what the capability already says; **may be omitted in single-capability skills** |
+| `<rules>` | Internal routing and guard triggers | One routing rule per capability ("When [scenario] → use [capability]"), plus a guard rule for each known misapplication ("Never …"); must not repeat what the capability already says; **required in every skill — absence is 🔴 Major** |
 | `<context-loading-guide>` in `<knowledge>` | On-demand context router | Condition-first table (`Load when` \| `Provides` \| `File`) that routes on-demand files whose load condition is not fixed by a capability step — examples, plus step-independent references. References tied to a specific step are routed inline from that step; every knowledge entry or named-standards row links its own reference file |
 
 **Common structural violations**:
 - Knowledge embedded in capabilities (lookup tables, API lists, constraint bullets inside a capability section)
 - Rules that re-state capability content instead of routing to it
+- A missing `<rules>` section — required in every skill, including single-capability ones
 - Capabilities written as bullet-point fact lists instead of ordered procedural steps
 - Capabilities named as nouns (`<storage-management>`) instead of action verbs (`<manage-storage>`)
 - Skill name (frontmatter `name:`) is a noun phrase (`svg-editor`) instead of an action verb (`edit-svg`)

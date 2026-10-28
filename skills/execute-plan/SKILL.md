@@ -18,6 +18,12 @@ description: Execute structured development plans with progress tracking, valida
 
 <knowledge>
 
+<request-intake>
+Gate the request that starts execution through `grill-user`'s **grill-the-ask**: restate it — which plan path, which active `rework-<date>.md`, the base ref, the expected outcome — and itemize every inference. Zero inferences → run **track-plan**. Anything inferred → ask before step 1; the wrong plan or rework file wastes the run.
+A request arriving **mid-execution** ("also fix X", "skip that") is gated the same way before it becomes a step or an amendment — never silently absorbed.
+Accepted defaults go to `context.md` `## Open concerns` or the step note, labeled `Assumption (user-accepted, unverified)`.
+</request-intake>
+
 <step-status-definitions>
 Status emojis used to track each step:
 
@@ -141,18 +147,19 @@ Load only the example most relevant to the current execution scenario to minimiz
 <capabilities>
 
 <track-plan>
-1. Locate or create the feature folder and its core files (`plan.md` + `context.md`) per **reference/feature-folder-structure.md**; for an **orchestrate-feature-delivery** cell use the existing `deliveries/<epic-name>/{repo}/{feature-name}/`, otherwise resolve the artifact base via `resolve-artifact-location` and use `{base}/feature-implementations/{feature-name}/`.
-2. Derive a short kebab-case feature name from the plan's objective (e.g., `add-auth-system`, `fix-null-pointer-in-transformer`) per **reference/feature-folder-structure.md**.
-3. Before creating a new plan, check whether the feature folder already exists with a plan file; if it does, resume or amend it — never create a second plan folder.
-4. If the folder contains a sibling `rework-<date>.md` (per the `context.md` manifest), execute only the active rework file's steps (see **rework-plan-execution**); never re-run or modify the completed original steps.
-5. If a plan file has steps with ❌ failed or 🚫 blocked status, ask whether to **resume** the same plan or **start fresh**. Prefer resume; start fresh only when the plan is unusable (wrong feature, nothing executed) and the user confirms. Never create a second plan folder for the same feature — a defective pending step is amended in place by the planner.
-6. Materialize the plan into `plan.md` per **reference/plan-input-schema.md**: list each step with its number, title, objective (one sentence each, see **concise-writing**), and initial status ⏳ pending, per **reference/step-tracking-format.md**.
-7. Populate `context.md` as a **charter**: outcome, why, must-hold invariants, unknowns, done criteria, pointers, open concerns, state. When it already exists, update only `## Open concerns` / `## State` / `## Execution` — never rewrite the planner-owned charter or manifests. Do not restate `plan.md`'s Scope Boundary, TDD rationale, or decisions. Target **40–60 lines** (ceiling 8,000 chars / 120) per the charter budget; pre-flight evidence becomes a decision or an Unknown; never write a log — git/PR are the history.
-8. Update step status in the plan file immediately after each state change (⏳ → 🔄 → ✅, or ❌/🚫 on failure); keep each note to one line per fact. Refer to **step-status-definitions** for emoji meanings.
-9. Never modify plan structure, objectives, steps, or the **Scope Boundary** block except to update statuses, add clarifying notes, or record `⏭` markers set by an approved amendment.
-10. Report progress at plan start: show all steps with ⏳ pending.
-11. After each step completion, show the full list with current statuses and per-step details (files, implementation, validation); never summarize multiple steps together.
-12. At plan end, show the final all-✅ list with a summary of accomplishments.
+1. Gate the request per **request-intake** — restate the plan path, active rework, base ref, and expected outcome, and show every inference; ask before the first step when anything was inferred.
+2. Locate or create the feature folder and its core files (`plan.md` + `context.md`) per **reference/feature-folder-structure.md**; for an **orchestrate-feature-delivery** cell use the existing `deliveries/<epic-name>/{repo}/{feature-name}/`, otherwise resolve the artifact base via `resolve-artifact-location` and use `{base}/feature-implementations/{feature-name}/`.
+3. Derive a short kebab-case feature name from the plan's objective (e.g., `add-auth-system`, `fix-null-pointer-in-transformer`) per **reference/feature-folder-structure.md**.
+4. Before creating a new plan, check whether the feature folder already exists with a plan file; if it does, resume or amend it — never create a second plan folder.
+5. If the folder contains a sibling `rework-<date>.md` (per the `context.md` manifest), execute only the active rework file's steps (see **rework-plan-execution**); never re-run or modify the completed original steps.
+6. If a plan file has steps with ❌ failed or 🚫 blocked status, ask whether to **resume** the same plan or **start fresh**. Prefer resume; start fresh only when the plan is unusable (wrong feature, nothing executed) and the user confirms. Never create a second plan folder for the same feature — a defective pending step is amended in place by the planner.
+7. Materialize the plan into `plan.md` per **reference/plan-input-schema.md**: list each step with its number, title, objective (one sentence each, see **concise-writing**), and initial status ⏳ pending, per **reference/step-tracking-format.md**.
+8. Populate `context.md` as a **charter**: outcome, why, must-hold invariants, unknowns, done criteria, pointers, open concerns, state. When it already exists, update only `## Open concerns` / `## State` / `## Execution` — never rewrite the planner-owned charter or manifests. Do not restate `plan.md`'s Scope Boundary, TDD rationale, or decisions. Target **40–60 lines** (ceiling 8,000 chars / 120) per the charter budget; pre-flight evidence becomes a decision or an Unknown; never write a log — git/PR are the history.
+9. Update step status in the plan file immediately after each state change (⏳ → 🔄 → ✅, or ❌/🚫 on failure); keep each note to one line per fact. Refer to **step-status-definitions** for emoji meanings.
+10. Never modify plan structure, objectives, steps, or the **Scope Boundary** block except to update statuses, add clarifying notes, or record `⏭` markers set by an approved amendment.
+11. Report progress at plan start: show all steps with ⏳ pending.
+12. After each step completion, show the full list with current statuses and per-step details (files, implementation, validation); never summarize multiple steps together.
+13. At plan end, show the final all-✅ list with a summary of accomplishments.
 </track-plan>
 
 <execute-step>
@@ -259,7 +266,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 
 <manage-user-interaction>
 1. Execute the full plan autonomously without asking for permission at each step.
-2. If a step is ambiguous or requires user input, pause and ask before proceeding.
+2. If a step needs input the plan and the code cannot settle, or you had to infer a requirement, pause and ask with options before proceeding — never absorb the inference silently.
 3. If blocked on a step due to missing information or external dependencies, inform the user and wait for guidance.
 4. When deviating from the plan, apply **check-scope-boundary** and explain the adaptation — never deviate silently.
 5. Before any push, apply **request-push-approval** — never push without the user's confirmation.
@@ -269,7 +276,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 
 <rules>
 
-<rule> **At Plan Start**: Apply **track-plan** before executing any step. </rule>
+<rule> **At Plan Start**: Gate the request per **request-intake**, then apply **track-plan** before executing any step. </rule>
 <rule> **During Each Step**: Apply **execute-step**. </rule>
 <rule> **When a Step Reverts, Restores, Ports, Copies, or Must Stay Unchanged**: Apply **change-provenance** — descend the ladder and prove the result against the pinned ref; never regenerate equivalent code. </rule>
 <rule> **Throughout Execution**: Apply **track-plan** — keep the step list current and show it after every step. </rule>
@@ -279,6 +286,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 <rule> **Before Any Push**: Require a green Exit gate receipt for the current head — a step added after the gate invalidates it, so re-run the gate first. </rule>
 <rule> **When a Step Writes or Modifies Tests**: Apply **place-tests** before writing test code. </rule>
 <rule> **When a Pending Step Is Defective**: Return `NEEDS_CONTEXT` with an amendment request — never fork the plan or create a second plan folder. </rule>
+<rule> **When the User Asks for Something New Mid-Execution**: Gate it per **request-intake** before it becomes a step or an amendment — never absorb a request silently. </rule>
 <rule> **When Facing Ambiguity or Blockers**: Apply **manage-user-interaction** — pause and ask rather than assuming. </rule>
 <rule> **After All Steps Complete**: Apply **review-post-execution**. </rule>
 <rule> **Before Starting the First Step**: Apply **verify-prerequisites** — raise and wait if the environment is not ready. </rule>

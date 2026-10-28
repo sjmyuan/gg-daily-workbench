@@ -1,6 +1,6 @@
 # Example: Triage an Issue Before Dispatching
 
-**Scenario**: Epic `wallet-migration` is in delivery. Cell `order-service/F2` is **done** and merged. The user raises four issues in sequence, each one rung higher than the last.
+**Scenario**: Epic `wallet-migration` is in delivery. Cell `order-service/F2` is **done** and merged. The user raises four issues in sequence, each one rung higher than the last. Every issue passes **request-intake** first; issues 1–3 restate to zero inferences and pass at once, so the gate is shown once — at Issue 4, where it changes the outcome.
 
 **Applies**: **triage-issue** → **handle-post-implementation-issue**
 
@@ -38,9 +38,26 @@ The finding contradicts exactly one decision. The orchestrator dispatches **adr-
 
 ## Issue 4 — "Maybe our whole failure-handling approach is wrong across payment and wallet"
 
+**Gate L-1 — request-intake, round 1.** Restatement: "In your words: the failure-handling decision may be wrong across payment and wallet. Inferred: (i) both services are in scope; (ii) a recorded decision is suspect, not the code."
+
+**Q1 · Scope · blocking** — "across payment and wallet" is one service or two.
+  A) Wallet only — one ADR, one rework
+  B) Both — two governed ADRs, a two-area delta spike
+Recommendation: B — the retry ADR governs wallet and the payment failure-handling ADR governs payment, and both share the same gap.
+Default if unanswered: none — blocking.
+
+**Q2 · Goal · non-blocking** — an incident or a design concern.
+  A) Incident-driven — investigate the last failure first
+  B) Design-driven — compare approaches with no incident
+Recommendation: A — the retry miss surfaced the question; B follows if the evidence is thin.
+Default if unanswered: A.
+
+User: "Q2: A. Both services — yes."
+Gate state `ACCEPTED`; no assumption recorded.
+
 **Rung L3 — Spike, with a stated trigger.**
 
-Trigger: the issue spans **two decisions/areas** (payment failure handling and wallet retry) and needs option evaluation. The orchestrator dispatches **spike-conductor** with a delta brief — original `scope.md`, both evidence docs, and the governing ADRs by path.
+Trigger: the gate confirmed **two decisions/areas** (payment failure handling and wallet retry) and the ask needs option evaluation. The orchestrator dispatches **spike-conductor** with a delta brief — original `scope.md`, both evidence docs, and the governing ADRs by path.
 
 **Answer**: The spike investigates only the delta and updates the affected ADR and solution section; unaffected findings are reused, not rebuilt.
 
@@ -53,4 +70,4 @@ Trigger: the issue spans **two decisions/areas** (payment failure handling and w
 | 3 | L2 Decision | 2 | ADR update + rework file |
 | 4 | L3 Spike | ≥3 | delta spike artifacts |
 
-**Checks**: every rung was stated with its justification; L3 named its trigger; no artifact was written at L0/L1.
+**Checks**: Issue 4 was gated and its inference list shown before a rung was chosen; its L3 trigger came from the answered scope, not from the wording; every rung was stated with its justification; no artifact was written at L0/L1.

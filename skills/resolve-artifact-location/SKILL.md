@@ -68,3 +68,10 @@ Reading skills: `continue-prior-spike` and `orchestrate-feature-delivery` read t
 </resolve-root>
 
 </capabilities>
+
+<rules>
+<rule>When a new spike, delivery, or standalone feature folder needs a base root, apply **resolve-root**.</rule>
+<rule>Never anchor a base root on the codebase under investigation — only convention, a declared docs home, or a docs/wiki root qualifies.</rule>
+<rule>Never record the resolved base yourself — return it and let the caller write its durable record.</rule>
+</rules>
+

@@ -16,6 +16,10 @@ description: Investigate codebases to answer questions about functionality, arch
 
 <knowledge>
 
+<request-intake>
+Gate every investigation question through `grill-user`'s **grill-the-ask** before searching. Restate the question, then itemize every inference it needs: **system** (which repo or service), **scope** (feature, module, or symbol), **depth** (C4 level or call-stack), **consumer** (who reads the answer). Show the list; zero inferences → start. Anything inferred → ask the top 3 with options and a recommendation.
+Gate states: `ACCEPTED` · `ACCEPTED-WITH-ASSUMPTIONS` (each default surfaces as a 💭 Assumption in the answer) · `BLOCKED` (ask, then re-run). Never search on a private reading — a wrong system or depth wastes the whole investigation.
+</request-intake>
 <search-strategies>
 | Strategy | Use for |
 |---|---|
@@ -102,13 +106,13 @@ Issues and uncertainty must be understandable without domain context — explana
 <capabilities>
 
 <investigate-codebase>
-1. **Clarify the question**: If ambiguous or broad (e.g., "How does auth work?"), ask the user to specify system, scope, or depth. For simple direct questions (e.g., "Where is `UserService` defined?"), skip to step 2.
+1. **Gate the question**: apply **request-intake** — restate it, show every inferred system, scope, and depth, and ask when anything was inferred; zero inferences → step 2. Never infer the question from the suspected area.
 2. **Discover relevant code**: Detect available search tools first (see search-strategies) — use semantic search when a tool exists, else grep/file search with keyword variants. Locate entry points, key classes, and configuration. Tag reduced recall from a missing semantic tool as ❓ Gap.
 3. **Trace control and data flow**: Follow entry points through the call chain — identify each component's role, how data transforms at each step, and how errors are handled.
 4. **Analyze dependencies**: List external libraries, internal module dependencies, service integrations, and configuration dependencies.
 5. **Extract structural fingerprint**: Note the feature's layer chain (e.g., Controller → Orchestrator → Service → Adapter), stereotypes, and external interactions. This feeds into discover-implementation-patterns.
 6. **Synthesize findings**: Present a coherent narrative — direct answer first, then supporting evidence with file:line references, key design decisions, and areas needing deeper investigation. Then apply present-findings-with-confidence to tag each finding as verified/inferred/assumed, report gaps, and raise inconsistencies.
-7. **Validate**: Verify that all file:line references are accurate by checking the workspace, that the narrative answers the original question directly, that search-tool availability was detected rather than assumed, that every finding carries a confidence tag with no gap silently omitted, that every issue or uncertain finding passes the non-expert test per **plain-language-presentation**, and that prose follows **concise-writing** (answer first, ≤20-word sentences, no banned phrases).
+7. **Validate**: Verify that the restatement and inference list were shown before the first search, that all file:line references are accurate by checking the workspace, that the narrative answers the original question directly, that search-tool availability was detected rather than assumed, that every finding carries a confidence tag with no gap silently omitted, that every issue or uncertain finding passes the non-expert test per **plain-language-presentation**, and that prose follows **concise-writing** (answer first, ≤20-word sentences, no banned phrases).
 </investigate-codebase>
 
 <analyze-cross-repo-dependencies>
@@ -177,7 +181,7 @@ Issues and uncertainty must be understandable without domain context — explana
 </capabilities>
 
 <rules>
-<rule> When the user asks a question about existing code, apply investigate-codebase. First clarify if the question is ambiguous; skip directly to investigation for simple, direct questions. </rule>
+<rule> When the user asks a question about existing code, gate it per **request-intake**, then apply investigate-codebase — never skip the gate because the question looks simple; zero inferences pass at once. </rule>
 <rule> When the question spans multiple repositories or the user asks about cross-system dependencies, apply analyze-cross-repo-dependencies before any diagramming. </rule>
 <rule> When the user wants to see system architecture, container internals, or how systems/components connect, apply draw-c4-diagram at the appropriate level (C2 for landscape, C3 for internals). </rule>
 <rule> When the user wants to see exact message ordering or interaction flow for an operation, apply draw-sequence-diagram. </rule>

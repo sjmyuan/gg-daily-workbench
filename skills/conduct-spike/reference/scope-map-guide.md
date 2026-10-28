@@ -31,15 +31,18 @@ Area status is derived from its problems + findings-pair link — never stored s
 
 ## Accepted assumptions
 
-`scope.md` owns the intake gate's outcome. Record the gate state once, then one line per accepted default:
+`scope.md` owns the intake gate's outcome. Record the gate state, the restatement, and the inference list once, then one line per accepted default:
 
 ```
 Gate: ACCEPTED-WITH-ASSUMPTIONS
+Restatement: reduce first-token latency on web checkout
+Inferred: metric = first-token p95 · surface = web only · no queue in the path
 
 ## Accepted assumptions
 - A1 — Assumption (user-accepted, unverified): target is p95 first-token under 300ms
 ```
 
+- The inference list is the gate's evidence: a `scope.md` with a gate state but no inferences did not run the gate.
 - One line per assumption: ID, the label, the assumed value.
 - Re-open an assumption only when evidence contradicts it; rewrite the line in place when the user decides.
 - Never promote an assumption to fact without evidence — cite the evidence doc line instead.
@@ -48,7 +51,7 @@ Gate: ACCEPTED-WITH-ASSUMPTIONS
 
 - A `done` problem has its ADR present.
 - An area is never `done` with an open problem.
-- The gate state is recorded before any area is recorded.
+- The gate state, restatement, and inference list are recorded before any area is recorded.
 
 ## In-flight units (recovery)
 

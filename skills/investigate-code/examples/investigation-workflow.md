@@ -5,11 +5,19 @@
 
 ---
 
-## Step 1 — Clarify & Investigate
+## Step 1 — Gate & Investigate
 
-Applies `<investigate-codebase>`.
+Applies `<investigate-codebase>`; gate per **request-intake**.
 
-The question is broad — agent asks: "Which service specifically, and are you asking about the full pipeline or a specific step?" User clarifies: "The `data-import-service`, full pipeline from event arrival to publishing."
+**Restatement**: "In your words: explain how the data transformation process works in `data-import-service`. Inferred: (i) the full pipeline, not one field mapper; (ii) a `file:line` walkthrough, not a diagram; (iii) current state only, no recommendations."
+
+**Q1 · Scope · non-blocking** — the whole pipeline or one step.
+  A) Full pipeline — event arrival through publishing
+  B) Core transformation only — `DataTransformer`
+Recommendation: A — "the process" names the pipeline, not one class.
+Default if unanswered: A.
+
+User: "A — full pipeline from event arrival to publishing." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, unverified)`: a code walkthrough is wanted, not a C4 diagram.
 
 **Entry point discovery** — grepping for listeners and handlers:
 

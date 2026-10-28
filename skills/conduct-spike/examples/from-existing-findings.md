@@ -9,9 +9,16 @@
 ### User Input
 > "I've already looked into our caching problem. Here's what I found: [pastes notes]. Can you help me turn this into proper ADRs and a solution doc?"
 
-### Assistant Output
+### Gate — grill-the-ask, round 1
 
-*(Reviews the provided notes, then works through scope definition)*
+**Restatement**: "In your words: turn your caching notes into ADRs and a solution doc. Inferred: (i) the notes are evidence, not a decision; (ii) the catalog service is the only consumer; (iii) no re-investigation."
+**Q1 · Constraints · blocking** — must the notes' figures be verified before drafting?
+  A) Treat them as 💭 Assumption, formalize and flag them
+  B) Verify both metrics against production before drafting
+Recommendation: A — the evidence doc records confidence per claim, so unverified numbers stay Assumptions. Default if unanswered: none.
+User: "A — from last month's load test." → `ACCEPTED-WITH-ASSUMPTIONS`, A1 `Assumption (user-accepted, unverified)`: the load-test figures are representative.
+
+### Assistant Output
 
 **Spike Goal**: Define a caching strategy for the product catalog service to reduce database load and improve response times.
 

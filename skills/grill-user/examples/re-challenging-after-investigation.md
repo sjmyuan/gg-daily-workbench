@@ -2,7 +2,7 @@
 
 **Scenario**: The checkout spike was accepted, then the checkout area's evidence map contradicted a constraint the user had accepted. The gate re-opens on the affected claims only — never on the whole scope.
 
-Applies **challenge-the-ask** (round 2, per **re-challenge-triggers**).
+Applies **re-challenge-the-ask**.
 
 ## Input / Context
 - **Accepted in round 1**: goal = reduce first-token latency on web checkout; scope = one repo, one area; constraint = "no queue in the checkout path".

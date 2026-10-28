@@ -70,7 +70,7 @@ Capability steps cite these standards by name; load the Details file.
 4. Budget each section to ≤ **size-limits**.
 5. Write knowledge as tables/lists; extract large rubrics to `reference/` and route them inline from the using step.
 6. Write each capability with a unique action-verb name and numbered steps; no embedded reference tables or constraint bullets.
-7. Write rules only when multiple capabilities exist; each answers "When X → use capability".
+7. Write `<rules>` for every skill — required: one routing rule per capability ("When X → use capability Y"), plus a guard rule for each known misapplication ("Never …"); never restate a capability step.
 8. Write all prose per **writing-style**.
 9. Write prose per **platform-agnostic-writing**.
 10. Validate the draft against **section-semantics** (violations, section order, naming).

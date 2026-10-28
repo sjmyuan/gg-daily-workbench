@@ -51,7 +51,7 @@ Apply each lever before the next; stop once the char budget is met.
 12. **Trim steps** — Drop edge cases, meta-commentary, and "why" explanations; keep only imperative steps.
 13. **Tables over prose** — Convert repetitive bullet lists into compact tables, especially in `<knowledge>`.
 14. **Condense knowledge** — Replace prose entries with a one-line pointer plus a compact table.
-15. **Cut optional material** — Drop `<rules>` in single-capability skills; drop duplicated or low-value examples.
+15. **Cut optional material** — Drop duplicated or low-value examples; trim a rule that restates a step, never the routing rule.
 
 ### Escalate — when reduction is exhausted
 16. **Accept and flag** — Hub-scope skills may legitimately stay over budget after dedupe; record the residual overrun per the severity table as a known trade-off.

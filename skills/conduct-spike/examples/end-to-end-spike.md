@@ -13,7 +13,19 @@
 ### User Input
 > "We need to spike migrating our payment processing service from the monolith to microservices. It handles credit card, bank transfer, and wallet payments. Currently it's a single Spring Boot app with ~200K LOC."
 
-### Assistant Output (after clarification)
+### Gate — grill-the-ask, round 1
+
+**Restatement**: "In your words: migrate the payment processing service from the monolith to microservices, and spike how. Inferred: (i) the goal is independent deployability, not a rewrite; (ii) all three payment types move; (iii) the spike decides architecture and migration, not a rollout date."
+
+**Q1 · Scope · blocking** — "payment processing service" is one deployable or several.
+  A) One service — a single boundary, one area
+  B) Payment-type services — three boundaries, decomposition plus data split
+Recommendation: B — the request names three payment types with different scaling needs.
+Default if unanswered: none — blocking.
+
+User: "Q1: B." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, unverified)`: the spike ends at documents, not code — recorded in `scope.md` `## Accepted assumptions`.
+
+### Assistant Output (after the gate)
 
 **Spike Goal**: Determine the target architecture for decomposing the payment monolith into independently deployable services, selecting technologies, and defining a migration strategy.
 

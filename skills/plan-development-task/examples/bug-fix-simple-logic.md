@@ -3,6 +3,18 @@
 **Scenario**: `DataImportedHandler` sends a transformed data ID to the message publisher instead of the original source ID.
 **Applies**: **classify-change-type** → **define-scope** → **plan-bug-fix**
 
+## Intake gate
+
+**Restatement**: "In your words: the message publisher receives a transformed product ID where consumers expect the original source ID. Inferred: (i) the expected behavior is the original ID everywhere; (ii) this is a defect, not an intended format change."
+
+**Q1 · Goal · non-blocking** — original ID everywhere or per message type.
+  A) Every outgoing message carries the source ID
+  B) Per message type — some legitimately carry the transformed ID
+Recommendation: A — "instead of the original" reads as unconditional.
+Default if unanswered: A.
+
+User: "A — unconditional." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, unverified)`: a defect, not an intended change.
+
 ## Classification
 
 **User reports:**
