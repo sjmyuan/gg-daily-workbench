@@ -27,3 +27,23 @@ Flag conciseness violations as:
 - A single file with notable verbosity → 🟢 Nit (can tighten, but not a structural problem).
 - Multiple files or a systematic pattern of verbosity → 🟡 Minor (token waste reduces efficiency).
 - The whole skill could be cut by >30% without losing meaning → 🔴 Major (severe bloat; must be refactored).
+
+## Growth audit
+
+Size counts chars; the audit counts structure — the number extraction into `reference/` cannot reduce.
+Run it after the conciseness scan, and report counts even when every finding is clear.
+
+| Check | Test | Severity |
+|---|---|---|
+| **Merge candidates** | Two capabilities share one trigger scope and ≥50% step overlap; either could host the other's steps | 🔴 Major |
+| **Superseded element** | A rule, knowledge row, guide row, reference, or example whose content another element now states | 🟡 Minor |
+| **Superseded capability or example** | The whole element has no independent trigger; it is a variant of another | 🔴 Major |
+| **Orphan** | No step or rule reaches the element; name the chain or state its absence | 🟡 Minor |
+| **Extraction residue** | A `reference/` file that restates SKILL.md, or is routed from nowhere — relocation, not reduction | 🟡 Minor |
+| **Unfunded growth** | Element count rose while no element was retired, and no new trigger was added | 🟡 Minor |
+
+A mergeable capability pair ranks with a capability that has no example: both mean the structure no
+longer matches the triggers.
+
+Close the review with one count line, plus the delta when a prior version is available:
+`capabilities 7→7, steps 31→34, rules 6→8 (+2 unfunded), chars 11,240→11,890`.

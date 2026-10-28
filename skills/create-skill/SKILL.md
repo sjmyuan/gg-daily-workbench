@@ -32,7 +32,7 @@ Capability steps cite these standards by name; load the Details file.
 | **conciseness-check** | Every element justifies its existence; one line = one idea. | **reference/conciseness-check.md** |
 | **evaluation-process** | Every capability ends with a validation or checklist step; absence severity in file. | **reference/evaluation-process.md** |
 | **severity-levels** | Blocker 🚫 / Major 🔴 / Minor 🟡 / Nit 🟢 / Inconsistency ⚠️. | **reference/severity-levels.md** |
-| **edit-existing-skill** | Existing-file mode: review-first, change-type routing, ripple on rename/remove, re-validate. | **reference/edit-skill-procedure.md** |
+| **edit-existing-skill** | Existing-file mode: absorption test, merge/demote/replace, funding rule, element delta, re-validate. | **reference/edit-skill-procedure.md** |
 | **same-name-live-copy-ban** | Never read, compare, or edit a live/loaded same-named skill; the user-provided files are the only subject. | — |
 </named-standards>
 
@@ -44,7 +44,7 @@ Capability steps cite these standards by name; load the Details file.
 | Extracting an existing agent prompt or doc into a skill | Extraction walkthrough | [examples/extract-from-agent.md](examples/extract-from-agent.md) |
 | Adding examples and references to a drafted skill | Examples + references walkthrough | [examples/create-examples-and-references.md](examples/create-examples-and-references.md) |
 | Validating a newly created skill before delivery | Validation-report walkthrough | [examples/validate-new-skill.md](examples/validate-new-skill.md) |
-| Editing an existing skill (review findings + rename ripple) | Edit walkthrough | [examples/editing-existing-skill.md](examples/editing-existing-skill.md) |
+| Editing an existing skill (merge, retire, rename ripple) | Edit walkthrough | [examples/editing-existing-skill.md](examples/editing-existing-skill.md) |
 | A capability step needs automation (CLI vs script) | Automation-decision walkthrough | [examples/create-skill-scripts.md](examples/create-skill-scripts.md) |
 
 </context-loading-guide>
@@ -117,23 +117,22 @@ Capability steps cite these standards by name; load the Details file.
 <validate-created-skill>
 **Objective**: Validate the created or edited skill files before delivery.
 
-1. Apply **same-name-live-copy-ban**; validate only the created or user-provided files.
-2. Run the 16 checks in **reference/validate-skill-procedure.md**, in order, on every created file.
-3. Report each finding with a severity label per **severity-levels** and an actionable fix; return to the failing capability and re-run step 2.
-4. Re-measure changed files and confirm the structural-integrity gate passed — line or step merging is a 🔴 Blocker.
+1. Run the 16 checks in **reference/validate-skill-procedure.md**, in order, on every created file.
+2. Report each finding with a severity label per **severity-levels** and an actionable fix; return to the failing capability and re-run step 1.
+3. Re-measure changed files and confirm the structural-integrity gate passed — line or step merging is a 🔴 Blocker.
 </validate-created-skill>
 
 <edit-skill>
 **Objective**: Edit an existing skill's files by reusing the create-* capabilities in existing-file mode.
 
 1. Apply **same-name-live-copy-ban** — target only the user-provided existing files.
-2. Inventory the skill: sections, capabilities, knowledge, rules, guide rows, examples, references.
+2. Inventory and count the skill: capabilities, steps, knowledge rows, rules, guide rows, examples, references, chars.
 3. Triage intent per **reference/edit-skill-procedure.md**: "check / see if" = review only; "ensure / fix / do it" = edit; open-ended "improve" runs `review-skill` first.
-4. Classify each change per the change-type table in **reference/edit-skill-procedure.md**.
-5. Route each change to the mapped create-* capability in existing-file mode per **reference/edit-skill-procedure.md**.
-6. Run the ripple checklist after renames or removals.
+4. Classify each change per the change-type, absorption, and funding rules in **reference/edit-skill-procedure.md**.
+5. Route each change to the mapped create-* capability in existing-file mode.
+6. Run the ripple checklist after renames, removals, merges, or inlining.
 7. Run **validate-created-skill** after each change; revert on a Blocker 🔴 and redo.
-8. Re-measure changed files per **size-limits** and report per **severity-levels**.
+8. Re-measure per **size-limits**, report the element delta ledger, and report findings per **severity-levels**.
 </edit-skill>
 
 </capabilities>

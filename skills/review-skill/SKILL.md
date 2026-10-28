@@ -66,8 +66,8 @@ Steps cite these standards by name; load the Details file.
 1. Apply **same-name-live-copy-ban**; read the full skill and apply **reference/section-semantics.md** for purposes and violations.
    a. Verify frontmatter, when-to-use, knowledge, and capabilities are present; missing → 🔴 Major.
    b. Verify order frontmatter → when-to-use → knowledge → capabilities → rules; out-of-order → 🟡 Minor.
-   c. Measure size: run `scripts/measure_sizes.py` when available, else chars and lines. Apply **reference/size-limits.md**.
-      When over budget, recommend per **reference/size-remediation.md**; treat line/step-merging as 🔴 Blocker.
+   c. Measure size with `scripts/measure_sizes.py`, else chars and lines, per **reference/size-limits.md**.
+      Over budget → recommend per **reference/size-remediation.md**; line/step-merging → 🔴 Blocker.
 2. **Check description and triggers** — load **reference/trigger-correctness.md**:
    a. Verify the two-part template via **reference/description-template.md**; missing trigger phrase → 🔴 Major.
    b. Score the five dimensions via **reference/description-scoring.md**; report x/10; ≤5 → 🔴 Major, 6–8 → 🟡 Minor.
@@ -77,9 +77,10 @@ Steps cite these standards by name; load the Details file.
 3. Verify each capability is an ordered procedure — fact lists, reference tables, or constraint bullets drift into knowledge.
 4. **Check output evaluation** — load **reference/evaluation-process.md**.
    Each capability needs a validation or checklist step; absent → 🟡 Minor; absent with no validation examples → 🔴 Major.
-5. **Check conciseness and style** — load **reference/conciseness-check.md**; apply **reference/size-limits.md** to every file:
+5. **Check conciseness, style, and growth** — load **reference/conciseness-check.md**; apply **reference/size-limits.md** to every file:
    a. Writing style — load **reference/writing-style.md**; flag per its severity table.
    b. Platform-agnostic writing — load **reference/platform-agnostic-writing.md**; tool names or context paths → 🟡 Minor.
+   c. Growth audit — count the elements, then report merge candidates, superseded elements, and orphans per **reference/conciseness-check.md**.
 6. Verify each rule answers "when X → use capability Y"; restating capability content → 🟡 Minor. Single-capability skill without rules: do not flag.
 7. Verify knowledge holds reference material; rubrics embedded in SKILL.md instead of `reference/` → 🔴 Major.
 8. **Check naming** — load **reference/naming-conventions.md**:
@@ -126,5 +127,4 @@ Steps cite these standards by name; load the Details file.
 <rule>When the user submits a SKILL.md file for review or asks to diagnose what to fix in it, use **review-skill-file** — review and suggest only, never edit the file.</rule>
 <rule>When the user wants an existing skill file edited or improved (not just diagnosed), do not apply edits here — route to `create-skill`'s **edit-skill**.</rule>
 <rule>When the user asks whether a skill will trigger or activate correctly, or whether its description matches its scenarios, use **review-skill-file** and focus on step 2.</rule>
-<rule>When the reviewed skill ships scripts or invokes a CLI, use **review-skill-file** step 17 and judge it against **reference/script-and-cli-policy.md**.</rule>
 </rules>
