@@ -37,7 +37,7 @@ Writes are confined to the spike folder (`**/spikes/**`) — never code, config,
 </write-boundary>
 
 <scope-acceptance-gate>
-No `scope.md` and no findings compilation until the request passes `grill-user`'s **grill-the-ask** — on **every** entry path: new, continued, user-supplied, uncertainty. The gate returns an acceptance record: restatement, itemized inferences, gate state. Nothing inferred → `ACCEPTED`; anything inferred → show the list and ask before decomposing. Record each default under `## Accepted assumptions` as `Assumption (user-accepted, unverified)`. It replaces the scope confirmation — never a second checkpoint. Procedure: **reference/define-spike-scope-procedure.md**.
+No `scope.md` and no findings compilation until the request passes `clarify-request`'s intake gate — on **every** entry path: new, continued, user-supplied, uncertainty. The gate returns an acceptance record: restatement, itemized inferences, gate state. Nothing inferred → `ACCEPTED`; anything inferred → show the list and ask before decomposing. Record each default under `## Accepted assumptions` as `Assumption (user-accepted, unverified)`. It replaces the scope confirmation — never a second checkpoint. Procedure: **reference/define-spike-scope-procedure.md**.
 </scope-acceptance-gate>
 
 <scope-map>
@@ -124,7 +124,7 @@ Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rew
 
 <investigate-per-area>
 1. Apply the investigation procedure per **reference/investigate-per-area-procedure.md** — dispatch, brief, verify, hand off evidence maps.
-2. When an evidence map contradicts an accepted goal or constraint, re-challenge the affected claims via `grill-user`'s **re-challenge-the-ask** and rewrite `scope.md`.
+2. When an evidence map contradicts an accepted goal or constraint, re-challenge the affected claims via `clarify-request`'s **re-challenge-the-ask** and rewrite `scope.md`.
 </investigate-per-area>
 
 <draft-problem-adrs>

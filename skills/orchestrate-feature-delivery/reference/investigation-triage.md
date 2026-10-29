@@ -6,7 +6,7 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 
 | Rung | Answers | Test | Action | Dispatches | Artifacts |
 |---|---|---|---|---|---|
-| **L-1 Clarify** | What is actually being asked? | Any inference was needed to make the ask decidable | Restate, show the inference list, ask `grill-user`'s **grill-the-ask** with options plus a recommendation | 0 | none |
+| **L-1 Clarify** | What is actually being asked? | Any inference was needed to make the ask decidable | Restate, show the inference list, ask `clarify-request`'s intake gate with options plus a recommendation | 0 | none |
 | **L0 Answer** | What did we decide, why, or what is the status? | Index, `context.md`, plan/rework, ADR, findings/evidence, git log settle it | Read in-session and answer | 0 | none |
 | **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | One read-only `code-investigator`, artifacts by path | 1 | none |
 | **L2 Decision** | Was exactly one ADR decision wrong or incomplete? | One decision changes; no new options | `adr-writer` revises in place; `solution-doc-writer` only if target state changes | 1–2 | ADR (+ solution section) |

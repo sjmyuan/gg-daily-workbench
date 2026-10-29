@@ -19,7 +19,7 @@ description: Execute structured development plans with progress tracking, valida
 <knowledge>
 
 <request-intake>
-Gate the request that starts execution through `grill-user`'s **grill-the-ask**: restate it — which plan path, which active `rework-<date>.md`, the base ref, the expected outcome — and itemize every inference. Zero inferences → run **track-plan**. Anything inferred → ask before step 1; the wrong plan or rework file wastes the run.
+Gate the request that starts execution through `clarify-request`'s intake gate: restate it — which plan path, which active `rework-<date>.md`, the base ref, the expected outcome — and itemize every inference. Zero inferences → run **track-plan**. Anything inferred → ask before step 1; the wrong plan or rework file wastes the run.
 A request arriving **mid-execution** ("also fix X", "skip that") is gated the same way before it becomes a step or an amendment — never silently absorbed.
 Accepted defaults go to `context.md` `## Open concerns` or the step note, labeled `Assumption (user-accepted, unverified)`.
 </request-intake>
@@ -206,7 +206,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 </guard-destructive-operation>
 
 <run-validation-checkpoints>
-1. After code changes, run relevant tests to confirm correctness.
+1. After code changes, run relevant tests per the `**Autonomy**` level: `stepwise` every step, `checkpoint` at each milestone, `auto` when cheap and always at the Exit Gate.
 2. After significant changes, run linting, formatting, and type-checking.
 3. For build-dependent projects, verify the build succeeds at key milestones.
 4. Validate incrementally — do not wait until the end of the plan.

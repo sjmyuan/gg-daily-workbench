@@ -13,7 +13,7 @@
 ### User Input
 > "We need to spike migrating our payment processing service from the monolith to microservices. It handles credit card, bank transfer, and wallet payments. Currently it's a single Spring Boot app with ~200K LOC."
 
-### Gate — grill-the-ask, round 1
+### Gate — clarify-the-ask, round 1
 
 **Restatement**: "In your words: migrate the payment processing service from the monolith to microservices, and spike how. Inferred: (i) the goal is independent deployability, not a rewrite; (ii) all three payment types move; (iii) the spike decides architecture and migration, not a rollout date."
 

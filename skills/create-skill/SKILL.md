@@ -54,7 +54,7 @@ Capability steps cite these standards by name; load the Details file.
 <collect-skill-requirements>
 **Objective**: Gather what defines the new skill's purpose, scope, and capabilities.
 
-1. Run `grill-user`'s intake gate on the ask; its acceptance record replaces the question list.
+1. Run `clarify-request`'s intake gate on the ask; its acceptance record replaces the question list.
 2. Fill that record with **name** (action verb), **description**, **when-to-use** (3–7), **capabilities**, **knowledge**, **rules**, **examples**, **references**.
 3. Set the gate state and one `Assumption (user-accepted, unverified)` per default; `BLOCKED` → write no SKILL.md.
 4. Extract from supplied materials instead of asking; never fetch a same-named live skill (per **same-name-live-copy-ban**).

@@ -1,6 +1,6 @@
-# User Challenge Protocol (Intake Gate)
+# Request Clarification Protocol (Intake Gate)
 
-Use with **grill-the-ask**. Gate states and the question budget live in **intake-gate**; this file owns the loop details.
+Use with **clarify-the-ask**. Gate states and the question budget live in **intake-gate**; this file owns the loop details.
 
 ## Rounds
 
@@ -66,7 +66,7 @@ Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with 
 | A question with no options | 2–3 options plus a recommendation |
 | Asking what the repo answers | Read the artifact first, then ask |
 | Proceeding silently on a vague answer | `ACCEPTED-WITH-ASSUMPTIONS` plus labels |
-| Grilling a request with nothing inferred | Restate and proceed |
+| Interrogating a request with nothing inferred | Restate and proceed |
 | A **private** restatement — read, assume, start work | Show the inference list and get it confirmed |
 | Presenting push-back as clarification | Label it **push back** |
 | Keeping assumptions in conversation | Write them into the owning artifact |

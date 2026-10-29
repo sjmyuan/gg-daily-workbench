@@ -2,7 +2,7 @@
 
 **Scenario**: A user opens a spike with one sentence and expects investigation to start. The choice of metric changes the area split, so the gate runs before `scope.md` exists.
 
-Applies **grill-the-ask**.
+Applies **clarify-the-ask**.
 
 ## Input / Context
 - **Request**: "Our checkout is slow, spike what we should do."

@@ -1,6 +1,6 @@
 ---
 name: plan-development-task
-description: Classify, clarify, and generate TDD-based step-by-step plans for bug fixes, features, refactors, or POCs, and amend in-flight plans. Use when fixing bugs, adding features, refactoring, exploring feasibility, planning a POC, restoring, copying, or keeping code, reworking, or amending a plan mid-execution.
+description: Classify, clarify, and generate TDD-based step-by-step plans for bug fixes, features, refactors, or POCs, and amend in-flight plans. Use when fixing bugs, adding features, refactoring, exploring feasibility, planning a POC, restoring, copying, or keeping code, reworking, amending a plan mid-execution, or setting how often execution may stop for a check.
 ---
 
 <when-to-use-this-skill>
@@ -32,7 +32,7 @@ description: Classify, clarify, and generate TDD-based step-by-step plans for bu
 <knowledge>
 
 <request-intake>
-Gate every planning request through `grill-user`'s **grill-the-ask** before classifying: restate it, then itemize every inference — change type, expected behavior, triggering input, done criteria, and the ref or paths for a restore. Show the list; zero inferences → classify. Anything inferred → ask the top 3 with options, a recommendation, and a default.
+Gate every planning request through `clarify-request`'s intake gate before classifying: restate it, then itemize every inference — change type, expected behavior, triggering input, done criteria, and the ref or paths for a restore. Show the list; zero inferences → classify. Anything inferred → ask the top 3 with options, a recommendation, and a default.
 A symptom-only request ("checkout is broken") always infers the expected behavior — ask it; never plan from the suspected cause.
 Record the outcome in `context.md`: the restatement becomes the plan objective, and each accepted default goes under `## Unknowns` as `Assumption (user-accepted, unverified): <default> — Step N verifies — fallback <…>`. No new charter section, no second checkpoint.
 </request-intake>

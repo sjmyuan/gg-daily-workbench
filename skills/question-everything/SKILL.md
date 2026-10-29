@@ -1,6 +1,6 @@
 ---
 name: question-everything
-description: Verify results returned by agents and sub-agents by challenging each claim against primary sources and routing it to an evidence-matched verifier. Use when questioning, validating, or verifying a returned result, repairing a challenged result, resolving conflicting agent results, or verifying before a downstream decision.
+description: Verify a result returned by an agent or sub-agent by challenging each claim against primary sources and routing it to an evidence-matched verifier. Use when questioning, validating, or verifying a returned result, repairing a challenged result, resolving conflicting agent results, or verifying before a downstream decision.
 ---
 
 <when-to-use-this-skill>
@@ -9,7 +9,7 @@ description: Verify results returned by agents and sub-agents by challenging eac
 - Two agents or sub-agents return conflicting results and one must be chosen
 - A returned result must be validated for correctness, completeness, or clarity before acceptance
 - A repair is needed after a DISAGREE verdict, with only the changed claims re-confirmed
-- Do NOT load to accept a user-supplied request — `grill-user` owns the intake gate
+- Do NOT load to accept a user-supplied request — no primary source exists to check it against; `clarify-request` owns the intake gate
 - Do NOT load for plain ADR drafting, solution-doc writing, or code investigation — `draft-adr`, `write-solution-doc`, and `investigate-code` own those
 </when-to-use-this-skill>
 
@@ -20,12 +20,12 @@ Treat every returned result as an unverified claim. Default to suspicion; trust 
 </skeptic-mindset>
 
 <result-doctrine>
-A result **has** primary sources — code, docs, data, logs — so it is verified, never merely clarified. Two rules follow:
+A result **has** primary sources — code, docs, data, logs — so it is verified, never merely clarified; a **request** has none, so it is clarified, never verified. Same word "challenge", opposite target: a result's **claims**, a request's **reading**. Two rules follow:
 
 - **Independence**: the producing instance never verifies its own work; a NEW evidence-matched agent closes every material challenge.
 - **Traceability**: one verdict per challenge, each citing its primary source.
 
-A user-supplied request is the opposite case — it has no primary source and closes when nothing material is left to ask, not on a verdict. That target belongs to `grill-user`.
+A user-supplied request is the opposite case — it has no primary source and closes when nothing material is left to ask, not on a verdict. That target belongs to `clarify-request`.
 </result-doctrine>
 
 <questioning-dimensions>
@@ -92,5 +92,5 @@ Every verifier brief carries known context — established `file:line`, the sett
 <rule>When two agents or sub-agents return conflicting results, apply **question-the-result** to each, then **verify-sub-agent-results** to resolve the conflict.</rule>
 <rule>When the user asks to question, challenge, validate, or verify a returned result, apply **question-the-result**, adding **verify-sub-agent-results** when acceptance is required.</rule>
 <rule>Never verify a result in the agent that produced it — a NEW evidence-matched verifier closes every material challenge.</rule>
-<rule>Never apply this skill to a user-supplied request — it has no primary source and belongs to `grill-user`'s intake gate.</rule>
+<rule>Never apply this skill to a user-supplied request — it has no primary source and belongs to `clarify-request`'s intake gate.</rule>
 </rules>

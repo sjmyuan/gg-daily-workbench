@@ -9,7 +9,7 @@
 ### User Input
 > "I've already looked into our caching problem. Here's what I found: [pastes notes]. Can you help me turn this into proper ADRs and a solution doc?"
 
-### Gate — grill-the-ask, round 1
+### Gate — clarify-the-ask, round 1
 
 **Restatement**: "In your words: turn your caching notes into ADRs and a solution doc. Inferred: (i) the notes are evidence, not a decision; (ii) the catalog service is the only consumer; (iii) no re-investigation."
 **Q1 · Constraints · blocking** — must the notes' figures be verified before drafting?

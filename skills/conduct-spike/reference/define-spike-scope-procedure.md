@@ -2,7 +2,7 @@
 
 Full procedure for the `define-spike-scope` capability — loaded on demand when scope definition begins. Backs **scope-acceptance-gate**. Decomposition rubric: **reference/decomposition-rubric.md**; scope-map recording: **reference/scope-map-guide.md**.
 
-1. Apply `grill-user`'s **grill-the-ask** to the request: restate the goal in the user's words, itemize every inference, show the list, then ask ≤3 material questions with options plus a recommendation, and stop while the gate is `BLOCKED`. Nothing inferred → accept on the restatement.
+1. Apply `clarify-request`'s intake gate to the request: restate the goal in the user's words, itemize every inference, show the list, then ask ≤3 material questions with options plus a recommendation, and stop while the gate is `BLOCKED`. Nothing inferred → accept on the restatement.
 2. Clarify the goal — what question(s) to answer, what uncertainty to reduce.
 3. Decompose into **investigation areas** per **problem-decomposition-guide** (target 2–5; a single area is valid).
 4. Propose a breakdown with one-line descriptions for each area.

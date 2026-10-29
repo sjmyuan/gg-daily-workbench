@@ -1,6 +1,6 @@
 # Intake Dimensions Rubric
 
-Use with **grill-the-ask** to probe a user-supplied request. A request has no primary source: the closer is that nothing material is left to ask, not a verdict on facts.
+Use with **clarify-the-ask** to probe a user-supplied request. A request has no primary source: the closer is that nothing material is left to ask, not a verdict on facts.
 
 ## Dimensions
 

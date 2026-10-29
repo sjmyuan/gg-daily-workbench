@@ -17,7 +17,7 @@ description: Investigate codebases to answer questions about functionality, arch
 <knowledge>
 
 <request-intake>
-Gate every investigation question through `grill-user`'s **grill-the-ask** before searching. Restate the question, then itemize every inference it needs: **system** (which repo or service), **scope** (feature, module, or symbol), **depth** (C4 level or call-stack), **consumer** (who reads the answer). Show the list; zero inferences → start. Anything inferred → ask the top 3 with options and a recommendation.
+Gate every investigation question through `clarify-request`'s intake gate before searching. Restate the question, then itemize every inference it needs: **system** (which repo or service), **scope** (feature, module, or symbol), **depth** (C4 level or call-stack), **consumer** (who reads the answer). Show the list; zero inferences → start. Anything inferred → ask the top 3 with options and a recommendation.
 Gate states: `ACCEPTED` · `ACCEPTED-WITH-ASSUMPTIONS` (each default surfaces as a 💭 Assumption in the answer) · `BLOCKED` (ask, then re-run). Never search on a private reading — a wrong system or depth wastes the whole investigation.
 </request-intake>
 <search-strategies>
