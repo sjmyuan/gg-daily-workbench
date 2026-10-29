@@ -84,6 +84,7 @@ Each file follows the [opencode agents spec](https://opencode.ai/docs/agents/).
 
 - Skills must be discoverable by opencode (`.opencode/skills/<name>/SKILL.md`, `.claude/skills/`, `.agents/skills/`, or the matching global locations) for the `skill` tool to load them.
 - Subagent dispatch tables (in `spike-conductor.md` and `learner.md`) reference agents by name — those names resolve to the other files in this folder once installed.
+- Every agent in `opencode-agents/` **and** `claude-agents/` loads project context from **both** toolchains via **load-project-context**: instructions (`AGENTS.md`, `CLAUDE.md`), agents, skills, rules, and commands under `.opencode/` and `.claude/`, plus `.agents/skills/`. The path mapping above applies to frontmatter and the agent's own defaults, not to context discovery — a project set up for either tool wins over conflicting agent defaults.
 
 ## Agent dispatch per platform
 

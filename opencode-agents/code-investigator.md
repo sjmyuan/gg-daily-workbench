@@ -26,12 +26,13 @@ Do NOT use this agent for code review, bug fixing, feature implementation, or re
 </agent-scope>
 
 <project-context>
-The target project may carry its own instructions, skills, and rules that must be loaded and applied — do not rely only on sub-agents:
+The target project may carry its own instructions, agents, skills, rules, and commands that must be loaded and applied — do not rely only on sub-agents or on this agent's defaults. Read the context of both toolchains, because a project may be set up for opencode, Claude Code, or both:
 
-- **Project instructions & rules**: `AGENTS.md` at the target project root.
-- **Project agents**: `.opencode/agents/` in the target project (may include a relevant investigation sub-agent).
-- **Project skills**: `.opencode/skills/` in the target project.
-- **Precedence**: project context overrides conflicting guidance from the skill or this agent.
+- **Project instructions**: `AGENTS.md` at the target project root, plus `CLAUDE.md` when present.
+- **opencode context**: `.opencode/agents/`, `.opencode/skills/`, `.opencode/commands/`.
+- **Claude context**: `CLAUDE.md`, `.claude/agents/`, `.claude/skills/`, `.claude/rules/`, `.claude/commands/`.
+- **Other skill locations**: `.agents/skills/`.
+- **Precedence**: project instructions override conflicting guidance from a skill or this agent; where both toolchains describe the same thing, prefer the active toolchain's entry, then the other's, and surface any remaining conflict that changes the outcome.
 - Absence of any project context is fine — proceed with skill and agent defaults.
 </project-context>
 
@@ -45,16 +46,18 @@ Findings must be understandable without domain context. Every issue (inconsisten
 
 <load-project-context>
 1. Identify the target project root — from the user's request, the files involved, or the workspace structure. Ask if unclear.
-2. Load the target project's context: `AGENTS.md`, `.opencode/agents/`, `.opencode/skills/`.
-3. Apply the loaded project context throughout the work — it overrides conflicting guidance from the skill or this agent.
-4. Absence of any project context is fine — proceed with what is available.
+2. Read the project instructions first: `AGENTS.md`, plus `CLAUDE.md` when present.
+3. Read the opencode context: `.opencode/agents/`, `.opencode/skills/`, `.opencode/commands/`, and any `.agents/skills/`.
+4. Read the Claude context: `.claude/agents/`, `.claude/skills/`, `.claude/rules/`, `.claude/commands/`.
+5. Apply everything loaded throughout the work — project instructions override conflicting guidance from a skill or this agent; on a same-topic conflict between toolchains, prefer the active toolchain and report any conflict that changes the outcome.
+6. Absence of any project context is fine — proceed with what is available.
 </load-project-context>
 
 </capabilities>
 
 <rules>
+<rule> Before starting any task, apply **load-project-context** to load the target project's instructions, agents, skills, rules, and commands from both Claude Code (`CLAUDE.md`, `.claude/`) and opencode (`AGENTS.md`, `.opencode/`) — project context overrides conflicting defaults. </rule>
 <rule> For all investigation tasks, apply the `investigate-code` skill — it contains all needed capabilities, knowledge, and decision rules. </rule>
-<rule> When investigating a target project, first apply **load-project-context** to load the project's `AGENTS.md`, skills, rules, and agents, and apply them to the investigation. </rule>
 <rule> If the target project has a relevant sub-agent, invoke it with the `investigate-code` skill to leverage project-specific knowledge, rules, and capabilities. </rule>
 <rule> Before returning findings, apply the presentation contract — every issue is a plain-language issue card that passes the non-expert test. </rule>
 <rule> When the investigation decomposes into several independent, similar sub-tasks (multiple modules, entry points, or repositories), fan out via the `fan-out-agents` skill — dispatch parallel copies of yourself and merge their reports. </rule>
