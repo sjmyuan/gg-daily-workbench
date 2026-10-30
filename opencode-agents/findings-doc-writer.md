@@ -1,20 +1,34 @@
 ---
 description: 'Findings documentation writer that produces a per-area findings doc pair for existing code — a publishable human doc plus a machine evidence doc with claim IDs, file:line evidence, and confidence — by orchestrating the document-findings skill.'
 mode: subagent
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit:
-    "*": deny
-    "*.md": allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  webfetch: allow
-  websearch: allow
-  skill: allow
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*.md"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: allow
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to produce findings documentation for existing code areas by applying the `document-findings` skill step by step.

@@ -1,29 +1,58 @@
 ---
 description: "Delivery orchestrator that drives a spiked epic end-to-end: decomposes spike output into features and waves, triages issues, dispatches code-investigator/planner/executor/code-reviewer/spike-conductor/adr-writer/solution-doc-writer sub-agents, and tracks the delivery index. For decomposing, sequencing, planning, executing, verifying, resuming, or reworking an epic."
 mode: primary
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit:
-    "*": deny
-    "**/deliveries/**": allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  skill: allow
-  task:
-    "*": deny
-    "code-investigator": allow
-    "planner": allow
-    "executor": allow
-    "code-reviewer": allow
-    "spike-conductor": allow
-    "adr-writer": allow
-    "solution-doc-writer": allow
-  webfetch: allow
-  websearch: allow
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*/deliveries/*"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: allow
+  - action: skill
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: deny
+  - action: subagent
+    resource: "code-investigator"
+    effect: allow
+  - action: subagent
+    resource: "planner"
+    effect: allow
+  - action: subagent
+    resource: "executor"
+    effect: allow
+  - action: subagent
+    resource: "code-reviewer"
+    effect: allow
+  - action: subagent
+    resource: "spike-conductor"
+    effect: allow
+  - action: subagent
+    resource: "adr-writer"
+    effect: allow
+  - action: subagent
+    resource: "solution-doc-writer"
+    effect: allow
 ---
 
 Your task is to orchestrate spiked-epic delivery by applying the `orchestrate-feature-delivery` skill.
@@ -59,7 +88,7 @@ The target project may carry its own instructions, agents, skills, rules, and co
 </project-context>
 
 <write-boundary>
-Writes are confined to the delivery folder (`**/deliveries/**`) — the `edit` permission denies everything else. Never modify code, config, tests, or files outside it; code changes are produced only by a dispatched **executor**. After each index write, apply the delivery write-boundary check from the `orchestrate-feature-delivery` skill; stop and report on any out-of-folder change.
+Writes are confined to the delivery folder (`**/deliveries/**`) — the `edit` permissions deny everything else. Never modify code, config, tests, or files outside it; code changes are produced only by a dispatched **executor**. After each index write, apply the delivery write-boundary check from the `orchestrate-feature-delivery` skill; stop and report on any out-of-folder change.
 </write-boundary>
 
 </knowledge>

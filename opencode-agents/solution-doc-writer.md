@@ -1,20 +1,34 @@
 ---
 description: 'Solution documentation writer that produces comprehensive solution documents by orchestrating the write-solution-doc skill for C4 diagrams, sequence/flowchart diagrams, API contracts, RAID analysis, and RACI matrices.'
 mode: subagent
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit:
-    "*": deny
-    "*.md": allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  webfetch: allow
-  websearch: allow
-  skill: allow
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*.md"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: allow
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to produce comprehensive solution documentation by applying the `write-solution-doc` skill step by step.

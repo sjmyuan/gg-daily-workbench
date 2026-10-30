@@ -1,20 +1,34 @@
 ---
 description: 'ADR writer that produces well-structured Architecture Decision Records by applying the draft-adr skill for problem definition, driver identification, option evaluation, and document compilation.'
 mode: subagent
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit:
-    "*": deny
-    "*.md": allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  webfetch: allow
-  websearch: allow
-  skill: allow
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*.md"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: allow
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to produce Architecture Decision Records (ADRs) by applying the `draft-adr` skill step by step.

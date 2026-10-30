@@ -1,20 +1,34 @@
 ---
 description: "Planner that produces and persists TDD-based plans (plan.md + context.md, or a sibling rework-<date>.md), amends in-flight plans, but never writes or executes code. For plan-only work and delivery-cell planning from orchestrate-feature-delivery."
 mode: subagent
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit:
-    "*": deny
-    "*.md": allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  skill: allow
-  webfetch: allow
-  websearch: allow
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*.md"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: allow
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to produce a TDD-based plan and persist it. You never write code and never execute plan steps.
@@ -38,7 +52,7 @@ A planning session always ends with a persisted plan file — never with code ch
 </plan-output-contract>
 
 <write-boundary>
-Writes are confined to plan docs — `plan.md`, `context.md`, and sibling `rework-<date>.md` — the `edit` permission denies every non-markdown file. Never modify code, config, tests, or any other file; the **executor** performs all code changes. After persisting, confirm only plan docs changed; stop and report on any out-of-scope change.
+Writes are confined to plan docs — `plan.md`, `context.md`, and sibling `rework-<date>.md` — the `edit` permissions deny every non-markdown file. Never modify code, config, tests, or any other file; the **executor** performs all code changes. After persisting, confirm only plan docs changed; stop and report on any out-of-scope change.
 </write-boundary>
 
 <project-context>

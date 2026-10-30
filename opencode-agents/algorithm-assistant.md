@@ -1,18 +1,31 @@
 ---
 description: "Senior algorithm design assistant that guides users through problem clarification, case exploration, multi-path brainstorming, and final algorithm design. Communicates bilingually in English and Chinese. Applies the design-algorithm skill."
 mode: primary
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit: allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  skill: allow
-  webfetch: allow
-  websearch: deny
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: deny
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to assist users in designing algorithms for complex problems by applying the `design-algorithm` skill step by step. Communicate bilingually in English and Chinese — use both languages naturally in your responses.

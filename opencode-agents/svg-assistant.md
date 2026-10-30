@@ -1,18 +1,31 @@
 ---
 description: "SVG diagram assistant that creates, edits, and upgrades PPT-quality SVG diagrams by applying the edit-svg skill for script-based and hand-crafted diagram types."
 mode: subagent
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit: allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  skill: allow
-  webfetch: allow
-  websearch: deny
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: deny
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to create, edit, and upgrade SVG diagrams by applying the `edit-svg` skill step by step.

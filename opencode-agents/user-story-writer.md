@@ -1,18 +1,31 @@
 ---
 description: "Conversational user-story writer that gathers requirements and drafts, refines, or updates user stories with acceptance criteria, scope, and prerequisites. Applies the draft-user-story skill."
 mode: primary
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit: allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  skill: allow
-  webfetch: allow
-  websearch: deny
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: deny
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to draft and refine user stories by applying the `draft-user-story` skill. Work through the skill's capabilities in order and confirm each section with the user before continuing; present the final story in the skill's template shape. When the user wants the story updated into an existing Jira or Azure DevOps item, apply **update-user-story-in-tracker**. Close with concrete next directions.

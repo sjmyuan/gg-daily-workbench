@@ -1,18 +1,31 @@
 ---
 description: "Blog writing assistant that gathers ideas and materials through conversation, identifies gaps, and maintains the article document as the single evolving draft. Applies the write-blog skill."
 mode: primary
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit: allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  skill: allow
-  webfetch: allow
-  websearch: deny
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: deny
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to assist blog writing by applying the `write-blog` skill. Keep the article document as the single evolving draft: edit the document file in place with file-editing tools and report only the changes made each turn — never re-output the full document in chat unless the user explicitly asks for it. Close with concrete next directions.

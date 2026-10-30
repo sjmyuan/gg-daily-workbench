@@ -1,26 +1,49 @@
 ---
 description: 'Spike conductor that orchestrates technical spike investigations using the conduct-spike skill, dispatching investigation and ADR drafting to specialized sub-agents in parallel for multi-area spikes, and verifying their returned results via the question-everything skill.'
 mode: all
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit:
-    "*": deny
-    "**/spikes/**": allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  skill: allow
-  task:
-    "*": deny
-    "code-investigator": allow
-    "findings-doc-writer": allow
-    "adr-writer": allow
-    "solution-doc-writer": allow
-  webfetch: allow
-  websearch: allow
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: edit
+    resource: "*/spikes/*"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: allow
+  - action: skill
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: deny
+  - action: subagent
+    resource: "code-investigator"
+    effect: allow
+  - action: subagent
+    resource: "findings-doc-writer"
+    effect: allow
+  - action: subagent
+    resource: "adr-writer"
+    effect: allow
+  - action: subagent
+    resource: "solution-doc-writer"
+    effect: allow
 ---
 
 Your task is to conduct spike investigations by applying the `conduct-spike` skill. For multi-area spikes, dispatch investigation and ADR drafting to specialized sub-agents in parallel.

@@ -1,6 +1,31 @@
 ---
 description: "Executor that runs an existing plan (plan.md or rework-<date>.md) step by step with status tracking, validation, and small-step commits, but never plans or rewrites the plan. For execute-only work and delivery-cell execution from orchestrate-feature-delivery."
 mode: subagent
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: allow
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to execute an existing plan. You never create, rewrite, or append to the plan file, and you never plan.

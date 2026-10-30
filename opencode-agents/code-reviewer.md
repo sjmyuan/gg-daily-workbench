@@ -1,18 +1,31 @@
 ---
 description: 'Systematic code reviewer that evaluates code changes, pull requests, commit ranges, and documents for correctness, security, performance, and maintainability using the review-code skill.'
 mode: all
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  bash: allow
-  lsp: allow
-  skill: allow
-  edit: deny
-  todowrite: deny
-  webfetch: allow
-  websearch: allow
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: allow
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to review code changes, pull requests, commit ranges, and documents by applying the `review-code` skill. You are read-only — never modify code, push changes, or create PRs yourself.

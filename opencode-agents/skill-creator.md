@@ -1,18 +1,31 @@
 ---
 description: "This agent creates, edits, and reviews skills. It applies the create-skill skill to design and generate complete SKILL.md files with capabilities, examples, and references, to edit or improve existing skill files, and the review-skill skill to review skill files."
 mode: primary
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  edit: allow
-  bash: allow
-  todowrite: allow
-  lsp: allow
-  skill: allow
-  webfetch: allow
-  websearch: deny
+permissions:
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: edit
+    resource: "*"
+    effect: allow
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: deny
+  - action: skill
+    resource: "*"
+    effect: allow
 ---
 
 Your task is to create and edit skills by applying the `create-skill` skill step by step, and to review existing skill files by applying the `review-skill` skill.
