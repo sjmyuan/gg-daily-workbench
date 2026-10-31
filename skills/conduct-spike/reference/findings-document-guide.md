@@ -29,6 +29,14 @@ All of the following live in the **evidence doc**, not the human doc:
 
 Details: `document-findings`'s **reference/evidence-and-ids.md**.
 
+## Answered user questions
+
+Every question the user asks about the area is answered in the human doc — a claim already in the ledger is not an exemption:
+
+- **A similar question exists** (same component or flow, same question intent) → revise that topic's TL;DR and artifact in place.
+- **No similar question** → add a topic block in depth order; the human doc carries the answer, never a record of the conversation.
+- The evidence doc changes only when a claim, verdict, or confidence changes; a re-asked question already answered as asked changes nothing.
+
 ## Relationship to other artifacts
 
 - **ADRs** cite the evidence doc's stable IDs for evidence: "The current authorize path (`payment/authorize-flow#c2`, `ChargeService.java:88`) couples retries to the gateway call..."

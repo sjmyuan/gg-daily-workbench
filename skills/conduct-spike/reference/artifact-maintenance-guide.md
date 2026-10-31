@@ -42,6 +42,7 @@ Before presenting any ADR or solution document, scan it for banned process langu
 | Change origin | Propagate to | Stopping condition |
 |---|---|---|
 | Evidence doc (new evidence or correction) | ADR → solution doc | Evidence only confirms existing facts and decisions |
+| User question answered in conversation | That area's human findings doc (revise the similar topic, else add one) → ADR → solution doc | The existing topic already answers it as asked |
 | ADR decision change | Solution doc | Decision has no target-state impact |
 | Scope-map delta (add/adjust area or problem) | Affected ADR(s) → affected solution-doc section(s) | New problem has no ADR drafted yet |
 
@@ -71,4 +72,5 @@ A fact discovered during **delivery** enters at the evidence doc via `update-fin
 
 - Updating an ADR but leaving the solution doc on the old decision
 - Correcting a findings fact that a decision relied on, without revisiting the ADR
+- Skipping the human findings doc because the evidence doc already holds the claim — an answered user question still needs its topic revised or added
 - Describing the delta inside the artifacts instead of in conversation

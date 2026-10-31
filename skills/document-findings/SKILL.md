@@ -119,7 +119,7 @@ Pipeline: an area investigation → doc pair → `draft-adr` → `write-solution
 3. Never renumber existing IDs; add new IDs for new claims.
 4. Update the claim's confidence tag and verdict (for example 🔶 Inferred → ✅ Verified).
 5. Record new dead-end searches in Searched-negatives; update Coverage.
-6. Refresh the human topic only when its reader-facing answer changed; keep its heading anchor stable.
+6. Update the human doc for the question being answered — revise the similar topic in place, or add a new topic when none answers it; keep existing heading anchors stable.
 7. Sync that topic's diagrams via `draw-mermaid-diagrams` (`sync-diagram-set`) when the change affects them.
 8. Keep no version markers or changelogs — git is history.
 9. Apply **validate-findings-doc**; then flag downstream artifacts that cite the changed IDs.
@@ -143,7 +143,7 @@ Pipeline: an area investigation → doc pair → `draft-adr` → `write-solution
 <rule>When a verified investigation of an area is available, apply **collect-area-questions**, then **author-findings-doc** and **author-evidence-doc**.</rule>
 <rule>When only the machine layer is requested, apply **author-evidence-doc** directly.</rule>
 <rule>When an existing combined findings doc must be split, apply **split-findings-doc**.</rule>
-<rule>When new evidence changes an existing area, apply **update-findings-doc** to both docs.</rule>
+<rule>When new evidence changes an existing area, or the conversation answers a question about it, apply **update-findings-doc** to both docs.</rule>
 <rule>Before saving or delivering a pair, apply **validate-findings-doc**.</rule>
 <rule>When the user wants target-state architecture or a decision record, do NOT use this skill — apply `write-solution-doc` or `draft-adr`.</rule>
 <rule>When a spike area investigation exists, seed both docs from its evidence per **reference/pipeline-integration.md**.</rule>

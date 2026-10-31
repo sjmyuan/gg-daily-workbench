@@ -157,7 +157,7 @@ Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rew
 <rule>Before `scope.md` is written, a continuation starts, user-supplied material is compiled, or an uncertainty spike begins, apply **scope-acceptance-gate** — accept only `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS`, and only after the inference list was shown.</rule>
 <rule>When the user supplies pre-existing investigation material, apply **compile-findings-doc** directly, skipping **investigate-per-area** — after the gate.</rule>
 <rule>When the user resumes a prior spike or re-investigates a decided ADR, apply **continue-prior-spike**.</rule>
-<rule>When a fact or decision changes after spike artifacts exist, apply **sync-update-artifacts**.</rule>
+<rule>When a fact or decision changes after spike artifacts exist, or an area question is answered, apply **sync-update-artifacts**.</rule>
 <rule>When ADR discussion hinges on unverified assumptions or missing evidence, apply **suggest-spike-on-adr-uncertainty** before finalizing the ADR.</rule>
 <rule>When the artifact base root is unresolved, apply `resolve-artifact-location` before the scope map is saved.</rule>
 <rule>When any write capability completes, run the own-writes boundary check per **reference/write-boundary-guide.md**; stop and report on newly written out-of-folder paths.</rule>

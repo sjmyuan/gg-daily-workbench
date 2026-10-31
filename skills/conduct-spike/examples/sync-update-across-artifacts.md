@@ -28,7 +28,7 @@ Artifacts after the original spike:
 
 ## What the assistant does, artifact by artifact
 
-1. **Findings pair** (via `document-findings`): the evidence doc's ledger row for the peak-load claim moves from 💭 Assumption to ✅ Verified with `file:line`; the human doc's communication topic is refreshed only if its reader-facing answer changed.
+1. **Findings pair** (via `document-findings`): the evidence doc's ledger row for the peak-load claim moves from 💭 Assumption to ✅ Verified with `file:line`; the human doc's communication topic is revised to answer the measured question, and a new topic is added when no existing topic answers it.
 2. **`adr-communication-01-service-communication.md`** (via `draft-adr`): decision changes to "Event-driven Kafka" — chosen option, justification, and consequences rewritten in place.
 
    **Before** (as drafted, abridged):
