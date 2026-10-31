@@ -2,6 +2,14 @@
 
 Cross-cutting rules for every spike sub-agent dispatch. Briefs: **reference/dispatch-briefs.md**; dispatch pattern: **reference/multi-agent-orchestration.md**.
 
+## Context completeness
+
+- **Inventory before writing**: every dispatch starts from an explicit list of what the orchestrator holds — user dialog, `scope.md`, prior results, its own reads and searches, resolved paths. A brief that omits an inventory item is incomplete, not concise.
+- **Digest, don't just point**: pass the conclusion the orchestrator already reached (located `file:line`, settled claims, ruled-out searches) with the path, so the sub-agent acts instead of re-reading.
+- **Feed the callee's gate**: fill the intake record (system, scope, depth, consumer) — an unfilled field becomes the sub-agent's exploration pass.
+- **Forward the search log**: every returned unit's searched-negatives seed the next unit's **already searched** digest; a negative that is not forwarded is paid for twice.
+- **Never let it hunt for inputs**: absolute paths with section anchors — a sub-agent searching the filesystem for its own inputs is a brief defect, not a sub-agent behavior.
+
 ## Model routing
 
 Choose the least powerful model that can do the unit; **state it explicitly** — an omitted model inherits the orchestrator's session model, often the most expensive.
@@ -40,6 +48,10 @@ Before dispatching, detect the platform's agent mechanism and map each unit to t
 
 | Excuse | Reality |
 |---|---|
+| "The sub-agent will find the scope itself" | It cannot see the orchestrator's context; it re-derives the scope by searching, at full price. |
+| "A short brief is a cheap brief" | The brief saves tokens; the re-search spends them back many times over. A missing digest is a cost, not a saving. |
+| "The path is enough — it can read the file" | A path forces a re-read and a re-derivation; the digest is what removes the re-scan. |
+| "It can grep for the entry point" | That search already ran. Forward the location, not the task. |
 | "Single area / single ADR — dispatching is overhead" | Context preservation is the goal, not parallelism; the unit is still dispatched. |
 | "The investigator was thorough — verification is redundant" | Verification is the gate; the original instance is never reused. |
 | "Just the evidence doc is enough" | An area's findings always travel as a pair — human doc + evidence doc; never one alone. |

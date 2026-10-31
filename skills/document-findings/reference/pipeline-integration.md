@@ -24,6 +24,20 @@ When seeded by an orchestrator, return:
 - Evidence gaps (❓) and any ⚠️ inconsistencies found in the source results.
 - Cross-area constraints that reference the other area's pair.
 
+## Seeded brief acceptance
+
+A spike dispatch brief carries more than paths. When it supplies any of the following, treat the item as settled input:
+
+| Item | Behaviour |
+|---|---|
+| Investigation results (inline) | Record faithfully — summary, evidence map, search log. Never re-investigate. |
+| Known locations (digest) | Use the `file:line` as given; never re-open the file to confirm it. |
+| Already searched (digest) | Carry into searched-negatives; never repeat the query. |
+| Intake record (system, scope, depth, consumer) | Adopt it; never explore to discover where the scope or the pair belongs. |
+| Absolute artifact paths | Write there directly; never search the filesystem for the artifact folder. |
+
+Guard: a claim arriving with no location and no verdict is not silently dropped — flag it in the return contract so the orchestrator can re-brief that unit.
+
 ## Shared schema
 
 Consumers rely on five stable elements:

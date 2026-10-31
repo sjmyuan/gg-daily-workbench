@@ -11,13 +11,19 @@ A brief embedding this skill MUST include:
 | Mode | Yes | `target-state` (default, decision-only), `current-state` (as-is), or `baseline-input` (target-state from a baseline) |
 | Seed content | Yes | Existing findings docs, diagrams, or the solution decision being documented |
 | Scope boundary | Yes | Sections to compile vs. skip; out-of-scope spike context |
+| Decisions digest | Yes (spike) | Area → problem → chosen option → the driver that decided it; mirror from it, never re-derive a decision |
+| Known locations | When available | `file:line` and claim IDs already located; use them, never re-open the files to find them |
+| Accepted assumptions | When available | Assumption IDs and values to surface in RAID |
 | Language | No | Default: brief language; else detect from user input |
+
+Paths in the brief are absolute, with the section anchor to load.
 
 Without a mode and seed content, the skill cannot determine which sections to produce — do not begin the sequence.
 
 ## Guard clause
 
 - Embedded mode: do NOT re-gather or re-question what the brief already seeded — incorporate it directly per the pre-existing-content rule.
+- Treat the brief's decisions digest, known locations, and accepted assumptions as settled: never re-derive a decision, re-read cited code, or search for the inputs or the artifact paths.
 - No seed content and no mode provided: STOP and request the seed before running `clarify-business-context`.
 - Standalone sessions (no brief): the full questioning sequence applies normally.
 

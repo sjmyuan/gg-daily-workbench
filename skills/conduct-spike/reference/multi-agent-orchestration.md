@@ -20,11 +20,15 @@ Each capability's brief template lives in its own reference file (see the table 
 ## Dispatching Pattern
 
 1. Identify independent work units (one per investigation area, or one per problem/ADR — batching a whole area's problems into one brief when they share its evidence; including a single unit).
-2. For each unit, fill the capability's ready-to-fill brief (see the table above) per the **structured brief shape** — carry all known context, persisted items by **path** and unpersisted items **inline**; the shared known-context and evidence-map contracts live in **reference/dispatch-briefs.md**.
-3. Dispatch the briefs — all units concurrently when there are multiple, or the single unit on its own when there is one. Sub-agents operate independently and do not communicate with each other. Apply **reference/dispatch-discipline.md** — explicit model per brief, bounded waits, and no worker-spawned sub-agents.
-4. Collect results from all sub-agents when they complete.
-5. Verify each collected result via `question-everything`'s **verify-sub-agent-results** at the depth in **Verifying Returned Results** below. Review the accepted results for completeness and consistency across areas, then hand each area's verified evidence map to `compile-findings-doc`, which records it in the area's `docs/evidence-<area>.md` (see **reference/findings-document-guide.md**).
-6. **Document-compilation briefs** (findings and solution docs) carry the full synthesis context per **reference/findings-doc-brief.md** / **reference/solution-doc-brief.md** — the orchestrator still reviews, validates, and presents the returned doc.
+2. Inventory the orchestrator's own context before writing anything: the user's ask and answers, `scope.md`, prior units' returned results, its own reads and searches, resolved paths, and project conventions — then classify each item as **path**, **digest**, or **inline** per **reference/dispatch-briefs.md**.
+3. For each unit, fill the capability's ready-to-fill brief (see the table above) per the **structured brief shape**; every inventory item lands in it, every path is absolute, and the callee intake record is filled. Run the **completeness check** in **reference/dispatch-briefs.md** — a brief that fails it is not dispatched.
+4. Dispatch the briefs — all units concurrently when there are multiple, or the single unit on its own when there is one. Sub-agents operate independently and do not communicate with each other. Apply **reference/dispatch-discipline.md** — explicit model per brief, bounded waits, and no worker-spawned sub-agents.
+5. Collect results from all sub-agents when they complete, including each unit's search log.
+6. Verify each collected result via `question-everything`'s **verify-sub-agent-results** at the depth in **Verifying Returned Results** below. Review the accepted results for completeness and consistency across areas, then hand each area's verified evidence map to `compile-findings-doc`, which records it in the area's `docs/evidence-<area>.md` (see **reference/findings-document-guide.md**).
+7. **Document-compilation briefs** (findings and solution docs) carry the full synthesis context per **reference/findings-doc-brief.md** / **reference/solution-doc-brief.md** — the orchestrator still reviews, validates, and presents the returned doc.
+8. Feed each collected result forward: a later unit in the same round receives the earlier units' results **inline** (they are not artifacts yet), and the next round receives each unit's search log as its **already searched** digest.
+
+A brief that carries only the goal and an output name is the failure mode this ordering exists to prevent: the sub-agent cannot see the orchestrator's context, so it re-derives the scope, hunts for its own input files, and repeats searches the orchestrator already ran.
 
 ## Verifying Returned Results
 
@@ -40,7 +44,7 @@ Verify via `question-everything`'s **verify-sub-agent-results**, with depth set 
 - `code-investigator` verifies code claims; non-code claims go to a NEW instance of the producer's type. Never reuse the original instance.
 - A fidelity check that finds a new `file:line` claim drops to a **single pass** on that claim.
 - The re-dispatch brief carries the **verification result** (open challenges + verdicts) so the new agent resolves them instead of redoing settled work (see **reference/dispatch-briefs.md**).
-- Each verifier brief carries the known context — established `file:line`, the settled-vs-open split, and searched-negatives.
+- Each verifier brief carries the known context — the intake record, established `file:line`, the settled-vs-open split, and searched-negatives.
 - `UNCERTAIN` → tag the claim **unverified** in the evidence doc and surface it; never add a round to converge.
 
 ### Verification questions

@@ -14,6 +14,10 @@ description: Guide users through drafting well-structured ADRs, proactively visu
 </when-to-use-this-skill>
 
 <knowledge>
+<seeded-brief>
+Dispatched inside a spike, a seeding brief supplies the problem, decision drivers, candidate and rejected options, the evidence doc with cited `file:line`, and sibling constraints. Those are settled intake: run the flow headlessly from them — never re-derive the drivers, re-ask the user, re-read code for a cited location, or search for your own inputs. Return the ADR plus the cited evidence it relies on, any decision resting on an accepted assumption, and any constraint the evidence doc lacks.
+</seeded-brief>
+
 <prompting-guide>
 Load **reference/prompting-guide.md** for decision-driver categories and option-brainstorming prompts.
 </prompting-guide>
@@ -138,6 +142,7 @@ ADR prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single
 
 <rules>
 <rule>Run the linear pipeline with confirmation between steps: **define-problem** → **define-decision-drivers** → **define-considered-options** → **evaluate-options** → **compile-adr**.</rule>
+<rule>When a seeding brief supplies the problem, drivers, options, and cited evidence locations, run the flow headlessly from it per **seeded-brief** — never re-derive, re-ask, or re-read cited code.</rule>
 <rule>If the user adds an option mid-evaluation, apply **evaluate-options** to assess it, then **sync-diagrams** to update the comparison matrix and elimination tree.</rule>
 <rule>If the user revises the problem or drivers, re-apply the affected downstream capabilities, then **sync-diagrams** to update every affected diagram.</rule>
 <rule>After each user confirmation, update any in-progress ADR draft so nothing is lost.</rule>

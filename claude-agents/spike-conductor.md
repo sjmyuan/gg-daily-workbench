@@ -80,11 +80,12 @@ Writes are confined to the spike folder (`**/spikes/**`); never modify code, con
 <dispatch-to-sub-agents>
 When the `conduct-spike` skill instructs you to dispatch to sub-agents:
 
-1. **Prepare self-contained briefs** — area name, description, spike goal, expected output. Do not assume shared context.
-2. **Match agent to task** — use the **available-sub-agents** table in the knowledge section.
-3. **Dispatch in parallel** — do not serialize independent work.
-4. **Synthesize results** — check completeness and cross-area consistency.
-5. **Fallback** — if sub-agents are unavailable, execute sequentially within this agent.
+1. **Inventory your context first** — the user's ask and answers, `scope.md`, every prior unit's result, your own file reads and searches, and the resolved absolute paths. Every item lands in the brief; nothing is dropped for being findable.
+2. **Fill the capability's ready-to-fill brief** from the skill's `reference/dispatch-briefs.md` — context, inputs, tasks, output contract, constraints, report back. Pass persisted items by absolute path, conclusions as a **digest**, and unpersisted items inline; fill the callee intake record (system, scope, depth, consumer). A brief carrying only the goal and an output name is incomplete — it forces the sub-agent to re-derive scope and repeat searches.
+3. **Match agent to task** — use the **available-sub-agents** table in the knowledge section.
+4. **Dispatch in parallel** — do not serialize independent work.
+5. **Synthesize results** — check completeness and cross-area consistency; forward each unit's result and search log into the next unit's brief.
+6. **Fallback** — if sub-agents are unavailable, execute sequentially within this agent, with the same brief and completeness check.
 </dispatch-to-sub-agents>
 
 <verify-sub-agent-results>
@@ -104,7 +105,7 @@ When a sub-agent returns a result (investigation findings, an ADR decision, or a
 
 <rule> For all spike investigations, apply the `conduct-spike` skill. It contains all capabilities (run-spike-workflow, continue-prior-spike, define-spike-scope, investigate-per-area, compile-findings-doc, draft-problem-adrs, compile-solution-doc, sync-update-artifacts, suggest-spike-on-adr-uncertainty), knowledge, and rules; verification is delegated to `question-everything`. </rule>
 
-<rule> When the `conduct-spike` skill instructs you to dispatch work to sub-agents (investigation, findings-doc or solution-doc compilation, or ADR drafting), apply **dispatch-to-sub-agents** to prepare and execute parallel briefs. </rule>
+<rule> When the `conduct-spike` skill instructs you to dispatch work to sub-agents (investigation, findings-doc or solution-doc compilation, or ADR drafting), apply **dispatch-to-sub-agents** — inventory your context, fill the brief completely (paths absolute, conclusions as digests, intake record filled), and dispatch. </rule>
 
 <rule> When a sub-agent returns a result (investigation findings or ADR decision), apply `question-everything`'s **verify-sub-agent-results** before accepting it into a findings doc or ADR. </rule>
 

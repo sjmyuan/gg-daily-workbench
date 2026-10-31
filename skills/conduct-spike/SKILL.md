@@ -6,14 +6,11 @@ description: Conduct spike investigations producing ADRs, findings, and solution
 <when-to-use-this-skill>
 - Clarify or challenge an ambiguous spike request before accepting it, and re-challenge it when evidence contradicts the goal
 - Conduct a spike investigation — research, evaluate, and compare approaches before committing
+- Scope a large problem into areas, each holding its decision problems ("How to …"), starting from the current implementation
 - Produce ADRs (one per problem, grouped by area) and a consolidated solution document
+- Formalize pre-existing investigation findings, or continue a previous spike into areas not fully resolved
 - Discuss an ADR whose outcome depends on unverified assumptions, unknown feasibility, or missing evidence
-- Understand the current implementation as an investigation area before deciding
-- Break a large technical problem into areas, each holding its decision problems ("How to …")
-- Formalize pre-existing investigation findings into ADRs and a solution document
-- Continue a previous spike into areas not fully resolved
-- Re-investigate a decided ADR after implementation revealed a problem (focused rework spike)
-- Sync findings docs, ADR, and solution doc on new evidence or a changed decision
+- Re-investigate a decided ADR after implementation revealed a problem, and sync findings, ADR, and solution doc on new evidence
 </when-to-use-this-skill>
 
 <knowledge>
@@ -65,7 +62,7 @@ No existing implementation: research approaches, comparables, constraints.
 </greenfield-scenarios>
 
 <multi-agent-orchestration>
-Dispatch every spike unit — including a single-task spike — to sub-agents. Details: **reference/multi-agent-orchestration.md**; model routing, waits, fallback: **reference/dispatch-discipline.md**.
+Dispatch every spike unit — including a single-task spike — to sub-agents, each brief carrying a complete context inventory so no sub-agent re-derives scope or repeats a search. Pattern: **reference/multi-agent-orchestration.md**; briefs: **reference/dispatch-briefs.md**; model routing, waits, fallback: **reference/dispatch-discipline.md**.
 </multi-agent-orchestration>
 
 <sub-agent-verification>

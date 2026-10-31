@@ -43,7 +43,7 @@ A findings doc pair explains what exists in a code **area** today: a human findi
 - Details and linking: **reference/evidence-and-ids.md**.
 </evidence-doc>
 <pipeline-integration>
-Pipeline: an area investigation → doc pair → `draft-adr` → `write-solution-doc`; details in **reference/pipeline-integration.md**.
+Pipeline: an area investigation → doc pair → `draft-adr` → `write-solution-doc`. A seeding brief's results, known locations, and searched-negatives are settled input — record them, never re-investigate. Details in **reference/pipeline-integration.md**.
 </pipeline-integration>
 
 <context-loading-guide>

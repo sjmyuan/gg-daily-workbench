@@ -19,6 +19,7 @@ description: Investigate codebases to answer questions about functionality, arch
 <request-intake>
 Gate every investigation question through `clarify-request`'s intake gate before searching. Restate the question, then itemize every inference it needs: **system** (which repo or service), **scope** (feature, module, or symbol), **depth** (C4 level or call-stack), **consumer** (who reads the answer). Show the list; zero inferences → start. Anything inferred → ask the top 3 with options and a recommendation.
 Gate states: `ACCEPTED` · `ACCEPTED-WITH-ASSUMPTIONS` (each default surfaces as a 💭 Assumption in the answer) · `BLOCKED` (ask, then re-run). Never search on a private reading — a wrong system or depth wastes the whole investigation.
+A seeding brief that states all four fields **is** the gate result: adopt it, ask nothing, and never explore to discover where the scope or inputs live.
 </request-intake>
 <search-strategies>
 | Strategy | Use for |
@@ -77,6 +78,7 @@ Detailed presentation format: [reference/confidence-and-coverage-guide.md](refer
 </finding-confidence-model>
 <spike-integration>
 For a spike investigation, scope the investigation to the spike's area and read its existing evidence before re-scanning: load the spike folder's evidence doc (`docs/evidence-<area>.md`), then update its evidence map per the findings-document guide in **conduct-spike** (entry points `file:line`, sequence diagrams for call chains, evidence ledger with the 5-tag confidence model, searched-negatives). The human doc (`docs/findings-<area>.md`) carries no ledger. Do not load when no spike area has been defined yet.
+A brief's **known locations** and **already searched** digests are settled input: start from them, do not re-scan, and return your own search log so the next unit inherits it.
 </spike-integration>
 <concise-writing>
 All investigation prose and reports follow BLUF (conclusion first), hard caps, atomic bullets, and tables-over-prose. Every section opens with a bolded one-line takeaway; no banned phrases; every sentence passes the "so what?" test. Load **reference/writing-style.md** for the full rules (caps table, banned-phrase list, sentence surgery).

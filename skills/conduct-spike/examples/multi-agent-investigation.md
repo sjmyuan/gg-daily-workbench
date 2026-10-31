@@ -1,12 +1,10 @@
 # Example: Multi-Agent Parallel Investigation — Payment Service Migration
 
-**Scenario**: A heavy spike with 4 investigation areas on migrating a legacy payment service. The orchestrator dispatches investigation and ADR drafting to sub-agents in parallel to reduce wall-clock time.
+**Scenario**: A 4-area spike on migrating a legacy payment service; investigation and ADR drafting go to sub-agents in parallel.
 
 **Applies**: `define-spike-scope` → `investigate-per-area` (parallel dispatch) → `compile-findings-doc` → `draft-problem-adrs` (parallel dispatch, evaluation via `draft-adr`) → `compile-solution-doc`
 
-**What makes this distinct**: Parallel sub-agent orchestration — independent work units dispatched concurrently, then synthesized. Dispatch is the default for all spikes (even single-area) to preserve context; parallel speed is secondary (see `reference/multi-agent-orchestration.md`).
-
----
+**What makes this distinct**: Parallel sub-agent orchestration — independent work units dispatched concurrently, then synthesized. Dispatch is the default for all spikes; parallel speed is secondary (see `reference/multi-agent-orchestration.md`).
 
 ## Define Spike Scope
 
@@ -27,14 +25,27 @@
 
 ### Orchestrator: Prepare Briefs
 
-4 self-contained briefs, one per area — persisted context by path (`scope.md` goal + problems), live context inline (boundaries, user-stated constraints), expected output — each **requiring a per-area evidence map**. No findings pair exists yet, so this round seeds the map (see `reference/dispatch-briefs.md`, `reference/findings-document-guide.md`).
+4 self-contained briefs, one per area. The orchestrator first inventories its own context — scope dialog, `scope.md`, anything it already read or searched — then fills each brief with absolute paths, digests of what is already known, and the callee intake record. Every brief requires a per-area evidence map; no findings pair exists yet, so this round seeds it (see `reference/dispatch-briefs.md`).
 
-| Brief | Investigate | Scope | Expected output |
-|---|---|---|---|
-| 1 — Service decomposition | How to split the monolith? | Bounded contexts, package deps, ownership | Findings + evidence map |
-| 2 — Inter-service communication | What patterns exist / needed? | Integration points, async familiarity | Findings + evidence map |
-| 3 — Database decomposition | How is the DB structured / decomposable? | Table ownership, stored procs, access | Findings + evidence map |
-| 4 — Migration strategy | What infra / patterns feasible? | Pipeline, traffic routing, feature flags | Findings + evidence map |
+**Brief 1 — Service decomposition** (excerpt of sections 2–3; full shape per `reference/investigation-brief.md`):
+```
+## 2. Context
+- Spike goal (path + digest): /work/acme/spikes/payment-migration/scope.md
+  — can the monolith be split without breaking settlement? Completion: a decision per area.
+- Area: Service decomposition — bounded contexts, package deps, ownership
+- Boundaries (inline): payment-service only; SOAP gateway and settlement batch are out of scope
+- Accepted assumptions (digest): A1 → zero downtime is required for wallet traffic
+- Mode: brownfield
+
+## 3. Inputs
+- Intake record (inline): system acme/payment-service · scope packages/payment/**,**/settlement
+  · depth call chains to file:line · consumer this area's findings pair
+- Known locations (digest): PaymentOrchestrator.java:1-1200, package-by-layer layout under
+  packages/payment — located during scope dialog, not to be re-discovered
+- Already searched (digest): "module" in packages/ → no Maven/Gradle modules; do not repeat
+- First pass: no findings pair yet — build the evidence map from scratch
+```
+Four thin briefs would send each sub-agent hunting for its own scope, its own input files, and searches the orchestrator had already run.
 
 ### Orchestrator: Dispatch
 
@@ -74,7 +85,7 @@
 
 **Searched-negatives**: `grep -ri "kafka\|rabbit\|mq"` in `payment-service` — no broker usage.
 
-*(The other three evidence docs follow the same shape — metadata block, topic map, claim ledger, searched-negatives, coverage.)*
+*(The other three pairs follow the same shape.)*
 
 **Cross-area constraints**: `docs/evidence-service-decomposition.md` ↔ `docs/evidence-database.md` (shared `transactions`/`accounts`/`audit_log`); `docs/evidence-communication.md` ↔ `docs/evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
 
@@ -100,18 +111,20 @@
 
 **Brief 1 — ADR for Service Decomposition (problem: split the monolith)**:
 ```
-Produce ADR for problem: How to split the monolith? (Area: Service Decomposition)  [path: scope.md]
+Produce ADR for problem: How to split the monolith? (Area: Service Decomposition)  [path: /work/acme/spikes/payment-migration/scope.md]
+Intake record (inline): system acme/payment-service · scope packages/payment/** · depth file:line · consumer this ADR
 Decision drivers (inline): 99.9% SLA; no data loss; align with existing teams
 Candidate options (inline): A) Payment-type services — clear ownership, independent scaling; shared-lib coupling. B) Domain-driven services — cleaner dependencies; team restructuring. C) Strangler extraction — lowest risk; temporary hybrid complexity.
-User context (inline): 3 teams already own payment types; wallet scaling is the pain point
-Cross-area constraints (path): docs/evidence-database.md (shared transactions/accounts/audit_log tables); docs/evidence-communication.md (SOAP contract must stay)
-Evidence doc (path): docs/evidence-service-decomposition.md — claim ledger (key locations, coupling); cite evidence without re-scanning
-Load draft-adr skill and produce a complete ADR tagged Area: Service Decomposition.
+User context (inline): each team owns a payment type; wallet scaling is the pain
+Cross-area constraints (path): docs/evidence-database.md (shared transactions/accounts/audit_log); docs/evidence-communication.md (SOAP must stay)
+Evidence doc (path): docs/evidence-service-decomposition.md — claim ledger; cite locations, never re-read code
+Known locations (digest): PaymentOrchestrator.java:88 routes by payment type; coupling in packages/payment/shared
+Load draft-adr; produce the ADR tagged Area: Service Decomposition.
 ```
 
 ### Orchestrator: Dispatch
 
-> Dispatches all 4 ADR drafting briefs concurrently. "Dispatching ADR drafting for 4 areas to sub-agents in parallel."
+> "Dispatching ADR drafting for 4 areas to sub-agents in parallel."
 
 ### Sub-Agent Results
 
@@ -125,24 +138,12 @@ Load draft-adr skill and produce a complete ADR tagged Area: Service Decompositi
 
 > All 5 ADRs reviewed: decomposition + database are consistent; communication + migration are complementary; migration cross-references decomposition correctly. No conflicts — presenting for review.
 
----
-
 ## Compile Solution Doc — SINGLE-TASK DISPATCH
 
-*(One unit synthesizing all ADRs, so it dispatches as a single task — context preservation, not parallelism. Brief: business context, the 4 findings docs, 4 chosen options; load `write-solution-doc`, produce the target-state doc.)*
+*(One unit synthesizing all ADRs — single-task dispatch, for context preservation rather than parallelism. The brief carries the business context, the 4 findings pairs, and the decisions digest.)*
 
 > "Dispatching solution-doc compilation to a sub-agent."
 
-**Final bundle**: `scope.md` · `docs/findings-<area>.md` (one per area) · `solution.md` (decision-only; each ADR decision mirrored into its canonical section) · the 5 area-prefixed ADRs in `adrs/`.
+**Final bundle**: `scope.md` · 4 findings pairs · 5 ADRs · `solution.md` (decision-only).
 
----
-
-## Key Takeaways: Sub-Agent Dispatch
-
-| Aspect | Value |
-|---|---|
-| Orchestrator context | Low — work happens in isolated contexts |
-| Time | Max of any single unit when concurrent |
-| Coordination | Brief prep + synthesis |
-| When used | Always — a sub-agent is available for every step; even single-task spikes |
-| Risk | Incomplete briefs need re-prompting |
+**Takeaway**: the orchestrator's cost is the brief, the sub-agent's cost is the search — a complete brief (digests, known locations, intake record, absolute paths) is what keeps the second one from paying twice.
