@@ -101,7 +101,8 @@ A rename or removal must update every mention in the edited skill and its declar
 ## Edit discipline
 - Read and inventory the skill before editing — never edit blind.
 - The inventory is the ledger's "before" column.
-- Preserve the **meaning** of untouched sections, not their bytes.
+- Leave untouched text untouched — preserve its wording and meaning; rewrite only the sentences the change is about.
+- Fund a budget overrun by deleting duplicated or superseded content, never by re-wording sentences the change does not touch.
 - Retire every element the change supersedes.
 - A superseded element left in place is a duplicate claim, not preserved content.
 - Rewrite the smallest section that must change; never regenerate a passing file.

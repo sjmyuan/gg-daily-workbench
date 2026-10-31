@@ -128,7 +128,7 @@ Capability steps cite these standards by name; load the Details file.
 1. Apply **same-name-live-copy-ban** — target only the user-provided existing files.
 2. Inventory and count the skill: capabilities, steps, knowledge rows, rules, guide rows, examples, references, chars.
 3. Triage intent per **reference/edit-skill-procedure.md**: "check / see if" = review only; "ensure / fix / do it" = edit; open-ended "improve" runs `review-skill` first.
-4. Classify each change per the change-type, absorption, and funding rules in **reference/edit-skill-procedure.md**.
+4. Classify each change per the change-type, absorption, funding, and edit-discipline rules in **reference/edit-skill-procedure.md**.
 5. Route each change to the mapped create-* capability in existing-file mode.
 6. Run the ripple checklist after renames, removals, merges, or inlining.
 7. Run **validate-created-skill** after each change; revert on a Blocker 🔴 and redo.

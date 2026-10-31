@@ -50,6 +50,7 @@ Stop as soon as the char budget is met.
 ## Never
 
 - Merge bullet steps into one sentence to pass the line budget.
+- Re-word untouched sentences to reach the char budget — delete duplicated content instead.
 - Cut `<when-to-use-this-skill>`, capabilities, or required sections.
 - Trim steps until they are ambiguous.
 - Strip an example's "Applies <capability>" line.
