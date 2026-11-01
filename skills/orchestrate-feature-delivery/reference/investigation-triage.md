@@ -8,9 +8,21 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 |---|---|---|---|---|---|
 | **L-1 Clarify** | What is actually being asked? | Any inference was needed to make the ask decidable | Restate, show the inference list, ask `clarify-request`'s intake gate with options plus a recommendation | 0 | none |
 | **L0 Answer** | What did we decide, why, or what is the status? | Index, `context.md`, plan/rework, ADR, findings/evidence, git log settle it | Read in-session and answer | 0 | none |
-| **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | One read-only `code-investigator`, artifacts by path | 1 | none |
+| **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | One read-only `code-investigator` with the L1 brief below | 1 | none |
 | **L2 Decision** | Was exactly one ADR decision wrong or incomplete? | One decision changes; no new options | `adr-writer` revises in place; `solution-doc-writer` only if target state changes | 1–2 | ADR (+ solution section) |
 | **L3 Spike** | Which option should we choose across decisions? | ≥2 decisions/areas, new options, or formal findings required | `spike-conductor`, **delta** scope | ≥3 | spike artifacts |
+
+## L1 brief
+
+The investigator receives everything L0 already established, so it never re-reads the record:
+
+- **Question** — one sentence, restated at L-1.
+- **Intake record** — system (repo + module), scope (symbols/paths), depth (call-chain or C4 level), consumer (this answer).
+- **Record digest** — the artifacts read at L0 and what each established: index status, `context.md` charter, plan/rework state, ADR decision, findings claim IDs. Mark what the L0 pass ruled out.
+- **Known locations / already searched** — `file:line` already confirmed, queries already run, with outcomes.
+- **Absolute paths** to the artifacts it may need in full.
+
+A brief carrying all six **is** the intake gate's result: the investigator adopts it, asks nothing, and explores only what the digest leaves open. Contract: **reference/dispatch-briefs.md**.
 
 ## Escalation rules
 
@@ -39,7 +51,7 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 
 ## L3 delta scope
 
-- Pass the original `scope.md`, evidence docs, and governing ADR by path.
+- Pass the original `scope.md`, evidence docs, and governing ADR by path, with a digest of what the delivery record already ruled out.
 - Investigate only the delta; never rebuild unaffected findings or solution sections.
 - The span rule is why L3 was chosen — if only one decision moved, drop to L2.
 
@@ -67,6 +79,7 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 
 - [ ] Request restated, every inference itemized, and the list shown before any rung was chosen.
 - [ ] Question stated in one sentence.
+- [ ] L1 brief carries the intake record, the L0 record digest, known locations, and absolute paths.
 - [ ] Recorded artifacts checked before any dispatch.
 - [ ] Rung and justification stated.
 - [ ] L3 has a named trigger.

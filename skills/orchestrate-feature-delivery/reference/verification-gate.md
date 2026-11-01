@@ -15,7 +15,7 @@ No separate files — the gate reuses the feature folder's existing docs (`<feat
 
 | Artifact | Location | Written by | Content |
 |---|---|---|---|
-| **Brief** | dispatch prompt — seeded from the index per-cell brief + `context.md` | orchestrator | Cell scope, governing ADR ref, solution-doc section, branch, plan location, global constraints |
+| **Brief** | dispatch prompt — seeded from the index per-cell brief + `context.md` | orchestrator | Cell scope, governing ADR ref, solution-doc section, branch, plan location, global constraints, **cell digest** (done means, decided behaviour, assumptions, known locations) |
 | **Step record** | `<feature-folder>/plan.md` (or `rework-<date>.md`) | executor | Per-step status and notes; commit range lives only in the handoff |
 | **Execution handoff** | `<feature-folder>/context.md` → `## Execution` (latest round only) | executor | Return status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), commit range (`base7..head7`), PR reference, **one-line** gate receipt, **one-line** `review-code` outcome |
 | **Open concerns** | `<feature-folder>/context.md` → `## Open concerns` | executor | Persistent ≤5 deferred Minors/risks; delete when resolved. No raw log — history is git/PR |
@@ -23,6 +23,8 @@ No separate files — the gate reuses the feature folder's existing docs (`<feat
 | **Findings** | dispatch prompt → **planner**; recorded in `rework-<date>.md` | orchestrator → planner | Gate findings handed straight to the planner — not stored in the index |
 
 - Seed the brief from the index per-cell brief plus `context.md` (which carries the cell charter: why, must-hold invariants, unknowns, done criteria, and pointers).
+- Carry the **cell digest** per **reference/dispatch-briefs.md**: done means, decided behaviour, accepted assumptions, the plan's step list, and any located `file:line`. The verifier gates the diff against the decision as stated — it never re-derives the spec from the spike artifacts or re-investigates the code.
+- Use **absolute paths** for the feature folder, `plan.md`, `context.md`, the governing ADR, and the solution-doc section; the verifier fetches the diff itself from the recorded range.
 - `context.md` is **planner- and executor-owned** — the orchestrator never writes it; the planner registers the rework in `context.md`.
 - The index tracks **status only** — no findings record.
 - The executor **overwrites** `## Execution` each round; deferred concerns persist in `## Open concerns`; no log is written — git/PR are the history.
@@ -32,7 +34,7 @@ No separate files — the gate reuses the feature folder's existing docs (`<feat
 
 ## Gate inputs
 
-Dispatch a **fresh code-reviewer** agent (**review-code**) with: the cell brief (index scope + spike references), the recorded `base7..head7`, `<feature-folder>/plan.md`, `context.md`, the governing ADR, the solution-doc section, and global constraints. A POC cell needs no special input; the same brief, plan, context, ADR, and range apply. The code-reviewer fetches the diff from git over the recorded range — no diff file. Never the executor instance that produced the work.
+Dispatch a **fresh code-reviewer** agent (**review-code**) with: the cell brief (index scope + spike references), the cell digest, the recorded `base7..head7`, `<feature-folder>/plan.md`, `context.md`, the governing ADR, the solution-doc section, and global constraints — the intake record is already in the brief, so the review starts from the decision, not from discovery. A POC cell needs no special input; the same brief, plan, context, ADR, and range apply. The code-reviewer fetches the diff from git over the recorded range — no diff file. Never the executor instance that produced the work.
 
 ## Verdicts
 

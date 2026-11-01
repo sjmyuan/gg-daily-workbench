@@ -67,7 +67,7 @@ Every inbound request — issue, feature ask, spike handoff, rework, revert, ADR
 Restate the report first (**request-intake**), then descend the **answer → evidence → decision → spike** ladder and stop at the first rung that answers the question. L0 answers from recorded artifacts in-session; L1 is one read-only investigator; L2 is a direct ADR revision; L3 is a spike. State the rung and its justification before spending. Full triggers, routes, and artifacts: **reference/investigation-triage.md**.
 </investigation-triage>
 <agent-dispatch>
-Delegate every delivery task. Map: answer (L0, in-session) · investigate → **code-investigator** (L1) · spike → **spike-conductor** (L3) · plan → **planner** · execute → **executor** · verify → **code-reviewer** · solution-doc → **solution-doc-writer** · ADR → **adr-writer**. Plan and execute are separate sessions — never both in one agent, never before a verified plan file. No agent mechanism → ask the user; never do the work yourself. Rules and briefs: **reference/orchestration-guide.md**.
+Delegate every delivery task. Map: answer (L0, in-session) · investigate → **code-investigator** (L1) · spike → **spike-conductor** (L3) · plan → **planner** · execute → **executor** · verify → **code-reviewer** · solution-doc → **solution-doc-writer** · ADR → **adr-writer**. Plan and execute are separate sessions — never both in one agent, never before a verified plan file. No agent mechanism → ask the user; never do the work yourself. Rules: **reference/orchestration-guide.md**; briefs: **reference/dispatch-briefs.md**.
 </agent-dispatch>
 <branch-and-push-conventions>
 Execution agents commit locally in small steps; they push and open the PR only after user confirmation. One branch per repo per cell, named per the repo's convention (detect — never assume a prefix); the index records branch, PR, and head commit from the executor's handoff. A cell is **done** only after its PR merges the recorded head commit, or the user records a waiver. Rules: **reference/delivery-layout.md**.
@@ -110,6 +110,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 | Confining orchestrator writes / running the boundary check | Allowed vs forbidden writes, enforcement layers, own-writes snapshot-delta check, delegation | [reference/write-boundary-guide.md](reference/write-boundary-guide.md) |
 | Writing or validating `index.md` size, or checking a `context.md` handoff | Char/line caps, board template, archive rule, latest-only handoff | [reference/delivery-index-format.md](reference/delivery-index-format.md) · [reference/verification-gate.md](reference/verification-gate.md) |
 | Deciding whether a fact belongs in the spike artifacts or the delivery docs | Two-plane map, handoff contract, edit ownership, change routing | [reference/artifact-map.md](reference/artifact-map.md) |
+| Filling a brief for any dispatch (plan, execute, verify, investigate, spike) | Context inventory, fill modes, per-target context, intake records, completeness check | [reference/dispatch-briefs.md](reference/dispatch-briefs.md) |
 </context-loading-guide>
 
 </knowledge>

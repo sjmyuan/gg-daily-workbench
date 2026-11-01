@@ -22,6 +22,7 @@ description: Execute structured development plans with progress tracking, valida
 Gate the request that starts execution through `clarify-request`'s intake gate: restate it — which plan path, which active `rework-<date>.md`, the base ref, the expected outcome — and itemize every inference. Zero inferences → run **track-plan**. Anything inferred → ask before step 1; the wrong plan or rework file wastes the run.
 A request arriving **mid-execution** ("also fix X", "skip that") is gated the same way before it becomes a step or an amendment — never silently absorbed.
 Accepted defaults go to `context.md` `## Open concerns` or the step note, labeled `Assumption (user-accepted, unverified)`.
+A seeding brief that states the plan path, active rework, base ref, and expected outcome **is** the gate result: adopt it, ask nothing, never re-detect the feature folder or branch, and never re-investigate a location the brief already names.
 </request-intake>
 
 <step-status-definitions>

@@ -21,7 +21,7 @@
 
 ## 2. Dispatch a fresh code-reviewer
 
-- **code-reviewer A** (**review-code**) — inputs: `plan.md`, `context.md`, recorded range `a1b2c3d..d4e5f6a`, `adr-wallet-01-payment-failure-handling.md`, solution-doc §2 System Topology and §3 Interaction Details (wallet slice), global constraints.
+- **code-reviewer A** (**review-code**) — inputs: `plan.md`, `context.md`, recorded range `a1b2c3d..d4e5f6a`, `adr-wallet-01-payment-failure-handling.md`, solution-doc §2 System Topology and §3 Interaction Details (wallet slice), global constraints, and the **cell digest** (done means, decided behaviour) — it gates the diff against the stated decision instead of re-deriving it.
 - code-reviewer A fetches the diff from git over the range — no diff file, and the output never enters the orchestrator's context.
 - Not executor-B, the agent that produced the work.
 

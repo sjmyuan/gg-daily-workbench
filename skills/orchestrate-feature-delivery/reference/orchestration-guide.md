@@ -22,8 +22,8 @@ Rules for **orchestrate-delivery**, **resume-delivery**, and **update-delivery-i
 - **No simplicity exemption**: every cell, however simple, is planned then executed by separate agents; never implement directly.
 - **Artifact updates are delegated too.** When a plan or execution surfaces changes to the spike's solution doc or ADRs, dispatch a **solution-doc-writer** / **adr-writer** agent for the update — never edit those artifacts from the orchestrator.
 - **Write boundary.** Writes stay inside `**/deliveries/**`; code comes only from a dispatched **executor**. Run the write-boundary check after every index write (**reference/write-boundary-guide.md**).
-- **Full context in every brief.** Each brief carries the cell's scope brief + **spike references**, filled by **path** for persisted info and **inline** for orchestrator-only context (rule: **reference/delivery-index-format.md**, per-cell scope brief); never inline a whole spike artifact.
-- **Persist references to context.md.** Planning agents record the spike references in `context.md`, so execution and resume agents have durable distilled context and can load referenced artifacts when needed.
+- **Full context in every brief.** Inventory the orchestrator's state first — ask and answers, index, spike artifacts already read, L0/L1 answers, prior cells' delivered contracts, gate findings, detected conventions, absolute paths — then fill each item by **path**, **digest**, or **inline**, and feed the callee's intake fields. Contract and completeness check: **reference/dispatch-briefs.md**; cell fields: **reference/delivery-index-format.md**.
+- **Persist references to context.md.** Planning agents record the spike references and the contract surface the cell delivers in `context.md`, so execution, verification, and later cells load a digest instead of re-deriving it.
 - Dispatch agents **in parallel** across cells, subject to:
   - **Develop-gating**: dispatch cells whose dependency cells are **planned** (contracts agreed); contract-first and independent cells develop in parallel.
   - **Merge-gating**: a cell merges only after its dependency cells are **done** (merged).
@@ -94,22 +94,4 @@ A POC proves one option of one ADR as a standalone feature (see **poc-definition
 
 ## Rework after implementation
 
-Two modes, chosen by the cell's status (see **rework-modes** in the SKILL.md knowledge).
-
-**Post-merge** (cell **done** — merged/verified): history is shipped and preserved.
-
-1. **Triage**: apply **triage-issue**. A single wrong decision goes straight to **adr-writer** (L2). Dispatch **spike-conductor** (L3) only when the decision space changed or ≥2 decisions/areas are involved; scope it as a delta. Never re-open the whole epic.
-2. **Delegate artifact updates**: ADR changes → **adr-writer** (draft-adr); solution-doc changes → **solution-doc-writer** (write-solution-doc).
-3. **Update the index**: record only the rework cell (`F2-r1`, `Rework of: F2`) in a new wave + its plan-location pointer — the original cell stays **done**; spike focus, ADR revision, and rework steps live in the sibling `rework-<date>.md` / `context.md`.
-4. **Write the rework plan**: dispatch the **planner** (**plan-development-task**) to write a sibling `rework-<date>.md` in the feature folder — `plan.md` stays the frozen original, implemented steps never modified.
-5. **Execute the rework plan**: dispatch the **executor** (**execute-plan**) to run only the new rework steps.
-6. Update the index with the executor's PR reference; the executor handles push approval and PR creation.
-
-**Rework lineage**: rework features chain to the state they rework — `F2-r1` reworks `F2`; `F2-r2` reworks `F2-r1` (the latest delivered state); `Rework of:` names that state. Rework files key by date — on a same-day collision suffix `-2`, `-3` (`rework-2026-08-24-2.md`). The `context.md` `## Reworks` manifest is the canonical chain.
-
-**Pre-merge** (cell **in-progress** — implemented but not pushed/merged): nothing is merged yet, same append-only rule.
-
-1. **Scope**: apply **triage-issue**. Default to L1 (evidence) or L2 (ADR revision); dispatch **spike-conductor** only when the issue challenges the governing ADR decision across ≥2 decisions/areas.
-2. **Write the rework plan**: dispatch the **planner** (**plan-development-task**) to write a sibling `rework-<date>.md` in the feature folder — `plan.md` stays the frozen original, implemented steps never modified; no new rework feature/wave (rework stays on the same cell).
-3. **Execute the rework plan**: dispatch the **executor** (**execute-plan**) to run only the new rework steps on the unmerged work.
-4. No index change (cell stays **in-progress**; the sibling `rework-<date>.md` is the record); the executor handles push approval and PR creation.
+Two modes by cell status: **post-merge** (cell **done** — a new rework feature in a new wave; the original stays **done**) and **pre-merge** (cell **in-progress** — same cell, no index change). Sequence either way: **triage-issue** → delegate artifact updates → planner writes the sibling `rework-<date>.md` → executor runs only its steps → record the PR reference. Append-only rules, lineage, brief contents, and index handling: **reference/rework-modes.md**.

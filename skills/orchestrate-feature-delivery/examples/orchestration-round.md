@@ -13,7 +13,22 @@
 ## 2. Dispatch — Phase 1 (planners only)
 
 - **Planner A** → plan `shared-contracts/F1` (plan-development-task)
-  - Brief: the cell brief from `index.md` + spike references by **path** — `adr-wallet-01-payment-failure-handling.md` (`spikes/wallet-migration/adrs/`), solution-doc §2 System Topology and §3 Interaction Details (wallet slice); the wave/gating state **inline**. Agent loads the paths on demand for full context.
+  - Inventory first: the ask and its gate record, the F1 index row, the ADR already read at decompose time, the branch convention detected in `shared-contracts`, and the absolute epic path.
+  - Brief (excerpts; contract in `reference/dispatch-briefs.md`):
+    ```
+    Cell: shared-contracts/F1 — wallet-contracts · repo shared-contracts · wave 0
+    Plan location (path): /work/acme/deliveries/wallet-migration/shared-contracts/wallet-contracts/
+    Governing ADR (path + digest): /work/acme/spikes/wallet-migration/adrs/adr-wallet-01-payment-failure-handling.md
+      — decided: retries + idempotency keys at the client; contract-first, no server change
+    Solution doc (path): /work/acme/spikes/wallet-migration/solution.md §2 System Topology · §3 Interaction Details (wallet slice)
+    Spike evidence (digest): evidence-wallet#c1 failure paths (PaymentOrchestrator.java:88),
+      #c4 no circuit breaker — settled, do not re-investigate
+    Intake record: type feature · expected behavior: shared DTOs + envelope · triggering input:
+      consumer call sites in order-service · done criteria: solution §3 contract satisfied
+    Branch convention (inline): <ticket>-<slug> in this repo · base: main
+    Gating (inline): wave 1 cells wait on F1's contract; no conflict constraint
+    ```
+  - The planner starts from the decided contract instead of re-reading the ADR, the evidence doc, and the repo.
 
 > **Plan-first gate**: no executor may touch `F1` until Planner A's `plan.md` exists on disk. The gate forbids the reverse order — never implement first and back-fill a plan.
 
@@ -37,7 +52,7 @@ F2 and F3 become develop-ready (F1 planned; contract-first allows planning in pa
 
 ## 5. Verify the gate
 
-F1's execution completes → the orchestrator applies **verify-cell**: a fresh **code-reviewer** gets the recorded commit range plus `plan.md`, `context.md`, and the governing ADR, and returns spec-compliance + trust verdicts. F1 advances to **verified** (see **examples/cell-verification-gate.md**). Never mark a cell **done** without this gate.
+F1's execution completes → the orchestrator applies **verify-cell**: a fresh **code-reviewer** gets the recorded commit range plus `plan.md`, `context.md`, the governing ADR, and the cell digest (done means, decided behaviour), and returns spec-compliance + trust verdicts. F1 advances to **verified** (see **examples/cell-verification-gate.md**). Never mark a cell **done** without this gate.
 
 ## 6. Push approval + merge + update index
 

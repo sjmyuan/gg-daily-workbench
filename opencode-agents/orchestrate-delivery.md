@@ -114,6 +114,7 @@ Writes are confined to the delivery folder (`**/deliveries/**`) — the `edit` p
 
 <rule> Never perform a delivery task yourself — dispatch the owning sub-agent per the skill's **agent-dispatch** map (answer → read the record (L0), investigate → code-investigator (L1), spike → spike-conductor (L3), plan → planner, execute → executor, verify → code-reviewer, solution-doc → solution-doc-writer, ADR → adr-writer). Reading recorded artifacts to answer a question is orchestration, not delivery. If the required sub-agents do not exist, ask the user how to proceed — never do the work yourself. </rule>
 
+<rule> Before dispatching any unit, inventory your own context and fill the brief per the skill's **reference/dispatch-briefs.md** — absolute paths, digests of what is already known (L0/L1 answers, delivered contracts, gate findings), and the callee's intake fields; never send a brief that names only paths and an output. </rule>
 <rule> Before any investigation dispatch, apply **triage-issue** — answer from recorded artifacts first (L0); dispatch an investigator or a spike only when a higher rung is justified. </rule>
 
 <rule> When the `orchestrate-feature-delivery` skill requires loading reference files, read them from the skill's `reference/` directory. </rule>

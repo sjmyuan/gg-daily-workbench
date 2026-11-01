@@ -80,8 +80,13 @@ The index tracks **status only** — verification findings are not recorded here
 
 Each cell carries a brief that seeds **plan-development-task** and every later dispatch for that cell. Fill each item by where the info lives:
 
-- **By reference** — persisted in an artifact (index, `context.md`, spike/plan/rework file): feature, repo, scope, branch, plan location, spike references, dependency/wave context → the **path + section**; never inline a whole spike artifact.
-- **Inline** — orchestrator/user-only context: global constraints not yet persisted, prior gate findings → the **value** (see **reference/verification-gate.md**).
+| Mode | Use when | Filled as |
+|---|---|---|
+| **Path** | Persisted in an artifact (index, `context.md`, spike/plan/rework file) and needed in full: feature, repo, scope, branch, plan location, spike references, dependency/wave context | **Path + section**; never inline a whole spike artifact |
+| **Digest** | Persisted, and the orchestrator already concluded something from it: L0/L1 answers, dependency cells' delivered contracts, gate findings | The conclusion in 1–5 lines, `from <path#section>` |
+| **Inline** | Orchestrator/user-only context: global constraints not yet persisted, prior gate findings, acceptance assumptions | The **value** (see **reference/verification-gate.md**) |
+
+Contract, cross-cell rules, and completeness check: **reference/dispatch-briefs.md**.
 
 Brief items:
 
@@ -91,7 +96,9 @@ Brief items:
 - **Plan location**: the feature folder (`deliveries/<epic-name>/<repo>/<feature-name>/`) the planner writes `plan.md` + `context.md` into and the executor reads them from
 - **Charter**: `context.md` — why, must-hold invariants, unknowns, done criteria, pointers (not restated inline)
 - **Spike references**: the file paths + section pointers (from **Spike References**) the agent should load for full context
-- **Dependency context**: what must be merged before this cell's PR (other repos / features)
+- **Dependency context**: what must be merged before this cell's PR (other repos / features), plus the **delivered contract surface** of any planned/done dependency (interfaces, endpoints, PR, head) as a digest
+- **Known locations**: `file:line` and symbols already located for this cell (L1 answers, prior reads) — never re-searched by the agent
+- **Ruled out**: rungs already failed, options already rejected, and questions already answered for this cell
 - **Constraints**: one PR per repo per feature (soft — may merge with other features when convenient)
 - **Branch**: the branch name to use for this cell, matching the **repo's branch convention** (per **branch-and-push-conventions**); created during the agent's Prepare Environment step, pushed only after user confirmation
 - **Integration**: push and open the PR after user approval; return the PR reference in the executor handoff (see **branch-and-push-conventions**)
@@ -134,17 +141,4 @@ ADRs are **versionless** — drift is signaled by the **adr-writer** agent's ret
 
 ## Rework after implementation
 
-The index tracks **state only** — rework never adds work history to a status cell. Record rework per the cell's status (see **rework-modes** in the SKILL.md knowledge); the details (trigger, ADR focus, boundary, done criteria, delta steps) live in a sibling `rework-<date>.md` — written by **plan-development-task**, never repeated in the index. The rework inherits the cell's `context.md` charter by reference and never creates a second context. `plan.md` is the frozen original; each rework gets its own file so it never grows. A `## Reworks` manifest in `context.md` lists every rework file + status, one row each; the rework files themselves remain the history (see **plan-file-format.md** in **plan-development-task**).
-
-An **amendment** is not a rework: it adjusts pending steps in the same `plan.md`, keeps the same plan location, and never adds a cell, wave, or status change. It is recorded in `context.md` `## Amendments`.
-
-**Post-merge (cell done)** — original cell unchanged, rework is its own cell:
-
-- Keep the original cell exactly as-is (status **done**; no note, no history).
-- Add the rework as a new feature/cell (e.g., `F2-r1`) in a **new wave** after the original feature, with metadata `**Rework of**: F2`; it depends on the original cell's PR (already merged).
-- Its plan location points at the rework file: `deliveries/<epic-name>/order-service/wallet-service/rework-2026-08-08.md`.
-
-**Pre-merge (cell in-progress — implemented but not pushed/merged)** — no index change; includes verification-gate fixes (**verify-cell**):
-
-- Keep the cell's identity and **in-progress** status; no new feature/wave, no note.
-- A sibling `rework-<date>.md` is written (implemented steps never modified) — that file is the record; the cell proceeds to push approval after the rework.
+The index tracks **state only** — rework never adds work history to a status cell. **Post-merge** (cell **done**): add the rework as a new feature (`F2-r1`) in a new wave with `**Rework of**: F2`, its plan location pointing at `deliveries/<epic-name>/<repo>/<feature-name>/rework-<date>.md`; the original cell stays **done**. **Pre-merge** (cell **in-progress**): no index change — the sibling `rework-<date>.md` is the record. An **amendment** adjusts pending steps in the same `plan.md` via `context.md` `## Amendments`, never a rework. Modes, lineage, and briefs: **reference/rework-modes.md**.

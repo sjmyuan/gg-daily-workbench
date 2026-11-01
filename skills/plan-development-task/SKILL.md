@@ -35,6 +35,7 @@ description: Classify, clarify, and generate TDD-based step-by-step plans for bu
 Gate every planning request through `clarify-request`'s intake gate before classifying: restate it, then itemize every inference — change type, expected behavior, triggering input, done criteria, and the ref or paths for a restore. Show the list; zero inferences → classify. Anything inferred → ask the top 3 with options, a recommendation, and a default.
 A symptom-only request ("checkout is broken") always infers the expected behavior — ask it; never plan from the suspected cause.
 Record the outcome in `context.md`: the restatement becomes the plan objective, and each accepted default goes under `## Unknowns` as `Assumption (user-accepted, unverified): <default> — Step N verifies — fallback <…>`. No new charter section, no second checkpoint.
+A seeding brief that states the cell, change type, expected behavior, triggering input, done criteria, and the known locations **is** the gate result: adopt it, ask nothing, and plan against it — never re-derive the request or re-investigate a location the brief already names.
 </request-intake>
 
 <change-provenance>

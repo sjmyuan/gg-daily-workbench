@@ -34,7 +34,7 @@ The orchestrator never evaluates or decides. At **poc-ready**, the user reviews/
 
 ## Dispatch brief
 
-The POC planner and executor briefs carry the governing `adr` (path), the `option` under test, and the optional `success-criteria` — the same fields the user reviews the MR against. Compare siblings carry their own option.
+The POC planner and executor briefs carry the governing `adr` (path + decision digest), the `option` under test, and the optional `success-criteria` — the same fields the user reviews the MR against. Compare siblings carry their own option and each other's decision surface, never each other's code (see **reference/dispatch-briefs.md**).
 
 ## Adoption models
 
