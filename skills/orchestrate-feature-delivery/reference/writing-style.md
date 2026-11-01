@@ -1,13 +1,6 @@
 # Concise Writing Style
 
-Applies to all prose in `index.md` and the `context.md` charter. Tables carry the detail; prose states takeaways.
-
-## Size budget
-
-`index.md`: target **60–100 lines**, ceiling **8,000 chars / 120 lines**.
-`context.md`: target **40–60 lines** (a charter, not a workbook).
-Chars are the gate — a 120-line file can still hold ~14k chars.
-Over budget blocks the write: collapse rows, archive done waves, point to git/PR for history.
+Applies to all prose in `index.md` and the `context.md` charter. Tables carry the detail; prose states takeaways. Size caps live in **reference/delivery-index-format.md** (index) and **reference/verification-gate.md** (charter) — this file governs wording only.
 
 ## Core rule: BLUF (Bottom Line Up Front)
 - The **Summary** line states the epic state in one line.

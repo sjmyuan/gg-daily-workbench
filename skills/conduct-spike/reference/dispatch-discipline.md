@@ -1,14 +1,6 @@
 # Dispatch Discipline
 
-Cross-cutting rules for every spike sub-agent dispatch. Briefs: **reference/dispatch-briefs.md**; dispatch pattern: **reference/multi-agent-orchestration.md**.
-
-## Context completeness
-
-- **Inventory before writing**: every dispatch starts from an explicit list of what the orchestrator holds — user dialog, `scope.md`, prior results, its own reads and searches, resolved paths. A brief that omits an inventory item is incomplete, not concise.
-- **Digest, don't just point**: pass the conclusion the orchestrator already reached (located `file:line`, settled claims, ruled-out searches) with the path, so the sub-agent acts instead of re-reading.
-- **Feed the callee's gate**: fill the intake record (system, scope, depth, consumer) — an unfilled field becomes the sub-agent's exploration pass.
-- **Forward the search log**: every returned unit's searched-negatives seed the next unit's **already searched** digest; a negative that is not forwarded is paid for twice.
-- **Never let it hunt for inputs**: absolute paths with section anchors — a sub-agent searching the filesystem for its own inputs is a brief defect, not a sub-agent behavior.
+Cross-cutting rules for every spike sub-agent dispatch. Brief contract: **reference/dispatch-briefs.md**; dispatch pattern and verification: **reference/multi-agent-orchestration.md**.
 
 ## Model routing
 
@@ -39,10 +31,13 @@ A dispatched worker never spawns sub-agents — not helpers, and never a verifie
 
 ## Availability and fallback
 
-Before dispatching, detect the platform's agent mechanism and map each unit to the closest equivalent agent type (see **multi-agent-orchestration**).
+Before dispatching, detect the platform's agent mechanism and map each unit to the closest available type — the table in **reference/multi-agent-orchestration.md** names the preferred agents.
 
-- No suitable agent → ask the user how to proceed, or run the unit in-session with the same brief and verification — never skip the unit.
-- Verification with no evidence-matched agent → verify directly against primary sources in-session (per `question-everything`'s protocol).
+| Situation | Fallback |
+|---|---|
+| No suitable agent for a unit | Ask the user how to proceed; else run the unit in-session with the same brief and verification — never skip the unit |
+| Verification with no evidence-matched agent | Verify in-session against primary sources per `question-everything`'s protocol |
+| No explicit model routing | Ask the user once, or use the cheapest capable default and state it in the brief |
 
 ## Common rationalizations
 

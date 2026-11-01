@@ -16,7 +16,7 @@
 
 ### Assistant Output
 
-**Loaded existing artifacts** (incl. `scope.md`): service-decomposition, communication, and migration ADRs `done`; `adr-database-01-break-up-database.md` unresolved (options surfaced, no decision); solution doc draft — "database strategy TBD"; `scope.md` Database area `spiking` (db-01 `deciding`, schema-migration `investigating`).
+**Loaded existing artifacts** (incl. `scope.md`): service-decomposition, communication, and migration ADRs `done`; `adr-database-01-break-up-database.md` unresolved (options surfaced, no decision); solution doc draft — "database strategy TBD"; `scope.md` Database area `spiking` (db-01 `deciding`, no second problem).
 
 **`adr-database-01` prior context**: single PostgreSQL, ~80 tables; `transactions`/`accounts`/`audit_log` shared across payment types; 2000+ lines of settlement procedures.
 

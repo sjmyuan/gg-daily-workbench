@@ -4,20 +4,13 @@
 
 **Applies**: `define-spike-scope` → `investigate-per-area` (parallel dispatch) → `compile-findings-doc` → `draft-problem-adrs` (parallel dispatch, evaluation via `draft-adr`) → `compile-solution-doc`
 
-**What makes this distinct**: Parallel sub-agent orchestration — independent work units dispatched concurrently, then synthesized. Dispatch is the default for all spikes; parallel speed is secondary (see `reference/multi-agent-orchestration.md`).
+**What makes this distinct**: It shows only the **dispatch mechanics** — how an independent unit becomes a self-contained brief, and how returned units are synthesized. The areas, evidence, and ADRs are the payment-migration artifacts already walked through in `examples/end-to-end-spike.md`; they are not repeated here.
+
+---
 
 ## Define Spike Scope
 
-*(As in `examples/end-to-end-spike.md` — the same payment migration problem with 4 areas.)*
-
-| # | Area | Problem ("How to …?") |
-|---|---|---|
-| 1 | Service decomposition boundaries | How to split the monolith? |
-| 2 | Inter-service communication | How to handle service-to-service communication? |
-| 3 | Database decomposition strategy | How to break up the monolithic database? · How to migrate the schema safely? |
-| 4 | Migration strategy | How to transition with zero downtime? |
-
-> *User confirms. 4 areas → parallel dispatch for investigation (per area) and ADR drafting (per problem).*
+Same payment-migration problem and 4 areas as `examples/end-to-end-spike.md` (service decomposition · communication · database — 2 problems · migration). The user confirms → 4 areas mean parallel dispatch for investigation (per area) and ADR drafting (per problem).
 
 ---
 
@@ -45,65 +38,32 @@
 - Already searched (digest): "module" in packages/ → no Maven/Gradle modules; do not repeat
 - First pass: no findings pair yet — build the evidence map from scratch
 ```
-Four thin briefs would send each sub-agent hunting for its own scope, its own input files, and searches the orchestrator had already run.
+A thin four-line brief would send each sub-agent hunting for its own scope, its own input files, and searches the orchestrator had already run.
 
 ### Orchestrator: Dispatch
 
-> The orchestrator detects that code-exploration sub-agents are available and dispatches all 4 briefs concurrently.
-> "Dispatching investigation of 4 areas to sub-agents in parallel for faster completion."
+> The orchestrator detects that code-investigation sub-agents are available and dispatches all 4 briefs concurrently, stating each brief's model.
+> "Dispatching investigation of 4 areas to sub-agents in parallel."
 
 ### Sub-Agents Return
 
-| Agent | Current State | Constraints |
-|---|---|---|
-| A — Service decomposition | Package-by-layer; CreditCard 40% / BankTransfer 30% / Wallet 25%; `PaymentOrchestrator` (1200 lines) | Redeploy on any change; wallet can't scale; 3 teams contend |
-| B — Inter-service communication | All in-process; external REST/gRPC/SOAP; no broker, no circuit breaker | No async experience; SOAP must stay |
-| C — Database decomposition | Single PostgreSQL ~80 tables; `transactions`/`accounts`/`audit_log` shared; 12 settlement procs | Procs block migration; cross-type queries |
-| D — Migration strategy | K8s (EKS) 3 replicas; Kong routes `/api/payments/*`; GH Actions canary CI/CD | No traffic splitting; canaries untested for routing |
+Four evidence maps (entry points, `file:line`, call chains, verdicts, searched-negatives) plus search logs. Cross-area consistency: A + C both flag tight coupling; B + D both note missing migration infrastructure; no contradictions. Each area's verified evidence map is handed to `compile-findings-doc`.
 
-### Orchestrator: Synthesize
-
-> All 4 returned. Cross-area consistency: A + C both flagged tight coupling; B + D both noted missing migration infrastructure; no contradictions. Each area's verified evidence map is handed to `compile-findings-doc`.
+*(Returned current-state facts and constraints are the ones listed in `examples/end-to-end-spike.md`; the parallel path changes only how they are gathered.)*
 
 ---
 
 ## Compile Findings Documents
 
-*(one findings pair per area, always; four pairs dispatched concurrently, each area's evidence map recorded in its evidence doc.)*
+*(one findings pair per area, always — four pairs dispatched concurrently, each area's evidence map recorded in its evidence doc per `reference/findings-doc-compilation.md`.)*
 
-### `docs/evidence-communication.md` (excerpt — full schema per `document-findings`)
-
-**Current State**: all calls in-process; external REST/gRPC/SOAP; no message broker; no circuit breaker.
-**Constraints**: no async experience on team; SOAP contract must stay.
-
-**Claim ledger**:
-
-| Claim ID | Claim | Verdict | Evidence (file:line) | Confidence |
-|---|---|---|---|---|
-| communication/present#c1 | Circuit breaker around external calls? | No | `grep "CircuitBreaker\|Resilience4j\|fallback"` across `payment-service` — no matches | ❓ Gap |
-| communication/present#c2 | All internal calls in-process? | Yes | `PaymentOrchestrator.java:88` | ✅ Verified |
-
-**Searched-negatives**: `grep -ri "kafka\|rabbit\|mq"` in `payment-service` — no broker usage.
-
-*(The other three pairs follow the same shape.)*
-
-**Cross-area constraints**: `docs/evidence-service-decomposition.md` ↔ `docs/evidence-database.md` (shared `transactions`/`accounts`/`audit_log`); `docs/evidence-communication.md` ↔ `docs/evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
+Each pair follows the shape in `reference/findings-document-guide.md`. **Cross-area constraints**: `docs/evidence-service-decomposition.md` ↔ `docs/evidence-database.md` (shared `transactions`/`accounts`/`audit_log`); `docs/evidence-communication.md` ↔ `docs/evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
 
 ---
 
 ## Draft ADRs — PARALLEL DISPATCH
 
-*(Each problem's ADR is drafted headlessly by an `adr-writer` sub-agent from the drivers and findings carried in the brief; a whole area's problems share one brief. The orchestrator confirms each proposed chosen option afterward.)*
-
-**Chosen Options Summary**:
-
-| Area → Problem | Chosen Option |
-|---|---|
-| Service decomposition → split the monolith | Payment-type services (Wallet, Bank Transfer, Credit Card) |
-| Inter-service communication → service communication | Hybrid: REST for queries, Kafka events for commands |
-| Database decomposition → break up the database | Database per service, phased by payment type |
-| Database decomposition → migrate the schema safely | Expand-contract migrations |
-| Migration strategy → zero-downtime migration | Strangler Fig, starting with Wallet payments |
+*(Each problem's ADR is drafted headlessly by an `adr-writer` sub-agent from the drivers and findings carried in the brief; a whole area's problems share one brief. The orchestrator confirms each proposed chosen option afterward. Chosen options: the five in `examples/end-to-end-spike.md`.)*
 
 ### Orchestrator: Prepare Briefs
 
@@ -126,17 +86,9 @@ Load draft-adr; produce the ADR tagged Area: Service Decomposition.
 
 > "Dispatching ADR drafting for 4 areas to sub-agents in parallel."
 
-### Sub-Agent Results
-
-**`adr-service-decomposition-01-split-monolith.md`**: Payment-type services
-**`adr-communication-01-service-communication.md`**: Hybrid sync/async
-**`adr-database-01-break-up-database.md`**: Database per service
-**`adr-database-02-schema-migration.md`**: Expand-contract
-**`adr-migration-01-zero-downtime-migration.md`**: Strangler Fig
-
 ### Orchestrator: Synthesize
 
-> All 5 ADRs reviewed: decomposition + database are consistent; communication + migration are complementary; migration cross-references decomposition correctly. No conflicts — presenting for review.
+> All 5 returned ADRs reviewed: decomposition + database are consistent; communication + migration are complementary; migration cross-references decomposition correctly. No conflicts — presenting for review.
 
 ## Compile Solution Doc — SINGLE-TASK DISPATCH
 

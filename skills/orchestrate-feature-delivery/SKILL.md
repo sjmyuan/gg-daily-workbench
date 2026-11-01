@@ -87,14 +87,14 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 | Load when | Provides | File |
 |---|---|---|
 | Answering an issue/question before dispatching an investigation | L-1 clarity check, L0–L3 ladder, triggers, cost and artifacts per rung | [reference/investigation-triage.md](reference/investigation-triage.md) |
-| Dispatching parallel agents, gating, status transitions, or failure handling | Agent dispatch, orchestration loop, resume, failure rules | [reference/orchestration-guide.md](reference/orchestration-guide.md) |
+| Dispatching parallel agents, gating, status transitions, or failure handling | Agent dispatch, orchestration loop, failure rules | [reference/orchestration-guide.md](reference/orchestration-guide.md) |
 | Classifying dependency edges, computing waves, or intra-feature merge order | Edge types, wave algorithm, develop-vs-merge | [reference/dependency-ordering-guide.md](reference/dependency-ordering-guide.md) |
-| Writing or updating the delivery index | Index schema, per-cell briefs, status lifecycle | [reference/delivery-index-format.md](reference/delivery-index-format.md) |
+| Writing, sizing, or archiving the delivery index | Index schema, caps, board template, archive rule, per-cell briefs | [reference/delivery-index-format.md](reference/delivery-index-format.md) |
 | Locating delivery artifacts, naming feature folders, or branching/pushing | Layout, base root, branch/push conventions | [reference/delivery-layout.md](reference/delivery-layout.md) |
 | Checking statuses, transitions, or develop/merge readiness | Statuses, transitions, readiness predicates | [reference/state-machine.md](reference/state-machine.md) |
 | Handling rework after implementation (post-merge or pre-merge) | Rework modes, lineage, index handling | [reference/rework-modes.md](reference/rework-modes.md) |
 | Choosing between answering an issue and running a spike | L0–L3 triage walkthrough | [examples/issue-triage.md](examples/issue-triage.md) |
-| Handling a post-merge or pre-merge rework | Sibling rework file, spike routing, execution | [post-implementation-rework.md](examples/post-implementation-rework.md) · [pre-merge-rework.md](examples/pre-merge-rework.md) |
+| Handling a post-merge or pre-merge rework | Sibling rework file, spike routing, execution | [examples/post-implementation-rework.md](examples/post-implementation-rework.md) · [examples/pre-merge-rework.md](examples/pre-merge-rework.md) |
 | Handling a revert, restore, copy, or keep request | Mechanical vs behavioral routing, Source enum, ladder, proof | [reference/mechanical-restore.md](reference/mechanical-restore.md) |
 | Running a full end-to-end decomposition from spike output to index | End-to-end multi-repo example | [examples/multi-repo-feature-decomposition.md](examples/multi-repo-feature-decomposition.md) |
 | Running one orchestration round with parallel agents | Dispatch + status-update walkthrough | [examples/orchestration-round.md](examples/orchestration-round.md) |
@@ -106,9 +106,9 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 | Running a full POC round (compare POCs → user-recorded decision → adopt/reject) | End-to-end POC walkthrough | [examples/adr-option-poc.md](examples/adr-option-poc.md) |
 | Index prose | BLUF rules, transforms, banned phrases | [reference/writing-style.md](reference/writing-style.md) |
 | Rewriting wordy index prose to its shortest faithful form | Move-then-shorten walkthrough, before/after model | [examples/concise-rewrite.md](examples/concise-rewrite.md) |
-| Handling an ADR change mid-delivery, or seeing it walked through with mixed statuses | ADR-change routing, resume currency check, done/planned/in-progress walkthrough | [reference/orchestration-guide.md](reference/orchestration-guide.md) · [examples/adr-change-mid-delivery.md](examples/adr-change-mid-delivery.md) |
+| Handling an ADR change mid-delivery, or seeing it walked through with mixed statuses | ADR-change routing by status, done/planned/in-progress walkthrough | [reference/orchestration-guide.md](reference/orchestration-guide.md) · [examples/adr-change-mid-delivery.md](examples/adr-change-mid-delivery.md) |
 | Confining orchestrator writes / running the boundary check | Allowed vs forbidden writes, enforcement layers, own-writes snapshot-delta check, delegation | [reference/write-boundary-guide.md](reference/write-boundary-guide.md) |
-| Writing or validating `index.md` size, or checking a `context.md` handoff | Char/line caps, board template, archive rule, latest-only handoff | [reference/delivery-index-format.md](reference/delivery-index-format.md) · [reference/verification-gate.md](reference/verification-gate.md) |
+| Checking a `context.md` handoff or charter size | Latest-only handoff, open concerns, charter caps | [reference/verification-gate.md](reference/verification-gate.md) |
 | Deciding whether a fact belongs in the spike artifacts or the delivery docs | Two-plane map, handoff contract, edit ownership, change routing | [reference/artifact-map.md](reference/artifact-map.md) |
 | Filling a brief for any dispatch (plan, execute, verify, investigate, spike) | Context inventory, fill modes, per-target context, intake records, completeness check | [reference/dispatch-briefs.md](reference/dispatch-briefs.md) |
 </context-loading-guide>
@@ -138,7 +138,7 @@ Delivery-index prose follows **reference/writing-style.md**: table-first, atomic
 1. Read the recorded base (`scope.md` `Artifact root:`); write `deliveries/<epic-name>/index.md` per **reference/delivery-index-format.md** (resolve the base only when missing).
 2. Include the **Spike References** block (ADR files, solution-doc sections).
 3. Create repo-first folders `.../{repo}/{feature-name}/plan.md` + `context.md`; mark cells **unplanned** with their plan location.
-4. Verify structure, statuses, readiness, and the **≤8,000-char / 120-line** index budget per **reference/delivery-index-format.md**; apply **rewrite-concise** and the boundary check.
+4. Verify structure and the **≤8,000-char / 120-line** index budget per **reference/delivery-index-format.md**; statuses and readiness per **reference/state-machine.md**; apply **rewrite-concise** and the boundary check.
 5. Confirm the location with the user — **orchestrate-delivery** drives from here.
 </produce-delivery-index>
 <update-delivery-index>

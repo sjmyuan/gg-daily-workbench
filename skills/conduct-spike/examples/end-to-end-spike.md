@@ -143,4 +143,4 @@ The monolith couples three independent payment domains, preventing independent d
 
 ### Wrap-Up (conversation level — not written into any artifact)
 
-> All five chosen options are adopted into the solution doc, each mirrored in the canonical section it governs. `scope.md` remains the only area-grouped view. If an ADR decision changes during review, the affected solution-doc section is rewritten in place. Artifacts version together in `spikes/payment-migration/` (see `examples/spike-artifact-layout.md`).
+> All five chosen options are adopted into the solution doc, each mirrored in the canonical section it governs. `scope.md` remains the only area-grouped view. If an ADR decision changes during review, the affected solution-doc section is rewritten in place. Artifacts version together in `spikes/payment-migration/` (see **spike-artifact-layout** and **reference/scope-map-guide.md**).

@@ -48,4 +48,3 @@
 1. **One uncertainty signal, one focused spike**: The capability doesn't generate 6 candidates — it names the single unresolved fact and offers a spike scoped to resolve exactly that.
 2. **The ADR stays provisional**: The spike is a gate before finalizing the ADR, not a parallel side quest. The example shows the ADR is updated with evidence afterward.
 3. **Decline is respected**: The user is offered the alternative of recording the assumption as a risk in the ADR's consequences and moving on — no spike is forced.
-4. **Focused, not broad**: This capability fires during ADR discussion and proposes a single focused investigation before the decision is recorded — not a broad set of next-step candidates.

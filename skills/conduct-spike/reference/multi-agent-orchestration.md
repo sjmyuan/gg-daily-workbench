@@ -1,36 +1,35 @@
 # Sub-Agent Orchestration for Spikes
 
-Dispatch task execution to sub-agents — for investigation, findings-doc compilation, ADR drafting (including option evaluation via `draft-adr`), and solution-doc compilation — **even when the spike has only a single task**. A sub-agent is always available; the primary goal is **preserving the orchestrating agent's context**: running a task in the orchestrator consumes its context window with file reads, search output, and intermediate reasoning, crowding out the cross-cutting state it must hold (scope, findings, decisions). Parallel speed is a secondary benefit that applies automatically when multiple units are dispatched at once.
+Dispatch task execution to sub-agents — investigation, findings-doc compilation, ADR drafting, and solution-doc compilation — **even when the spike has only a single task**. The primary goal is **preserving the orchestrating agent's context**: running a unit in the orchestrator spends its window on file reads, search output, and intermediate reasoning, crowding out the cross-state it must hold (scope, findings, decisions). Parallel speed is a secondary benefit.
 
 | Capability | Agent | Applies skill | Brief template |
 |---|---|---|---|
-| Investigate | `code-investigator` | `investigate-code` | Investigation brief — [investigation-brief.md](investigation-brief.md) |
-| Compile findings docs | `findings-doc-writer` | `document-findings` | Findings-doc brief — [findings-doc-brief.md](findings-doc-brief.md) |
-| Draft problem ADRs (evaluate + draft) | `adr-writer` | `draft-adr` (full flow) | ADR-drafting brief — [adr-drafting-brief.md](adr-drafting-brief.md) |
-| Compile solution doc | `solution-doc-writer` | `write-solution-doc` (target-state) | Solution-doc brief — [solution-doc-brief.md](solution-doc-brief.md) |
+| Investigate | `code-investigator` | `investigate-code` | [investigation-brief.md](investigation-brief.md) |
+| Compile findings docs | `findings-doc-writer` | `document-findings` | [findings-doc-brief.md](findings-doc-brief.md) |
+| Draft problem ADRs (evaluate + draft) | `adr-writer` | `draft-adr` (full flow) | [adr-drafting-brief.md](adr-drafting-brief.md) |
+| Compile solution doc | `solution-doc-writer` | `write-solution-doc` | [solution-doc-brief.md](solution-doc-brief.md) |
 
-Each capability's brief template lives in its own reference file (see the table above) — prepare the brief from it, then dispatch to the mapped agent. Whenever a brief carries an area's findings, pass **both** docs of its pair — `docs/findings-<area>.md` (human) and `docs/evidence-<area>.md` (evidence) — never one alone. Every capability is dispatched even for a single task (see below). ADR drafting runs the `draft-adr` flow — decision drivers → options → evaluation → compile-adr — **headlessly inside the `adr-writer` session**: the orchestrator collects the drivers from the user, carries them in the brief, and the agent returns the ADR with a proposed chosen option for the orchestrator to confirm.
+ADR drafting runs the `draft-adr` flow headlessly inside the `adr-writer` session: the orchestrator collects the drivers from the user, carries them in the brief, and the agent returns the ADR with a proposed chosen option for the orchestrator to confirm.
 
-## Why Dispatch Even a Single Task
+## Why dispatch even a single task
 
-- **Context preservation (primary)**: the orchestrator keeps its window for synthesis and orchestration; the sub-agent's reading, reasoning, and interactive user dialog (e.g., ADR evaluation) stays in its own context.
-- **Speed (secondary)**: multiple units dispatched together run concurrently.
-- **Consistency**: one dispatch pattern for all spikes — no separate single-task code path to maintain.
+- **Context preservation (primary)** — the orchestrator keeps its window for synthesis; the sub-agent's reading, reasoning, and user dialog stay in its own context.
+- **Speed (secondary)** — units dispatched together run concurrently.
+- **Consistency** — one dispatch pattern for every spike; no separate single-task code path to maintain.
 
-## Dispatching Pattern
+## Dispatching pattern
 
-1. Identify independent work units (one per investigation area, or one per problem/ADR — batching a whole area's problems into one brief when they share its evidence; including a single unit).
-2. Inventory the orchestrator's own context before writing anything: the user's ask and answers, `scope.md`, prior units' returned results, its own reads and searches, resolved paths, and project conventions — then classify each item as **path**, **digest**, or **inline** per **reference/dispatch-briefs.md**.
-3. For each unit, fill the capability's ready-to-fill brief (see the table above) per the **structured brief shape**; every inventory item lands in it, every path is absolute, and the callee intake record is filled. Run the **completeness check** in **reference/dispatch-briefs.md** — a brief that fails it is not dispatched.
-4. Dispatch the briefs — all units concurrently when there are multiple, or the single unit on its own when there is one. Sub-agents operate independently and do not communicate with each other. Apply **reference/dispatch-discipline.md** — explicit model per brief, bounded waits, and no worker-spawned sub-agents.
-5. Collect results from all sub-agents when they complete, including each unit's search log.
-6. Verify each collected result via `question-everything`'s **verify-sub-agent-results** at the depth in **Verifying Returned Results** below. Review the accepted results for completeness and consistency across areas, then hand each area's verified evidence map to `compile-findings-doc`, which records it in the area's `docs/evidence-<area>.md` (see **reference/findings-document-guide.md**).
-7. **Document-compilation briefs** (findings and solution docs) carry the full synthesis context per **reference/findings-doc-brief.md** / **reference/solution-doc-brief.md** — the orchestrator still reviews, validates, and presents the returned doc.
-8. Feed each collected result forward: a later unit in the same round receives the earlier units' results **inline** (they are not artifacts yet), and the next round receives each unit's search log as its **already searched** digest.
+1. Identify independent work units — one per investigation area, or one per problem/ADR (batch a whole area's problems into one brief when they share its evidence), including a single unit.
+2. Fill each unit's ready-to-fill brief from the table above, applying the brief contract — inventory, fill modes, intake record, evidence-map output, completeness check — per **reference/dispatch-briefs.md**.
+3. Dispatch the briefs — all units concurrently when there are several; sub-agents operate independently and never communicate with each other.
+4. Apply **reference/dispatch-discipline.md** — explicit model per brief, bounded waits, availability fallback, no worker-spawned sub-agents.
+5. Collect results, including each unit's search log.
+6. Verify each result at the depth below, keep the accepted material, and hand each area's verified evidence map to `compile-findings-doc` for recording in `docs/evidence-<area>.md`.
+7. Feed each collected result forward: a later unit in the same round receives earlier results **inline**; the next round receives each unit's search log as its **already searched** digest.
 
-A brief that carries only the goal and an output name is the failure mode this ordering exists to prevent: the sub-agent cannot see the orchestrator's context, so it re-derives the scope, hunts for its own input files, and repeats searches the orchestrator already ran.
+A brief that carries only the goal and an output name is the failure mode this ordering prevents: the sub-agent cannot see the orchestrator's context, so it re-derives the scope, hunts for its own inputs, and repeats searches already run.
 
-## Verifying Returned Results
+## Verifying returned results
 
 Verify via `question-everything`'s **verify-sub-agent-results**, with depth set by blast radius — never by artifact count:
 
@@ -44,7 +43,6 @@ Verify via `question-everything`'s **verify-sub-agent-results**, with depth set 
 - `code-investigator` verifies code claims; non-code claims go to a NEW instance of the producer's type. Never reuse the original instance.
 - A fidelity check that finds a new `file:line` claim drops to a **single pass** on that claim.
 - The re-dispatch brief carries the **verification result** (open challenges + verdicts) so the new agent resolves them instead of redoing settled work (see **reference/dispatch-briefs.md**).
-- Each verifier brief carries the known context — the intake record, established `file:line`, the settled-vs-open split, and searched-negatives.
 - `UNCERTAIN` → tag the claim **unverified** in the evidence doc and surface it; never add a round to converge.
 
 ### Verification questions
@@ -70,11 +68,7 @@ All material `AGREE` → accept. Any `DISAGREE` → a new evidence-matched agent
 
 **Traps** — a wholesale "looks fine" is not a verdict · verifying the result instead of per challenge · reusing the original instance · sending only the verdict back on repair · treating "same wording" as agreement · accepting a verdict with no cited source.
 
-## When NOT to Dispatch
+## When NOT to dispatch
 
-- **Scope definition**: stays in the orchestrating agent — it establishes the cross-cutting scope (goal + areas and problems) that every dispatch brief depends on and sets up the spike. All later steps dispatch to a sub-agent; the ADR-drafting user dialog (drivers, options, evaluation) runs inside the dispatched sub-agent.
-- **Single-task spikes are NOT exempt**: a single area, single ADR, or single document is still dispatched — context preservation is the goal, not parallelism.
-
-## Platform Detection
-
-Before dispatching, detect whether `code-investigator`, `findings-doc-writer`, `adr-writer`, and `solution-doc-writer` are available on the current platform; map each work unit to the closest equivalent agent type.
+- **Scope definition** stays in the orchestrating agent — it establishes the cross-state (goal, areas, problems) every brief depends on. All later steps dispatch; the ADR-drafting user dialog runs inside the dispatched sub-agent.
+- **Single-task spikes are not exempt** — a single area, ADR, or document is still dispatched.

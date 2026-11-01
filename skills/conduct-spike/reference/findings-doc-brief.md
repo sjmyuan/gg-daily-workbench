@@ -1,6 +1,6 @@
 # Findings-Doc Brief
 
-Ready-to-fill structured brief for `compile-findings-doc` → `findings-doc-writer` — loaded on demand when dispatching findings-doc compilation. Fills the **structured brief shape**; carries the shared context-inventory, fill-mode, intake-record, and evidence-map contracts: **reference/dispatch-briefs.md**. Format rules: `document-findings`'s **reference/structure-and-template.md** (human doc) and **reference/evidence-and-ids.md** (evidence doc).
+Ready-to-fill structured brief for `compile-findings-doc` → `findings-doc-writer` — loaded on demand when dispatching findings-doc compilation. Fills the **structured brief shape**; carries the shared context-inventory, fill-mode, intake-record, and evidence-map contracts: **reference/dispatch-briefs.md**. Format rules: `document-findings`'s **author-findings-doc** (human doc) and **author-evidence-doc** (evidence doc).
 
 **Announce**: "Dispatching findings-doc compilation to a sub-agent."
 
@@ -30,8 +30,8 @@ You are the `findings-doc-writer`. Deliver the findings **doc pair** for **one i
 3. Record the supplied evidence map as the claim ledger, preserving every verdict, `file:line`, and searched-negative exactly.
 
 ## 5. Output contract
-- **Human doc** `docs/findings-<area>.md`: YAML frontmatter (title, area, status), Summary, Orientation resource index with a "Start here" pointer, Glossary, question-style topic blocks (TL;DR → diagram / comparison table / prose). No claims, confidence tags, ledger, or evidence-doc link.
-- **Evidence doc** `docs/evidence-<area>.md`: metadata block, topic map, claim ledger (claim ID → claim → verdict → `Symbol#method (file:line)` → confidence), searched-negatives, coverage, cross-area references.
+- The doc pair per **reference/findings-document-guide.md** §Structure — one human doc and one evidence doc, no section added or dropped.
+- The supplied evidence map recorded exactly: every verdict, `file:line`, and searched-negative preserved, with IDs stable.
 
 ## 6. Constraints
 - Write only `<spike-folder>/docs/findings-<area>.md` and `<spike-folder>/docs/evidence-<area>.md`; never modify code or any file outside the spike folder.

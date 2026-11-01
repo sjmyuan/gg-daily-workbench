@@ -14,12 +14,12 @@ The delivery folder always carries a `deliveries/` path segment (`<base>/deliver
 
 | Layer | Where | Strength |
 |---|---|---|
-| `edit` permission — `"*": "deny"`, `"**/deliveries/**": "allow"` | Orchestrator agent (opencode) | Hard block |
-| `task` allowlist — code-investigator / planner / executor / code-reviewer / spike-conductor / adr-writer / solution-doc-writer | Orchestrator agent (opencode) | Blocks unexpected agents |
+| `edit` permission — `"*": "deny"`, `"**/deliveries/**": "allow"` | Orchestrator agent | Hard block |
+| `task` allowlist — code-investigator / planner / executor / code-reviewer / spike-conductor / adr-writer / solution-doc-writer | Orchestrator agent | Blocks unexpected agents |
 | Write-boundary doctrine + rules | Skill and agent files (all platforms) | Intent |
 | Boundary check (own-writes snapshot delta) | After each index write | Detection |
 
-Copilot and Claude agent files have no permission layer — the doctrine and rules carry the boundary there.
+Platforms without an agent permission layer rely on the doctrine and rules alone.
 
 ## Boundary check (after every index write)
 

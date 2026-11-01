@@ -15,7 +15,7 @@ Findings docs are always **one pair per investigation area** — `docs/findings-
 - **Human doc** `docs/findings-<area>.md`: YAML frontmatter (title, area, status) → a Summary → an Orientation resource index with a "Start here" pointer → a Glossary (optional) → question-style topic blocks (TL;DR → diagram / comparison table / prose). No claims, confidence tags, ledger, or evidence-doc link — it stays publishable.
 - **Evidence doc** `docs/evidence-<area>.md`: a metadata block → a topic map → a claim ledger → searched-negatives → coverage → cross-area references.
 
-Load `document-findings`'s **reference/structure-and-template.md** (human doc) and **reference/evidence-and-ids.md** (evidence doc) for the full templates.
+Full templates: `document-findings`'s **author-findings-doc** (human doc) and **author-evidence-doc** (evidence doc).
 
 ## Evidence the spike relies on
 
@@ -27,7 +27,15 @@ All of the following live in the **evidence doc**, not the human doc:
 - **Searched-negatives**: dead-end searches recorded so later sub-agents don't repeat them.
 - **Stable IDs**: `<area>/<topic-slug>#cN`, cited by ADRs and the solution doc.
 
-Details: `document-findings`'s **reference/evidence-and-ids.md**.
+## Validation (pair)
+
+Run on every pair before presenting; a failed item blocks the save:
+
+- [ ] Both docs match the **Structure** section — no section added, dropped, or reordered.
+- [ ] The human doc carries no claims, confidence tags, ledger, or evidence-doc link.
+- [ ] Every claim has an inline `file:line` and a confidence tag; the ledger is complete and its IDs are unrenumbered.
+- [ ] Every human-doc topic claim appears in the ledger; every ledger row links back to a topic.
+- [ ] With 2+ areas, each affected evidence doc records the cross-area constraints and points to the other area's evidence doc.
 
 ## Answered user questions
 
@@ -46,6 +54,4 @@ Every question the user asks about the area is answered in the human doc — a c
 
 ## Delivery handoff
 
-The pair is the **current-state knowledge plane**. Delivery references it from the index `## Spike References` and `context.md` `## Pointers` — never copies it.
-
-A fact discovered during delivery that changes a decision re-enters here via `update-findings-doc`, then propagates to the ADR and solution doc. Delivery agents never edit the pair. Two-plane map: **[artifact-map.md](artifact-map.md)**.
+The pair is the **current-state knowledge plane**; delivery references it and never copies it. A fact discovered during delivery that changes a decision re-enters here via `update-findings-doc`, then propagates to the ADR and solution doc. Two-plane map: **[artifact-map.md](artifact-map.md)**.

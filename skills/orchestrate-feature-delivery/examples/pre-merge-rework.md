@@ -4,15 +4,17 @@
 
 **Applies**: **handle-post-implementation-issue** → **update-delivery-index**
 
+**What makes this distinct**: The same append-only rework as `examples/post-implementation-rework.md`, but on an **unmerged** cell — the mode line, cell branch, and index handling change, and no new feature or wave appears. The full rework-file shape and step format are shown there; this example shows only the pre-merge differences.
+
 ## 1. Identify scope + status
 
 - Affected cell: `order-service/F4` — status **in-progress** (implemented, not pushed/merged)
-- Governing decision: `adr-wallet-01-payment-failure-handling.md` (payment failure handling) — **not challenged**; only the timeout error mapping is wrong
-- Mode: **pre-merge rework** (see **rework-modes**) — same append-only rule as post-merge, but the rework stays on this cell (no new feature/wave)
+- Governing decision: `adr-wallet-01-payment-failure-handling.md` — **not challenged**; only the timeout error mapping is wrong
+- Mode: **pre-merge rework** (see **rework-modes**) — same append-only rule, but the rework stays on this cell
 
 ## 2. Write the sibling rework file (never modify the original)
 
-`plan-development-task` writes a new sibling `deliveries/wallet-migration/order-service/order-wallet-integration/rework-2026-08-08.md` — `plan.md` is the frozen original and never gains a section:
+`plan-development-task` writes a new sibling `deliveries/wallet-migration/order-service/order-wallet-integration/rework-2026-08-08.md` — `plan.md` is the frozen original and never gains a section. Same shape as `examples/post-implementation-rework.md` §4, with these differences:
 
 ```markdown
 # Rework 2026-08-08 — checkout timeout error mapping
@@ -22,9 +24,7 @@
 
 ## Scope Boundary
 **May change**: checkout timeout → error-code mapping behavior in the unmerged F4 work
-**Expected files**: checkout mapping + its tests (advisory)
 **Must not change**: other ADR decisions, other modules
-**Protected zones**: none added
 
 ## Done means
 | Criterion | Verification | Pass rule |
@@ -32,30 +32,9 @@
 | Timeout maps to the documented error code | checkout timeout test | pass |
 
 ## Steps
-
-### Step 1: Write the failing timeout test ⏳
-**Objective**: Reproduce the wrong error code for a payment-gateway timeout.
-**Files**: `CheckoutIntegrationTest.java`
-**Source**: generate · n/a · behavior-equal
-**Implementation**: New case asserts the documented timeout error code.
-**Validation**: Test compiles and fails on the current mapping.
-**Status**: ⏳ Pending
-
-### Step 2: Fix the timeout mapping ⏳
-**Objective**: Map gateway timeouts to the documented error code.
-**Files**: `CheckoutErrorMapper.java`
-**Source**: edit · n/a · behavior-equal
-**Implementation**: Replace the generic mapping branch for timeouts.
-**Validation**: Step 1 test passes; checkout suite green.
-**Status**: ⏳ Pending
-
-### Step 3: Quality gate ⏳
-**Objective**: Confirm the delta meets repo quality gates.
-**Files**: none
-**Source**: no-op · n/a · n/a
-**Implementation**: Run linting, formatting, type checking, and the full suite.
-**Validation**: All checks exit 0.
-**Status**: ⏳ Pending
+1. Write the failing timeout test (generate) — reproduce the wrong error code.
+2. Fix the mapping (edit) — `CheckoutErrorMapper.java`.
+3. Quality gate (no-op) — linting, formatting, type checking, full suite exit 0.
 ```
 
 The rework file carries only the delta — trigger, Scope Boundary, Done means, changed steps. It inherits the cell's charter by reference and never creates a second `context.md`.

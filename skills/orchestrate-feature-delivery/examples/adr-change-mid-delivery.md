@@ -19,6 +19,8 @@
 
 ## 3. Dispatch
 
+Rework mechanics — sibling file, append-only steps, execution — are walked through in `examples/post-implementation-rework.md` (post-merge) and `examples/pre-merge-rework.md` (pre-merge).
+
 - **Planner A** → re-plan `api-gateway/F3` (plan-development-task) against the revised decision.
 - **Planner B** → write the pre-merge rework for `order-service/F4` (plan-development-task), sibling `rework-2026-08-24.md`, original steps never modified.
 - **Executor B** → execute only `rework-2026-08-24.md` (execute-plan) on the unmerged work.
@@ -31,10 +33,10 @@
 |---|---|---|---|---|---|---|
 | order-service/F2 | 1234-f2-wallet | #42 (merged) | e5f6a7b | done | — | deliveries/wallet-migration/order-service/wallet-service/ |
 | order-service/F2-r1 | — | — | — | unplanned | — | deliveries/wallet-migration/order-service/wallet-service/rework-2026-08-24.md |
-| api-gateway/F3 | 1234-f3-gateway | — | — | planned → re-planning | planner-A | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
+| api-gateway/F3 | 1234-f3-gateway | — | — | planned (re-planning against the revised ADR) | planner-A | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
 | order-service/F4 | 1234-f4 | — | d4e5f6a | in-progress (rework) | executor-B | deliveries/wallet-migration/order-service/order-wallet-integration/ |
 
-Recorded per **update-delivery-index**: F3 → re-planning, F4 keeps **in-progress** (sibling rework file is the record), `F2-r1` added in a new wave — the Features table records `Rework of: F2`. Then **rewrite-concise**.
+Recorded per **update-delivery-index**: F3 stays **planned** with its re-plan note, F4 keeps **in-progress** (sibling rework file is the record), `F2-r1` added in a new wave — the Features table records `Rework of: F2`. Then **rewrite-concise**.
 
 ## 5. Next actions
 

@@ -22,7 +22,7 @@ The investigator receives everything L0 already established, so it never re-read
 - **Known locations / already searched** — `file:line` already confirmed, queries already run, with outcomes.
 - **Absolute paths** to the artifacts it may need in full.
 
-A brief carrying all six **is** the intake gate's result: the investigator adopts it, asks nothing, and explores only what the digest leaves open. Contract: **reference/dispatch-briefs.md**.
+A brief carrying all five **is** the intake gate's result: the investigator adopts it, asks nothing, and explores only what the digest leaves open. Contract: **reference/dispatch-briefs.md**.
 
 ## Escalation rules
 
