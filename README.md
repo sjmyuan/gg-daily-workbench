@@ -99,6 +99,18 @@ Each agent declares its tool set explicitly — `read`, `glob`, `grep`, `edit`, 
 - `todowrite` and `lsp` are gone: V2 has neither as a permission action, and todos are off unless `experimental.todo: true` is set in `opencode.jsonc`.
 - V2 allows `external_directory` by default; add `{ action: "external_directory", resource: "*", effect: "ask" }` globally to restore the V1 prompt.
 
+### Work-dir adoption (target repo)
+
+Every agent resolves its target repo and **moves its own session** into it before touching repo files. A dispatcher stays where it is and names the repo root absolutely in the brief.
+
+- **Why**: V2 resolves skills, instructions (`AGENTS.md`), agent definitions, project config, shell cwd, and the internal/external file-access boundary from the **session location**, not from path arguments. An agent dispatched from a workspace root otherwise runs on the workspace's instructions and sees none of the repo's skills.
+- **Children adopt, parents don't**: a child inherits the parent's location at creation (`Session.create` derives it from `parentID`), so each unit aligns itself. The dispatcher keeps its own location — its `*/deliveries/*` and `*/spikes/*` rules keep matching the artifact base — and parallel children may target different repos.
+- **The move is deferred**: `session_move` is delivered as a `steer` and applies at the next step boundary, where the runner closes the model transport and rebuilds context. It must be its own `execute` call; no destination-dependent tool may share it.
+- **Scope**: the routing rule requires the repo's instructions, skills, or tooling — a bare "fix this file" task does not switch the work dir.
+- **Fallbacks**: `execute` denied or destination unavailable → absolute paths, and the agent reports that the repo's project context could not be loaded. Never move another session; ask when two repos are equally plausible.
+- **Artifacts stay absolute**: the resolved base (often `my-work`, outside the repo) is written by absolute path. V2 wildcards compile `*` to `.*`, so `*/deliveries/*` and `*/spikes/*` still match an external absolute path.
+- `claude-agents/` is unchanged: this is an opencode V2 capability (`tools.opencode.session_move`); Claude Code has no session work dir to switch.
+
 ### How the conversion was done
 
 - Claude frontmatter (`name:` / `tools:` / `model: inherit`) → opencode `mode:` + `permissions:`; the Claude tool list maps to V2 actions: `Glob/Grep/Read` → `glob`/`grep`/`read`, `Write/Edit` → `edit`, `Bash/KillShell/BashOutput` → `shell`, `WebFetch` → `webfetch`, `WebSearch` → `websearch`, skill tool → `skill`.
@@ -112,7 +124,7 @@ Each agent declares its tool set explicitly — `read`, `glob`, `grep`, `edit`, 
 
 - Skills must be discoverable by opencode (`.opencode/skills/<name>/SKILL.md`, `.claude/skills/`, `.agents/skills/`, or the matching global locations) for the `skill` tool to load them.
 - Subagent dispatch tables (in `spike-conductor.md` and `learner.md`) reference agents by name — those names resolve to the other files in this folder once installed.
-- Every agent in `opencode-agents/` **and** `claude-agents/` loads project context from **both** toolchains via **load-project-context**: instructions (`AGENTS.md`, `CLAUDE.md`), agents, skills, rules, and commands under `.opencode/` and `.claude/`, plus `.agents/skills/`. The path mapping above applies to frontmatter and the agent's own defaults, not to context discovery — a project set up for either tool wins over conflicting agent defaults.
+- Every agent in `opencode-agents/` **and** `claude-agents/` loads project context from **both** toolchains via **load-project-context**: instructions (`AGENTS.md`, `CLAUDE.md`), agents, skills, rules, and commands under `.opencode/` and `.claude/`, plus `.agents/skills/`. The path mapping above applies to frontmatter and the agent's own defaults, not to context discovery — a project set up for either tool wins over conflicting agent defaults. Opencode agents adopt the target repo's work dir first via **align-work-dir** (see above); Claude agents read it from their original directory.
 
 ## Agent dispatch per platform
 
