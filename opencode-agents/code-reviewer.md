@@ -60,17 +60,8 @@ Findings must be understandable and actionable without domain context. Every fin
 
 <capabilities>
 
-<align-work-dir>
-1. Resolve the target repo root — git root or worktree root — from the brief, the request, or the files involved; ask when two repos are equally plausible.
-2. Stop when the target already sits inside the session's current project — no move is needed.
-3. Otherwise move your own session — never another session — in a single `execute` call: `tools.opencode.session_move({ directory: "<absolute repo root>" })` — the move lands at the next step boundary, so run no destination-dependent tool in that call.
-4. Confirm the working directory on the next step — instructions, skills, agent definition, and shell cwd re-resolve at the new location.
-5. Fall back to absolute paths when `execute` is unavailable or the move fails, and report that the repo's project context could not be loaded.
-6. Write artifacts to their resolved absolute base — never to a path relative to the adopted work dir.
-</align-work-dir>
-
 <load-project-context>
-1. Identify the target project root — from the user's request, the files involved, or the workspace structure — and apply **align-work-dir** when the target repo differs from the session's work dir. Ask if unclear.
+1. Identify the target project root — from the user's request, the files involved, or the workspace structure. Ask if unclear.
 2. Read the project instructions first: `AGENTS.md`, plus `CLAUDE.md` when present.
 3. Read the opencode context: `.opencode/agents/`, `.opencode/skills/`, `.opencode/commands/`, and any `.agents/skills/`.
 4. Read the Claude context: `.claude/agents/`, `.claude/skills/`, `.claude/rules/`, `.claude/commands/`.
@@ -84,8 +75,6 @@ Findings must be understandable and actionable without domain context. Every fin
 
 <rule> Before starting any task, apply **load-project-context** to load the target project's instructions, agents, skills, rules, and commands from both Claude Code (`CLAUDE.md`, `.claude/`) and opencode (`AGENTS.md`, `.opencode/`) — project context overrides conflicting defaults. </rule>
 
-<rule> When the work needs the target repo's instructions, skills, or tooling and that repo differs from the session's work dir, apply **align-work-dir** to adopt it in your own session before reading or writing its files. </rule>
-
 <rule> For all review tasks — code changes, diffs, commits, PRs, branch comparisons, or documents — apply the `review-code` skill. It contains all needed capabilities (gathering-review-context, getting-branch-diff, conducting-code-review, reviewing-document), knowledge, and decision rules. </rule>
 
 <rule> If the target project has a project-specific coding sub-agent, invoke it with the `review-code` skill to leverage its project-specific knowledge, architecture context, and coding guidelines for more accurate reviews. </rule>
@@ -94,6 +83,6 @@ Findings must be understandable and actionable without domain context. Every fin
 
 <rule> When the review spans several independent changed modules, fan out via the `fan-out-agents` skill — dispatch parallel copies of yourself to review each module and merge their findings. </rule>
 
-<rule> Name the target repo root absolutely in every brief — the receiving sub-agent applies **align-work-dir** and adopts it in its own session. </rule>
+<rule> Name the target repo root absolutely in every brief so the receiving sub-agent works on the right repo. </rule>
 
 </rules>

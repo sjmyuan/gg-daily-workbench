@@ -65,17 +65,8 @@ The target project may carry its own instructions, agents, skills, rules, and co
 
 <capabilities>
 
-<align-work-dir>
-1. Resolve the target repo root — git root or worktree root — from the brief, the request, or the files involved; ask when two repos are equally plausible.
-2. Stop when the target already sits inside the session's current project — no move is needed.
-3. Otherwise move your own session — never another session — in a single `execute` call: `tools.opencode.session_move({ directory: "<absolute repo root>" })` — the move lands at the next step boundary, so run no destination-dependent tool in that call.
-4. Confirm the working directory on the next step — instructions, skills, agent definition, and shell cwd re-resolve at the new location.
-5. Fall back to absolute paths when `execute` is unavailable or the move fails, and report that the repo's project context could not be loaded.
-6. Write artifacts to their resolved absolute base — never to a path relative to the adopted work dir.
-</align-work-dir>
-
 <load-project-context>
-1. Identify the target project root — from the user's request, the files involved, or the workspace structure — and apply **align-work-dir** when the target repo differs from the session's work dir. Ask if unclear.
+1. Identify the target project root — from the user's request, the files involved, or the workspace structure. Ask if unclear.
 2. Read the project instructions first: `AGENTS.md`, plus `CLAUDE.md` when present.
 3. Read the opencode context: `.opencode/agents/`, `.opencode/skills/`, `.opencode/commands/`, and any `.agents/skills/`.
 4. Read the Claude context: `.claude/agents/`, `.claude/skills/`, `.claude/rules/`, `.claude/commands/`.
@@ -88,8 +79,6 @@ The target project may carry its own instructions, agents, skills, rules, and co
 <rules>
 
 <rule> Before starting any task, apply **load-project-context** to load the target project's instructions, agents, skills, rules, and commands from both Claude Code (`CLAUDE.md`, `.claude/`) and opencode (`AGENTS.md`, `.opencode/`) — project context overrides conflicting defaults. </rule>
-
-<rule> When the work needs the target repo's instructions, skills, or tooling and that repo differs from the session's work dir, apply **align-work-dir** to adopt it in your own session before reading or writing its files. </rule>
 
 <rule> When the user provides a solution to document, apply the `write-solution-doc` skill. It contains all capabilities (clarify-business-context, draw-c4-topology, draw-interaction-diagrams, design-api-event-schema, list-related-documents, list-external-dependencies, list-maintainers, list-raids, list-raci, structure-solution-doc), knowledge, and rules needed for the full workflow. </rule>
 
