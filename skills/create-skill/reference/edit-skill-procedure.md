@@ -1,6 +1,6 @@
 # Editing an Existing Skill (edit-skill procedure)
 
-Used by **edit-skill** (steps 2–8).
+Used by **edit-skill** (steps 2–7).
 
 ## Existing-file mode
 The create-* capabilities author greenfield skills. **edit-skill** reuses them for an existing skill by applying these deltas:
@@ -30,6 +30,7 @@ Merge, demote, replace, and inline are first-class moves — not fallbacks taken
 
 | Change | Route | Existing-file delta | Verify |
 |---|---|---|---|
+| Reclassify | **classify-skill-content**, then **create-skill-file** | Move the element to its true class's section; fix the rule, guide row, and example routes that named it | **content-model** gates |
 | Merge capabilities | **create-skill-file** | Fold the steps into the survivor; retire the losing tag, its rules, guide row, and example | every merged step lands; ripple |
 | Demote | **create-skill-file** | Move capability → knowledge table → `reference/`; leave one route to it | **section-semantics** |
 | Replace | **create-skill-file** | Write the new element and delete every element it supersedes, in the same edit | no duplicate claim |
@@ -45,6 +46,21 @@ Merge, demote, replace, and inline are first-class moves — not fallbacks taken
 | Apply review findings | `review-skill` (diagnose), then **create-skill-file** / examples / references | Fix each accepted finding by its cheapest move — retighten, merge, or inline before adding; record the canonical variant in the owner template | re-validate |
 | Make examples consistent | **create-skill-examples** / references | Reproduce the canonical template; fix identifiers/counts; update shared cross-skill examples | **example-standards** + checker |
 | Size-reduce | **create-skill-file** / examples / references | Apply **size-remediation** lever order, then the funding rule | re-measure |
+
+## Justification test
+Justification asks whether an element should exist at all; absorption asks whether it already does. Run justification
+first, on every element the edit touches or is tempted to keep.
+
+| Class | Ask | Delete when the answer is no |
+|---|---|---|
+| Fact | Would a step guess without it? | The value is inferable, or the step restates it |
+| Procedure | Does an output depend on these steps in this order? | Nothing breaks without it |
+| Routing + guard | Which capability would be missed, or which observed failure would return? | Neither |
+
+- "Why must it exist?" and "what breaks if we remove it?" are the same question; a vague answer is a deletion.
+- An unjustified element outside the edit's scope is a finding for the user — report it, never delete it silently.
+- Justification removes whole elements; **conciseness-check** shortens the wording of the ones that stay.
+- Supporting files answer the same test at file level — see the supporting-file table in **content-model**.
 
 ## Absorption test
 Run before any addition, in order. Stop at the first yes.

@@ -15,3 +15,11 @@ Both the **skill name** and its **capability names** in the skill under review m
 **`<knowledge>` subsection names**:
 - Must use **descriptive noun phrases** (`<storage-patterns>`, not `<define-storage>`)
 - A subsection named with an action verb inside `<knowledge>` signals that procedural content has leaked into knowledge — this is a structural violation
+
+## Severity
+
+| Finding | Severity |
+|---|---|
+| Skill name is a noun phrase | 🔴 Major |
+| Capability name is a noun phrase | 🔴 Major |
+| Knowledge subsection named with an action verb | 🟡 Minor — procedure leaked into knowledge |

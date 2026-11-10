@@ -1,6 +1,6 @@
 # Description Quality: Template, Scoring, Trigger Correctness
 
-Used by **create-skill-file** (frontmatter step 2) and **validate-created-skill** (description step 2).
+Used by **create-skill-file** (steps 8–9) and **validate-created-skill** (check 6).
 
 ## Two-part template
 ```
@@ -11,7 +11,7 @@ Use when [intent-verb₁] / [intent-verb₂] / [intent-verb₃] [object/scope].
 - Part 2 (trigger phrase): lists intent verbs matching the `<when-to-use-this-skill>` bullets.
 
 Example:
-> Review SKILL.md files for correct structure, section-purpose compliance, and absence of duplication. Use when reviewing, checking, or diagnosing trigger failures in a copilot skill file.
+> Review SKILL.md files for correct structure, section and content-model compliance, and absence of duplication. Use when reviewing, checking, or diagnosing trigger failures in a skill file.
 
 ## Five-dimension scoring (0–2 each, total /10)
 
@@ -31,3 +31,4 @@ Example:
 - Trigger phrase must cover **all** scenarios (no under-coverage)
 - Must not cover scenarios absent from `<when-to-use-this-skill>` (no over-triggering)
 - `<when-to-use-this-skill>` must be present — a missing section means no post-load scope check
+- `<when-to-use-this-skill>` holds 3–7 bullets; each is a user input condition, never a caller name

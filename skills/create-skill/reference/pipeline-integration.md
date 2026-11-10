@@ -1,6 +1,6 @@
 # Pipeline Integration Design
 
-Used by **create-skill-file** (pipeline step 11) and **validate-created-skill** (check 12).
+Used by **create-skill-file** (step 13) and **validate-created-skill** (check 14).
 
 When a skill is part of a multi-skill pipeline (one skill's output is consumed by another), verify these 5 integration points:
 

@@ -49,7 +49,7 @@
 ---
 
 ## Risks & Assumptions
-- Review assumes the four-section skill semantics and that sub-agent dispatch is the platform's supported mechanism; the missing-verification severity assumes unverified agent output cannot be trusted by default.
+- Review assumes the five-section skill semantics and that sub-agent dispatch is the platform's supported mechanism; the missing-verification severity assumes unverified agent output cannot be trusted by default.
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Scenario**: Greenfield creation — the user asks for a brand-new copilot skill with no source material. Requirements are gathered from scratch, then a full SKILL.md is produced.
 
-**Applies**: **collect-skill-requirements**, **create-skill-file**
+**Applies**: **collect-skill-requirements**, **classify-skill-content**, **create-skill-file**
 
 ## Input / Context
 User request: "Create a skill that writes consistent git commit messages with conventional-commit prefixes and a 72-character subject line."
@@ -22,7 +22,19 @@ User request: "Create a skill that writes consistent git commit messages with co
 
 The gate ran before creation: the one inference was shown back in the restatement above and accepted, not assumed privately.
 
+## Classification (classify-skill-content)
+| Claim | Class | Route |
+|---|---|---|
+| 72-char subject limit | fact | knowledge |
+| Conventional prefix table | fact | knowledge |
+| Body and footer format for breaking changes | fact | knowledge, as a literal skeleton |
+| "Add a body when needed" | procedure, not decidable | rewritten as "when the diff changes public behaviour" |
+| Decide that a commit request is in scope | routing | the single rule |
+
+Classification ran before any section was written; the undecidable step was fixed as content, not as style.
+
 ## Post-Write Checks
+- Adequacy gates re-run per **content-model** — one owner per claim, every step decidable.
 - Prose written per **writing-style** — directive voice, BLUF, hard caps, no banned phrases.
 - SKILL.md written within a per-section char budget, then measured per **size-limits** (≤12,000 chars / 150 lines); over-budget drafts fixed per **size-remediation** (lever order) before finalizing.
 
@@ -47,7 +59,8 @@ description: Write consistent git commit messages with conventional prefixes and
 <write-commit-message>
 1. Detect the change type from the diff.
 2. Write the subject line within the 72-char limit.
-3. Add a body and BREAKING CHANGE footer when needed.
+3. Add a body and BREAKING CHANGE footer when the diff changes public behaviour.
+4. Verify the subject is ≤72 characters and the footer matches the change type.
 </write-commit-message>
 </capabilities>
 <rules>

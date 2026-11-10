@@ -52,7 +52,7 @@
 ---
 
 ## Risks & Assumptions
-- Review assumes the four-section semantics (knowledge / capabilities / rules) with on-demand context exposed via `<context-loading-guide>` inside `<knowledge>`.
+- Review assumes the five-section semantics (frontmatter / when-to-use / knowledge / capabilities / rules) with on-demand context exposed via `<context-loading-guide>` inside `<knowledge>`.
   If the intended skill format differs, findings may not apply.
 
 ---

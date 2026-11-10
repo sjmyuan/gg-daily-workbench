@@ -3,7 +3,7 @@
 
 **Scenario**: Review of `skills/develop-miniprogram/SKILL.md` — a copilot skill that guides an AI agent on WeChat Miniprogram development.
 
-**Review Focus**: Skill structure correctness — whether `<knowledge>`, `<capabilities>`, `<rules>`, and `<examples>` sections each serve their intended purpose and are free of duplication.
+**Review Focus**: Content classification first — whether each element is a fact, a procedure, or a routing/guard rule — then section structure and duplication.
 **Applies**: **review-skill-file**
 
 ## Code Review Summary
@@ -16,9 +16,11 @@
 
 ## Findings
 
+Content findings are reported first: a misclassified element outranks a formatting defect in the same file.
+
 ### 🔴 Major Issues
 
-#### Capabilities contain reference knowledge, not procedural steps
+#### Content classification — capabilities contain reference knowledge, not procedural steps
 - **File**: [SKILL.md](SKILL.md#L18-L130)
 - **Issue**: Several capability sections are reference tables or factual lists rather than descriptions of *how to do something*.
   `<navigation-and-data-flow>` embeds two lookup tables (navigation API and data-passing patterns);

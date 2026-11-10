@@ -5,9 +5,9 @@
 **Applies**: **collect-skill-requirements**, **create-skill-file**
 
 ## Input / Context
-User provides `claude-agents/adr-writer.md` — a full agent with inline `<knowledge>`, capabilities, and rules — and asks: "Extract this into a skill."
+User provides `claude-agents/planner.md` — a full agent with inline `<knowledge>`, capabilities, and rules — and asks: "Extract this into a skill."
 
-## Source-Material Analysis (collect-skill-requirements step 3)
+## Source-Material Analysis (collect-skill-requirements step 2)
 Read the file and map constructs to skill targets:
 
 | Source construct | Skill target |
@@ -20,7 +20,7 @@ Read the file and map constructs to skill targets:
 `skills/<extracted-name>/SKILL.md` with the source content restructured into proper sections, plus a delegation agent file that calls the new skill.
 
 Key moves:
-- Rename capabilities to action verbs (e.g., `draft-adr` entries become `<define-problem>`, `<evaluate-options>`, etc.)
+- Rename capabilities to action verbs — each tag names what the step does, never a noun
 - Extract large rubrics (templates, scoring tables) to `reference/` files
 - Add a condition-first `<context-loading-guide>`
 - Keep the original agent as a thin delegation that applies the skill step by step

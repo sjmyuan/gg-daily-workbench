@@ -1,6 +1,6 @@
 # Artifact Consistency
 
-Used by **review-skill-file** (step 11) and `create-skill`'s **example-standards**.
+Used by **review-skill-file** (step 7) and `create-skill`'s **example-standards**.
 Applies when a skill ships artifact templates (plan, ADR, index, context, findings, report, schema)
 and examples that instantiate them — in one skill or across a pipeline.
 

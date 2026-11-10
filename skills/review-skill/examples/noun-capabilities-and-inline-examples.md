@@ -66,7 +66,7 @@ examples are embedded inline instead of referenced, and one capability has no ex
 ---
 
 ## Risks & Assumptions
-- Review assumes the four-section semantics (knowledge / capabilities / rules / examples). If the intended skill format differs, findings may not apply.
+- Review assumes the five-section semantics (frontmatter / when-to-use / knowledge / capabilities / rules). If the intended skill format differs, findings may not apply.
 - No runtime evaluation of whether the agent applies capability steps more accurately after restructuring — that requires prompt testing.
 
 ---

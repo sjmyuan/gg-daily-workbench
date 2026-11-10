@@ -1,6 +1,6 @@
 # Example: Artifact Consistency Review — Examples vs Canonical Template
 
-**Scenario**: A skill ships a plan template and eight examples that emit plans. The user asks: "Check the examples — are they consistent?" Demonstrates **review-skill-file** step 11 (template fidelity, set-level continuity, machine checker).
+**Scenario**: A skill ships a plan template and eight examples that emit plans. The user asks: "Check the examples — are they consistent?" Demonstrates **review-skill-file** step 7 (template fidelity, set-level continuity, machine checker).
 
 **Applies**: **review-skill-file**
 

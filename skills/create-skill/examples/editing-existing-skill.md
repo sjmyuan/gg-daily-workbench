@@ -38,7 +38,7 @@ User: "Improve this skill — writing and formatting feel like one job, and revi
 6. **Ripple** — remove the `<format-release-note>` tag from rules, guide rows, and the example `**Applies**` line.
    Drop the `formatting-rules.md` route from knowledge and from the step that inlined it.
    Keep `release-note-template.md` as the single template.
-7. **Validate after each change** — **validate-created-skill**: 16 checks pass, no 🔴; every merged step lands;
+7. **Validate after each change** — **validate-created-skill**: content checks then structural checks pass, no 🔴; every merged step lands;
    no dangling link to the deleted reference.
 8. **Re-measure and report** — re-count, then close with the ledger.
 

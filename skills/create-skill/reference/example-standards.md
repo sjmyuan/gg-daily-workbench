@@ -1,12 +1,37 @@
 # Example Coverage and Quality Standards
 
-Used by **create-skill-examples** and **validate-created-skill** (checks 9, 15, 16).
+Used by **create-skill-examples** and **validate-created-skill** (checks 11, 17, 18).
 Mirrors the reviewer's **artifact-consistency** standard for cross-skill pipelines.
 
 ## Coverage requirements
 - Every distinct capability must have at least one linked example
 - Examples should cover key scenarios, not just happy-path inputs
 - Example labels must reference current capability names (no stale/renamed references)
+
+## Existence test
+A second example must break something when deleted:
+- It teaches a case the first cannot — a different trigger, branch, or failure mode.
+- It shows a decision the capability actually makes; a fixed template with no branch adds nothing.
+- It does not repeat input/output already covered by the shared example set.
+
+Ask "which capability becomes unteachable without this file?" — no answer means delete the file, not shorten it.
+
+## File skeleton
+
+```markdown
+# Example: <trigger scenario and what makes this case distinct>
+
+**Scenario**: <one or two sentences>.
+**Applies**: **<capability>**
+
+## Input / Context
+<input>
+
+## Expected Output
+<output as the capability produces it>
+```
+
+Every example reproduces this order; analysis sections may sit between Input and Expected Output.
 
 ## Template fidelity
 When the skill ships an artifact schema (plan, ADR, index, context, findings, report, config):

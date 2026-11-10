@@ -22,6 +22,9 @@ All four must pass, or use a CLI and ship no script:
 - Its output must be deterministic and machine-checkable.
 - The logic would otherwise need >5 inline commands.
 
+Ask of a shipped script: "what breaks if this is deleted?" If a CLI or one-liner reproduces its output, delete it.
+A second script per concern is a deletion candidate; prefer a `--check` or `--diff` mode on the first.
+
 ## Contract
 
 | Element | Requirement |
@@ -41,7 +44,6 @@ access, a prompt, an absolute path, or secrets. Exceptions (Node, POSIX `sh`, OS
 tool) must be stated in the capability step that runs it.
 
 Field names are a contract: steps quote them, so renaming one renames every reference.
-Prefer a `--check` or `--diff` mode over shipping a second script.
 
 ## CLI contract
 
