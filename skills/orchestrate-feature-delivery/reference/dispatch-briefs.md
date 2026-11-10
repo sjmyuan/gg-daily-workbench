@@ -55,7 +55,7 @@ Dispatched skills run their own intake gate and refuse to act on a private readi
 | **planner** | Change type, expected behavior, triggering input, done criteria (plus the ref, for a restore) |
 | **executor** | Plan path, active rework file, base ref, expected outcome |
 | **code-investigator (L1)** | System, scope, depth, consumer |
-| **spike-conductor (L3)** | Spike goal, area, boundaries, brownfield/greenfield |
+| **spike-conductor (L3)** | Spike goal, affected areas or delta scope, boundaries, brownfield/greenfield |
 
 A brief carrying these fields **is** the gate result: the agent adopts them, asks nothing, and explores only what they leave open. An unfilled field becomes the agent's guess and an extra pass.
 

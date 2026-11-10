@@ -1,26 +1,26 @@
 # Example: Multi-Agent Parallel Investigation — Payment Service Migration
 
-**Scenario**: A 4-area spike on migrating a legacy payment service; investigation and ADR drafting go to sub-agents in parallel.
+**Scenario**: A 4-area spike on migrating a legacy payment service. Each area is one `spike-area-analyst` session running investigate → findings pair → ADRs; phases run in parallel across areas.
 
-**Applies**: `define-spike-scope` → `investigate-per-area` (parallel dispatch) → `compile-findings-doc` → `draft-problem-adrs` (parallel dispatch, evaluation via `draft-adr`) → `compile-solution-doc`
+**Applies**: `define-spike-scope` → `investigate-per-area` (phase 1) → `compile-findings-doc` (phase 2) → `draft-problem-adrs` (phase 3) → `compile-solution-doc`
 
-**What makes this distinct**: It shows only the **dispatch mechanics** — how an independent unit becomes a self-contained brief, and how returned units are synthesized. The areas, evidence, and ADRs are the payment-migration artifacts already walked through in `examples/end-to-end-spike.md`; they are not repeated here.
+**What makes this distinct**: It shows only the **dispatch mechanics** — one brief per area, what each phase returns, and when the orchestrator resumes a session versus re-dispatches it. The areas, evidence, and ADRs are the payment-migration artifacts already walked through in `examples/end-to-end-spike.md`; they are not repeated here.
 
 ---
 
 ## Define Spike Scope
 
-Same payment-migration problem and 4 areas as `examples/end-to-end-spike.md` (service decomposition · communication · database — 2 problems · migration). The user confirms → 4 areas mean parallel dispatch for investigation (per area) and ADR drafting (per problem).
+Same payment-migration problem and 4 areas as `examples/end-to-end-spike.md` (service decomposition · communication · database — 2 problems · migration). The user confirms → one area brief per area, dispatched concurrently.
 
 ---
 
-## Investigate Per Area — PARALLEL DISPATCH
+## Phase 1 — INVESTIGATE (PARALLEL DISPATCH)
 
 ### Orchestrator: Prepare Briefs
 
-4 self-contained briefs, one per area. The orchestrator first inventories its own context — scope dialog, `scope.md`, anything it already read or searched — then fills each brief with absolute paths, digests of what is already known, and the callee intake record. Every brief requires a per-area evidence map; no findings pair exists yet, so this round seeds it (see `reference/dispatch-briefs.md`).
+4 self-contained briefs, one per area, each with `Phase stop: 1`. The orchestrator first inventories its own context — scope dialog, `scope.md`, anything it already read or searched — then fills each brief with absolute paths, digests of what is already known, and the callee intake record. No findings pair exists yet, so this phase seeds the evidence map (see `reference/area-analyst-brief.md`).
 
-**Brief 1 — Service decomposition** (excerpt of sections 2–3; full shape per `reference/investigation-brief.md`):
+**Brief 1 — Service decomposition** (excerpt of sections 2–3):
 ```
 ## 2. Context
 - Spike goal (path + digest): /work/acme/spikes/payment-migration/scope.md
@@ -31,6 +31,7 @@ Same payment-migration problem and 4 areas as `examples/end-to-end-spike.md` (se
 - Mode: brownfield
 
 ## 3. Inputs
+- Phase stop (inline): 1
 - Intake record (inline): system acme/payment-service · scope packages/payment/**,**/settlement
   · depth call chains to file:line · consumer this area's findings pair
 - Known locations (digest): PaymentOrchestrator.java:1-1200, package-by-layer layout under
@@ -38,64 +39,70 @@ Same payment-migration problem and 4 areas as `examples/end-to-end-spike.md` (se
 - Already searched (digest): "module" in packages/ → no Maven/Gradle modules; do not repeat
 - First pass: no findings pair yet — build the evidence map from scratch
 ```
-A thin four-line brief would send each sub-agent hunting for its own scope, its own input files, and searches the orchestrator had already run.
+A thin four-line brief would send each analyst hunting for its own scope, its own input files, and searches the orchestrator had already run.
 
 ### Orchestrator: Dispatch
 
-> The orchestrator detects that code-investigation sub-agents are available and dispatches all 4 briefs concurrently, stating each brief's model.
-> "Dispatching investigation of 4 areas to sub-agents in parallel."
+> "Dispatching phase 1 of 4 area sessions to sub-agents in parallel."
 
-### Sub-Agents Return
+### Analysts Return
 
-Four evidence maps (entry points, `file:line`, call chains, verdicts, searched-negatives) plus search logs. Cross-area consistency: A + C both flag tight coupling; B + D both note missing migration infrastructure; no contradictions. Each area's verified evidence map is handed to `compile-findings-doc`.
+Four receipts, each carrying an evidence map (entry points, `file:line`, call chains, verdicts, searched-negatives) and a search log. The orchestrator verifies each at **single-pass** depth on an independent seat.
 
-*(Returned current-state facts and constraints are the ones listed in `examples/end-to-end-spike.md`; the parallel path changes only how they are gathered.)*
-
----
-
-## Compile Findings Documents
-
-*(one findings pair per area, always — four pairs dispatched concurrently, each area's evidence map recorded in its evidence doc per `reference/findings-doc-compilation.md`.)*
-
-Each pair follows the shape in `reference/findings-document-guide.md`. **Cross-area constraints**: `docs/evidence-service-decomposition.md` ↔ `docs/evidence-database.md` (shared `transactions`/`accounts`/`audit_log`); `docs/evidence-communication.md` ↔ `docs/evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
+Cross-area consistency: A + C both flag tight coupling; B + D both note missing migration infrastructure; no contradictions. Pause: "Is the investigation complete, or continue in a new direction?"
 
 ---
 
-## Draft ADRs — PARALLEL DISPATCH
+## Phase 2 — COMPILE THE PAIR (RESUME EACH SESSION)
 
-*(Each problem's ADR is drafted headlessly by an `adr-writer` sub-agent from the drivers and findings carried in the brief; a whole area's problems share one brief. The orchestrator confirms each proposed chosen option afterward. Chosen options: the five in `examples/end-to-end-spike.md`.)*
+> "Resuming all 4 area sessions for phase 2."
 
-### Orchestrator: Prepare Briefs
+Each brief now carries `Phase stop: 2` plus the area's own phase-1 receipt. The analyst writes `docs/findings-<area>.md` then `docs/evidence-<area>.md` from the evidence it already holds — it does not re-read or re-investigate. Each returns the pair paths, the topic list, and the ledger count; the orchestrator verifies at **fidelity** depth and confirms the topic list at the pause.
 
-4 briefs — one per problem, except the database area batches both of its problems into one brief since they share evidence:
+**Cross-area constraints**: `docs/evidence-service-decomposition.md` ↔ `docs/evidence-database.md` (shared `transactions`/`accounts`/`audit_log`); `docs/evidence-communication.md` ↔ `docs/evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
 
-**Brief 1 — ADR for Service Decomposition (problem: split the monolith)**:
-```
-Produce ADR for problem: How to split the monolith? (Area: Service Decomposition)  [path: /work/acme/spikes/payment-migration/scope.md]
-Intake record (inline): system acme/payment-service · scope packages/payment/** · depth file:line · consumer this ADR
-Decision drivers (inline): 99.9% SLA; no data loss; align with existing teams
-Candidate options (inline): A) Payment-type services — clear ownership, independent scaling; shared-lib coupling. B) Domain-driven services — cleaner dependencies; team restructuring. C) Strangler extraction — lowest risk; temporary hybrid complexity.
-User context (inline): each team owns a payment type; wallet scaling is the pain
-Cross-area constraints (path): docs/evidence-database.md (shared transactions/accounts/audit_log); docs/evidence-communication.md (SOAP must stay)
-Evidence doc (path): docs/evidence-service-decomposition.md — claim ledger; cite locations, never re-read code
-Known locations (digest): PaymentOrchestrator.java:88 routes by payment type; coupling in packages/payment/shared
-Load draft-adr; produce the ADR tagged Area: Service Decomposition.
-```
+> If a session cannot be resumed: re-dispatch the analyst with the written pair and the phase-2 receipt — never a blank brief.
+
+---
+
+## Phase 3 — DRAFT ADRs (RESUME EACH SESSION)
+
+### Orchestrator: Collect Drivers
+
+The orchestrator asks the user for each problem's decision drivers (99.9% SLA; no data loss; align with existing teams) — the analyst never prompts the user.
 
 ### Orchestrator: Dispatch
 
-> "Dispatching ADR drafting for 4 areas to sub-agents in parallel."
+> "Resuming 4 area sessions for phase 3 — 5 ADRs."
 
-### Orchestrator: Synthesize
+**Brief 1 — Service decomposition, phase 3** (excerpt):
+```
+## 3. Inputs
+- Phase stop (inline): 3
+- Findings pair (path): docs/findings-service-decomposition.md + docs/evidence-service-decomposition.md
+  — treat Verified claims as settled; dig only into Gap/Inconsistency/Inferred claims
+- Decision drivers (inline): 99.9% SLA; no data loss; align with existing teams
+- Candidate options (inline): payment-type services; domain-driven services; strangler extraction
+- Cross-area constraints (path): docs/evidence-database.md; docs/evidence-communication.md
+- Prior phase receipt (inline): pair written, 34 ledger claims, 0 open gaps
 
-> All 5 returned ADRs reviewed: decomposition + database are consistent; communication + migration are complementary; migration cross-references decomposition correctly. No conflicts — presenting for review.
+## 4. Tasks
+- Load draft-adr; drivers → options → evaluation (detail-options-tech) → compile
+- One ADR tagged Area: Service Decomposition
+```
+
+### Analysts Return
+
+5 ADRs, one per problem (the database area batches its two problems in one session). Each receipt names the chosen option, the evidence IDs it rests on, and any assumption-dependent decision. The orchestrator verifies load-bearing decisions with the **full loop**, then pauses: "Would you like to adjust any ADR before compiling the solution document?"
+
+---
 
 ## Compile Solution Doc — SINGLE-TASK DISPATCH
 
-*(One unit synthesizing all ADRs — single-task dispatch, for context preservation rather than parallelism. The brief carries the business context, the 4 findings pairs, and the decisions digest.)*
+*(One unit synthesizing all ADRs — single-task dispatch, for context preservation rather than parallelism. The brief carries the business context, the 4 findings pairs, the decisions digest, and `Phase stop` is not used.)*
 
 > "Dispatching solution-doc compilation to a sub-agent."
 
 **Final bundle**: `scope.md` · 4 findings pairs · 5 ADRs · `solution.md` (decision-only).
 
-**Takeaway**: the orchestrator's cost is the brief, the sub-agent's cost is the search — a complete brief (digests, known locations, intake record, absolute paths) is what keeps the second one from paying twice.
+**Takeaway**: the evidence map crosses **zero** agent boundaries — it becomes the pair and the ADRs inside one session. The orchestrator's cost is one brief per area plus a phase receipt; the saving is every re-read and re-search the old three-hop handoff paid for.

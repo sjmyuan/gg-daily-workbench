@@ -42,7 +42,7 @@
 
 ## Step 3: Investigate Deeper (Seeded, Targeted)
 
-*(Dispatched to a code-exploration sub-agent seeded with the area's existing evidence map so covered code is not re-scanned — see `reference/multi-agent-orchestration.md`.)*
+*(Dispatched as a `spike-area-analyst` phase-1 session seeded with the area's existing evidence map so covered code is not re-scanned — see `reference/multi-agent-orchestration.md`.)*
 
 > "Deep-diving into: Database Decomposition Strategy — can we split the monolithic DB without breaking settlement logic? And which schema-migration approach fits the stored procedures?"
 

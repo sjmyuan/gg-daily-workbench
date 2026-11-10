@@ -10,7 +10,7 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 | **L0 Answer** | What did we decide, why, or what is the status? | Index, `context.md`, plan/rework, ADR, findings/evidence, git log settle it | Read in-session and answer | 0 | none |
 | **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | One read-only `code-investigator` with the L1 brief below | 1 | none |
 | **L2 Decision** | Was exactly one ADR decision wrong or incomplete? | One decision changes; no new options | `adr-writer` revises in place; `solution-doc-writer` only if target state changes | 1–2 | ADR (+ solution section) |
-| **L3 Spike** | Which option should we choose across decisions? | ≥2 decisions/areas, new options, or formal findings required | `spike-conductor`, **delta** scope | ≥3 | spike artifacts |
+| **L3 Spike** | Which option should we choose across decisions? | ≥2 decisions/areas, new options, or formal findings required | `spike-conductor`, **delta** scope — never its internal area agents | ≥3 | spike artifacts |
 
 ## L1 brief
 

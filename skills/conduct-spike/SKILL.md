@@ -26,11 +26,11 @@ A spike reduces uncertainty via research and analysis; its output is **documente
 </spike-definition>
 
 <spike-artifact-layout>
-One folder per spike — `spikes/<spike-name>/` with `scope.md`, `adrs/adr-<area>-<NN>-<problem>.md`, `solution.md`, `docs/findings-<area>.md` + `docs/evidence-<area>.md`. `spikes/` anchors the write boundary. Unnamed root → `resolve-artifact-location`; record `Artifact root:` atop `scope.md`.
+`spikes/<spike-name>/` holds `scope.md`, `adrs/adr-<area>-<NN>-<problem>.md`, `solution.md`, `docs/findings-<area>.md` + `docs/evidence-<area>.md`. `spikes/` anchors the write boundary. Unresolved root → `resolve-artifact-location`.
 </spike-artifact-layout>
 
 <write-boundary>
-Writes are confined to the spike folder (`**/spikes/**`) — never code, config, tests, or files outside it; never build POCs (`orchestrate-feature-delivery` delivers them). Run the boundary check after every write: **reference/write-boundary-guide.md**.
+Writes stay inside `**/spikes/**` — never code, config, tests, or outside files; never build POCs (`orchestrate-feature-delivery` delivers them). Check after every write: **reference/write-boundary-guide.md**.
 </write-boundary>
 
 <scope-acceptance-gate>
@@ -38,7 +38,7 @@ No `scope.md` and no findings compilation until the request passes `clarify-requ
 </scope-acceptance-gate>
 
 <scope-map>
-The spike's **area → problem map** and status dashboard. Each problem maps to one ADR with its `Area:` tag; `scope.md` groups by area, `solution.md` mirrors decisions into canonical sections. Record at **define-spike-scope**; edit at **continue-prior-spike**.
+The spike's **area → problem map** and status dashboard. Each problem maps to one ADR with its `Area:` tag; `scope.md` groups by area, `solution.md` mirrors decisions. Record at **define-spike-scope**; edit at **continue-prior-spike**.
 </scope-map>
 
 <scope-map-status>
@@ -46,7 +46,7 @@ Problem (stored): `investigating` → `deciding` → `done`; area (derived): `pr
 </scope-map-status>
 
 <inappropriate-scenarios>
-Do NOT use for quick answers, already-decided implementation work, trivial scope, immediate POC builds, or plain ADR drafting / solution-doc writing / code investigation — `draft-adr`, `write-solution-doc`, `investigate-code` own those.
+Do NOT use for quick answers, already-decided implementation work, trivial scope, immediate POC builds, or plain ADR drafting, solution-doc writing, or code investigation.
 </inappropriate-scenarios>
 
 <findings-document>
@@ -54,7 +54,7 @@ The spike's findings pair (via `document-findings`): a human doc plus an evidenc
 </findings-document>
 
 <continuation-mode>
-Another round seeded with prior artifacts: read `scope.md` for open work, gate the delta, run **revise-in-place**, then **sync-update-artifacts**.
+Another round seeded with prior artifacts: read `scope.md` for open work, gate the delta, revise in place, then **sync-update-artifacts**.
 </continuation-mode>
 
 <greenfield-scenarios>
@@ -62,11 +62,11 @@ No existing implementation: research approaches, comparables, constraints.
 </greenfield-scenarios>
 
 <multi-agent-orchestration>
-Dispatch every spike unit — including a single-task spike — to sub-agents, each brief carrying a complete context inventory so no sub-agent re-derives scope or repeats a search. Pattern: **reference/multi-agent-orchestration.md**; briefs: **reference/dispatch-briefs.md**; model routing, waits, fallback: **reference/dispatch-discipline.md**.
+Dispatch one `spike-area-analyst` session per area — investigate → findings pair → ADRs — so a live evidence map is never re-serialized; dispatch the solution doc separately and verify on an independent seat. Pattern: **reference/multi-agent-orchestration.md**; brief: **reference/area-analyst-brief.md**; resume and receipts: **reference/dispatch-briefs.md**; model routing: **reference/dispatch-discipline.md**.
 </multi-agent-orchestration>
 
 <sub-agent-verification>
-Depth scales with blast radius: one independent verifier pass for evidence, a fidelity check against the verified ledger for synthesis, the full loop only for load-bearing ADR decisions. Cap 2 rounds; tag residual uncertainty. Rules: **reference/multi-agent-orchestration.md**.
+Depth scales with blast radius: one independent pass for an evidence map, a fidelity check for a pair or solution doc, the full loop only for load-bearing ADR decisions. Never reuse the producing session; cap 2 rounds and tag residual uncertainty. Rules: **reference/multi-agent-orchestration.md**.
 </sub-agent-verification>
 
 <problem-decomposition-guide>
@@ -78,7 +78,7 @@ Suggest a spike when the decision hinges on what reasoning alone cannot settle: 
 </adr-uncertainty-signals>
 
 <professional-doc-authoring>
-ADRs, findings docs, and the solution doc are always written by `draft-adr`, `document-findings`, `write-solution-doc` — never hand-edited. Option tech details come from **detail-options-tech**, grounded in the ledger.
+ADRs, findings docs, and the solution doc are always written by `draft-adr`, `document-findings`, `write-solution-doc` — never hand-edited.
 </professional-doc-authoring>
 
 <artifact-maintenance-doctrine>
@@ -118,12 +118,12 @@ Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rew
 </define-spike-scope>
 
 <investigate-per-area>
-1. Apply the investigation procedure per **reference/investigate-per-area-procedure.md** — dispatch, brief, verify, hand off evidence maps.
+1. Apply the investigation procedure per **reference/investigate-per-area-procedure.md** — dispatch phase 1, brief, verify, keep each accepted evidence map and receipt for the pair phase.
 2. When an evidence map contradicts an accepted goal or constraint, re-challenge the affected claims via `clarify-request`'s **re-challenge-the-ask** and rewrite `scope.md`.
 </investigate-per-area>
 
 <draft-problem-adrs>
-1. Apply the ADR-drafting procedure per **reference/draft-problem-adrs-procedure.md**: dispatch → evaluate + draft via `draft-adr` → verify → sync findings gaps → save → ask → validate.
+1. Apply the ADR-drafting procedure per **reference/draft-problem-adrs-procedure.md**: resume phase 3 → evaluate + draft via `draft-adr` → verify → sync findings gaps → confirm → ask → validate.
 </draft-problem-adrs>
 
 <compile-solution-doc>
@@ -132,7 +132,7 @@ Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rew
 
 <compile-findings-doc>
 1. Gate the supplied material per **scope-acceptance-gate** before compiling — user-provided notes are a request, not a settled scope.
-2. Apply the findings-doc compilation procedure per **reference/findings-doc-compilation.md** — one per area: dispatch → verify → validate → save (mark each area `spiking` per **scope-map-status**).
+2. Apply the findings-doc compilation procedure per **reference/findings-doc-compilation.md** — one per area: resume phase 2 → verify → validate → confirm the saved pair (mark each area `spiking` per **scope-map-status**).
 </compile-findings-doc>
 
 <sync-update-artifacts>
@@ -149,6 +149,7 @@ Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rew
 
 <rules>
 <rule>When the user initiates a spike investigation from scratch, apply **run-spike-workflow**.</rule>
+<rule>Dispatch each area as one `spike-area-analyst` session — never split its phases across agents — and verify each returned phase on an independent seat, never the producing session.</rule>
 <rule>Before `scope.md` is written, a continuation starts, user-supplied material is compiled, or an uncertainty spike begins, apply **scope-acceptance-gate** — accept only `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS`, and only after the inference list was shown.</rule>
 <rule>When the user supplies pre-existing investigation material, apply **compile-findings-doc** directly, skipping **investigate-per-area** — after the gate.</rule>
 <rule>When the user resumes a prior spike or re-investigates a decided ADR, apply **continue-prior-spike**.</rule>

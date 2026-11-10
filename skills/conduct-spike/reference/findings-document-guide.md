@@ -4,7 +4,7 @@ The spike's findings docs explain **what exists in a code area today**: a **huma
 
 ## Producer
 
-Findings docs are produced by the `document-findings` skill, compiled per area by the `findings-doc-writer` agent. That skill owns the structure, question style, evidence ledger, and stable IDs; this guide covers only the spike-specific handoff.
+Findings docs are produced by the `document-findings` skill, compiled per area by the `spike-area-analyst` agent as phases 1–2 of its area session. That skill owns the structure, question style, evidence ledger, and stable IDs; this guide covers only the spike-specific handoff.
 
 ## One pair per area — always
 

@@ -91,7 +91,7 @@ Coverage: invalidation mechanisms, write path. Cross-area reference: `docs/evide
 
 ## Draft Problem ADRs — Evaluate + Draft
 
-*(Per problem, an ADR-writer sub-agent runs the full `draft-adr` flow — drivers → options → **evaluate-options** → compile-adr — interactively with the user, seeded from the provided notes. The evaluation tables below are the evaluate stage of each drafting session.)*
+*(Per problem, the area's `spike-area-analyst` runs the `draft-adr` flow headlessly — drivers → options → **evaluate-options** → compile-adr — seeded from the provided notes; the orchestrator confirms each proposed chosen option. The evaluation tables below are the evaluate stage of each drafting session.)*
 
 ### Area 1: Cache Topology
 

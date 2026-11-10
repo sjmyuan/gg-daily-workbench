@@ -79,7 +79,7 @@ Each area's `evidence-<area>.md` holds the claim ledger (IDs, `file:line`, confi
 
 ## Draft Problem ADRs — Evaluate + Draft
 
-*(Per problem, an `adr-writer` sub-agent runs the `draft-adr` flow headlessly from the drivers and findings carried in the brief; the orchestrator confirms each proposed chosen option. A whole area's problems share one brief when evidence is shared.)*
+*(Per problem, the area's `spike-area-analyst` session runs the `draft-adr` flow headlessly from the drivers and findings already in session; the orchestrator confirms each proposed chosen option. A whole area's problems share the session when evidence is shared.)*
 
 | Area → Problem | Options evaluated | Chosen Option |
 |---|---|---|
@@ -98,7 +98,7 @@ Example — `adr-service-decomposition-01-split-monolith.md` (abridged; full rec
 
 * Status: draft
 * Area: Service decomposition
-* Owners: adr-writer · reviewed by the payment team
+* Owners: spike-area-analyst · reviewed by the payment team
 * Date: 2026-10-24
 
 ## Context and Problem Statement

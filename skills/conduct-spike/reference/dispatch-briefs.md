@@ -1,15 +1,13 @@
 # Dispatch Briefs
 
-Brief index + the shared **structured brief shape**, the **context inventory** gate, the three fill modes, the **callee intake record**, and the evidence-map input/output contract for dispatching spike work to sub-agents. The capability→agent mapping and dispatch rules live in **reference/multi-agent-orchestration.md**. Each ready-to-fill brief lives in its own file, loaded on demand:
+Brief index + the shared **structured brief shape**, the **context inventory** gate, the three fill modes, the **callee intake record**, the **area-session contract**, and the verification-result contract. The capability→agent mapping and dispatch rules live in **reference/multi-agent-orchestration.md**. Each ready-to-fill brief lives in its own file, loaded on demand:
 
 | Capability → agent | Brief file |
 |---|---|
-| investigate-per-area → `code-investigator` | [investigation-brief.md](investigation-brief.md) |
-| compile-findings-doc → `findings-doc-writer` | [findings-doc-brief.md](findings-doc-brief.md) |
-| draft-problem-adrs → `adr-writer` | [adr-drafting-brief.md](adr-drafting-brief.md) |
+| investigate + compile pair + draft ADRs (phases 1–3) → `spike-area-analyst` | [area-analyst-brief.md](area-analyst-brief.md) |
 | compile-solution-doc → `solution-doc-writer` | [solution-doc-brief.md](solution-doc-brief.md) |
 
-Dispatch multiple work units concurrently, a single unit on its own. Fill each brief from its file per the **structured brief shape**, dispatch it to the mapped agent, then review each returned result against the capability's spike-specific checks (in its brief file). All briefs carry the shared contracts below; a re-dispatched unit also carries the verification-result contract.
+Dispatch one brief per area per phase; dispatch the same phase across areas concurrently. Fill each brief from its file per the **structured brief shape**, then review each returned receipt against the capability's spike-specific checks (in its brief file). All briefs carry the shared contracts below; a re-dispatched unit also carries the verification-result contract.
 
 ## Structured brief shape
 
@@ -20,7 +18,7 @@ Every dispatch brief follows the same 7-section skeleton so a filled brief is se
 | 1 | Mission | Who I am + the one-sentence deliverable |
 | 2 | Context | Spike goal, scope-map slice (area/problems + boundaries), user-stated context, brownfield/greenfield |
 | 3 | Inputs | Prior-artifact paths, established facts, known locations, and prior searches — with how to use each |
-| 4 | Tasks | Ordered actions to perform |
+| 4 | Tasks | Ordered actions, ending at the phase stop |
 | 5 | Output contract | Exactly what to return and its format |
 | 6 | Constraints | Guardrails — what never to do, including the write boundary |
 | 7 | Report back | What to flag to the orchestrator |
@@ -29,12 +27,12 @@ Every dispatch brief follows the same 7-section skeleton so a filled brief is se
 
 A brief is complete when **nothing the orchestrator holds is missing from it**. Before filling a brief, inventory the orchestrator's own context — not only the artifacts on disk:
 
-1. List every item: the user's ask and answers, `scope.md` contents, each prior unit's returned result, the orchestrator's own file reads, located symbols, and searches, the project's conventions, and the resolved paths.
+1. List every item: the user's ask and answers, `scope.md` contents, each prior receipt, the orchestrator's own file reads, located symbols, and searches, the project's conventions, and the resolved paths.
 2. Classify each item by fill mode (below) and place it in §2 when it orients or §3 when it seeds work.
 3. Drop an item only because the unit cannot need it — never because it is obvious, cheap to redo, or findable.
 4. Fail the brief when an item has no home: add the field instead of dropping the item.
 
-A path is a pointer, not knowledge. A sub-agent that receives only a path must open the file, re-read it, and re-derive what the orchestrator already concluded — the inventory exists to make that re-derivation unnecessary.
+A path is a pointer, not knowledge. A sub-agent that receives only a path must open the file, re-read it, and re-derive what the orchestrator already concluded — the inventory exists to make that re-derivation unnecessary. Because one area session now spans the chain, a brief covers one hop instead of four; the inventory shrinks accordingly.
 
 ## Three fill modes
 
@@ -61,9 +59,9 @@ Everything the orchestrator already holds travels in the brief — a sub-agent n
 | User-stated constraints, facts, decisions, rejected options | user dialog | Inline |
 | Decision drivers, candidate options | user dialog | Inline |
 | Resolved paths: artifact root, spike folder, target repo root | `resolve-artifact-location`, work dialog | Inline |
-| Files, symbols, and `file:line` already located | orchestrator's own reads, prior units | Digest |
+| Files, symbols, and `file:line` already located | orchestrator's own reads, prior receipts | Digest |
 | Searches already run, with outcomes (incl. "no matches") | orchestrator's own searches, prior searched-negatives | Digest |
-| Prior unit results not yet persisted | returned results | Inline |
+| Prior receipt not yet persisted | returned receipt | Inline |
 | Findings doc pair (human + evidence), sibling pairs | `docs/findings-*.md` + `docs/evidence-*.md` | Path |
 | Chosen options, decided sibling ADRs | `adrs/*.md` | Path + digest |
 | Project conventions that shape the work (exploration commands, layout, naming) | project instructions | Inline |
@@ -85,35 +83,40 @@ A dispatched agent's skill may run its own intake gate and refuse to search on a
 | **System** | Repo root + the module or service under study |
 | **Scope** | The area boundary and the symbols/paths inside it |
 | **Depth** | The evidence depth required — C4 level, call-chain depth, or "current state to `file:line`" |
-| **Consumer** | What the result feeds — the area's findings doc, an ADR's options, the solution doc |
+| **Consumer** | What the result feeds — the area's findings pair, an ADR's options, the solution doc |
 
 - A brief carrying the intake record **is** the gate result: the sub-agent adopts it, asks nothing, and explores only what it leaves open.
 - An unfilled field becomes the sub-agent's guess and an extra exploration pass — fill all four, or state why one is unknowable.
 
-## Findings docs in every brief
+## Area-session contract
 
-An area's findings are **always passed as a pair** — the human doc (`docs/findings-<area>.md`) and the evidence doc (`docs/evidence-<area>.md`) together. Never pass one alone: the human doc orients (resource index, diagrams, TL;DRs, constraints), the evidence doc carries the claim ledger (`file:line`, confidence, searched-negatives).
+One analyst session per area runs the chain; the brief names the phase where it stops, and [area-analyst-brief.md](area-analyst-brief.md) owns that phase's inputs and receipt.
 
-- **Input — include the pair**: pass both docs so the sub-agent starts from verified `file:line` locations instead of scanning from scratch. Instruct it to treat the ledger's **Verified** claims as settled and only dig into marked **Gap**s/**Inconsistencies** or **Inferred**/**Assumption** claims.
-- **Output — require an evidence map back**: every investigation brief asks for a per-area evidence map (entry points, key code locations with `file:line`, call chains, evidence verdicts, searched-negatives) alongside the narrative findings — the orchestrator records it in the area's evidence doc (see **compile-findings-doc**).
-- **Searched-negatives travel forward too**: a documented "not found" belongs in the next brief's **already searched** digest, so the next sub-agent never repeats the scan.
-- **ADR-drafting briefs** include the area's findings pair so ADRs cite evidence locations without re-reading code.
-- **Verification briefs** carry the same contract — established `file:line`, the settled-vs-open claim split, and searched-negatives — so the verifier starts from evidence, not zero (see **reference/multi-agent-orchestration.md**, Verification questions).
-- **First pass is the seed**: with no pair yet, briefs omit the pair but still carry known locations, prior searches, and the evidence-map output — the first investigation builds the map the evidence doc records.
+- **Pair before decisions** — phase 2 completes the pair (human doc, then evidence doc per `document-findings`) before phase 3; the evidence doc is the session's durable state.
+- **Resume, do not rebuild** — continue the same session for the next phase; if the platform cannot continue it, re-dispatch with the written artifacts plus the prior phase receipt. Never re-investigate to recover context.
+- **Batch mode** — **batch** in the phase-stop field runs phases 1–3 in one dispatch, only when the user waives the pauses.
+- **Split, do not thin** — an area that cannot be covered in one pass returns a split request.
+
+## Artifacts as inputs
+
+- **The pair always travels together** — `docs/findings-<area>.md` (orients) plus `docs/evidence-<area>.md` (claim ledger, `file:line`, searched-negatives). Never pass one alone.
+- **Phase 3 receives its own pair** — the pair the same session authored, or the verified pair on a fresh dispatch. Instruct it to treat **Verified** claims as settled and dig only into marked **Gap**s/**Inconsistencies** or **Inferred**/**Assumption** claims.
+- **Searched-negatives travel forward** — a documented "not found" belongs in the next brief's **already searched** digest, so no session repeats the scan.
+- **Solution-doc briefs** receive every findings pair plus the decisions digest; verification briefs receive established `file:line`, the settled-vs-open split, and searched-negatives.
 
 ## Verification results in a re-dispatch brief
 
 A unit re-dispatched after a verification **DISAGREE** carries the **verification result** — never a blank re-run. Its **Inputs** add:
 
 - **Open challenges (inline)**: the challenged claims, each challenge's verdict, and what the verifier disputed — resolve each and leave the settled work alone.
-- **Priors to preserve (path + digest)**: the prior result or its evidence map — start from it, do not rebuild.
+- **Priors to preserve (path + digest)**: the prior artifacts — start from them, do not rebuild.
 - **Re-dispatch scope**: which claims to re-examine and the round number (cap 2 — repair once, then confirm changed claims; per `question-everything`'s **verify-sub-agent-results**).
 
-The result is inline (not yet an artifact); when a paused unit recorded open challenges in `scope.md` (see **scope-map-guide**), pass that section by path.
+The receipt is inline (not yet an artifact); when a paused unit recorded open challenges in `scope.md` (see **scope-map-guide**), pass that section by path.
 
 ## Write boundary in every brief
 
-Every brief's **Constraints** section carries the same boundary: writes are confined to the spike folder (`**/spikes/**`); never modify code, config, tests, or any file outside it. A sub-agent that finds implementation work needed flags it in **Report back** instead of making the change. Full doctrine and boundary check: **reference/write-boundary-guide.md**.
+Every brief's **Constraints** section carries the same boundary: writes are confined to the spike folder (`**/spikes/**`); never modify code, config, tests, or any file outside it. An area analyst writes only its pair and its ADRs — never `scope.md` or `solution.md`. A sub-agent that finds implementation work needed flags it in **Report back** instead of making the change. Full doctrine and boundary check: **reference/write-boundary-guide.md**.
 
 ## Completeness check before dispatch
 
@@ -122,5 +125,6 @@ Run on every filled brief; any failed check stops the dispatch:
 - Every inventory item has a home — nothing was dropped for being obvious.
 - Every path is absolute and carries its section anchor.
 - The intake record's four fields are filled or explicitly declared unknowable.
+- The phase stop is stated and the brief carries that phase's inputs (phase 3: drivers + pair).
 - Known locations and already-searched items are present whenever the orchestrator has any.
-- Unpersisted prior unit results are inline, not referenced as if they were files.
+- Unpersisted prior receipts are inline, not referenced as if they were files.

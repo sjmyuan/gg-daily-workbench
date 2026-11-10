@@ -1,6 +1,6 @@
 # Solution-Doc Brief
 
-Ready-to-fill structured brief for `compile-solution-doc` → `solution-doc-writer` — loaded on demand when dispatching solution-doc compilation. Fills the **structured brief shape**; carries the shared context-inventory, fill-mode, intake-record, and evidence-map contracts: **reference/dispatch-briefs.md**.
+Ready-to-fill structured brief for `compile-solution-doc` → `solution-doc-writer` — loaded on demand when dispatching solution-doc compilation. Fills the **structured brief shape**; carries the shared context-inventory, fill-mode, intake-record, and artifact-input contracts: **reference/dispatch-briefs.md**.
 
 **Announce**: "Dispatching solution-doc compilation to a sub-agent."
 
