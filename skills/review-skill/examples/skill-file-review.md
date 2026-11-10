@@ -1,10 +1,11 @@
-````markdown
 # Example: Full Structural Review
 
-**Scenario**: Review of `skills/develop-miniprogram/SKILL.md` — a copilot skill that guides an AI agent on WeChat Miniprogram development.
+**Scenario**: Review of `skills/develop-miniprogram/SKILL.md` — a skill that guides an AI agent on WeChat Miniprogram development.
 
 **Review Focus**: Content classification first — whether each element is a fact, a procedure, or a routing/guard rule — then section structure and duplication.
 **Applies**: **review-skill-file**
+
+**Canonical template**: every review output reproduces these sections in this order. A review with four or more findings may tabulate them (`# | Severity | Finding | Fix`); each row still carries a severity and an actionable fix.
 
 ## Code Review Summary
 
@@ -85,6 +86,7 @@ Content findings are reported first: a misclassified element outranks a formatti
 ---
 
 ## Positive Highlights
+Name at least one well-structured aspect.
 - `<when-to-use-this-skill>` correctly limits skill activation to relevant scenarios.
 - `<examples>` section properly defers to separate files and instructs the agent to load only the relevant one — good for context efficiency.
 - Arrow references (`→ See examples/...`) at the end of each capability correctly point to the concrete code template without embedding it inline.
@@ -100,10 +102,17 @@ Content findings are reported first: a misclassified element outranks a formatti
 
 ---
 
+## Growth Audit
+- Count line: `capabilities 3, steps 14, rules 6, guide rows 2, examples 3, chars 9,214`
+- **Merge candidates**: none — the three capabilities serve distinct triggers (page, canvas, storage).
+- **Superseded**: the storage and `wx.switchTab` rules restate capability content; retire them with the rules rewrite.
+- **Orphans**: the `<canvas-operations>` example is linked from no guide row — add the route.
+
+---
+
 ## Recommended Next Steps
 1. Introduce a `<knowledge>` section; move directory layout, lifecycle hooks, navigation tables, API signatures, and platform constraints into it. *(Addresses the two 🔴 major issues)*
 2. Rewrite each capability as an ordered step list with a clear action verb in the section name (e.g., `<add-page>`, `<canvas-setup-and-draw>`). *(Addresses 🟡 and ⚠️)*
 3. Rewrite rules as "scenario → capability" triggers; remove any rule that merely repeats a capability's content. *(Addresses the duplication 🔴)*
 4. Move the `<examples>` section inside `<knowledge>` as a `<context-loading-guide>` entry. *(Addresses 🟡 examples placement)*
 5. Decide on prose-bullets vs. numbered-steps as the canonical capability format and apply it consistently. *(Resolves ⚠️)*
-````

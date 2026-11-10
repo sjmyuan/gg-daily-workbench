@@ -1,6 +1,6 @@
 # Example: Sub-Agent Integration Review (Dispatch-Style Skill)
 
-**Scenario**: Review of `skills/parallel-doc-splitter/SKILL.md` — a copilot skill that splits a large specification into chapters, dispatches a drafting sub-agent per chapter, then merges the drafts into one document.
+**Scenario**: Review of `skills/parallel-doc-splitter/SKILL.md` — a skill that splits a large specification into chapters, dispatches a drafting sub-agent per chapter, then merges the drafts into one document.
 
 **Review Focus**: Agent integration (Axis 2) — dispatch brief contract, output contract, verification, availability fallback, and self-containment for embedded execution. Skill-to-skill pipeline checks skipped (no cross-skill references).
 **Applies**: **review-skill-file**

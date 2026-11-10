@@ -1,7 +1,7 @@
 # Example: Writing-Style Review (Voice, Banned Phrases, Narration)
 
-**Scenario**: Review of `skills/release-note-writer/SKILL.md` — a copilot
-skill that guides an agent to produce release notes from a commit log.
+**Scenario**: Review of `skills/release-note-writer/SKILL.md` — a skill
+that guides an agent to produce release notes from a commit log.
 Structure, naming, and coverage are sound; prose quality is the dominant
 problem.
 

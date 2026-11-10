@@ -1,7 +1,7 @@
 ````markdown
 # Example: Clean Skill Review (Near-Passing)
 
-**Scenario**: Review of `skills/commit-message-writer/SKILL.md` — a copilot skill that guides an AI agent to produce consistent, well-formed git commit messages.
+**Scenario**: Review of `skills/commit-message-writer/SKILL.md` — a skill that guides an AI agent to produce consistent, well-formed git commit messages.
 
 **Review Focus**: Full structural review — section semantics, capability naming, rules, and example coverage.
 **Applies**: **review-skill-file**

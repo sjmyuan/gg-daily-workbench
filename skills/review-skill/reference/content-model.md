@@ -33,7 +33,7 @@ Used by **review-skill-file** (step 1).
 | A step relying on a value the skill never states | 🟡 Minor |
 | A capability with no routing rule | 🟡 Minor |
 | Prohibition buried mid-step | 🟡 Minor — recommend hoisting to a guard |
-| A claim qualifying as two classes | 🟡 Minor — report both, ask which owner |
+| A claim qualifying as two classes | ⚠️ Inconsistency — report both candidate owners, ask which is canonical |
 | An element whose removal breaks no step, objective, or trigger | 🟡 Minor — recommend deletion, not rewording |
 | A guard with no nameable failure it prevents | 🟡 Minor |
 

@@ -9,9 +9,9 @@ Used by **validate-created-skill** (step 1). Run the checks in order and report 
 | 3 | Sections present and in order: frontmatter, when-to-use, knowledge, capabilities, rules. | 🔴 Major (order: 🟡 Minor) |
 | 4 | Each element sits in its class section; knowledge holds facts, rubrics extracted, context-loading-guide condition-first; a reference earns existence by size or load timing, never tidiness. | 🔴 Major |
 | 5 | Skill and capability names use action verbs; capabilities hold ordered steps; no embedded reference data or constraint bullets. | 🔴 Major |
-| 6 | `description` scores ≥9 per **description-quality** and covers every when-to-use scenario both ways. | 🟡 Minor |
-| 7 | Prose follows **writing-style**. | Per its severity table |
-| 8 | Prose is platform-agnostic per **platform-agnostic-writing**. | 🟡 Minor per reference |
+| 6 | `description` scores ≥9 per **description-quality** and covers every when-to-use scenario both ways. | 🟡 Minor for 6–8 · 🔴 Major for ≤5 |
+| 7 | Prose follows **writing-style**. | 🟡 Minor when systematic in one file · 🔴 Major when pervasive across files |
+| 8 | Prose is platform-agnostic per **platform-agnostic-writing**. | 🟡 Minor for one reference · 🔴 Major for several across files |
 | 9 | Every file is within **size-limits**; over-budget files remediated per **size-remediation**. | 🟡 Minor / 🔴 if >2× |
 | 10 | One line = one idea; nothing fails the conciseness test per **conciseness-check**. | 🟡 Minor |
 | 11 | Every capability has a linked example; examples meet **example-standards**, stay traceable, and contradict no rule. | 🔴 Major (subset-only: 🟡 Minor) |

@@ -1,5 +1,7 @@
 # Trigger Correctness
 
+Scope: the reviewer's trigger check; `create-skill`'s description-quality carries the write-side rules.
+
 A skill fires correctly only when its external trigger (frontmatter `description`) and internal trigger (`<when-to-use-this-skill>`) are consistent and complete.
 
 | Part | Location | Role |

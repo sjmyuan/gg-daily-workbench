@@ -21,7 +21,7 @@ characters." The skill folder has `SKILL.md`, `examples/`, and no `scripts/`.
 
 Verdict: script justified. A one-off "count lines in a file" would have failed tests 2 and 4 — that is `wc -l`.
 
-## Created Script (create-skill-scripts steps 2–4)
+## Expected Output — created script (create-skill-scripts steps 2–4)
 
 `scripts/audit_tables.py` — Python 3 stdlib only, 84 lines:
 

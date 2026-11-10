@@ -8,12 +8,12 @@ description: Author, edit, and validate skill files (SKILL.md), plus the example
 - User asks to generate examples or references for a skill
 - User provides existing materials (agent prompts, docs, code) to extract into a skill
 - User asks to edit, improve, or revise an existing skill
-- User asks to validate a created or edited skill before delivery (read-only diagnosis → `review-skill`)
+- User asks to validate a drafted or edited skill before delivery
 </when-to-use-this-skill>
 
 <knowledge>
 <named-standards>
-Steps cite these standards by name; load the Details file.
+Steps cite these standards by name; load the Details file when one is listed.
 
 | Standard | Rule | Details |
 |---|---|---|
@@ -49,7 +49,7 @@ Steps cite these standards by name; load the Details file.
 <collect-skill-requirements>
 **Objective**: Gather what defines the new skill's purpose, scope, and capabilities.
 
-1. Run `clarify-request`'s intake gate on the ask; its acceptance record replaces the question list.
+1. Run `clarify-request`'s intake gate, else fill its record from step 2's fields.
 2. Fill that record with **name** (action verb), **description**, **when-to-use**, **capabilities**, **knowledge**, **rules**, **examples**, **references** — from supplied materials first.
 3. Set the gate state and one `Assumption (user-accepted, unverified)` per default; `BLOCKED` → write no SKILL.md.
 4. Validate: every inference is a field or a labeled assumption; name, description, and triggers agree both ways.
@@ -80,7 +80,7 @@ Steps cite these standards by name; load the Details file.
 9. Write `<when-to-use-this-skill>` per **description-quality**; every verb mirrors the trigger phrase.
 10. Write all prose per **writing-style**.
 11. Write all prose per **platform-agnostic-writing**.
-12. Check the draft: **content-model** gates hold and every file is within **size-limits**; over → **size-remediation**.
+12. Check each file against **size-limits**; over → **size-remediation**.
 13. In a multi-skill pipeline, verify the 5 integration points per **pipeline-integration**.
 14. Write to the user-provided `<target>/SKILL.md` per **same-name-live-copy-ban**.
 </create-skill-file>
@@ -88,11 +88,11 @@ Steps cite these standards by name; load the Details file.
 <create-skill-examples>
 **Objective**: Create or update example files demonstrating each capability.
 
-1. Pick one realistic scenario per capability per **example-standards**; drop an example another teaches. Walkthrough: [create-examples-and-references.md](examples/create-examples-and-references.md).
-2. Reproduce the artifact template's headings, field order, and statuses; label abridged output per **example-standards**.
+1. Pick one scenario per capability per **example-standards** (walkthrough: [create-examples-and-references.md](examples/create-examples-and-references.md)).
+2. Reproduce the template's headings, field order, and statuses per **example-standards**; label any abridged output.
 3. Create one `.md` per scenario under `examples/`, reproducing the file skeleton in **example-standards**.
 4. Validate the set per **example-standards**, then run `check_artifacts.py` from `review-skill` with the template's fields.
-5. Measure per **size-limits**; if over, apply **size-remediation** (trim prose or low-value examples, never required fields).
+5. Measure per **size-limits**; over → **size-remediation**.
 </create-skill-examples>
 
 <create-skill-references>
@@ -109,7 +109,7 @@ Steps cite these standards by name; load the Details file.
 <create-skill-scripts>
 **Objective**: Add the minimum automation a capability step needs — a CLI invocation, or a justified Python script.
 
-1. Apply **script-and-cli-policy** — CLI, then one-liner, then `scripts/` after the four tests; walkthrough: [examples/create-skill-scripts.md](examples/create-skill-scripts.md).
+1. Apply **script-and-cli-policy** (walkthrough: [examples/create-skill-scripts.md](examples/create-skill-scripts.md)).
 2. Place an accepted script at `scripts/<verb>_<object>.py` and declare `scripts/` in the directory layout per **section-semantics**.
 3. Write Python 3 stdlib only to the script contract: shebang, usage docstring, `main(argv) -> int`, exit 0/1/2, stable sorted output.
 4. Name the script path and output fields in the step that runs it.
@@ -121,14 +121,13 @@ Steps cite these standards by name; load the Details file.
 
 1. Run the checks in **reference/validate-skill-procedure.md** in order; content checks precede structural ones.
 2. Report each finding with a severity label per **severity-levels** and an actionable fix; re-run step 1 after the fix.
-3. Re-measure changed files and confirm the structural-integrity gate passed — line or step merging is a 🔴 Blocker.
 </validate-created-skill>
 
 <edit-skill>
 **Objective**: Edit an existing skill's files by reusing the create-* capabilities in existing-file mode.
 
 1. Inventory and count the skill: capabilities, steps, knowledge rows, rules, guide rows, examples, references, chars.
-2. Triage intent per **reference/edit-skill-procedure.md**: "check" = review only; "ensure / fix / do it" = edit; open-ended "improve" runs `review-skill` first.
+2. Triage intent per **reference/edit-skill-procedure.md**.
 3. Categorize each change per the change-type, absorption, funding, and edit-discipline rules in **reference/edit-skill-procedure.md**.
 4. Route each change to the mapped create-* capability in existing-file mode.
 5. Run the ripple checklist after renames, removals, merges, or inlining.

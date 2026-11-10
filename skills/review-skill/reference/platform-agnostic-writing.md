@@ -1,5 +1,7 @@
 # Platform-Agnostic Writing
 
+Scope: the reviewer's portability check; `create-skill` carries the same rules as write-side instructions.
+
 Skills should be portable across AI platforms. Avoid platform-specific references:
 
 - **No platform-specific tool names**: Replace tool names like `vscode_askQuestions` or `run_in_terminal` with generic action descriptions — e.g., "ask the user for confirmation" or "run the command"

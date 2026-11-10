@@ -1,7 +1,7 @@
 ````markdown
 # Example: Noun-Named Capabilities and Inline Examples
 
-**Scenario**: Review of `skills/form-validator/SKILL.md` — a copilot skill that guides an AI agent through form validation for a React web app.
+**Scenario**: Review of `skills/form-validator/SKILL.md` — a skill that guides an AI agent through form validation for a React web app.
 
 **Review Focus**: Skill structure correctness, with particular attention to capability naming, example format, and example coverage.
 **Applies**: **review-skill-file**

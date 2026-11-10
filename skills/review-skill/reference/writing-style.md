@@ -1,5 +1,7 @@
 # Skill-File Writing Style
 
+Scope: the reviewer's style rules; `create-skill` carries the same rules as write-side instructions.
+
 Prose-quality rules for the skill under review: its SKILL.md, reference rubrics, and example files.
 Complements conciseness (reference/conciseness-check.md) and section semantics (reference/section-semantics.md) — style flags how prose is written, structure flags what is placed where.
 

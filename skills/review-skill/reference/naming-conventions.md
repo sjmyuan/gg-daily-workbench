@@ -1,5 +1,7 @@
 # Action-Verb Naming Conventions
 
+Scope: the reviewer's naming check; `create-skill` carries the same convention as author-side usage.
+
 Both the **skill name** and its **capability names** in the skill under review must follow the action-verb naming convention:
 
 **Skill name** (frontmatter `name:` field, kebab-case):

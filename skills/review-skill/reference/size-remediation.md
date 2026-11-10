@@ -1,5 +1,7 @@
 # Size Remediation — Actions for Files Over Budget
 
+Scope: the reviewer's remediation levers; `create-skill` carries the same levers and gate.
+
 Apply when a file exceeds the char budget — the **only** size gate; line count is informational, for scanability.
 Reformatting cannot reduce chars, so the real levers are structural: re-encode, reuse, cut weight, redistribute, or reduce.
 

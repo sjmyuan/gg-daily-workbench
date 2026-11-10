@@ -21,7 +21,9 @@ Reports per file:
 flags gaming — lines dropped while chars barely dropped (line-merging).
 
 Pure standard library — no dependencies, works on any platform with python3.
-"""
+
+Exit codes: 0 no budget violation, 1 at least one file over budget, 2 usage or I/O error.
+`-h`/`--help` prints this usage and exits 0."""
 
 from __future__ import annotations
 
@@ -113,7 +115,7 @@ def line_stats(text: str) -> tuple[list, list, list]:
     return over120, over200, stuffed
 
 
-def scan(path: Path) -> None:
+def scan(path: Path) -> bool:
     text = path.read_text(encoding="utf-8")
     lines = text.splitlines()
     chars = len(text)
@@ -124,11 +126,11 @@ def scan(path: Path) -> None:
     category = classify(path)
 
     budget = "n/a"
+    over = False
     if category:
         char_cap, line_cap = BUDGETS[category]
-        char_over = chars > char_cap
-        line_over = nlines > line_cap
-        if char_over or line_over:
+        over = chars > char_cap or nlines > line_cap
+        if over:
             ratio = chars / char_cap
             severity = "Major" if category == "SKILL.md" and ratio > 2 else "Minor"
             budget = f"OVER {severity}: {chars}/{char_cap} chars, {nlines}/{line_cap} lines"
@@ -147,6 +149,7 @@ def scan(path: Path) -> None:
         counts = structural_counts(text)
         print("  structure: " + ", ".join(f"{k}={v}" for k, v in counts.items()))
     print()
+    return over
 
 
 def diff(a: Path, b: Path) -> None:
@@ -173,23 +176,34 @@ def diff(a: Path, b: Path) -> None:
 
 
 def main(argv: list[str]) -> int:
-    if not argv:
+    if not argv or argv[0] in ("-h", "--help"):
         print(__doc__)
         return 0
     if argv[0] == "--diff":
         if len(argv) != 3:
             print("usage: measure_sizes.py --diff <before> <after>", file=sys.stderr)
             return 2
+        for arg in argv[1:]:
+            if not Path(arg).is_file():
+                print(f"no such file: {arg}", file=sys.stderr)
+                return 2
         diff(Path(argv[1]), Path(argv[2]))
         return 0
+    over = False
     for arg in argv:
+        if arg.startswith("-"):
+            print(f"unknown option: {arg}", file=sys.stderr)
+            return 2
         p = Path(arg)
+        if not p.exists():
+            print(f"no such file or directory: {arg}", file=sys.stderr)
+            return 2
         if p.is_dir():
             for f in sorted(p.rglob("*.md")):
-                scan(f)
+                over = scan(f) or over
         else:
-            scan(p)
-    return 0
+            over = scan(p) or over
+    return 1 if over else 0
 
 
 if __name__ == "__main__":

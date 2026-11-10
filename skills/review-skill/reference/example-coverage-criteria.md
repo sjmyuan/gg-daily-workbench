@@ -1,5 +1,7 @@
 # Example Coverage Criteria
 
+Scope: the reviewer's coverage gaps; `create-skill`'s example-standards owns the authoring requirement.
+
 A well-covered examples section spans the skill's key scenarios. Check for these gaps:
 
 | Gap | Severity |

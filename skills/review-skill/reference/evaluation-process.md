@@ -1,5 +1,7 @@
 # Output Evaluation Process
 
+Scope: the reviewer's evaluation check; `create-skill` carries the requirement as an author-side step.
+
 A well-structured skill should define an evaluation process to assess the quality of its own output. Look for:
 
 - A dedicated validation or checklist step within a capability that lists criteria for verifying output correctness.

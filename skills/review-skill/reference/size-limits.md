@@ -1,5 +1,8 @@
 # Size Limits
 
+Scope: the reviewer's size gate. The authoring side (create-skill) duplicates the numbers and the
+lever order as a slice; neither copy may diverge in a budget or severity.
+
 Sizes use **character count** (≈ tokens × 4) — the real context cost. Reformatting cannot change chars, so the budget cannot be gamed; line count is a secondary signal.
 
 | File | Char budget | Line budget | Over-budget severity |
@@ -14,14 +17,14 @@ Sizes use **character count** (≈ tokens × 4) — the real context cost. Refor
 
 ## How to measure
 
-Run the measurement script from the skill folder when available:
+Run the measurement script from the skill folder:
 `python3 scripts/measure_sizes.py <skill-dir-or-file>` — reports chars, bytes,
 lines, >120/>200 violations (excluding table rows, the frontmatter `description`,
 and mermaid blocks), and budget status per file type.
 
-Manual fallback (no script available):
+Manual fallback (no script available) — state in the review that the machine measure did not run:
 - **Character count** — use `wc -m` or python `len(open(f).read())`, NOT `wc -c`,
-  which counts **bytes**. Emoji/multi-byte chars inflate bytes (review-skill
-  SKILL.md: 11,708 bytes but 11,566 chars).
+  which counts **bytes**; emoji and multi-byte chars inflate bytes above chars
+  (a 6-char emoji sequence is 1 char and 4+ bytes), so a byte count misreports the budget.
 - **Long-line scan** — exclude lines starting with `|` (table rows) and the
   frontmatter `description`; both are exempt per the rules above.

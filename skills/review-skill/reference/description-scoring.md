@@ -1,5 +1,7 @@
 # Description Quality Scoring
 
+Scope: the reviewer's description gate; `create-skill`'s description-quality carries the same rubric.
+
 Score each dimension 0–2 and sum for a total out of 10:
 
 | Dimension | 0 | 1 | 2 |

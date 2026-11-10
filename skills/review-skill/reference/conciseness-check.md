@@ -1,5 +1,7 @@
 # Conciseness Check
 
+Scope: the reviewer's conciseness findings; `create-skill` carries the same test as author-side instructions.
+
 Apply **Occam's Razor**: the simplest solution that works is the best — every element (step, rule, sentence, example) must justify its existence.
 Prefer fewer lines, simpler phrasing, and direct instruction over elaborate explanation.
 During review, examine all files (SKILL.md, references, and examples) for unnecessary content:

@@ -1,7 +1,7 @@
 ````markdown
 # Example: Trigger-Correctness Violation
 
-**Scenario**: Review of `skills/sql-query-builder/SKILL.md` — a copilot skill that helps an AI agent build, review, and optimize SQL queries.
+**Scenario**: Review of `skills/sql-query-builder/SKILL.md` — a skill that helps an AI agent build, review, and optimize SQL queries.
 
 **Review Focus**: Trigger correctness — whether the frontmatter `description` and `<when-to-use-this-skill>` are consistent and complete.
 **Applies**: **review-skill-file**

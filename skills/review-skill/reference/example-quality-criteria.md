@@ -1,5 +1,7 @@
 # Example Quality Criteria
 
+Scope: the reviewer's example criteria; `create-skill`'s example-standards owns the authoring requirement.
+
 An example file is well-formed when it meets all of the following criteria:
 
 | Criterion | What to check |

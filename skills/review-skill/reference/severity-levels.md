@@ -1,5 +1,7 @@
 # Severity Levels
 
+Scope: the reviewer's severity legend; `create-skill` carries the same legend and both stay identical.
+
 | Level | Symbol | When to use |
 |---|---|---|
 | Blocker | 🚫 | Skill fails to load, activate, or produce correct output in all or most realistic scenarios |

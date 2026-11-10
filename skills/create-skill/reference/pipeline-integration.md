@@ -1,6 +1,6 @@
 # Pipeline Integration Design
 
-Used by **create-skill-file** (step 13) and **validate-created-skill** (check 14).
+Used by **create-skill-file** (step 12) and **validate-created-skill** (check 14).
 
 When a skill is part of a multi-skill pipeline (one skill's output is consumed by another), verify these 5 integration points:
 
@@ -8,7 +8,7 @@ When a skill is part of a multi-skill pipeline (one skill's output is consumed b
 2. **Shared schema (consumer-owned)**: the consuming skill defines the format in one literal template; the producing skill writes compliant output and its examples reproduce that template's headings, fields, order, and statuses. Disagreement → the consumer wins; drift → 🔴 Major.
 3. **One-way awareness (caller → callee)**: the caller names the callee and states what it hands over; the callee describes the shape of its input and names no caller. A caller name inside the callee → 🟡 Minor. Details: **Dependency direction** below.
 4. **Guard clauses**: the callee's when-to-use includes a constraint preventing premature loading (e.g., "Do NOT load when no plan has been generated yet"), stated as an input condition, never as "when skill X calls this".
-5. **Link self-containment**: every markdown path resolves inside the skill's own folder; another skill is named, never deep-linked (`../other-skill/reference/x.md`). A skill may be installed alone, so an escaping link resolves to nothing and fails silently. Shared doctrine is duplicated as a slice with a `Scope:` header, never shared by path. Check with `review-skill`'s `check_skill_links.py <skill-dir>`, or by reading every link path and confirming it stays inside the folder; each `ESCAPE`, `ABS`, or `CROSSPATH` finding is a defect.
+5. **Link self-containment**: every markdown path resolves inside the skill's own folder; another skill is named, never deep-linked (`../other-skill/reference/x.md`). A skill may be installed alone, so an escaping link resolves to nothing and fails silently. Shared doctrine is duplicated as a slice with a `Scope:` header naming the owner, never shared by path; two slices of one rule never diverge in content or severity — a divergence is an ⚠️ Inconsistency to reconcile, not a nit. Check with `review-skill`'s `check_skill_links.py <skill-dir>`, or by reading every link path and confirming it stays inside the folder; each `ESCAPE`, `ABS`, or `CROSSPATH` finding is a defect.
 
 ## Dependency direction
 
