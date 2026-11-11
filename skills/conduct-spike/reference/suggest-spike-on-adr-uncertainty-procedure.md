@@ -4,7 +4,7 @@ Full procedure for the `suggest-spike-on-adr-uncertainty` capability — loaded 
 
 1. Name the uncertainty precisely: "This decision seems to hinge on [the unverified assumption / the unknown fact / the unresolved comparison]."
 2. Explain why the uncertainty matters.
-3. Define a focused scope — one goal, 1–2 areas (a deliberate narrowing of the standard 2–5 target) — via **define-spike-scope** when the user agrees.
+3. Offer: "Would you like to spike this before finalizing the ADR?" — define a focused scope, one goal and 1–2 areas (a deliberate narrowing of the standard target), via **define-spike-scope** only when the user agrees.
 4. Treat the ADR as provisional.
-5. Continue the ADR flow via `draft-adr` per **professional-doc-authoring** when the user declines.
+5. Continue the ADR flow via `draft-adr` when the user declines.
 6. Record the uncertainty as a **risk** in the ADR's Consequences section — never a free-form note — and validate that the risk names the uncertainty and the decision it makes provisional.

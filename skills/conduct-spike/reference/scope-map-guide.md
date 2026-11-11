@@ -1,6 +1,6 @@
 # Scope-Map Status Guide
 
-Full status model for `scope.md` — backs the **scope-map** / **scope-map-status** knowledge entries and the status updates in **define-spike-scope**, **continue-prior-spike**, and **sync-update-artifacts**.
+Full status model for `scope.md` — backs the **scope-map** knowledge entry and the status updates in **define-spike-scope**, **continue-prior-spike**, and **sync-update-artifacts**.
 
 ## Status model
 
@@ -67,6 +67,6 @@ Statuses track **saved artifacts**, not in-flight dispatches. When a spike pause
 
 ## Usage
 
-- **define-spike-scope**: record the gate state and admission-passing assumptions, then the goal (1 sentence) and each area (`preparing`, empty findings-pair link) with its problems (`investigating`); start `## Next actions` empty.
-- **continue-prior-spike**: read statuses to surface open problems; update statuses as each step completes.
+- **define-spike-scope**: record the gate state and admission-passing assumptions, then the goal (1 sentence) and each area (no stored status — it derives `preparing` until its pair link exists) with its problems (`investigating`); start `## Next actions` empty.
+- **continue-prior-spike**: read statuses to surface open problems; update problem statuses as each step completes.
 - **sync-update-artifacts**: a changed decision reopens its problem to `deciding`.

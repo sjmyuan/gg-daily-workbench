@@ -194,6 +194,7 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
 </capabilities>
 
 <rules>
+<rule>When a seeding brief supplies a mode and seed content, run headlessly per **reference/seed-input-contract.md** — never run **clarify-business-context**.</rule>
 <rule>When the user provides a solution decision to document, begin with **clarify-business-context**.</rule>
 <rule>Follow the sequence unless asked otherwise: clarify-business-context → draw-c4-topology → draw-interaction-diagrams → design-api-event-schema → list-related-documents → list-external-dependencies → list-maintainers → list-raids → list-raci → structure-solution-doc. **sync-diagrams** is cross-cutting.</rule>
 <rule>When a correction or new finding changes confirmed content, apply **sync-diagrams** before continuing.</rule>

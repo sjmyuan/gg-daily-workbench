@@ -10,12 +10,12 @@ description: Guide users through drafting well-structured ADRs, visualizing cont
 - User wants each option evaluated by its technical implementation (diagrams + code changes with locations + an implementation plan)
 - User needs to structure rough notes into an ADR
 - User wants to compile an ADR from raw discussion points
-- A spike's decision problem needs its options evaluated and drafted into an ADR
+- A decision problem with drivers and a cited evidence doc needs its options evaluated and drafted into an ADR
 </when-to-use-this-skill>
 
 <knowledge>
 <seeded-brief>
-Dispatched inside a spike, a seeding brief supplies the problem, decision drivers, candidate and rejected options, the evidence doc with cited `file:line`, and sibling constraints. Those are settled intake: run the flow headlessly from them — never re-derive the drivers, re-ask the user, re-read code for a cited location, or search for your own inputs. Return the ADR plus the cited evidence it relies on, any decision resting on an accepted assumption, and any constraint the evidence doc lacks.
+A seeding brief supplies the problem, decision drivers, candidate and rejected options, the evidence doc with cited `file:line`, and sibling constraints. Those are settled intake: run the flow headlessly from them — never re-derive the drivers, re-ask the user, re-read code for a cited location, or search for your own inputs. Return the ADR plus the cited evidence it relies on, any decision resting on an accepted assumption, and any constraint the evidence doc lacks.
 </seeded-brief>
 
 <option-labeling>

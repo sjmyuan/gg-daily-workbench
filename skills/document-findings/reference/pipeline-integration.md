@@ -11,8 +11,8 @@ The findings doc pair sits upstream of ADRs and the solution doc, and is seeded 
 | Point | Rule |
 |---|---|
 | Upstream input | Verified investigation results for one area, with an evidence map (`file:line`, call chains, confidence). |
-| Embedding session | An area session in the spike path (phase 2) or a standalone findings writer loads this skill to author or update a per-area pair. |
-| Seed (spike) | A spike's findings compilation seeds one pair per area; this skill owns the format and IDs. |
+| Embedding session | A seeding brief for one area, or a standalone findings writer, loads this skill to author or update a per-area pair. |
+| Seed (spike) | One investigation result per area seeds one pair; this skill owns the format and IDs. |
 | Output path | `<spike-folder>/docs/findings-<area>.md` plus `<spike-folder>/docs/evidence-<area>.md` inside a spike; a user-provided path otherwise. |
 | Downstream | `draft-adr` grounds options in the evidence doc; `write-solution-doc` cites IDs for the current-state baseline. |
 | Diagram layer | Topic diagrams are drawn and validated by `draw-mermaid-diagrams`; this pair owns the question framing and `file:line` annotations. |

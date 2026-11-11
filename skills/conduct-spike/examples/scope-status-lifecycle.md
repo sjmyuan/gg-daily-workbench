@@ -1,20 +1,20 @@
 # Example: Scope-Map Status Lifecycle Through a Spike
 
-**Scenario**: A single-area spike ("How to replace the session store?") runs from scope definition to completion. This example shows how `scope.md` statuses move as each capability saves its artifact, and how new evidence reopens a `done` problem.
+**Scenario**: A single-area spike ("How to replace the session store?") runs from scope definition to completion. This example shows how the stored problem statuses move as each capability saves its artifact, and how new evidence reopens a `done` problem.
 
-**Applies**: **scope-map-status** (knowledge convention) — updated by **compile-findings-doc**, **draft-problem-adrs**, and **sync-update-artifacts**
+**Applies**: **scope-map** (knowledge convention) — updated by **compile-findings-doc**, **confirm-problem-adrs**, and **sync-update-artifacts**
 
-**What makes this distinct**: Other examples show artifact content; this one shows only the `scope.md` status dashboard as it evolves — the stored problem statuses and the derived area status.
+**What makes this distinct**: Other examples show artifact content; this one shows only the `scope.md` status view as it evolves — the stored problem statuses and the area status derived from them.
 
 ---
 
 ## Point 1 — After define-spike-scope
 
 Goal: replace the in-process session store with a shared, scalable store.
-Area `preparing` (no findings yet); problems `investigating` (no ADR).
+Problems `investigating` (no ADR); the derived area status is `preparing` (no findings pair).
 
 ```markdown
-## Area: Session storage — `preparing`
+## Area: Session storage
 **Findings**: —
 - `investigating` How to choose the session store? → (no ADR)
 - `investigating` How to migrate existing sessions? → (no ADR)
@@ -22,21 +22,21 @@ Area `preparing` (no findings yet); problems `investigating` (no ADR).
 
 ## Point 2 — After compile-findings-doc
 
-Findings doc saved → area `spiking`. Problems still `investigating` (no ADR).
+Findings pair saved → the derived area status becomes `spiking`. Problems still `investigating` (no ADR).
 
 ```markdown
-## Area: Session storage — `spiking`
+## Area: Session storage
 **Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
 - `investigating` How to choose the session store? → (no ADR)
 - `investigating` How to migrate existing sessions? → (no ADR)
 ```
 
-## Point 3 — After draft-problem-adrs (awaiting confirmation)
+## Point 3 — After confirm-problem-adrs (awaiting confirmation)
 
-Each ADR saved → its problem `deciding`. Area stays `spiking` (open problems).
+Each ADR saved → its problem `deciding`. The derived area status stays `spiking` (open problems).
 
 ```markdown
-## Area: Session storage — `spiking`
+## Area: Session storage
 **Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
 - `deciding` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md
 - `deciding` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md
@@ -44,10 +44,10 @@ Each ADR saved → its problem `deciding`. Area stays `spiking` (open problems).
 
 ## Point 4 — After user confirmation
 
-User confirms both options → problems `done`; all problems `done` → area `done`.
+User confirms both options → problems `done`; all problems `done` → the derived area status is `done`.
 
 ```markdown
-## Area: Session storage — `done`
+## Area: Session storage
 **Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
 - `done` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md
 - `done` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md
@@ -55,10 +55,10 @@ User confirms both options → problems `done`; all problems `done` → area `do
 
 ## Point 5 — New evidence reopens a problem
 
-A later measurement shows the chosen store's failover exceeds the SLA → **sync-update-artifacts** reopens the store-choice problem `done` → `deciding`; the area returns to `spiking`; the ADR and solution doc are rewritten in place.
+A later measurement shows the chosen store's failover exceeds the SLA → **sync-update-artifacts** reopens the store-choice problem `done` → `deciding`; the derived area status returns to `spiking`; the ADR and solution doc are rewritten in place.
 
 ```markdown
-## Area: Session storage — `spiking`
+## Area: Session storage
 **Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
 - `deciding` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md
 - `done` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md

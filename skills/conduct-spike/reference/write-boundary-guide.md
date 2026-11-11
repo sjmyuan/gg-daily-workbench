@@ -15,8 +15,8 @@ The spike folder always carries a `spikes/` path segment (`<base>/spikes/<spike-
 
 | Layer | Where | Strength |
 |---|---|---|
-| Path-scoped `edit` permission (allow `**/spikes/**`, deny the rest) | Spike-conductor agent | Hard block |
-| Doc-scoped `edit` permission (allow `*.md`, deny the rest) | ADR/findings/solution writers | Hard block on non-docs |
+| Path-scoped write permission (allow `**/spikes/**`, deny the rest) | Orchestrating agent | Hard block |
+| Document-scoped write permission (allow `*.md`, deny the rest) | Artifact writers | Hard block on non-docs |
 | Write-boundary doctrine + rules | Skill and agent files | Intent |
 | Brief Constraints + Report-back | Every dispatch brief | Intent, per dispatch |
 | Boundary check (own-writes snapshot delta) | After each write capability | Detection |
@@ -34,7 +34,7 @@ Audits **only the acting agent's own writes** via a before/after snapshot — pr
 5. Pass when the delta is empty or every delta path contains a `spikes/` segment.
 6. On any delta path outside it: stop, report only the offending delta paths, and ask the user to revert them before the spike continues.
 
-Pre-existing edits, unrelated files, and other tasks' changes are never judged. The delta also catches in-window shell writes — the compensating control for `bash: allow`.
+Pre-existing edits, unrelated files, and other tasks' changes are never judged. The delta also catches writes made through a shell in the same window.
 
 ## Recording implementation needs
 

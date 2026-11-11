@@ -2,7 +2,7 @@
 
 **Scenario**: A completed payment-migration spike left database decomposition unresolved. The user asks to dig into that area and add a schema-migration problem.
 
-**Applies**: `continue-prior-spike` → `investigate-per-area` → `compile-findings-doc` → `draft-problem-adrs` (evaluation via `draft-adr`) → `sync-update-artifacts`
+**Applies**: `continue-prior-spike` → `dispatch-area-session` → `compile-findings-doc` → `confirm-problem-adrs` (evaluation via `draft-adr`) → `sync-update-artifacts`
 
 **What makes this distinct**: A continuation round — one area revisited **plus a new problem added** under it. The scope-map delta drives which ADRs change and which canonical solution-doc sections are refreshed.
 
@@ -16,7 +16,7 @@
 
 ### Assistant Output
 
-**Loaded existing artifacts** (incl. `scope.md`): service-decomposition, communication, and migration ADRs `done`; `adr-database-01-break-up-database.md` unresolved (options surfaced, no decision); solution doc draft — "database strategy TBD"; `scope.md` Database area `spiking` (db-01 `deciding`, no second problem).
+**Loaded existing artifacts** (incl. `scope.md`): service-decomposition, communication, and migration problems `done`; `adr-database-01-break-up-database.md` unresolved (options surfaced, no decision); solution doc draft — "database strategy TBD"; `scope.md` Database area (derived `spiking`: db-01 `deciding`, no second problem).
 
 **`adr-database-01` prior context**: single PostgreSQL, ~80 tables; `transactions`/`accounts`/`audit_log` shared across payment types; 2000+ lines of settlement procedures.
 
@@ -90,7 +90,7 @@
 
 ### ADRs written (rewritten in place — old drafts deleted, no version markers; see `reference/artifact-maintenance-guide.md`)
 
-*(Abridged summaries; each full record follows `draft-adr`'s template with its `Area:` tag and `Status: draft`.)*
+*(Abridged summaries; each full record follows `draft-adr`'s template with its `Area:` tag and `Status: adopt`, set on the user's confirmation.)*
 
 **`adr-database-01-break-up-database.md` — Gradual Database Decomposition with Settlement Extraction** (revised)
 - **Problem**: Single PostgreSQL DB (~80 tables) shared across all payment types; the nightly settlement batch (45 min, 500K transactions) is the critical coupling point.

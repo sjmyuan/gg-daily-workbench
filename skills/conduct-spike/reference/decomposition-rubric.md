@@ -59,4 +59,4 @@ One subject, one or two problems ("Should we migrate from MySQL to PostgreSQL?" 
 The scope is too broad. Choose: **narrow** the goal to the highest-uncertainty areas first and defer the rest, **merge** areas sharing evidence or problems sharing drivers, or **split** into separate spikes for independent problem domains.
 
 ### Greenfield (no existing code)
-Each area's `investigate-per-area` shifts to researching industry approaches, similar in-house systems, and documented benchmarks and operational constraints instead of tracing code. Never build proof-of-concept prototypes — any POC is delivered by `orchestrate-feature-delivery`, not the spike.
+Each area's session shifts to researching industry approaches, similar in-house systems, and documented benchmarks and operational constraints instead of tracing code. Never build proof-of-concept prototypes — any POC is delivered by `orchestrate-feature-delivery`, not the spike.

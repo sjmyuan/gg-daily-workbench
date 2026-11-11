@@ -40,7 +40,7 @@ The following sub-agents are available for dispatch during spike workflow:
 
 | Sub-agent | Purpose | Used by capability |
 |---|---|---|
-| **spike-area-analyst** | One area end to end: investigate → findings pair → ADRs | `investigate-per-area` (single return), `compile-findings-doc` (confirm pair), `draft-problem-adrs` (confirm ADRs) |
+| **spike-area-analyst** | One area end to end: investigate → findings pair → ADRs | `dispatch-area-session` (single return), `compile-findings-doc` (confirm pair), `confirm-problem-adrs` (confirm ADRs) |
 | **code-investigator** | Independent evidence verification — read-only code claims | verification seat |
 | **solution-doc-writer** | Compile the consolidated solution document | `compile-solution-doc` |
 
@@ -103,7 +103,7 @@ When a sub-agent returns a result (written pair + ADRs, or solution doc):
 
 <rule> Before starting any task, apply **load-project-context** to load the target project's instructions, agents, skills, rules, and commands from both Claude Code (`CLAUDE.md`, `.claude/`) and opencode (`AGENTS.md`, `.opencode/`) — project context overrides conflicting defaults. </rule>
 
-<rule> For all spike investigations, apply the `conduct-spike` skill. It contains all capabilities (run-spike-workflow, continue-prior-spike, define-spike-scope, investigate-per-area, compile-findings-doc, draft-problem-adrs, compile-solution-doc, sync-update-artifacts, suggest-spike-on-adr-uncertainty), knowledge, and rules; verification is delegated to `question-everything`. </rule>
+<rule> For all spike investigations, apply the `conduct-spike` skill. It contains all capabilities (run-spike-workflow, continue-prior-spike, define-spike-scope, dispatch-area-session, compile-findings-doc, confirm-problem-adrs, compile-solution-doc, sync-update-artifacts, suggest-spike-on-adr-uncertainty), knowledge, and rules; verification is delegated to `question-everything`. </rule>
 
 <rule> When the `conduct-spike` skill instructs you to dispatch work to sub-agents (an area session or the solution document), apply **dispatch-to-sub-agents** — inventory your context, fill the brief completely (single return, drivers, absolute paths, conclusions as digests, intake record), and dispatch; an area session returns once with its written pair and ADRs, never a bare evidence map or an intermediate phase. </rule>
 

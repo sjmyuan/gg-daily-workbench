@@ -2,7 +2,7 @@
 
 **Scenario**: The user has already done informal investigation on a caching strategy problem and has notes. They want to formalize the findings into ADRs and a solution document without re-doing the investigation.
 
-**Applies**: `define-spike-scope` → `compile-findings-doc` → `draft-problem-adrs` (option evaluation via `draft-adr`) → `compile-solution-doc` (phase 1 skipped: the same area session formalizes the notes and returns the pair and ADRs together)
+**Applies**: `define-spike-scope` → `compile-findings-doc` → `confirm-problem-adrs` (option evaluation via `draft-adr`) → `compile-solution-doc` (phase 1 skipped: the same area session formalizes the notes and returns the pair and ADRs together)
 
 ## Define Spike Scope
 
@@ -115,7 +115,7 @@ Coverage: invalidation mechanisms, write path. Cross-area reference: `docs/evide
 
 ### ADR: Cache topology — position caches
 
-*(draft-adr applied — full ADR produced; saved as `adr-cache-topology-01-position-caches.md`. Summary below; the full record follows `draft-adr`'s template with `Area: Cache topology` and `Status: draft`.)*
+*(draft-adr applied — full ADR produced; saved as `adr-cache-topology-01-position-caches.md`. Summary below; the full record follows `draft-adr`'s template with `Area: Cache topology` and `Status: adopt`.)*
 
 **Title**: Adopt Two-Tier Caching (In-Memory + Redis) for Product Catalog
 

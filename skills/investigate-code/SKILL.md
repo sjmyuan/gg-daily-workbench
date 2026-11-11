@@ -10,7 +10,7 @@ description: Investigate codebases to answer questions about functionality, arch
 - User wants to investigate code across multiple repositories and their interactions
 - User wants to visualize architecture with C4 diagrams, sequence diagrams, or call stack traces
 - User wants to discover implementation patterns or detect inconsistencies across the codebase
-- A spike area needs current-state investigation before decisions are drafted
+- Current-state investigation must ground a decision draft
 - An ADR needs an evidence map (entry points, `file:line` locations, call chains) to ground per-option details
 </when-to-use-this-skill>
 

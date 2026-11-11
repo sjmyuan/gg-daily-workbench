@@ -2,7 +2,7 @@
 
 **Scenario**: The user wants to spike migrating a legacy payment processing service from a monolith to microservices, producing ADRs per decision problem and a consolidated solution document.
 
-**Applies**: All capabilities in sequence — `define-spike-scope` → `investigate-per-area` → `compile-findings-doc` → `draft-problem-adrs` (option evaluation via `draft-adr`) → `compile-solution-doc`
+**Applies**: All capabilities in sequence — `define-spike-scope` → `dispatch-area-session` → `compile-findings-doc` → `confirm-problem-adrs` (option evaluation via `draft-adr`) → `compile-solution-doc`
 
 **What makes this distinct**: Full multi-area brownfield spike, end to end (see `examples/multi-agent-investigation.md` for the parallel-dispatch variant).
 
@@ -96,14 +96,14 @@ Example — `adr-service-decomposition-01-split-monolith.md` (abridged; full rec
 ```markdown
 # 2026-10-24-Decompose Payment Monolith into Payment-Type Microservices
 
-* Status: draft
+* Status: adopt
 * Area: Service decomposition
 * Owners: spike-area-analyst · reviewed by the payment team
 * Date: 2026-10-24
 
 ## Context and Problem Statement
 
-**Decision:** Split the monolith into Wallet, Bank Transfer, and Credit Card services?
+**Decision:** Split into payment-type services — Wallet, Bank Transfer, Credit Card — for independent deployment.
 
 The monolith couples three independent payment domains, preventing independent deployment and scaling.
 
