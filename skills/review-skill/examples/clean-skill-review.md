@@ -10,7 +10,7 @@
 
 **Scope**: `skills/commit-message-writer/SKILL.md` — full skill file  
 **Focus Areas**: Section purpose compliance, duplication, naming, example coverage  
-**Overall Assessment**: Well-structured. All sections serve their intended purpose with no major violations. One minor issue and two nits noted.
+**Overall Assessment**: Refactor recommended (minor) — well-structured. All sections serve their intended purpose with no major violations. One minor issue and two nits noted; one request already covered, one is a reshape.
 
 ---
 
@@ -48,6 +48,8 @@
 - Rules correctly use "scenario → capability" routing. None re-state capability content.
 - Example coverage is complete: three files covering a simple bug fix, a multi-file feature, and a breaking-change migration span the main scenario variants.
 - `<when-to-use-this-skill>` is tight and correctly scoped.
+- No change needed for a "commits must have a body" rule: `<write-commit-message>` step 5 plus rule 2 already enforce it.
+- Refactor, don't append: the requested amend-vs-new-commit behavior belongs in a re-scoped step of `<write-commit-message>`, not a new capability.
 
 ---
 

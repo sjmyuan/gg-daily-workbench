@@ -11,7 +11,7 @@
 
 **Scope**: `skills/develop-miniprogram/SKILL.md` — full skill file
 **Focus Areas**: Section purpose compliance, duplication, information placement
-**Overall Assessment**: Functional but requires restructuring — knowledge and capabilities are conflated, and rules repeat content already stated in capabilities.
+**Overall Assessment**: Refactor recommended — functional but requires restructuring; knowledge and capabilities are conflated, and rules repeat content already stated in capabilities.
 
 ---
 

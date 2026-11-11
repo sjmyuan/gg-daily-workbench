@@ -1,13 +1,13 @@
 ---
 name: create-skill
-description: Author, edit, and validate skill files (SKILL.md), plus the examples, references, and scripts they ship. Use when creating, authoring, generating, building, extracting, editing, improving, revising, or validating a skill.
+description: Author, edit, and validate skill files (SKILL.md), plus the examples, references, and scripts they ship. Use when creating, authoring, generating, building, extracting, editing, improving, revising, refactoring, or validating a skill.
 ---
 
 <when-to-use-this-skill>
 - User asks to create, author, or build a new skill (SKILL.md) from scratch
 - User asks to generate examples or references for a skill
 - User provides existing materials (agent prompts, docs, code) to extract into a skill
-- User asks to edit, improve, or revise an existing skill
+- User asks to edit, improve, revise, or refactor an existing skill
 - User asks to validate a drafted or edited skill before delivery
 </when-to-use-this-skill>
 
@@ -31,7 +31,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 | **conciseness-check** | Every element justifies its existence; one line = one idea. | **reference/conciseness-check.md** |
 | **evaluation-process** | Every capability ends with a validation or checklist step; absence severity in file. | **reference/evaluation-process.md** |
 | **severity-levels** | Blocker 🚫 / Major 🔴 / Minor 🟡 / Nit 🟢 / Inconsistency ⚠️. | **reference/severity-levels.md** |
-| **edit-existing-skill** | Existing-file mode: absorption test, merge/demote/replace, funding rule, element delta, re-validate. | **reference/edit-skill-procedure.md** |
+| **refactor-first** | Reshape before appending: reclassify, merge, split, rename, redistribute, or rewrite an existing element; append only when none can carry it. | **reference/edit-skill-procedure.md** |
 | **same-name-live-copy-ban** | Never read, compare, or edit a live/loaded same-named skill; the user-provided files are the only subject. | — |
 </named-standards>
 <context-loading-guide>
@@ -70,7 +70,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 **Objective**: Generate a complete SKILL.md whose content is classified before it is shaped.
 
 1. Create the target directory; add `examples/`, `reference/`, or `scripts/` only as content needs them.
-2. Run **classify-skill-content** on the requirements record.
+2. Run **classify-skill-content** on the requirements record; in existing-file mode, apply **refactor-first** first.
 3. Write knowledge as facts under noun-phrase subsections per **section-semantics**.
 4. Extract rubrics and lookup tables to `reference/` and route each from its step.
 5. Write each capability as ordered steps under an action-verb name, facts and guards excluded, ending with a validation step.
@@ -124,11 +124,11 @@ Steps cite these standards by name; load the Details file when one is listed.
 </validate-created-skill>
 
 <edit-skill>
-**Objective**: Edit an existing skill's files by reusing the create-* capabilities in existing-file mode.
+**Objective**: Edit an existing skill by reshaping it to meet the request — refactor existing elements before appending.
 
 1. Inventory and count the skill: capabilities, steps, knowledge rows, rules, guide rows, examples, references, chars.
-2. Triage intent per **reference/edit-skill-procedure.md**.
-3. Categorize each change per the change-type, absorption, funding, and edit-discipline rules in **reference/edit-skill-procedure.md**.
+2. Triage intent per **reference/edit-skill-procedure.md**; treat every change as a refactor candidate first.
+3. Categorize each change per the refactor-first, change-type, absorption, funding, and edit-discipline rules in **reference/edit-skill-procedure.md**.
 4. Route each change to the mapped create-* capability in existing-file mode.
 5. Run the ripple checklist after renames, removals, merges, or inlining.
 6. Run **validate-created-skill** after each change; revert on a Blocker 🔴 and redo.
@@ -144,6 +144,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 <rule>After creating or editing all files, use **validate-created-skill** before presenting the result.</rule>
 <rule>When creating or validating a skill, operate only on the user-provided files per **same-name-live-copy-ban**.</rule>
 <rule>When the user asks to edit, improve, or revise an existing skill, use **edit-skill**; run an open-ended "improve" through `review-skill` first per **reference/edit-skill-procedure.md**.</rule>
+<rule>When an edit would add an element, apply **refactor-first** — reshape an existing rule, capability, knowledge row, reference, or example to carry it; append only when none can.</rule>
 <rule>When the user asks for a read-only review of an existing skill file, delegate to the `review-skill` skill instead.</rule>
 <rule>When a capability step needs automation, use **create-skill-scripts** — pick an installed CLI before a script, and Python 3 stdlib before any other language.</rule>
 </rules>

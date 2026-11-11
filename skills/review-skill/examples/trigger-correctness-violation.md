@@ -10,7 +10,7 @@
 
 **Scope**: `skills/sql-query-builder/SKILL.md` — full skill file  
 **Focus Areas**: Trigger correctness, description coverage, scenario alignment  
-**Overall Assessment**: Trigger correctness failures across multiple scenarios.
+**Overall Assessment**: Refactor recommended — trigger correctness failures across multiple scenarios.
 The `description` covers only one of four activation scenarios, causing the skill to silently fail to load for optimization, review, and dialect-conversion requests.
 
 ---

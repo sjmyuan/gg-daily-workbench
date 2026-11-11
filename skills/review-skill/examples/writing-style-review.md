@@ -14,7 +14,7 @@ and its example.
 
 **Scope**: `skills/release-note-writer/` — SKILL.md + reference + example
 **Focus Areas**: Voice, BLUF, sentence caps, banned phrases, narration
-**Overall Assessment**: Structurally sound but pervasively verbose and
+**Overall Assessment**: Refactor recommended — structurally sound but pervasively verbose and
 passive. Capability steps describe work instead of directing it; all three
 files carry process narration. A full style pass is required.
 

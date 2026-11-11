@@ -10,7 +10,7 @@
 
 **Scope**: `skills/form-validator/SKILL.md` — full skill file  
 **Focus Areas**: Capability naming conventions, examples section format, example coverage  
-**Overall Assessment**: Core knowledge and rules are solid, but capability names are nouns rather than verbs;
+**Overall Assessment**: Refactor recommended — core knowledge and rules are solid, but capability names are nouns rather than verbs;
 examples are embedded inline instead of referenced, and one capability has no example at all.
 
 ---

@@ -53,9 +53,9 @@ User: "Improve this skill — writing and formatting feel like one job, and revi
 | Guide rows | 4 | 2 | −2 |
 | Examples | 4 | 3 | −1 |
 | References | 2 | 1 | −1 |
-| Chars | 9,240 | 8,410 | −830 |
+| Chars | 9,240 | 8,425 | −815 |
 
-- `−1 capability, −3 steps, −1 rule, −2 guide rows, −1 example, −1 reference, −830 chars` — every addition funded.
+- `−1 capability, −3 steps, −1 rule, −2 guide rows, −1 example, −1 reference, −815 chars` — every addition funded.
 - Knowledge rows held flat: the inlined table replaced a row rather than adding one.
 - The reviewer's 🔴 and both 🟡 findings resolve through retirements, not new text.
-- The tempting fifth capability ("check tone") was rejected: `<check-release-notes>` already hosts it.
+- The tempting fifth capability ("check tone") was not added: `<check-release-notes>` step 3 was rewritten to cover tone, so no new tag.

@@ -13,7 +13,7 @@ only size gate) is met, and whether lines were merged to dodge it.
 **Scope**: `skills/database-migration/SKILL.md` — full skill file
 **Focus Areas**: Size limits (char budget, line count, max line length),
 line-stuffing, structural-integrity gate
-**Overall Assessment**: Line count passes (138 ≤ 150) but the char budget
+**Overall Assessment**: Refactor recommended — line count passes (138 ≤ 150) but the char budget
 fails (≈21,000 vs 12,000, 1.75×) at an average ≈152 chars/line. The line
 count is misleading: the file looks slim yet carries the context weight of
 a ~300-line skill. The line-passes/char-fails mismatch plus long stuffed

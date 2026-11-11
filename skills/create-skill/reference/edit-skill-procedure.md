@@ -13,6 +13,20 @@ The create-* capabilities author greenfield skills. **edit-skill** reuses them f
 | **create-skill-scripts** | Create `scripts/` + first script | Locate the existing `scripts/`; edit the script in place; keep its output fields and exit codes stable |
 | **validate-created-skill** | Validate new files | Run unchanged on the edited files (it already accepts user-provided files) |
 
+## Refactor first
+
+Every request is a reshaping problem before it is an addition. Ask which existing element can carry it better.
+
+1. Reclassify — move the need to the section its class owns.
+2. Merge or absorb — fold it into an existing step, capability, rule, table, or example.
+3. Split — divide an overloaded element so the need has a clear owner.
+4. Rename or re-scope — widen or sharpen an element to cover it.
+5. Redistribute — move detail between knowledge, `reference/`, and capabilities.
+6. Rewrite — tighten the vague element that invited the addition.
+7. Append — only for a new trigger no reshape can carry; fund it by retiring or reshaping another element.
+
+A refactor that meets the need and improves the structure is the result. **No change needed** is reserved for a request the current shape already serves.
+
 ## Intent triage
 
 | User wording | Mode |
@@ -26,18 +40,19 @@ When the user accepts a recommended variant without naming one ("do it"), apply 
 canonical variant, state it in the result, and record it in the owner template/reference.
 
 ## Change-type routing
-Merge, demote, replace, and inline are first-class moves — not fallbacks taken after "add" fails a budget.
+Reclassify, merge, split, demote, replace, inline, and rewrite are first-class moves — not fallbacks taken after "add" fails a budget.
 
 | Change | Route | Existing-file delta | Verify |
 |---|---|---|---|
 | Reclassify | **classify-skill-content**, then **create-skill-file** | Move the element to its true class's section; fix the rule, guide row, and example routes that named it | **content-model** gates |
 | Merge capabilities | **create-skill-file** | Fold the steps into the survivor; retire the losing tag, its rules, guide row, and example | every merged step lands; ripple |
+| Split overloaded element | **create-skill-file** | Divide one element serving two triggers; give each its own tag, rule, and example | each half has one trigger; ripple |
 | Demote | **create-skill-file** | Move capability → knowledge table → `reference/`; leave one route to it | **section-semantics** |
 | Replace | **create-skill-file** | Write the new element and delete every element it supersedes, in the same edit | no duplicate claim |
 | Inline | **create-skill-file** / references | Fold a single-use reference into its step; delete the file and its guide row | no dangling link |
 | Retighten | **create-skill-file** | Rewrite the vague step that invited the addition; add nothing | step still unambiguous |
-| Add capability or knowledge | **create-skill-file** | Pass the absorption test first; extend the owner before inserting a section; fund per the funding rule | example coverage + no dangling refs |
-| Add example | **create-skill-examples** | Extend a scenario that shares the trigger; add a file only for a new trigger | **example-standards** |
+| Add capability or knowledge | **create-skill-file** | Run **refactor-first**; extend or reshape the owner before inserting a section; fund per the funding rule | example coverage + no dangling refs |
+| Add example | **create-skill-examples** | Reshape or extend a scenario that shares the trigger; add a file only for a new trigger | **example-standards** |
 | Add reference | **create-skill-references** | Only for a rubric no owner file can hold; self-link from knowledge | no orphaned ref |
 | Add or change a script | **create-skill-scripts** | Re-run the justification tests before adding; keep exit codes and field names stable | **script-and-cli-policy** contract |
 | Remove capability | **create-skill-file** | Delete the capability plus its rules, guide rows, examples | no dangling refs |
@@ -79,6 +94,8 @@ A vague step is the usual cause of an addition. Tighten the step instead of appe
 - Trimming prose is not payment.
 - Extracting into `reference/` is not payment — same content, one more file.
 - An addition that retires nothing is valid only when it serves a trigger no existing element serves.
+- An unfunded request is reported as **No change needed** — never downsized into a smaller addition.
+- A reshape that improves the structure at flat or lower element count is a complete edit, not a partial one.
 - State that new trigger in the result; otherwise the addition is unfunded and incomplete.
 - Net element count per edit: flat or down, unless the user asked for new scope.
 

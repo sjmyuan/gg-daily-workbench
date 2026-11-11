@@ -9,7 +9,7 @@
 
 **Scope**: One skill — `reference/plan-file-format.md` (prose, no fenced skeleton) and eight examples emitting `plan.md`.
 **Focus Areas**: Template literalism, step/zone shape, abridged labelling, shared cross-skill example
-**Overall Assessment**: A schema owner exists but is prose-only, so nothing anchors the examples; they have drifted into four step shapes and break the consumer's six-field contract.
+**Overall Assessment**: Refactor recommended — a schema owner exists but is prose-only, so nothing anchors the examples; they have drifted into four step shapes and break the consumer's six-field contract.
 
 ---
 

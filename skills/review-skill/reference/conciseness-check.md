@@ -37,12 +37,20 @@ Run it after the conciseness scan, and report counts even when every finding is 
 
 | Check | Test | Severity |
 |---|---|---|
+| **Reshape candidate** | A request can be met by reclassifying, merging, splitting, renaming, or rewriting an existing element | Report the reshape first; an addition only when no reshape works |
+| **Overloaded element** | One capability, rule, or knowledge section serves two triggers | 🟡 Minor — recommend a split |
+| **Scope mismatch** | An element's name or scope is narrower or wider than the work it must carry | 🟡 Minor — recommend a rename or re-scope |
 | **Merge candidates** | Two capabilities share one trigger scope and ≥50% step overlap; either could host the other's steps | 🔴 Major |
 | **Superseded element** | A rule, knowledge row, guide row, reference, or example whose content another element now states | 🟡 Minor |
 | **Superseded capability or example** | The whole element has no independent trigger; it is a variant of another | 🔴 Major |
 | **Orphan** | No step or rule reaches the element; name the chain or state its absence | 🟡 Minor |
 | **Extraction residue** | A `reference/` file that restates SKILL.md, or is routed from nowhere — relocation, not reduction | 🟡 Minor |
+| **Covered request** | A requested or contemplated addition is already served by an existing element | No finding — verdict "No change needed", name the element |
 | **Unfunded growth** | Element count rose while no element was retired, and no new trigger was added | 🟡 Minor |
+
+An addition that lands anyway and duplicates an owner is the **content-model** two-owner 🔴. Check reshape
+first: propose the reclassify, merge, split, rename, or rewrite that carries the request. "No change needed" is reserved
+for a current shape that already serves it.
 
 A mergeable capability pair ranks with a capability that has no example: both mean the structure no
 longer matches the triggers.

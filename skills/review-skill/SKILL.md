@@ -1,6 +1,6 @@
 ---
 name: review-skill
-description: Review SKILL.md files for content classification, structure, naming, duplication, and script/CLI usage. Use when reviewing, diagnosing, or checking a skill's content, structure, triggers, naming, or tooling.
+description: Review SKILL.md files for content classification, structure, naming, duplication, script/CLI usage, and whether to refactor or add content. Use when reviewing, diagnosing, or checking a skill's content, structure, triggers, naming, tooling, or whether it needs refactoring or new content.
 ---
 
 <when-to-use-this-skill>
@@ -9,6 +9,7 @@ description: Review SKILL.md files for content classification, structure, naming
 - User asks for feedback on content classification, section placement, or duplication in a skill file
 - User asks whether a SKILL.md is correctly structured
 - User asks whether a skill will trigger or activate correctly
+- User asks whether an existing skill needs refactoring or new content
 - User asks whether a skill's name or capability names follow naming conventions
 - User asks whether a skill's scripts or CLI invocations are justified and safe
 </when-to-use-this-skill>
@@ -29,6 +30,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 | **evaluation-process** | Output-evaluation patterns and severity when absent. | [reference/evaluation-process.md](reference/evaluation-process.md) |
 | **naming-conventions** | Naming rules for the skill name, capability names, and knowledge names. | [reference/naming-conventions.md](reference/naming-conventions.md) |
 | **conciseness-check** | Criteria for unnecessary content across SKILL.md, references, and examples. | [reference/conciseness-check.md](reference/conciseness-check.md) |
+| **refactor-first** | Reshape before appending: reclassify, merge, split, rename, redistribute, or rewrite an existing element; add only when none can. | [reference/conciseness-check.md](reference/conciseness-check.md) |
 | **writing-style** | Directive voice, BLUF, hard caps, banned phrases, no narration. | [reference/writing-style.md](reference/writing-style.md) |
 | **platform-agnostic-writing** | No platform tool names, no concrete context paths, detect-don't-assume. | [reference/platform-agnostic-writing.md](reference/platform-agnostic-writing.md) |
 | **script-and-cli-policy** | Automation decision order, four script tests, Python-stdlib rule, contracts, anti-pattern severities. | [reference/script-and-cli-policy.md](reference/script-and-cli-policy.md) |
@@ -49,7 +51,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 | Prose is passive, verbose, or narrating | Style model | [examples/writing-style-review.md](examples/writing-style-review.md) |
 | The description lacks a "Use when" clause, or contradicts a when-to-use bullet | Trigger-failure model | [examples/trigger-correctness-violation.md](examples/trigger-correctness-violation.md) |
 | Step 7 runs, or the user asks whether the examples agree | Example-drift findings model | [examples/artifact-consistency-review.md](examples/artifact-consistency-review.md) |
-| After the first pass — findings are only 🟡 and 🟢 | Near-passing model | [examples/clean-skill-review.md](examples/clean-skill-review.md) |
+| After the first pass — findings are only 🟡/🟢 or the request is a reshape | Near-passing / refactor model | [examples/clean-skill-review.md](examples/clean-skill-review.md) |
 | After the first pass — the sub-agent axis produced findings | Agent-integration model | [examples/agent-integration-review.md](examples/agent-integration-review.md) |
 
 </context-loading-guide>
@@ -88,12 +90,12 @@ Steps cite these standards by name; load the Details file when one is listed.
 5. **Check conciseness, style, and growth** — apply **reference/conciseness-check.md** and **reference/size-limits.md** to every file:
    a. Writing style — load **reference/writing-style.md**; flag per its severity table.
    b. Platform-agnostic writing — load **reference/platform-agnostic-writing.md**; tool names or context paths → 🟡, several across files → 🔴.
-   c. Growth audit — count elements, report merge candidates, superseded elements, and orphans.
+   c. Growth audit per **refactor-first** — count elements; report reshape candidates, superseded elements, and orphans; propose the reshape before adding.
 6. Cross-reference each capability against its linked examples per **reference/example-coverage-criteria.md**.
 7. **Review the example set** — load **reference/example-quality-criteria.md** and apply every criterion.
    a. Template fidelity and set-level continuity per **reference/artifact-consistency.md**; run `scripts/check_artifacts.py` when templates ship.
 8. Surface inconsistencies — mixed styles or disagreeing artifact schemas. Present both variants, ask which is canonical, never pick silently.
-9. Write the report from **examples/skill-file-review.md**: satisfy every section it defines.
+9. Write the report from **examples/skill-file-review.md**, opening Overall Assessment with the verdict: "No change needed", "Refactor recommended", or "Changes recommended".
 10. Format each finding with a severity per **reference/severity-levels.md**, a file anchor, and an actionable fix.
 11. **Check integration** — when the skill references another skill or dispatches/loads sub-agents, load
     **reference/pipeline-integration.md** and verify the applicable axes from its own declarations, including
@@ -113,7 +115,8 @@ Steps cite these standards by name; load the Details file when one is listed.
 
 <rules>
 <rule>When reviewing a skill file, review only the user-provided file per **same-name-live-copy-ban** — never a same-named live copy in an installed skills folder.</rule>
-<rule>When the user submits a SKILL.md file for review or asks to diagnose what to fix in it, use **review-skill-file** — review and suggest only, never edit the file.</rule>
+<rule>When the user submits a SKILL.md file for review or asks to diagnose what to fix in it, use **review-skill-file** — suggest only, never edit.</rule>
+<rule>When a request can be met by reshaping an element, recommend the refactor; add only when no reshape works.</rule>
 <rule>When the user wants an existing skill file edited or improved (not just diagnosed), do not apply edits here — route to `create-skill`'s **edit-skill**.</rule>
 <rule>When the user asks whether a skill will trigger or activate correctly, or whether its description matches its scenarios, use **review-skill-file** and focus on step 3.</rule>
 </rules>
