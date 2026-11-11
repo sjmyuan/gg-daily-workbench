@@ -24,11 +24,11 @@ Three inferences → the gate cannot pass privately; round 1 runs.
 |---|---|---|---|
 | 1 | Ambiguity | "slow" — first byte, query, or paint? | Yes — changes the split |
 | 2 | Scope | Web checkout, mobile, or both? | Yes — changes the repos |
-| 3 | Goal | Driver is user complaints or infrastructure cost? | Yes — changes the options |
+| 3 | Goal | Driver is user complaints or infrastructure cost? | Closed by inference 1 — shown back, not asked |
 | 4 | Constraints | Is adding a cache or queue allowed? | No — the repo answers it |
 | 5 | Success criteria | No target latency stated | Yes — changes the done criteria |
 
-Finding 4 is a note, not a question: the acceptance criteria in the repo already settle it.
+Findings 3 and 4 close without a question: 3 by inference 1, shown back; 4 by the repo's acceptance criteria.
 
 ## Output — batched gate, round 1
 
@@ -55,15 +55,22 @@ Default if unanswered: A.
 ## User response
 "Q1: A. Q2: just web for now. Take the defaults on the rest."
 
-## Result
+## Result — acceptance record (summary)
 
-| Item | Value |
+| Field | Value |
 |---|---|
+| Restatement | "Checkout is slow and you want a spike on options." |
+| Inferred | 3 — goal = perceived speed; surface = web checkout; "slow" = one latency path |
+| Questions | 3 asked — Q1 blocking and answered; Q2–Q3 defaulted |
 | Gate state | `ACCEPTED-WITH-ASSUMPTIONS` |
-| Inferences shown back | 3 — all confirmed or resolved by the answers |
-| Handed to the calling skill | goal = reduce first-token latency on web checkout; scope = one repo, one area |
-| Assumption A1 | `Assumption (user-accepted, unverified)` — target is p95 first-token under 300ms, per the Q3 default |
-| Recorded in | `scope.md` — gate state, restatement, inference list, then `## Accepted assumptions` |
-| Round 2 | Not due — no re-challenge trigger |
+| Accepted assumptions | A1 `Assumption (user-accepted, unverified)` — target is p95 first-token under 300ms, per the Q3 default |
 
-Validation: the inference list was shown before any question; three questions, each with options, a recommendation, and a default; every surviving finding passed the materiality test; one blocking question held the gate until answered.
+Handed to the calling skill: goal = reduce first-token latency on web checkout; scope = one repo, one area.
+Recorded in: `scope.md` — the five fields, then `## Accepted assumptions`.
+Round 2: not due — no re-challenge trigger.
+
+Validation:
+- The inference list was shown before any question.
+- Three questions carried options and an evidence-backed recommendation; the two non-blocking ones carried a default.
+- One blocking question held the gate until answered.
+- The batch meets the question quality bar.

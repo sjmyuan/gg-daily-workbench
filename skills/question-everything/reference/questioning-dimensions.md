@@ -21,6 +21,18 @@ Order challenges by impact, not by count:
 
 High-impact + plausible = verify first. Low-impact + implausible = note, don't block.
 
+## Quality bar
+
+Grade the challenge set before presenting it:
+
+| Criterion | 1 — weak | 2 — usable | 3 — strong |
+|---|---|---|---|
+| **Falsifiable** | "Looks wrong" | A check is named | One primary-source check confirms or refutes it |
+| **Single target** | Bundles several claims | One claim, scope vague | One quoted claim with its scope stated |
+| **Priority** | Ordered by gut | Impact named | Impact and plausibility named from evidence |
+
+Pass bar: every criterion ≥2, none at 1.
+
 ## Output Format
 
 Emit each challenge as a numbered item:

@@ -4,10 +4,10 @@ Use with **clarify-the-ask**. Gate states and the question budget live in **inta
 
 ## Rounds
 
-| Round | When | Budget |
+| Round | When | Scope |
 |---|---|---|
-| **1 — pre-accept** | Before a scope, plan, or dispatch | ≤3 material questions |
-| **2 — post-evidence** | After investigation or an answered sub-question | ≤3, narrower than round 1 |
+| **1 — pre-accept** | Before a scope, plan, or dispatch | The full material set, within the `intake-gate` question budget |
+| **2 — post-evidence** | After investigation or an answered sub-question | Narrower than round 1, within the same budget |
 
 Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with assumptions and say so.
 
@@ -19,7 +19,7 @@ Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with 
 
 ## Batch rules
 
-- One message, ≤3 numbered questions, each self-contained.
+- One message, one numbered batch within the `intake-gate` budget, each question self-contained.
 - No nested or compound questions — split them into separate items or drop one.
 - Never re-ask what the user already answered or what the repo records.
 - Re-open a settled answer only when new evidence contradicts it, and say what changed.
@@ -47,15 +47,16 @@ Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with 
 ## Assumption lifecycle
 
 1. Admit only a default that passes **assumption-admission** — decision-relevant, not obtainable from code or artifacts, user-held or safely defaulted.
-2. Label it `Assumption (user-accepted, unverified)` and hand it to the calling skill's artifact — never leave it in conversation only. Show the rest in the inference list; do not persist them.
-3. Never promote it to fact without evidence; a code-answerable fact is an investigation target, not an assumption.
-4. When evidence contradicts one, it becomes a re-challenge trigger.
-5. Delete one the user settles, evidence verifies, or no downstream decision cites — state the reason, never keep a changelog.
+2. Label it `Assumption (user-accepted, unverified)` and hand it to the calling skill's artifact — never leave it in conversation only.
+3. Show every other inference in the inference list; never persist it.
+4. Never promote an assumption to fact without evidence; a code-answerable fact is an investigation target, not an assumption.
+5. When evidence contradicts one, it becomes a re-challenge trigger.
+6. Delete one the user settles, evidence verifies, or no downstream decision cites — state the reason, never keep a changelog.
 
 ## Ownership
 
 - The gate runs in the **calling session** — user dialogue is single-threaded.
-- The gate returns the **acceptance record** — restatement, inferences, gate state, assumptions. A caller holding no record did not run the gate.
+- The gate returns the **acceptance record** — restatement, inferences, questions asked, gate state, assumptions. A caller holding no record did not run the gate.
 - A dispatched sub-agent returns open questions upward; it never asks the user.
 - The gate **replaces** an existing confirmation step; never add a second checkpoint.
 
@@ -63,7 +64,7 @@ Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with 
 
 | Anti-pattern | Instead |
 |---|---|
-| Ten-question interrogation | ≤3 material questions per round |
+| Ten-question interrogation | The `intake-gate` budget, one batch |
 | A question with no options | 2–3 options plus a recommendation |
 | Asking what the repo answers | Read the artifact first, then ask |
 | Proceeding silently on a vague answer | `ACCEPTED-WITH-ASSUMPTIONS` plus labels |

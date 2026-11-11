@@ -17,7 +17,9 @@ Use with **clarify-the-ask** to probe a user-supplied request. A request has no 
 
 ## Minimum probe
 
-Probe five dimensions on every request before acceptance: **Goal**, **Scope**, **Success criteria**, **Constraints**, **Conflict**. A dimension may close without a question, but only by naming what closed it — the user's words, a repo artifact, or a recorded inference. Any dimension closed by inference lands in the inference list shown back to the user.
+Probe five dimensions on every request before acceptance: **Goal**, **Scope**, **Success criteria**, **Constraints**, **Conflict**.
+A dimension may close without a question, but only by naming what closed it — the user's words, a repo artifact, or a recorded inference.
+Any dimension closed by inference lands in the inference list shown back to the user.
 
 **Ambiguity**, **Feasibility**, and **Consumer** are probe-on-signal: open them when a term has two readings, the ask may be impossible as written, or the approval boundary is unclear.
 
@@ -67,10 +69,22 @@ Default if unanswered: <A | B>.
 - A contradicted user constraint is always blocking — never reinterpret it silently.
 - A blocking question carries no default; the gate stays `BLOCKED` until it is answered.
 
+## Question quality bar
+
+Grade the batch before asking:
+
+| Criterion | 1 — weak | 2 — usable | 3 — strong |
+|---|---|---|---|
+| **Decision-changing** | Restates the ask | A different answer changes a note | A different answer changes the split, options, done criteria, or budget |
+| **Evidenced recommendation** | "It depends" | Names a preference | Names the evidence behind the preference |
+| **Safe default** | Default locks an irreversible choice | Default is reversible | Default is reversible and given only for a non-blocking question |
+
+Pass bar: every criterion ≥2, none at 1.
+
 ## Checklist
 
 - [ ] Every question names its dimension and its blocking status.
-- [ ] Every question carries 2–3 options, a recommendation, and a default.
+- [ ] Every question carries 2–3 options and an evidence-backed recommendation; non-blocking questions carry a default.
 - [ ] All five minimum-probe dimensions are closed, each with what closed it.
 - [ ] Every surviving finding passes the materiality test.
 - [ ] No question asks what the repo already answers.

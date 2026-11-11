@@ -15,7 +15,13 @@ Applies **verify-sub-agent-results** — the **question-the-result** → verify 
 - **C3 (Ambiguity, medium)** — "syncs orders": unclear whether full order payloads or just notification events. Satisfactory answer: state the payload type.
 
 ### Verification (new `code-investigator`)
-The evidence is code, so a NEW `code-investigator` (not the original instance) is dispatched with the original claim, C1–C3, and the known context — the producer's cited `orders.warehouse` topic — instructed to start from that location and trace the actual sync path from primary sources.
+The evidence is code, so a NEW `code-investigator` (not the original instance) is dispatched with the protocol brief (abridged — full schema in `reference/verification-protocol.md`):
+- The original claim and C1–C3.
+- Established evidence: the producer's cited `orders.warehouse` topic.
+- Open claims: the actual transport path; failure and fallback behavior; payload type.
+- Searched-negatives: Kafka producer and consumer sites already enumerated.
+- Scope slice: the integration-design decision this result feeds.
+It starts from the cited location and traces the actual sync path from primary sources.
 
 ### Comparison (verdicts vs. result)
 - **C1** — DISAGREE: primary sync is DB polling (`OrderPoller`); Kafka is used only for notifications.
@@ -26,7 +32,11 @@ A material verdict is DISAGREE → a new `code-investigator` (not the original i
 
 ## Round 2
 ### Re-investigation (new `code-investigator`)
-A NEW `code-investigator` (never the original instance) receives the divergence — the C1–C3 verdicts, the `OrderPoller` evidence, and the corrected understanding — and redoes the investigation from scratch. It returns a corrected result: "Order sync is DB polling based; Kafka is notification-only."
+A NEW `code-investigator` (never the original instance) receives the repair brief (abridged — full schema in `reference/verification-protocol.md`):
+- The challenged claim and the DISAGREE verdict that broke it.
+- The verifier's evidence: `OrderPoller` is the primary sync path; Kafka carries notifications only.
+- The corrected understanding the agent must test rather than adopt.
+It redoes only the affected work and returns corrected claims with their sources: "Order sync is DB polling based; Kafka is notification-only."
 
 ### Questioning (question-the-result)
 Question the corrected result:

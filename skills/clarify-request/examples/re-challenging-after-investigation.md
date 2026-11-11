@@ -28,14 +28,23 @@ Default if unanswered: none — a constraint belongs to the user, never to the a
 ## User response
 "Q1: C, that's what I meant."
 
-## Result
+## Result — acceptance record (summary)
 
-| Item | Value |
+| Field | Value |
 |---|---|
+| Restatement | Checkout spike; the queue constraint is corrected |
+| Inferred | None new — affected claims only |
+| Questions | 1 asked — Q1 blocking and answered |
 | Gate state | `ACCEPTED` |
-| Restated constraint | "No new infrastructure; the existing awaited queue may be changed" |
-| Artifact update | `scope.md` — the false constraint is rewritten in place; git holds the history |
-| Unaffected claims | Not re-opened — round 1 answers stand |
-| Rounds used | 2 of 2 |
+| Accepted assumptions | None — the corrected constraint is user-stated |
 
-Validation: the trigger was named before re-opening; only the two affected claims were re-opened; one question, narrower than round 1; the corrected constraint replaces the old one rather than being appended.
+Restated constraint: "No new infrastructure; the existing awaited queue may be changed".
+Artifact update: `scope.md` — the five fields with the false constraint rewritten in place; git holds the history.
+Unaffected claims: not re-opened — round 1 answers stand.
+Rounds used: 2, within the gate's budget.
+
+Validation:
+- The trigger was named before re-opening.
+- Only the two affected claims were re-opened.
+- One question was asked, narrower than round 1.
+- The corrected constraint replaces the old one rather than being appended.
