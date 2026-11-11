@@ -12,7 +12,7 @@ A POC is a **normal feature plan** for one ADR option. It is not a probe harness
 The plan implements the option exactly like a feature. It never measures or evaluates; the MR is the user's evaluation vehicle.
 
 1. **Prepare Environment (Prerequisites)**: apply **plan-prerequisites** — a branch per the repo's convention, no overlapping dirt, deps installed, the gate commands (`build` / `test` / `lint-type`) discovered and run on the base with the verdict recorded; raise necessary blockers only.
-2. Load the ADR and the option's **tech details** (draft-adr's **detail-options-tech**): target-state diagrams + code change profile (file:line, current code, proposed diff, how-to).
+2. Load the ADR: the option's **Tech Details** (draft-adr's **detail-options-tech** — target-state diagrams, change set with `file:line`, current code, proposed diff, how-to) and the `## Implementation Plan` (change order, verification, rollback).
 3. Clarify with the user: the option under proof, the **success criteria** (optional — the user's review checklist, not a plan step), and the standalone feature slice that demonstrates it.
 4. **Define Scope Boundary**: the option's target area is **May change**; other options, other ADRs, and unrelated modules are **Must not change**; ratify with the user.
 5. Break the slice into independently testable functionalities; order by dependencies; consolidate per plan-feature-implementation step 5.

@@ -1,33 +1,42 @@
 # Option Tech Details Guide
 
-Tech details make each option's implementation concrete in the ADR: the target-state diagrams and the code changes (diff) the option requires — where they happen and how to make them — so options are evaluated on technical feasibility, not just pros/cons. Produced per option by **detail-options-tech**, grounded in code investigation evidence — never assumption.
+Tech details make each option implementable in the repo: the target-state diagrams and the grounded change set — where each change happens and how to make it. Produced per option by **detail-options-tech**, grounded in code investigation evidence, never assumption. They let the reader evaluate technical feasibility, not just pros and cons.
 
 ## Evidence base (grounding contract)
 
-Before producing tech details, determine the evidence base:
+Determine the evidence base before producing anything:
 - **Existing evidence**: the area's evidence doc from the `conduct-spike` pipeline (`docs/evidence-<area>.md` — entry points, key locations, call chains, evidence ledger). Use it directly — do not re-scan covered code.
 - **No evidence, code accessible**: build a lightweight evidence map on demand via the `investigate-code` skill — entry points, key locations with `file:line`, call chains for the affected flows.
-- **No evidence, no code access**: produce architectural-level change profiles; mark every location/scope **unverified**; recommend a spike (`conduct-spike`) to ground them before relying on the tech details.
+- **No evidence, no code access**: produce architectural-level change profiles; mark every location/scope **unverified**; recommend a spike (`conduct-spike`) before relying on them.
 
 ## What each option's tech details contain
 
 ### 1. Target-state diagrams
-- **C4 view** (container or component): the architecture if this option is chosen — evolve the findings doc's current-state diagram as-is → to-be for this option.
-- **Sequence diagram(s)**: the key flow(s) this option changes — new message, changed call, added hop, removed dependency.
+
+Per **reference/diagram-contract.md**:
+- **C4 view** (container or component): this option's to-be, evolved from the findings doc's current state, with every node marked `NEW` / `CHANGED` / `REMOVED`.
+- **Sequence diagram(s)**: the key flow(s) this option changes — the happy path plus its failure path (timeout, retry, compensation).
 - Diagrams are **option-specific** — never reuse another option's diagram or the chosen-solution diagram.
 
-### 2. Code change profile (git-style diff)
-For every change the option requires:
+### 2. Change set
+
+Every change gets a stable ID (`C1`, `C2`, …) per option, reused in the ADR card and the implementation plan.
 
 | Field | Content |
 |---|---|
+| ID | `C1`, `C2`, … — unique within the option |
 | Location | `file:line` + symbol |
 | Current | What the code does today — quoted from the evidence map |
-| Diff | **Git-style diff code block** (like `git diff` output): `diff --git a/… b/…`, `--- a/…` / `+++ b/…`, `@@` hunk, `-` / `+` lines with context — focused on the **existing code** |
+| Diff | **Git-style diff code block** for existing code: `diff --git a/… b/…`, `--- a/…` / `+++ b/…`, `@@` hunk, `-` / `+` lines with context. For a config-only change, state the exact key and value instead |
 | How | 1–2 sentence instruction to make the change |
 | Confidence | verified / inferred / unverified |
 
-Each change's diff renders as its own git-diff code block, so added/removed lines and their location are immediately readable:
+Also state, per option:
+- **New files** — name + purpose, one line each; no diff.
+- **Config and dependency changes** — keys, env vars, starters, or versions, with the file that carries them.
+- **Data changes** — schema migration, backfill, dual-write window, and whether it is reversible.
+- **Tests affected** — suites to update or add, per change.
+- **Runtime changes** — new ports, topics, queues, permissions, or deployment units.
 
 ```diff
 diff --git a/src/main/java/com/pay/BankTransferService.java b/src/main/java/com/pay/BankTransferService.java
@@ -47,10 +56,10 @@ diff --git a/src/main/java/com/pay/BankTransferService.java b/src/main/java/com/
 +  public void transferEndpoint(@RequestBody TransferRequest req) {
 +    transfer(req);
 +  }
-}
+ }
 ```
 
-Focus on diffs of **existing code** — the user needs location and how-to, not assumed knowledge. List new files briefly (name + purpose) without diffing them.
+Focus diffs on **existing code** — the reader needs location and how-to, not assumed knowledge.
 
 ## Grounding rules
 
@@ -59,19 +68,22 @@ Focus on diffs of **existing code** — the user needs location and how-to, not 
 - **Never assume the user already knows a change** — spell out every change explicitly, even obvious ones.
 - Confidence: **verified** (directly read), **inferred** (derived from surrounding code), **unverified** (assumption). Present inference as inference.
 - Diagrams derive from the evidence's current state; do not draw structures the investigation did not establish.
+- A change with no verification step is incomplete — name what proves it landed.
 
 ## Output format (per option)
 
 ````markdown
 ### Option N: <name>
 
-#### Target-state diagram
-[ C4 view + sequence diagram(s) ]
+#### Tech Details
 
-#### Code changes
-1. **`file:line` symbol** (confidence)
-   - Current: [quote from evidence map]
-   - Diff (git-style):
+[ C4 delta + sequence diagram(s) including the failure path ]
+
+**Code changes:**
+
+1. **`C1` — `file:line` symbol** (verified / inferred / unverified)
+   - Current: [ quote from the evidence map ]
+   - Diff:
      ```diff
      diff --git a/<file> b/<file>
      --- a/<file>
@@ -81,9 +93,17 @@ Focus on diffs of **existing code** — the user needs location and how-to, not 
      -removed line
      +added line
      ```
-   - How: [1–2 sentence instruction]
+   - How: [ 1–2 sentence instruction ]
+
+**New files:** [ name — purpose ]
+
+**Config / dependencies:** [ key or dependency — file ]
+
+**Data changes:** [ migration, backfill, reversibility ]
+
+**Tests affected:** [ suite — what changes ]
 ````
 
 ## Relationship to the ADR
 
-Each option's tech details render as a `#### Tech Details` subsection in that option's **Evaluation of the Options** section (see `reference/adr-template.md`). Omit the subsection when no tech details were produced.
+Each option's tech details render as its `#### Tech Details` subsection inside **Evaluation of the Options** (see **reference/adr-template.md**). The chosen option's change IDs are then ordered, verified, and given rollback lines in `## Implementation Plan`; the plan references the diffs, never restates them.

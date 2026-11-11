@@ -1,6 +1,6 @@
 # Example: Keeping ADR Diagrams Current After Mid-Session Corrections
 
-**Scenario**: In an ADR session about choosing a message queue, the user corrects a decision driver and introduces a new option after evaluation has started, then reveals a new dead-letter/replay flow. This example shows how **sync-diagrams** updates the affected diagrams (decision driver map, option comparison matrix, elimination tree) and adds a new diagram for the newly revealed context, so the visual record never goes stale.
+**Scenario**: In an ADR session about choosing a message queue, the user corrects a decision driver and introduces a new option after evaluation has started, then reveals a new dead-letter/replay flow. This example shows how **sync-diagrams** updates the affected artifacts (driver table, option comparison matrix, elimination tree) and adds a new diagram for the newly revealed context, so the record never goes stale.
 
 **Applies**: `sync-diagrams` — triggered whenever the user corrects previously confirmed content or reveals new context mid-session. It runs on top of whatever capability handled the change (here **evaluate-options**), not as part of the linear define-problem → compile-adr sequence.
 
@@ -17,8 +17,7 @@
 
 **Diagrams already in the session**:
 1. C4 context diagram of the pipeline
-2. Decision driver map (hard vs soft)
-3. Option comparison matrix + elimination tree
+2. Option comparison matrix + elimination tree
 
 ---
 
@@ -41,20 +40,17 @@
 | Low cost | ⚠️ (infra cost, no license fee) |
 | Managed service | ❌ (self-hosted) |
 
-**Agent output — updated decision driver map**:
-> Updated: added the "EU data residency" hard constraint to the driver map.
+**Agent output — updated driver table**:
+> Updated: added the "EU data residency" hard constraint. It enters the matrix below rather than a diagram of its own — a driver map would only re-encode this table.
 
-```mermaid
-flowchart TD
-    Root["Decision drivers"] --> Hard["Hard constraints"]
-    Root --> Soft["Soft preferences"]
-    Hard --> H1["At-least-once delivery"]
-    Hard --> H2["GCP integration"]
-    Hard --> H3["EU data residency"]
-    Soft --> S1["Team familiarity"]
-    Soft --> S2["Low cost"]
-    Soft --> S3["Managed service"]
-```
+| Tag | Driver | Threshold | Measured by |
+|---|---|---|---|
+| `HC 1` | At-least-once delivery | No lost message in the replay test | Consumer replay test |
+| `HC 2` | GCP integration | Managed service reachable from the VPC | Private-IP connect |
+| `HC 3` | EU data residency | 100% of message data stored in EU regions | Region config audit |
+| `SP 1` | Team familiarity | No training before launch | Team survey |
+| `SP 2` | Low cost | ≤ €300/month | Provider invoice |
+| `SP 3` | Managed operations | Patching handled by the provider | Provider feature list |
 
 **Agent output — updated comparison matrix + elimination tree**:
 > Updated: Redpanda added to the matrix; Pub/Sub now fails the EU data residency hard constraint and is eliminated.
@@ -111,13 +107,13 @@ flowchart TD
 
 ---
 
-## Final check (sync-diagrams step 5)
+## Final check (sync-diagrams step 4)
 
 **Agent output**:
-> Cross-check of the full diagram set:
+> Cross-check of the full artifact set:
 > - C4 context diagram — unchanged, pipeline topology is unaffected ✅
-> - Decision driver map — updated with the EU residency constraint ✅
+> - Driver table — updated with the EU residency constraint ✅
 > - Comparison matrix + elimination tree — updated with Redpanda and the flipped recommendation ✅
 > - Dead-letter flow — new diagram covering the newly revealed context ✅
 >
-> Every confirmed fact is now represented in at least one diagram, and no diagram contradicts the latest state.
+> Every confirmed fact now appears in a table or diagram, and no diagram contradicts the latest state.

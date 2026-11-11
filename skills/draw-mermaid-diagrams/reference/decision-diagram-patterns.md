@@ -14,7 +14,7 @@ Draw the matrix first when options are already evaluated; draw the map first whe
 
 ## Driver map
 
-A two-branch tree separating hard constraints from soft preferences.
+A two-branch tree separating hard constraints from soft preferences. Draw it only when it earns its place: the split is contested, or drivers trade off against each other. When it would just restate a driver table, a table is enough.
 
 - Root: `Decision drivers`.
 - Branch 1: `Hard constraints` — every knock-out driver.

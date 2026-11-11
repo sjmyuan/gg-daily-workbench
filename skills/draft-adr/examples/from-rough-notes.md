@@ -82,7 +82,7 @@
 > sequenceDiagram
 >     %% Level: container — cross-system flow
 >     actor User
->     actor Sec as "Security Team"
+>     actor Sec as Security Team
 >     participant BE as "Node.js Backend"
 >     participant AUTH as "AuthN Service (external)"
 >
@@ -102,16 +102,16 @@
 > The security team's main concern is being able to revoke access immediately if an account is compromised. The frontend team wants something simple that works well with SPAs. The backend team cares about statelessness for horizontal scaling. Also we're SOC 2 audited, so we need audit logging.
 
 **Agent output**:
-> Let me organize these into hard constraints and soft preferences:
+> Let me organize these into hard constraints and soft preferences, each with a metric:
 >
 > **Hard Constraints (must-haves)**:
-> 1. Immediate token/session revocation — security team's non-negotiable for compromised accounts
-> 2. SOC 2 compliance — audit logging for all auth events
+> 1. `HC 1` Immediate revocation — revoked access rejected within 5s, measured by the revocation test
+> 2. `HC 2` SOC 2 audit — an audit record for 100% of auth events, measured by audit-log sampling
 >
 > **Soft Preferences (nice-to-haves)**:
-> 3. SPA-friendly — works well with React single-page app architecture
-> 4. Statelessness — backend team prefers no server-side session state for horizontal scaling
-> 5. SSO readiness — should not block future SSO integration
+> 3. `SP 1` SPA-friendly — no full-page reload on login, measured by the login flow test
+> 4. `SP 2` Statelessness — no session state on the backend, measured by deployment review
+> 5. `SP 3` SSO readiness — an OIDC provider added within 6 months without rewriting auth, measured by a spike
 >
 > Would you like to reorder or adjust any of these?
 

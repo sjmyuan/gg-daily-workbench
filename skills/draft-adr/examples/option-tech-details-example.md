@@ -1,8 +1,8 @@
 # Example: Tech Details Per Option — Inter-Service Communication
 
-**Scenario**: While drafting the "Inter-service communication" ADR (options from a payment-monolith spike), the user asks to see each option's tech details — architecture and concrete code changes with locations — before choosing.
+**Scenario**: While drafting the "Inter-service communication" ADR from a payment-monolith spike, the agent applies **detail-options-tech** so every option shows its target state and grounded change set before the user chooses.
 
-**Applies**: `detail-options-tech` (within `evaluate-options`), rendered into the ADR by `compile-adr`.
+**Applies**: `detail-options-tech` (inside `evaluate-options`), rendered by `compile-adr`.
 
 ---
 
@@ -10,11 +10,11 @@
 
 ### Options being evaluated
 
-| Option | Description | Pros | Cons |
-|---|---|---|---|
-| Option 1: Synchronous REST | Services call each other via REST APIs | Simple; team familiar | Tight coupling; cascading failures |
-| Option 2: Async events (Kafka) | Services communicate via event streams | Loose coupling; resilience | Learning curve; eventual consistency |
-| Option 3: Hybrid | REST for queries, events for commands | Best of both worlds | Two patterns to maintain |
+| Option | Mechanism |
+|---|---|
+| Option 1: Synchronous REST | HTTP calls between services |
+| Option 2: Async events (Kafka) | Event stream between services |
+| Option 3: Hybrid | REST for queries, events for commands |
 
 ### Evidence base — findings doc evidence map (from the spike)
 
@@ -24,17 +24,17 @@
 | `BankTransferService.java:88` | `transfer(TransferRequest)` | Executes bank-transfer DB writes |
 | `WalletService.java:120` | `credit(WalletCredit)` | Executes wallet-credit DB writes |
 | `pom.xml:21` | dependencies | Spring Boot starters (verified: no Kafka) |
-| `application.yml:52` | `payment.services` | Service URL config block |
+| `application.yml:52` | `payment.services` | Service URL config |
 
-Findings-doc current state: single monolith — `PaymentOrchestrator` calls `BankTransferService` and `WalletService` in-process, one shared `Payment DB`.
+Current state: one monolith — `PaymentOrchestrator` calls both services in-process against one `Payment DB`.
 
 ---
 
-## Expected output — per-option tech details
+## Expected output
 
 ### Option 1: Synchronous REST
 
-#### Target-state diagram (C4 container)
+#### Tech Details
 
 ```mermaid
 C4Container
@@ -42,33 +42,36 @@ C4Container
   Container(pay, "Payment Service", "Spring Boot", "Orchestrates payments")
   Container(bt, "Bank Transfer Service", "Spring Boot", "Exposes REST /transfer")
   Container(w, "Wallet Service", "Spring Boot", "Exposes REST /credit")
-  ContainerDb(db, "Payment DB", "PostgreSQL", "Shared data store")
-  Rel(api, pay, "REST")
-  Rel(pay, bt, "REST /transfer")
-  Rel(pay, w, "REST /credit")
-  Rel(bt, db, "JDBC")
-  Rel(w, db, "JDBC")
+  ContainerDb(db, "Payment DB", "PostgreSQL", "Shared store, owned by payment")
+  Rel(api, pay, "routes /payments", "HTTPS, sync")
+  Rel(pay, bt, "POST /transfer (new)", "REST, sync, p99 250ms")
+  Rel(pay, w, "POST /credit (new)", "REST, sync, p99 150ms")
+  Rel(bt, db, "writes bank_transfers", "JDBC")
+  Rel(w, db, "writes wallet_credits", "JDBC")
 ```
 
-#### Sequence: payment flow
+| Delta | Element |
+|---|---|
+| `NEW` | REST endpoints on `BankTransferService`, `WalletService` |
+| `CHANGED` | `PaymentOrchestrator` — in-process calls become HTTP calls |
 
 ```mermaid
 sequenceDiagram
-  %% Level: container — cross-system flow
   participant API as API Gateway
   participant PS as Payment Service
   participant BTS as Bank Transfer Service
   participant DB as Payment DB
   API->>PS: POST /payments
-  PS->>BTS: POST /transfer (new HTTP hop)
+  PS->>BTS: POST /transfer (new)
   BTS->>DB: UPDATE bank_transfers
-  BTS-->>PS: 200 OK
+  BTS-->>PS: 201 Created
+  Note over PS,BTS: timeout 3s → one retry → fail the payment
   PS-->>API: 201 Created
 ```
 
-#### Code changes
+**Code changes:**
 
-1. **`BankTransferService.java:88` — `transfer(TransferRequest)`** (verified)
+1. **`C1` — `BankTransferService.java:88` `transfer(TransferRequest)`** (verified)
    - Current: plain method `public void transfer(TransferRequest req)`, called only in-process.
    - Diff:
      ```diff
@@ -89,11 +92,11 @@ sequenceDiagram
      +  public void transferEndpoint(@RequestBody TransferRequest req) {
      +    transfer(req);
      +  }
-     }
+      }
      ```
-   - How: annotate the class with `@RestController` + `@RequestMapping("/transfer")`, add a thin REST wrapper that delegates to the existing `transfer`.
+   - How: annotate the class with `@RestController` + `@RequestMapping("/transfer")`, add a thin REST wrapper delegating to `transfer`.
 
-2. **`PaymentOrchestrator.java:142` — `processPayment(Order)`** (verified)
+2. **`C2` — `PaymentOrchestrator.java:142` `processPayment(Order)`** (verified)
    - Current: `bankTransferService.transfer(req)` — direct in-process call.
    - Diff:
      ```diff
@@ -104,9 +107,9 @@ sequenceDiagram
      -    bankTransferService.transfer(req);
      +    restTemplate.postForObject(btUrl + "/transfer", req, Void.class);
      ```
-   - How: replace the in-process call with a REST client call to the bank-transfer service URL.
+   - How: replace the in-process call with a REST client call to the configured service URL.
 
-3. **`application.yml:52` — `payment.services`** (inferred: shape read, new value)
+3. **`C3` — `application.yml:52` `payment.services`** (inferred: shape read, new value)
    - Current: block exists with no bank-transfer URL.
    - Diff:
      ```diff
@@ -119,48 +122,55 @@ sequenceDiagram
      ```
    - How: add the URL under the existing `payment.services` block.
 
-Note: `pom.xml:21` already includes `spring-web` (verified) — no new dependency needed.
+**New files:** none.
+
+**Config / dependencies:** covered by `C3`; `spring-web` already in `pom.xml:21` (verified).
+
+**Tests affected:** add `PaymentOrchestratorIT` asserting the HTTP hop.
+
+**Data changes:** none.
 
 ---
 
 ### Option 2: Async events (Kafka)
 
-#### Target-state diagram (C4 container)
+#### Tech Details
 
 ```mermaid
 C4Container
   Container(api, "API Gateway", "Kong", "Routes requests")
   Container(pay, "Payment Service", "Spring Boot", "Publishes payment commands")
-  Container(kafka, "Kafka", "Event bus", "payment-commands topic")
+  Container(kafka, "Kafka", "Event bus", "payment-commands topic, 3 partitions")
   Container(bt, "Bank Transfer Service", "Spring Boot", "Consumes transfer commands")
   Container(w, "Wallet Service", "Spring Boot", "Consumes credit commands")
-  ContainerDb(db, "Payment DB", "PostgreSQL", "Shared data store")
-  Rel(api, pay, "REST")
-  Rel(pay, kafka, "publish")
-  Rel(kafka, bt, "subscribe")
-  Rel(kafka, w, "subscribe")
-  Rel(bt, db, "JDBC")
+  ContainerDb(db, "Payment DB", "PostgreSQL", "Shared store, owned by payment")
+  Rel(api, pay, "routes /payments", "HTTPS, sync")
+  Rel(pay, kafka, "publishes PaymentCommand (new)", "async")
+  Rel(kafka, bt, "delivers PaymentCommand (new)", "async, at-least-once")
+  Rel(kafka, w, "delivers CreditCommand (new)", "async, at-least-once")
+  Rel(bt, db, "writes bank_transfers", "JDBC")
 ```
 
-#### Sequence: payment flow
+| `CHANGED` | `PaymentOrchestrator` — in-process calls become publishes |
+| `NEW` | Kafka cluster, `payment-commands` topic, two consumers |
 
 ```mermaid
 sequenceDiagram
-  %% Level: container — cross-system flow
   participant API as API Gateway
   participant PS as Payment Service
   participant K as Kafka
   participant BTS as Bank Transfer Service
   API->>PS: POST /payments
   PS->>K: publish PaymentCommand
+  PS-->>API: 202 Accepted
   K->>BTS: deliver PaymentCommand
   BTS->>BTS: transfer(req)
-  PS-->>API: 202 Accepted
+  Note over K,BTS: consumer failure → retry, then dead-letter topic
 ```
 
-#### Code changes
+**Code changes:**
 
-1. **`pom.xml:21` — dependencies** (verified: no Kafka present)
+1. **`C1` — `pom.xml:21` dependencies** (verified: no Kafka present)
    - Diff:
      ```diff
      diff --git a/pom.xml b/pom.xml
@@ -178,7 +188,7 @@ sequenceDiagram
      ```
    - How: add the Spring Kafka starter dependency.
 
-2. **`PaymentOrchestrator.java:142` — `processPayment(Order)`** (verified)
+2. **`C2` — `PaymentOrchestrator.java:142` `processPayment(Order)`** (verified)
    - Current: `bankTransferService.transfer(req)` — direct in-process call.
    - Diff:
      ```diff
@@ -189,9 +199,9 @@ sequenceDiagram
      -    bankTransferService.transfer(req);
      +    kafkaTemplate.send("payment-commands", new PaymentCommand(order));
      ```
-   - How: publish a command event instead of calling in-process.
+   - How: publish a command event instead of calling in-process; the response becomes `202 Accepted`.
 
-3. **`BankTransferService.java:88` — `transfer(TransferRequest)`** (verified)
+3. **`C3` — `BankTransferService.java:88` `transfer(TransferRequest)`** (verified)
    - Diff:
      ```diff
      diff --git a/src/main/java/com/pay/BankTransferService.java b/src/main/java/com/pay/BankTransferService.java
@@ -206,28 +216,19 @@ sequenceDiagram
      +  public void onPaymentCommand(PaymentCommand cmd) {
      +    transfer(cmd.toRequest());
      +  }
-     }
+      }
      ```
    - How: add a listener that delegates to the existing `transfer`.
 
-4. **`application.yml:52`** (inferred: shape read, new values)
-   - Diff:
-     ```diff
-     diff --git a/src/main/resources/application.yml b/src/main/resources/application.yml
-     --- a/src/main/resources/application.yml
-     +++ b/src/main/resources/application.yml
-     @@ -52,4 +52,7 @@ spring:
-       application:
-         name: payment-service
-     +  kafka:
-     +    bootstrap-servers: kafka:9092
-     ```
-   - How: add Kafka bootstrap config under the existing `spring` block.
+4. **`C4` — `application.yml:10` `spring` block** (inferred: shape read, new location)
+   - How: add `spring.kafka.bootstrap-servers: kafka:9092` under the existing `spring` block.
 
-Note: the `PaymentCommand` DTO and topic name are **unverified** — flagged for follow-up. The response becomes `202 Accepted` (async).
+**New files:** `PaymentCommand` DTO — **unverified**, flagged for follow-up.
 
----
+**Config / dependencies:** covered by `C1` (starter) and `C4` (config key).
 
-## How it renders in the ADR
+**Tests affected:** add a consumer test and a dead-letter assertion.
 
-The confirmed tech details inform the recommendation (Option 1: few verified diffs; Option 2: new dependency, listener, async semantics). At `compile-adr`, each option's evaluation section carries a `#### Tech Details` subsection with its diagram and code change profile — so reviewers see the concrete implementation of every option.
+**Data changes:** none.
+
+*(Option 3: Hybrid is omitted — it composes the two shapes above; the compiled ADR still carries its own diagram and change set.)*
