@@ -70,6 +70,7 @@ first, on every element the edit touches or is tempted to keep.
 |---|---|---|
 | Fact | Would a step guess without it? | The value is inferable, or the step restates it |
 | Procedure | Does an output depend on these steps in this order? | Nothing breaks without it |
+| Judgment | Does output quality depend on this guidance? | The agent guesses a tradeoff, or returns baseline output |
 | Routing + guard | Which capability would be missed, or which observed failure would return? | Neither |
 
 - "Why must it exist?" and "what breaks if we remove it?" are the same question; a vague answer is a deletion.
@@ -90,14 +91,15 @@ A vague step is the usual cause of an addition. Tighten the step instead of appe
 
 ## Funding rule
 - Growth is paid in **elements**, not chars.
+- Discriminative content per **empowerment-model** — exemplars, failure modes, domain facts, tradeoffs — is added without retiring an element.
 - Name the element a change supersedes, and retire it in the same edit.
 - Trimming prose is not payment.
 - Extracting into `reference/` is not payment — same content, one more file.
-- An addition that retires nothing is valid only when it serves a trigger no existing element serves.
+- An addition that retires nothing is valid only when it serves a trigger no existing element serves, or is discriminative content.
 - An unfunded request is reported as **No change needed** — never downsized into a smaller addition.
 - A reshape that improves the structure at flat or lower element count is a complete edit, not a partial one.
 - State that new trigger in the result; otherwise the addition is unfunded and incomplete.
-- Net element count per edit: flat or down, unless the user asked for new scope.
+- Net **structural** element count per edit: flat or down, unless the user asked for new scope.
 
 ## Element delta ledger
 Close every edit with the counts, taken at inventory and again after validation.
@@ -109,7 +111,7 @@ Close every edit with the counts, taken at inventory and again after validation.
 | chars | … | … | … |
 
 One row per element type: capabilities, steps, knowledge rows, rules, guide rows, examples, references, chars.
-Summarize in one line: `−1 capability, −1 rule, −2 examples, −840 chars`. Any positive Δ must be the funded one.
+Summarize in one line: `−1 capability, −1 rule, −2 examples, −840 chars`. Any positive structural Δ must be the funded one.
 
 ## Review-first composition
 Open-ended "improve this skill" = diagnose then edit:

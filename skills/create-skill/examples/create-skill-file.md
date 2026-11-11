@@ -14,6 +14,7 @@ User request: "Create a skill that writes consistent git commit messages with co
 | Description | "Write consistent git commit messages with conventional prefixes and a 72-char subject limit. Use when writing, fixing, or refining a commit message." |
 | When-to-use scenarios | bug fix, feature, breaking change, refining an existing message |
 | Capabilities | `<write-commit-message>` |
+| Task regime | contractual — fixed literals and order per **empowerment-model** |
 | Knowledge | prefix table, 72-char wrap rule, footer format |
 | Rules | 1 rule routing commit-writing requests |
 | Reference needs | none — rubrics are small |
@@ -35,6 +36,7 @@ Classification ran before any section was written; the undecidable step was fixe
 
 ## Post-Write Checks
 - Adequacy gates re-run per **content-model** — one owner per claim, every step decidable.
+- Prescriptiveness checked per **empowerment-model** — every step passes the expert test.
 - Prose written per **writing-style** — directive voice, BLUF, hard caps, no banned phrases.
 - SKILL.md written within a per-section char budget, then measured per **size-limits** (≤12,000 chars / 150 lines); over-budget drafts fixed per **size-remediation** (lever order) before finalizing.
 

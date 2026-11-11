@@ -21,6 +21,7 @@ Read the file and map constructs to skill targets:
 
 Key moves:
 - Rename capabilities to action verbs — each tag names what the step does, never a noun
+- Classify judgment guidance as knowledge — an opinion scripted as steps reads as an order
 - Extract large rubrics (templates, scoring tables) to `reference/` files
 - Add a condition-first `<context-loading-guide>`
 - Keep the original agent as a thin delegation that applies the skill step by step

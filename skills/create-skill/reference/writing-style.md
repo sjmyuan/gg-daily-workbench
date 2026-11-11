@@ -25,10 +25,11 @@ severities; this copy carries the rules and the caps.
 | When-to-use bullet | 1 scenario, 1 intent verb |
 | Rule | 1 sentence ("When X → use **capability**") |
 | Knowledge bullet | 1 fact |
+| Constraint rationale | 1 reason per constraint |
 | Paragraph | ≤3 sentences |
 | Sentence | ≤20 words, one clause |
 
-- Each bullet = one claim, no justification; reasoning belongs in a table or the takeaway.
+- Each bullet = one claim; a non-obvious constraint may carry one reason per **empowerment-model**.
 - Rubrics, criteria, and budgets are tables; prose only summarizes them.
 
 ## Banned
@@ -42,7 +43,7 @@ severities; this copy carries the rules and the caps.
 
 ## Per file type
 
-- `SKILL.md` — `description` = domain summary + trigger phrase matching when-to-use; when-to-use bullets are user scenarios; knowledge holds noun-phrase subsections of facts; capabilities hold numbered imperative steps; rules are pure "when → capability" routing.
+- `SKILL.md` — `description` = domain summary + trigger phrase matching when-to-use; when-to-use bullets are user scenarios; knowledge holds noun-phrase subsections of facts and judgment; capabilities hold ordered steps, or outcome plus judgment content under a judgment regime; rules are pure "when → capability" routing.
 - `reference/` — title + rubric only; no narrative intro, no restatement of SKILL.md.
 - `examples/` — scenario heading names the trigger and the distinguishing case; output shown as the capability would produce it; minimum length that demonstrates the capability.
 

@@ -8,7 +8,7 @@ Apply **Occam's Razor**: every step, rule, sentence, and example must justify it
 ## SKILL.md
 
 - No verbose intro or context-setting that restates the section name — the XML tag already signals intent.
-- No meta-commentary explaining why a step exists.
+- No meta-commentary explaining why a step exists; one reason per non-obvious constraint stands per **empowerment-model**.
 - Bullets or short phrases over full sentences where clarity allows.
 - No repetition of content already in another section or a reference file.
 - Edge cases and exhaustive detail belong in `reference/`, not inside a capability step.

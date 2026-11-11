@@ -1,6 +1,6 @@
 # Example: Classify Mixed Content Before Writing Sections
 
-**Scenario**: A user supplies a support-triage agent prompt whose bullet lists mix facts, procedures, and prohibitions. The content must be sorted before any section is written — the form the source used says nothing about the class.
+**Scenario**: A user supplies a support-triage agent prompt whose bullet lists mix facts, procedures, prohibitions, and judgment. The content must be sorted before any section is written — the form the source used says nothing about the class.
 
 **Applies**: **classify-skill-content**
 
@@ -13,6 +13,7 @@ Source excerpt, supplied unclassified:
 - Handle billing questions as appropriate.
 - Tickets older than 72 hours are breaching.
 - When a ticket duplicates another, merge it into the parent and notify the reporter.
+- Prefer the customer's own wording over a paraphrase when the ticket is ambiguous.
 
 ## Step 2 — Classify each claim
 
@@ -24,8 +25,9 @@ Source excerpt, supplied unclassified:
 | 4 | Handle billing as appropriate | procedure | ordered steps, no decidable action |
 | 5 | 72 hours is breaching | fact | holds without an actor |
 | 6 | Duplicate → merge and notify | two classes | rule decides when; steps do the work |
+| 7 | Prefer the customer's wording | judgment | guides a call; no order fixes it |
 
-Claim 3 is the trap: the source writes the matrix as a numbered list, so a shape-first read makes it a "capability" of four numbered facts. Claim 1 is the reverse trap: it reads like an instruction ("escalate to #support-oncall") but states a value the agent cannot infer.
+Claim 3 is the trap: the source writes the matrix as a numbered list, so a shape-first read makes it a "capability" of four numbered facts. Claim 1 is the reverse trap: it reads like an instruction ("escalate to #support-oncall") but states a value the agent cannot infer. Claim 7 is the third trap: written as a command, but no step follows from it — it is taste, and taste belongs to knowledge.
 
 ## Step 3 — Split and route
 
@@ -36,16 +38,18 @@ Claim 3 is the trap: the source writes the matrix as a numbered list, so a shape
 | 3 | procedure | capability `<score-severity>`; the 1–4 matrix is a fact → `reference/severity-matrix.md` |
 | 4 | procedure, not decidable | back to the user as an open question — never invented |
 | 6 | split | rule "When a ticket duplicates another → use **merge-ticket**" plus its capability steps |
+| 7 | judgment | knowledge — one principle plus its reason: a paraphrase loses the exact failure signal |
 
 ## Expected Output
 
 | Section | Holds |
 |---|---|
-| knowledge | `#support-oncall`, 72-hour threshold, severity matrix (routed to `reference/`) |
+| knowledge | `#support-oncall`, 72-hour threshold, severity matrix (routed to `reference/`), customer-wording principle |
 | capabilities | `<score-severity>`, `<merge-ticket>`, `<resolve-ticket>` |
 | rules | routing for all three capabilities; one guard (claim 2) |
 
 Validation after routing:
 - Claim 4 is reported to the user, not filled in — an undecidable step is an adequacy failure, not a licence to guess.
+- Claim 7 stays a principle, not a step: routing it to a capability would script a call the agent must make.
 - No fact sits in a capability step; no capability decides its own trigger.
 - Each capability has one route; the one known misapplication has one guard.
