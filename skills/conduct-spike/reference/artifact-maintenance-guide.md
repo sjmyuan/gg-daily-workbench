@@ -54,7 +54,7 @@ A fact discovered during **delivery** enters at the evidence doc via `update-fin
 
 ## Sync procedure
 
-1. Capture the change: what changed, which artifact is the origin (evidence doc / ADR / scope map / solution doc), and what triggered it. A changed decision reopens its problem to `deciding` in `scope.md` per the scope-map status.
+1. Capture the change: what changed, which artifact is the origin (evidence doc / ADR / scope map / solution doc), and what triggered it. A changed decision reopens its problem to `deciding` in `scope.md` per the scope-map status; prune any assumption the change settles.
 2. Trace the propagation path per the **Propagation matrix** — per area: findings → that area's ADRs → the solution doc's affected canonical section(s); a scope-map delta (add/adjust area or problem) propagates to the affected ADR(s) and solution sections.
 3. Apply the change at the origin through its owning skill — `draft-adr` for ADRs, `document-findings` for findings docs, `write-solution-doc` for the solution doc (the evidence doc carries the claim ledger). Never hand-edit.
 4. Run the **no-note scan** on each touched ADR and solution doc; rewrite until clean.

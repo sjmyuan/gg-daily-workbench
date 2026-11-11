@@ -54,7 +54,7 @@ Everything the orchestrator already holds travels in the brief — a sub-agent n
 | Known-context item | Source | Mode |
 |---|---|---|
 | Spike goal, area problems | `scope.md` | Path + digest |
-| Gate record: restatement, inferences, accepted assumptions | `scope.md` `## Accepted assumptions` | Digest |
+| Gate record: restatement, inferences, admitted assumptions | `scope.md` (gate block + `## Accepted assumptions`) | Digest |
 | Area boundaries, out-of-scope siblings | scope dialog | Inline |
 | User-stated constraints, facts, decisions, rejected options | user dialog | Inline |
 | Decision drivers, candidate options | user dialog | Inline |

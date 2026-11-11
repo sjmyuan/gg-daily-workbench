@@ -23,7 +23,7 @@
 Recommendation: B — the request names three payment types with different scaling needs.
 Default if unanswered: none — blocking.
 
-User: "Q1: B." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, unverified)`: the spike ends at documents, not code — recorded in `scope.md` `## Accepted assumptions`.
+User: "Q1: B." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, unverified)`: the spike ends at documents, not code — recorded in `scope.md` `## Accepted assumptions` because it changes the done criteria. The other inferences stay in the gate list, unpersisted: (i) is an ADR driver and (ii) was settled by Q1.
 
 ### Assistant Output (after the gate)
 

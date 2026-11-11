@@ -34,6 +34,8 @@ A finding becomes a question only when a different answer changes one of:
 
 Everything else is a note, never a question.
 
+A finding the repo, an artifact, or a measurement can settle is an **investigation target** — never a question and never an assumption.
+
 ## Clarify versus push back
 
 | | **Clarify** | **Push back** |

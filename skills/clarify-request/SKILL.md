@@ -17,7 +17,7 @@ description: Clarify a request before accepting it: restate the ask, itemize inf
 <request-doctrine>
 Treat every user-supplied request as an **unverified claim**. Never accept one because it looks confident, detailed, or familiar.
 
-A request has **no primary source** — it cannot be "verified", only made decidable. The closer is **nothing material left to ask**: the agent judges the ask sufficient to act, and every inference it still holds is recorded as a labeled assumption. A request is either **clarified** (the user was unclear) or **pushed back** on (the user is clear, the evidence disagrees) — clarify the ask, not the person. The gate runs in the **calling session only**; a dispatched sub-agent returns open questions upward and never asks the user.
+A request has **no primary source** — it cannot be "verified", only made decidable. The closer is **nothing material left to ask**: the agent judges the ask sufficient to act, and every inference it still holds is shown back; only one that can change a decision is admitted as a labeled assumption. A request is either **clarified** (the user was unclear) or **pushed back** on (the user is clear, the evidence disagrees) — clarify the ask, not the person. The gate runs in the **calling session only**; a dispatched sub-agent returns open questions upward and never asks the user.
 </request-doctrine>
 
 <intake-gate>
@@ -29,7 +29,7 @@ Every request produces an **acceptance record**; no work starts without one:
 | Inferred | Every reading the ask left open, itemized |
 | Questions | Rounds asked, and what each answer settled |
 | Gate state | `ACCEPTED` · `ACCEPTED-WITH-ASSUMPTIONS` · `BLOCKED` |
-| Accepted assumptions | One `Assumption (user-accepted, unverified)` line per default |
+| Accepted assumptions | One `Assumption (user-accepted, unverified)` line per **admitted** default |
 
 The gate is decided by the **inference count**, never by self-judged ambiguity:
 
@@ -44,10 +44,20 @@ The gate is decided by the **inference count**, never by self-judged ambiguity:
 <acceptance-record>
 The caller owns the record and writes it into the artifact it already maintains — a spike scope, a plan charter, a delivery index brief, an investigation answer, or the session itself when the work produces no artifact. Never a second checkpoint, never a new doc.
 
-- Label every default `Assumption (user-accepted, unverified)` and carry it until evidence or the user settles it.
+- Label every admitted default `Assumption (user-accepted, unverified)` and carry it until evidence or the user settles it.
 - A record with a gate state but no inference list is evidence the gate did not run.
 - Promote an assumption to fact only with evidence, cited at its source.
+- Delete an assumption the moment no decision depends on it, the user settles it, or evidence verifies it — no changelog.
 </acceptance-record>
+
+<assumption-admission>
+An accepted assumption is a **decision premise**, not a reading of the ask. Persist one only when all three hold:
+- **Not obtainable** — the repo, an artifact, or a measurement can settle it → it is an investigation target, recorded as a Gap where the evidence lives, never in the scope record.
+- **Decision-relevant** — changing it would change a driver, an option compared, the chosen option, the done criteria, or the area/problem split.
+- **User-held or safely defaulted** — the user stated it or accepted the default; never a private reading.
+
+Every other inference is still shown in the inference list; it is resolved or dropped with its reason, not persisted. Removal test at every write: if deleting the line changes no decision, delete it.
+</assumption-admission>
 
 <re-challenge-triggers>
 Re-open the gate after evidence arrives only on a named trigger: evidence contradicts a stated constraint; a goal term maps to two code realities; the reported symptom's cause is elsewhere; evidence makes the stated scope disproportionate; two areas' evidence disagree. Re-open the affected claims only, narrower than round 1, and say what changed.
@@ -78,7 +88,7 @@ Re-open the gate after evidence arrives only on a named trigger: evidence contra
 7. Ask them as one batch: each with 2–3 options, a recommendation with its evidence, and a default.
 8. Record each answer; re-ask only what is still undecidable — max 2 rounds.
 9. Set the gate state per **intake-gate** and hand the record to the caller, which writes it per **acceptance-record**.
-10. Validate: the inference list was shown before any work started; every question carried options plus a recommendation; no material finding was dropped unrecorded; each remaining ambiguity is labeled `Assumption (user-accepted, unverified)`; the record names the artifact that owns it.
+10. Validate: the inference list was shown before any work started; every question carried options plus a recommendation; no material finding was dropped unrecorded; each decision-changing default is labeled `Assumption (user-accepted, unverified)` and none is obtainable from code; the record names the artifact that owns it.
 </clarify-the-ask>
 
 <re-challenge-the-ask>

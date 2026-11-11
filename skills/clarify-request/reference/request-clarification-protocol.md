@@ -46,10 +46,11 @@ Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with 
 
 ## Assumption lifecycle
 
-1. Label every default `Assumption (user-accepted, unverified)`.
-2. Hand it to the calling skill's artifact — never leave it in conversation only.
-3. Never promote it to fact without evidence.
+1. Admit only a default that passes **assumption-admission** — decision-relevant, not obtainable from code or artifacts, user-held or safely defaulted.
+2. Label it `Assumption (user-accepted, unverified)` and hand it to the calling skill's artifact — never leave it in conversation only. Show the rest in the inference list; do not persist them.
+3. Never promote it to fact without evidence; a code-answerable fact is an investigation target, not an assumption.
 4. When evidence contradicts one, it becomes a re-challenge trigger.
+5. Delete one the user settles, evidence verifies, or no downstream decision cites — state the reason, never keep a changelog.
 
 ## Ownership
 
@@ -70,6 +71,8 @@ Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with 
 | A **private** restatement — read, assume, start work | Show the inference list and get it confirmed |
 | Presenting push-back as clarification | Label it **push back** |
 | Keeping assumptions in conversation | Write them into the owning artifact |
+| Recording a code fact as an assumption | Investigate it; record a Gap where the evidence lives |
+| Keeping every inference as an assumption | Admit only decision-changing premises; show the rest |
 
 ## Checklist
 

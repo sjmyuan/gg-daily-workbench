@@ -34,7 +34,7 @@ Writes stay inside `**/spikes/**` — never code, config, tests, or outside file
 </write-boundary>
 
 <scope-acceptance-gate>
-No `scope.md` or findings compilation until `clarify-request`'s intake gate passes — on **every** entry path: new, continued, user-supplied, uncertainty. It returns restatement, itemized inferences, and gate state: nothing inferred → `ACCEPTED`; anything inferred → show the list and ask before decomposing. Record each default under `## Accepted assumptions` as `Assumption (user-accepted, unverified)`. It replaces the scope confirmation — never a second checkpoint. Procedure: **reference/define-spike-scope-procedure.md**.
+No `scope.md` or findings compilation until `clarify-request`'s intake gate passes — on **every** entry path: new, continued, user-supplied, uncertainty. It returns restatement, itemized inferences, and gate state: nothing inferred → `ACCEPTED`; anything inferred → show the list and ask before decomposing. Record only decision-changing defaults in `## Accepted assumptions`; code facts are not assumptions. It replaces the scope confirmation — never a second checkpoint. Procedure: **reference/define-spike-scope-procedure.md**.
 </scope-acceptance-gate>
 
 <scope-map>
