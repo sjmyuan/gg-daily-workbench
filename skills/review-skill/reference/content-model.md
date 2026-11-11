@@ -4,19 +4,21 @@ Scope: decide what each element **is** before judging where it sits. Structure n
 
 Used by **review-skill-file** (step 1).
 
-## Three classes
+## Four classes
 
 | Class | Answers | Section | Recognise it by |
 |---|---|---|---|
 | **Fact** | What is true? | knowledge | Holds without an actor: definitions, limits, paths, vocabularies, mappings |
 | **Procedure** | How is it done? | capability steps | Ordered actions that turn input into an artifact |
+| **Judgment** | What does good look like? | knowledge | Principles, tradeoffs, heuristics, exemplars, failure modes — guidance for a call the agent makes itself |
 | **Routing + guard** | When does it run, and what is forbidden? | rules | Selects a capability or forbids an action; performs no action itself |
 
 ## Decision order
 
 1. Decides **which** capability runs, or **whether** an action is allowed → rule.
 2. Produces or transforms something through **ordered steps** → capability.
-3. Otherwise → fact.
+3. Guides a judgment call instead of fixing an action → judgment.
+4. Otherwise → fact.
 
 ## Findings
 
@@ -26,6 +28,8 @@ Used by **review-skill-file** (step 1).
 | A constraint list written as numbered steps | 🔴 Major — facts posing as a procedure |
 | A procedure written as knowledge bullets or inside a rule body | 🔴 Major |
 | A rule describing how to perform the work | 🔴 Major |
+| Judgment guidance written as imperative steps | 🔴 Major — recommend restoring the principle and its tradeoff |
+| A judgment claim recorded as a fact | 🟡 Minor — recommend adding the tradeoff it decides |
 | A template or schema duplicated instead of one owner | 🔴 Major |
 | A known misapplication with no guard rule | 🔴 Major |
 | An objective that no step produces | 🟡 Minor |
@@ -34,7 +38,7 @@ Used by **review-skill-file** (step 1).
 | A capability with no routing rule | 🟡 Minor |
 | Prohibition buried mid-step | 🟡 Minor — recommend hoisting to a guard |
 | A claim qualifying as two classes | ⚠️ Inconsistency — report both candidate owners, ask which is canonical |
-| An element whose removal breaks no step, objective, or trigger | 🟡 Minor — recommend deletion, not rewording |
+| An element whose removal breaks no step, objective, trigger, or quality bar | 🟡 Minor — recommend deletion, not rewording |
 | A guard with no nameable failure it prevents | 🟡 Minor |
 
 ## Justification
@@ -43,9 +47,10 @@ Used by **review-skill-file** (step 1).
 |---|---|---|
 | Fact | Would a step guess without it? | the step that reads it |
 | Procedure | Does an output depend on these steps, in this order? | the capability objective |
+| Judgment | Does output quality depend on it? | the tradeoff, failure mode, or exemplar it decides |
 | Routing + guard | Which capability would be missed, or which failure returns? | the trigger, or an observed failure |
 
-An element that no traced step, objective, or failure needs is a deletion finding — never a rewording finding.
+An element that no traced step, objective, tradeoff, or failure needs is a deletion finding — never a rewording finding.
 
 ## Supporting files
 

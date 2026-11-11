@@ -9,6 +9,7 @@ During review, examine all files (SKILL.md, references, and examples) for unnece
 **SKILL.md:**
 - Avoid verbose introductions or context-setting that merely restates the section name. The XML tag (e.g., `<capabilities>`) already signals intent.
 - Avoid meta-commentary explaining *why* a step exists — the step text itself should be self-explanatory.
+  One reason per non-obvious constraint is allowed when it lives in the knowledge entry or reference that owns it.
 - Use bullet points or short phrases instead of full sentences where clarity allows.
 - Do not repeat information already captured in other sections or in reference files.
 - Avoid listing edge cases or exhaustive detail inside capability steps — those belong in reference files loaded on demand.
@@ -46,7 +47,9 @@ Run it after the conciseness scan, and report counts even when every finding is 
 | **Orphan** | No step or rule reaches the element; name the chain or state its absence | 🟡 Minor |
 | **Extraction residue** | A `reference/` file that restates SKILL.md, or is routed from nowhere — relocation, not reduction | 🟡 Minor |
 | **Covered request** | A requested or contemplated addition is already served by an existing element | No finding — verdict "No change needed", name the element |
-| **Unfunded growth** | Element count rose while no element was retired, and no new trigger was added | 🟡 Minor |
+| **Unfunded growth** | Element count rose while no element was retired, no new trigger was added, and no discriminative content was added | 🟡 Minor |
+
+Discriminative content — exemplars, failure modes, tradeoffs — is investment, not unfunded growth.
 
 An addition that lands anyway and duplicates an owner is the **content-model** two-owner 🔴. Check reshape
 first: propose the reclassify, merge, split, rename, or rewrite that carries the request. "No change needed" is reserved

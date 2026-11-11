@@ -30,7 +30,7 @@ Content findings are reported first: a misclassified element outranks a formatti
   These are knowledge the agent needs to recall, not actions to perform.
 - **Impact**: The agent cannot distinguish "what I know" from "what I should do", making it harder to apply the correct step sequence when acting.
 - **Recommendation**: Extract reference tables, directory layouts, API signatures, platform constraints, and banned-practice lists into a dedicated `<knowledge>` section.
-  Keep capabilities as pure step-by-step procedures (e.g., "Steps to create and register a new page: 1. … 2. …").
+  Keep capabilities to ordered steps where the work is contractual (e.g., "Steps to create and register a new page: 1. … 2. …"); design guidance belongs in knowledge as judgment.
 
 #### Rules duplicate content already in capabilities
 - **File**: [SKILL.md](SKILL.md#L133-L160)
@@ -54,8 +54,8 @@ Content findings are reported first: a misclassified element outranks a formatti
 - **File**: [SKILL.md](SKILL.md#L95-L120)
 - **Issue**: Both sections list facts and constraints (`"strict": true`, `rpx` for sizing) rather than describing a procedure to follow.
   A capability should answer "how do I apply TypeScript/styling in this project?", not just enumerate settings.
-- **Recommendation**: Convert to step-by-step procedures ("How to type a develop-miniprogram codebase: 1. … 2. …")
-  or, for purely factual entries (tsconfig flags, forbidden units), move them to `<knowledge>`.
+- **Recommendation**: Convert to ordered steps where a decidable sequence exists ("How to type a component: 1. … 2. …"),
+  or move factual entries (tsconfig flags, forbidden units) and judgment guidance to `<knowledge>`.
 
 #### `<examples>` section is standalone instead of nested inside `<knowledge>`
 - **File**: [SKILL.md](SKILL.md#L162-L175)

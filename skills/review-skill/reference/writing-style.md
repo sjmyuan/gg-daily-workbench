@@ -29,8 +29,8 @@ Complements conciseness (reference/conciseness-check.md) and section semantics (
 | Sentence | ≤20 words, one clause |
 
 ## Atomic bullets
-- Each bullet = one claim, no justification or reasoning.
-- Reasoning goes in a table or the section takeaway — never inside bullets.
+- Each bullet = one claim; one reason per non-obvious constraint is allowed, owned by knowledge or the reference that holds it.
+- A reason longer than one clause goes in a table or the section takeaway.
 
 ## Tables over prose
 - Rubrics, criteria, budgets, and severity maps are markdown tables.
@@ -48,16 +48,16 @@ Complements conciseness (reference/conciseness-check.md) and section semantics (
 - Never restate what a heading, table, or diagram already shows.
 
 ## No meta-commentary or process narration
-- Banned in all three file types: explanations of why a step exists, self-reference ("the above", "this step"), and narration of the author's actions ("I reviewed…", "we then…").
-- Instruction text is self-explanatory; delete any sentence that only describes the document itself.
+- Banned in all three file types: self-reference ("the above", "this step"), and narration of the author's actions ("I reviewed…", "we then…").
+- A reason for a non-obvious constraint is content, not narration; a why-clause that explains the document instead of the work is banned.
 
 ## Per-file rules
 
 **SKILL.md**
 - `description`: one-sentence domain summary + trigger phrase; trigger verbs match `<when-to-use-this-skill>`.
 - `<when-to-use-this-skill>`: user-perspective scenarios, one per bullet, no justification.
-- `<knowledge>`: noun-phrase subsection names; facts as tables or compact bullets; no procedural text.
-- `<capabilities>`: numbered imperative steps; no tables, lookup lists, or constraint bullets (those belong in knowledge).
+- `<knowledge>`: noun-phrase subsection names; facts and judgment as tables or compact bullets; no procedural text.
+- `<capabilities>`: ordered steps, or outcome plus judgment content when the work is judgment; no lookup tables or constraint bullets (those belong in knowledge).
 - `<rules>`: pure "when → capability" routing, one sentence, no implementation detail.
 
 **Reference files**

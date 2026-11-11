@@ -29,7 +29,7 @@ The `description` covers only one of four activation scenarios, causing the skil
   3. User asks to optimize a slow or inefficient query
   4. User asks to convert a query between SQL dialects (e.g., MySQL → PostgreSQL)
   Only scenario 1 ("build a SQL query") is covered by the description's trigger phrase. Scenarios 2–4 have no matching keyword or verb in the description.
-- **Impact**: VS Code/Copilot will not load this skill for review, optimization, or dialect-conversion requests. The agent falls back to generic behavior for three of four documented scenarios.
+- **Impact**: the host will not load this skill for review, optimization, or dialect-conversion requests. The agent falls back to generic behavior for three of four documented scenarios.
 - **Recommendation**: Expand the trigger phrase to cover all scenarios, e.g.: *"Use when the user asks to build, review, optimize, or convert a SQL query."*
 
 #### `<when-to-use-this-skill>` bullet 3 is missing the intent verb
@@ -57,7 +57,7 @@ The `description` covers only one of four activation scenarios, causing the skil
 ---
 
 ## Risks & Assumptions
-- Review assumes the frontmatter `description` is the primary signal used by VS Code/Copilot to decide whether to load the skill.
+- Review assumes the frontmatter `description` is the primary signal used by the host to decide whether to load the skill.
   If a different mechanism is used, the severity of the under-coverage findings may differ.
 - No runtime evaluation was performed — trigger failures are inferred from static analysis of the skill file.
 

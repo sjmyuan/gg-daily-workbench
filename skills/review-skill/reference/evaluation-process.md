@@ -1,19 +1,35 @@
-# Output Evaluation Process
+# Output Evaluation Process (review)
 
-Scope: the reviewer's evaluation check; `create-skill` carries the requirement as an author-side step.
+Scope: the reviewer's evaluation check; `create-skill` carries the requirement as an author-side standard.
 
-A well-structured skill should define an evaluation process to assess the quality of its own output. Look for:
+## Two checks
 
-- A dedicated validation or checklist step within a capability that lists criteria for verifying output correctness.
-- A separate capability focused on evaluating or self-reviewing the skill's output.
-- A reference file containing a quality checklist that the capability instructs the agent to load and apply.
-- Explicit success criteria or pass/fail checks defined in the capability steps.
+| Check | Proves | Required for |
+|---|---|---|
+| **Gate** | The output broke no contract | Contractual capabilities: literals, schema, order, safety |
+| **Grade** | The output is good, not merely valid | Judgment capabilities: design, review, writing, analysis |
 
-Common patterns:
-- "Verify that [output] meets [criteria]" as a step.
-- "Load **reference/quality-checklist.md** and apply each criterion".
-- A dedicated `<validate-output>` capability with ordered validation steps.
+A judgment capability with a gate only passes correct-but-mediocre output.
 
-Severity when absent:
-- No evaluation step in any capability → 🟡 Minor (output reliability depends entirely on agent discretion).
-- No evaluation step AND no examples demonstrating output validation → 🔴 Major (no way to verify output correctness).
+## Gate — accept any of
+
+- A "Verify that [output] meets [criteria]" step.
+- A dedicated validation capability with ordered checks.
+- A reference checklist the capability loads and applies.
+
+## Grade — require
+
+- 3–5 criteria with ordinal levels, and an observable anchor per level.
+- A stated pass bar, for example "≥8/10 and no criterion at 0".
+- Criteria that some output can fail.
+- A table (`Criterion | Levels | Anchor`), inline for ≤3 criteria, else in `reference/`.
+
+## Severities
+
+| Observation | Severity |
+|---|---|
+| No gate in a contractual capability that produces an artifact | 🟡 Minor (a silently wrong literal: 🔴 Major) |
+| No grade in a judgment capability | 🟡 Minor (correct-but-mediocre is the common case) |
+| A criterion no output can fail, or an anchor that is not observable | 🟡 Minor |
+| A verify step that checks nothing the steps do not already guarantee | 🟢 Nit — recommend deletion |
+| No evaluation step anywhere, and no example showing one | 🔴 Major |

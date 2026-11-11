@@ -6,7 +6,7 @@ A skill fires correctly only when its external trigger (frontmatter `description
 
 | Part | Location | Role |
 |---|---|---|
-| Frontmatter `description:` | YAML header | Used by VS Code/Copilot to decide whether to load this skill; must cover **all** scenarios in `<when-to-use-this-skill>` |
+| Frontmatter `description:` | YAML header | Used by the host platform to decide whether to load this skill; must cover **all** scenarios in `<when-to-use-this-skill>` |
 | `<when-to-use-this-skill>` | Top-level section | Granular bullet list read by the agent after the skill is loaded; confirms correct activation |
 
 **Description trigger clarity criteria**:
@@ -16,7 +16,7 @@ A skill fires correctly only when its external trigger (frontmatter `description
 - The trigger phrase in `description` must not cover scenarios **absent** from `<when-to-use-this-skill>` (no over-triggering)
 
 **Common trigger violations**:
-- `description` has no explicit trigger phrase ("Use when…" clause missing) → VS Code/Copilot has no reliable signal to load the skill
+- `description` has no explicit trigger phrase ("Use when…" clause missing) → the host has no reliable signal to load the skill
 - `description` covers only a subset of `<when-to-use-this-skill>` scenarios → skill silently fails to activate for uncovered scenarios
 - `description` is so broad it fires for unrelated requests → skill is over-triggered
 - `<when-to-use-this-skill>` entries are too vague (e.g., "User asks about X") without specifying the intent verb (review / fix / create / improve)

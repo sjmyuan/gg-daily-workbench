@@ -1,6 +1,6 @@
 ---
 name: review-skill
-description: Review SKILL.md files for content classification, structure, naming, duplication, script/CLI usage, and whether to refactor or add content. Use when reviewing, diagnosing, or checking a skill's content, structure, triggers, naming, tooling, or whether it needs refactoring or new content.
+description: Review SKILL.md files for content classification, structure, naming, triggers, prescriptiveness, examples, and tooling. Use when reviewing, diagnosing, or checking whether a skill needs refactoring or new content.
 ---
 
 <when-to-use-this-skill>
@@ -12,6 +12,7 @@ description: Review SKILL.md files for content classification, structure, naming
 - User asks whether an existing skill needs refactoring or new content
 - User asks whether a skill's name or capability names follow naming conventions
 - User asks whether a skill's scripts or CLI invocations are justified and safe
+- User asks whether a skill over-prescribes, micromanages the model, or fails to carry judgment guidance
 </when-to-use-this-skill>
 
 <knowledge>
@@ -21,22 +22,23 @@ Steps cite these standards by name; load the Details file when one is listed.
 
 | Standard | Rule | Details |
 |---|---|---|
-| **content-model** | Fact → knowledge, procedure → capability, routing+guard → rule; decision order, adequacy severities, repair order. | [reference/content-model.md](reference/content-model.md) |
-| **section-semantics** | Section order, directory layout, and common structural violations. | [reference/section-semantics.md](reference/section-semantics.md) |
-| **trigger-correctness** | Description trigger clarity and when-to-use consistency. | [reference/trigger-correctness.md](reference/trigger-correctness.md) |
-| **severity-levels** | Severity definitions and Blocker-vs-Major guidance. | [reference/severity-levels.md](reference/severity-levels.md) |
-| **size-limits** | Char/line budgets per file type, line-length guard, gaming detection, measurement script. | [reference/size-limits.md](reference/size-limits.md) |
-| **size-remediation** | Ordered remediation plus the structural-integrity gate (chars are the only gate; line/step-merging is 🔴). | [reference/size-remediation.md](reference/size-remediation.md) |
-| **evaluation-process** | Output-evaluation patterns and severity when absent. | [reference/evaluation-process.md](reference/evaluation-process.md) |
-| **naming-conventions** | Naming rules for the skill name, capability names, and knowledge names. | [reference/naming-conventions.md](reference/naming-conventions.md) |
-| **conciseness-check** | Criteria for unnecessary content across SKILL.md, references, and examples. | [reference/conciseness-check.md](reference/conciseness-check.md) |
-| **refactor-first** | Reshape before appending: reclassify, merge, split, rename, redistribute, or rewrite an existing element; add only when none can. | [reference/conciseness-check.md](reference/conciseness-check.md) |
-| **writing-style** | Directive voice, BLUF, hard caps, banned phrases, no narration. | [reference/writing-style.md](reference/writing-style.md) |
-| **platform-agnostic-writing** | No platform tool names, no concrete context paths, detect-don't-assume. | [reference/platform-agnostic-writing.md](reference/platform-agnostic-writing.md) |
-| **script-and-cli-policy** | Automation decision order, four script tests, Python-stdlib rule, contracts, anti-pattern severities. | [reference/script-and-cli-policy.md](reference/script-and-cli-policy.md) |
-| **pipeline-integration** | Skill↔skill and skill↔sub-agent integration checklists. | [reference/pipeline-integration.md](reference/pipeline-integration.md) |
-| **artifact-consistency** | One literal template per schema; examples reproduce its shape; identifiers/counts stay continuous; shared examples update together. | [reference/artifact-consistency.md](reference/artifact-consistency.md) |
-| **same-name-live-copy-ban** | Review only the user-provided file; never a live same-named copy. An installed copy needs its exact path. | — |
+| **content-model** | Fact, procedure, judgment, routing+guard; decision order, severities, repair order. | [reference/content-model.md](reference/content-model.md) |
+| **section-semantics** | Section order, layout, structural violations. | [reference/section-semantics.md](reference/section-semantics.md) |
+| **trigger-correctness** | Trigger clarity and when-to-use consistency. | [reference/trigger-correctness.md](reference/trigger-correctness.md) |
+| **severity-levels** | Level definitions, Blocker-vs-Major. | [reference/severity-levels.md](reference/severity-levels.md) |
+| **size-limits** | Char/line budgets, gaming, measurement. | [reference/size-limits.md](reference/size-limits.md) |
+| **size-remediation** | Lever order plus structural-integrity gate. | [reference/size-remediation.md](reference/size-remediation.md) |
+| **evaluation-process** | Gate and grade patterns, absent-case severity. | [reference/evaluation-process.md](reference/evaluation-process.md) |
+| **naming-conventions** | Skill, capability, knowledge naming. | [reference/naming-conventions.md](reference/naming-conventions.md) |
+| **conciseness-check** | Unnecessary content, growth audit. | [reference/conciseness-check.md](reference/conciseness-check.md) |
+| **refactor-first** | Reshape before appending; add only when none can. | [reference/conciseness-check.md](reference/conciseness-check.md) |
+| **empowerment-model** | Regime, expert test, judgment content, behavioral evidence. | [reference/empowerment-model.md](reference/empowerment-model.md) |
+| **writing-style** | Voice, BLUF, caps, banned phrases, no narration. | [reference/writing-style.md](reference/writing-style.md) |
+| **platform-agnostic-writing** | No tool names or context paths; detect, don't assume. | [reference/platform-agnostic-writing.md](reference/platform-agnostic-writing.md) |
+| **script-and-cli-policy** | Automation order, four tests, stdlib rule, contracts. | [reference/script-and-cli-policy.md](reference/script-and-cli-policy.md) |
+| **pipeline-integration** | Skill↔skill and skill↔agent checklists. | [reference/pipeline-integration.md](reference/pipeline-integration.md) |
+| **artifact-consistency** | One template per schema; examples reproduce it. | [reference/artifact-consistency.md](reference/artifact-consistency.md) |
+| **same-name-live-copy-ban** | Review only the user-provided file. | — |
 </named-standards>
 
 <context-loading-guide>
@@ -51,6 +53,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 | Prose is passive, verbose, or narrating | Style model | [examples/writing-style-review.md](examples/writing-style-review.md) |
 | The description lacks a "Use when" clause, or contradicts a when-to-use bullet | Trigger-failure model | [examples/trigger-correctness-violation.md](examples/trigger-correctness-violation.md) |
 | Step 7 runs, or the user asks whether the examples agree | Example-drift findings model | [examples/artifact-consistency-review.md](examples/artifact-consistency-review.md) |
+| Steps script judgment work the model would reproduce | Micromanagement model | [examples/micromanaged-skill-review.md](examples/micromanaged-skill-review.md) |
 | After the first pass — findings are only 🟡/🟢 or the request is a reshape | Near-passing / refactor model | [examples/clean-skill-review.md](examples/clean-skill-review.md) |
 | After the first pass — the sub-agent axis produced findings | Agent-integration model | [examples/agent-integration-review.md](examples/agent-integration-review.md) |
 
@@ -72,9 +75,10 @@ Steps cite these standards by name; load the Details file when one is listed.
    c. A claim fitting two classes → ⚠️ naming both candidate owners; never pick silently.
 2. **Check content adequacy and justification** — the same standard, second pass.
    a. Adequacy: an unstated inferable fact, an objective no step produces, an undecidable step, a missing guard.
-   b. Justification: an element whose removal breaks no step, objective, or trigger; a guard with no nameable failure; an unjustified example, reference, or script.
+   b. Justification: an element whose removal breaks no step, objective, trigger, or quality bar; a guard with no nameable failure; an unjustified example, reference, or script.
    c. Content outranks form — a content defect that makes the agent act wrongly is 🔴; a form defect is 🟡 or 🟢 unless it breaks loading.
-   d. A capability that cannot be checked is inadequate: each ends with a validation step per **reference/evaluation-process.md**; absent → 🟡, absent with no validation example → 🔴.
+   d. A capability that cannot be checked is inadequate: each ends with a gate or grade per **reference/evaluation-process.md**; absent → 🟡, absent with no validation example → 🔴.
+   e. Prescriptiveness per **reference/empowerment-model.md** — scripted judgment work, missing tradeoffs or exemplars, missing reasons, behavioral evidence neither claimed nor run.
 3. **Check description and triggers** — load **reference/trigger-correctness.md**:
    a. Verify the two-part template via **reference/description-template.md**; missing trigger phrase → 🔴 Major.
    b. Score the five dimensions via **reference/description-scoring.md**; report x/10; ≤5 → 🔴 Major, 6–8 → 🟡 Minor.

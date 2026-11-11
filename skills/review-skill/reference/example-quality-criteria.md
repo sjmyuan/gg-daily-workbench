@@ -8,7 +8,7 @@ An example file is well-formed when it meets all of the following criteria:
 |---|---|
 | Clear scenario heading | States the skill domain, the trigger condition, and what makes this case distinct from other examples |
 | Realistic, non-trivial input | Representative of actual user requests — not a toy or hello-world scenario |
-| Output matches capability steps | The structure and content of the output follow the steps of the capability it demonstrates |
+| Output matches capability steps | The output follows the capability's steps, or its outcome and judgment content when the work is judgment |
 | Template fidelity | Artifacts use the canonical template's headings, field labels, field order, and status vocabulary — no invented sections |
 | Abridged labelling | Shortened output carries an explicit `(abridged)` / `(excerpt)` label naming the full schema |
 | Set-level continuity | Examples sharing a scenario reuse the same epic, area, feature, folder, and file identifiers; counts and statuses agree |
