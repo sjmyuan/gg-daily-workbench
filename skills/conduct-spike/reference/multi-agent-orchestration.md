@@ -4,7 +4,7 @@ Dispatch by **evidence axis**: one agent owns one area's whole chain — investi
 
 | Capability | Agent | Applies skill | Brief |
 |---|---|---|---|
-| Investigate + compile pair + draft ADRs (single return) | `spike-area-analyst` | `investigate-code` → `document-findings` → `draft-adr` (headless) | [area-analyst-brief.md](area-analyst-brief.md) |
+| Investigate + compile/update pair + draft ADRs (single return) | `spike-area-analyst` | `investigate-code` → `document-findings` → `draft-adr` (headless) | [area-analyst-brief.md](area-analyst-brief.md) |
 | Compile solution doc | `solution-doc-writer` | `write-solution-doc` | [solution-doc-brief.md](solution-doc-brief.md) |
 
 ## Why one session per area

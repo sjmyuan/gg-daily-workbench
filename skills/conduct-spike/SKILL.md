@@ -82,7 +82,7 @@ ADRs, findings docs, and the solution doc are written by `draft-adr`, `document-
 </professional-doc-authoring>
 
 <artifact-maintenance-doctrine>
-Chain **Findings Docs → ADRs → Solution Doc** stays at the latest state: rewrite changed sections in place, delete superseded content (git is history), no version markers. Notes live only in evidence docs and conversation. Propagation stops at the first unaffected artifact. Guide: **reference/artifact-maintenance-guide.md**.
+Chain **Findings Docs → ADRs → Solution Doc** stays current: findings pairs update in place; ADRs and the solution doc are rewritten to the latest decision. No version markers; notes live only in evidence docs and conversation. Propagation stops at the first unaffected artifact. Guide: **reference/artifact-maintenance-guide.md**.
 </artifact-maintenance-doctrine>
 
 <context-loading-guide>

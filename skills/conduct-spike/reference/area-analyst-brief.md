@@ -24,7 +24,7 @@ You are the `spike-area-analyst`. Deliver for **[area]** in one session and one 
 - Return **(inline)**: once, after phase 3 — the written pair and the ADRs together. No intermediate return.
 - Known locations **(digest)**: **[symbols / files / entry points / `file:line` already located]** — start here; do not re-discover them.
 - Already searched **(digest)**: **[query + root + outcome, including "no matches"]** — do not repeat any listed search.
-- Findings pair **(path, re-dispatch only)**: **[`docs/findings-<area>.md`] + [`docs/evidence-<area>.md`]** — the verified pair supplied on a re-dispatch; treat **Verified** claims as settled.
+- Findings pair **(path, re-dispatch only)**: **[`docs/findings-<area>.md`] + [`docs/evidence-<area>.md`]** — the verified pair supplied on a re-dispatch; it is the **write baseline**: keep its topic list, heading anchors, and claim IDs, and treat **Verified** claims as settled.
 - Prior receipt **(inline, re-dispatch only)**: **[the receipt returned by the earlier session]** — the session's durable state; inherit it instead of rebuilding.
 - Sibling unit results **(path + digest)**: **[area → verified pair path, or decision]** — inherit these; never re-scan code a sibling already covered.
 - Pre-existing user findings **(inline)**: **[notes/findings the user supplied]** — treat as known; when they answer the area, skip phase 1 and start at phase 2, verifying only what they leave unresolved.
@@ -34,7 +34,7 @@ You are the `spike-area-analyst`. Deliver for **[area]** in one session and one 
 
 ## 4. Tasks
 1. Run **phase 1 — investigate** (skip when §3 supplies pre-existing findings that answer the area): apply `investigate-code`; trace to `file:line`; build the evidence map (entry points, call chains, ledger verdicts, searched-negatives). Do not return here — continue into phase 2 so the evidence is persisted.
-2. Run **phase 2 — compile the pair**: apply `document-findings`; derive the area's 3–7 topic questions; write `docs/findings-<area>.md` then `docs/evidence-<area>.md` per the skill's capability order; validate the pair.
+2. Run **phase 2 — compile or update the pair**: apply `document-findings`. No existing pair → author it (`author-findings-doc` → `author-evidence-doc`), deriving 3–7 topics. Existing pair in §3 → `update-findings-doc` against the delta: revise the matching topic in place, add a topic only when none answers the new question, keep the topic list, anchors, and claim IDs stable. Never re-author an existing pair; validate the pair.
 3. Run **phase 3 — draft the ADRs**: apply `draft-adr` headlessly — drivers from §3 → considered options → evaluation (`detail-options-tech` when needed) → compilation; one ADR per problem, tagged **Area:**.
 4. Return once, after phase 3, with the pair paths and the ADR paths in one receipt — never between phases.
 5. Ground what the artifacts leave open with targeted reads — a gap they raise, or an option's tech details they do not cover; every new location joins the ledger. Never repeat a listed search or re-verify a **Verified** claim.

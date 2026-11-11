@@ -8,6 +8,8 @@ This guide backs the **artifact-maintenance-doctrine** knowledge entry and the *
 
 ADRs and the solution document are **single-source-of-truth, kept at the latest state**: they are decision documents, not investigation reports, and have no memory of their own past — version control (git) is the only history.
 
+Findings pairs are the exception: they **accumulate knowledge**, so update them via `document-findings`'s **update-findings-doc** — revise the matching topic in place, add a topic only when none answers the new question, correct claims new evidence contradicts, never rebuild the pair or renumber IDs.
+
 When a decision or fact changes (ADR revision, continuation round, mid-spike correction):
 
 1. **Locate** the affected sections of the ADR / solution doc.

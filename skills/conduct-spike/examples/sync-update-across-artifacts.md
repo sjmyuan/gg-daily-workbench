@@ -4,7 +4,7 @@
 
 **Applies**: `sync-update-artifacts`
 
-**What makes this distinct**: Shows the full propagation — one change rippling through findings → ADR → solution doc — including the rewrite-in-place before/after shape.
+**What makes this distinct**: Shows the full propagation — one change rippling through findings → ADR → solution doc — including the ADR's rewrite-in-place before/after shape.
 
 ---
 
