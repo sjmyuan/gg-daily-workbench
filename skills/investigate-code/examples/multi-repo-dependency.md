@@ -20,13 +20,15 @@ Applies `<analyze-cross-repo-dependencies>`.
 
 **Discovered dependencies (from code analysis)**:
 
-| Source | Target | Type | Details |
-|---|---|---|---|
-| `order-service` | `payment-service` | HTTP REST (`POST /payments`) | Process payment on checkout |
-| `order-service` | `inventory-service` | HTTP REST (`POST /inventory/reserve`) | Reserve items on checkout |
-| `order-service` | `notification-service` | Kafka event (`OrderConfirmed`) | Publish after successful checkout |
-| `inventory-service` | PostgreSQL | JDBC | Read/write stock levels |
-| `payment-service` | `notification-service` | Kafka event (`PaymentProcessed`) | Publish after payment success |
+| Source | Target | Protocol | Direction | Details |
+|---|---|---|---|---|
+| `order-service` | `payment-service` | HTTP REST (`POST /payments`) | Outbound | Process payment on checkout |
+| `order-service` | `inventory-service` | HTTP REST (`POST /inventory/reserve`) | Outbound | Reserve items on checkout |
+| `order-service` | `notification-service` | Kafka (`OrderConfirmed`) | Outbound 🔶 Inferred | Publish after checkout; topic read from config, producer not opened |
+| `inventory-service` | PostgreSQL | JDBC | Read/Write | Stock levels |
+| `payment-service` | `notification-service` | Kafka (`PaymentProcessed`) | Outbound | Publish after payment success |
+
+**❓ Gap**: `notification-service`'s consumers were not opened — both inbound edges are inferred from event names.
 
 ### Step 2 — Draw C2 Container Diagram
 
@@ -68,9 +70,9 @@ C4Container
 - **payment-service**: See payment processing pipeline
 - **inventory-service**: See stock reservation logic"
 
-### Cross-Repo Dependency Table
+### Failure Behaviour (evidence behind the matrix)
 
-| Dependency | Direction | Protocol | SLA / Timeout | Error handling |
+| Dependency | Direction | Timeout / retry | Error handling |
 |---|---|---|---|---|
 | `order-service` → `payment-service` | Outbound | HTTP REST | 5s timeout, 3 retries | Circuit breaker (50% failure → open for 30s) |
 | `order-service` → `inventory-service` | Outbound | HTTP REST | 3s timeout, 1 retry | Fail-fast on timeout |

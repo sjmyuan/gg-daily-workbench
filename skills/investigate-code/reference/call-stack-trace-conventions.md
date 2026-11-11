@@ -12,7 +12,8 @@
   ╰─→ [N+1] NextMethod(params)
 ```
 
-Each frame includes: method signature, file path + line number, parameter values (omit large payloads), return value, 2-5 lines of relevant code, and side effects (DB writes, event publishing, external API calls).
+Each frame includes the method signature, file path + line number, parameter values (omit large payloads), and the return value.
+It also carries 2-5 lines of relevant code and any side effects — DB writes, event publishing, external API calls.
 
 ## Hierarchy Notation
 

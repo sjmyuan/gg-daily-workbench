@@ -9,7 +9,8 @@
 
 Applies `<investigate-codebase>`; gate per **request-intake**.
 
-**Restatement**: "In your words: explain how the data transformation process works in `data-import-service`. Inferred: (i) the full pipeline, not one field mapper; (ii) a `file:line` walkthrough, not a diagram; (iii) current state only, no recommendations."
+**Restatement**: "In your words: explain how the data transformation process works in `data-import-service`.
+Inferred: (i) the full pipeline, not one field mapper; (ii) a `file:line` walkthrough, not a diagram; (iii) current state only, no recommendations."
 
 **Q1 · Scope · non-blocking** — the whole pipeline or one step.
   A) Full pipeline — event arrival through publishing
@@ -17,7 +18,7 @@ Applies `<investigate-codebase>`; gate per **request-intake**.
 Recommendation: A — "the process" names the pipeline, not one class.
 Default if unanswered: A.
 
-User: "A — full pipeline from event arrival to publishing." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, unverified)`: a code walkthrough is wanted, not a C4 diagram.
+User: "A — full pipeline from event arrival to publishing." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 💭 Assumption (user-accepted, unverified): a code walkthrough is wanted, not a C4 diagram.
 
 **Entry point discovery** — grepping for listeners and handlers:
 
@@ -51,7 +52,8 @@ The `data-import-service` transforms data through a four-layer pipeline:
 4. **Core transformation** — [`DataTransformer.java`](domain/service/DataTransformer.java) contains all field-mapping: ID normalization, category mapping, price calculation.
 5. **Publishing** — [`EventPublisherImpl.java`](infrastructure/externaladapter/EventPublisherImpl.java) serializes `ExternalApiData` and sends to the outbound topic.
 
-**Design rationale**: Clean Architecture boundary means `DataTransformer` has no knowledge of message formats — all serialization lives in infrastructure. This makes transformation logic independently testable.
+**Design rationale**: the Clean Architecture boundary keeps `DataTransformer` free of message formats.
+All serialization lives in infrastructure, so transformation logic is independently testable.
 
 **Next steps**: For individual field-mapping rules, investigate `DataTransformer.transform()` directly. For error handling, check `DataImportedHandler` for retry/dead-letter routing.
 
@@ -70,7 +72,8 @@ Applies `<present-findings-with-confidence>`.
 
 ## Variation: "Why" Questions
 
-When the user asks "why" (e.g., "Why does the service use event-driven architecture instead of REST?"), the same investigate-codebase capability applies, but the synthesis step emphasizes design rationale:
+When the user asks "why" (e.g., "Why event-driven instead of REST?"), the same investigate-codebase capability applies.
+Its synthesis step emphasizes design rationale:
 
 - Search architecture docs, ADRs, and inline comments for design intent
 - Look for evidence of trade-offs (e.g., eventual consistency documented in `docs/architecture.md`)

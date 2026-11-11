@@ -49,6 +49,14 @@ Applies `<present-findings-with-confidence>` + **plain-language-presentation**.
 - ❓ Gaps: refund branch not traced; pricing config (`application.yml`) not opened
 - ⚠️ Inconsistencies: `docs/billing.md` documents only the charging fee; the payout fee is undocumented
 
+## Variation: the partial truth
+
+The same billing question, answered by a first pass that read only the charging branch:
+
+- Every claim was ✅ Verified — and the answer was still wrong-ish, because a second `fee` existed.
+- The gap only appeared after re-checking for other `fee` usages before answering.
+- Carry that re-check as a ❓ Gap line whenever the first pass covers one branch only.
+
 ## What changed
 
 | Before | After |

@@ -1,106 +1,104 @@
 ---
 name: investigate-code
-description: Investigate codebases to answer questions about functionality, architecture, and cross-system dependencies. Use when investigating, understanding, tracing, analyzing, visualizing, discovering patterns in, or documenting how code works.
+description: Investigate codebases to answer how functionality, architecture, and cross-system dependencies work. Use when investigating, understanding, tracing, visualizing, documenting code, discovering patterns, grounding a decision, building an ADR evidence map, or splitting a broad investigation across parallel areas.
 ---
 
 <when-to-use-this-skill>
-- User asks questions about existing code (how it works, why it's designed that way, where things live)
-- User wants to understand a feature, component, or system implementation
-- User needs to trace control flow, data flow, or dependencies through the codebase
-- User wants to investigate code across multiple repositories and their interactions
-- User wants to visualize architecture with C4 diagrams, sequence diagrams, or call stack traces
-- User wants to discover implementation patterns or detect inconsistencies across the codebase
-- Current-state investigation must ground a decision draft
-- An ADR needs an evidence map (entry points, `file:line` locations, call chains) to ground per-option details
+- User asks how existing code works, or wants a feature explained
+- User needs control flow, data flow, or dependencies traced
+- User wants to investigate code across multiple repositories
+- User wants the answer shown as a diagram, call-stack detail, or a compiled report
+- User wants implementation patterns discovered or inconsistencies detected
+- An investigation must ground a decision draft or ADR evidence map
+- A broad question splits into independent areas that can run in parallel
 </when-to-use-this-skill>
 
 <knowledge>
 
 <request-intake>
-Gate every investigation question through `clarify-request`'s intake gate before searching. Restate the question, then itemize every inference it needs: **system** (which repo or service), **scope** (feature, module, or symbol), **depth** (C4 level or call-stack), **consumer** (who reads the answer). Show the list; zero inferences → start. Anything inferred → ask the top 3 with options and a recommendation.
-Gate states: `ACCEPTED` · `ACCEPTED-WITH-ASSUMPTIONS` (each default surfaces as a 💭 Assumption in the answer) · `BLOCKED` (ask, then re-run). Never search on a private reading — a wrong system or depth wastes the whole investigation.
-A seeding brief that states all four fields **is** the gate result: adopt it, ask nothing, and never explore to discover where the scope or inputs live.
+Gate every question before searching — a wrong system or depth wastes the run.
+
+| Inference | Ask |
+|---|---|
+| system | repo or service? |
+| scope | feature, module, or symbol? |
+| depth | C4 level, sequence, or call stack? |
+| consumer | who reads the answer? |
+
+States: `ACCEPTED` · `ACCEPTED-WITH-ASSUMPTIONS` · `BLOCKED`, carried into the answer.
+A brief stating all four fields is the gate result; a clone never asks the user.
 </request-intake>
+
 <search-strategies>
-| Strategy | Use for |
-|---|---|
-| **Semantic search** | Conceptual queries, high-level patterns |
-| **Grep search** | Exact strings, function/class names, identifiers |
-| **File search** | Partial file names, known directory structures |
+Detect the tools first — never assume a search tool exists.
 
-**Detect available tools first — never assume a search tool exists.**
-- Check for semantic-search capabilities: MCP tools, a CLI (e.g., `semble`), or built-in IDE search.
-- Check the grep engine: prefer `rg` (ripgrep) when available; fall back to `grep`.
-- Use the strongest available strategy: semantic search when present; else grep/file search with keyword variants.
-- When no semantic tool exists, report reduced recall as a ❓ Gap.
-</search-strategies>
-<multi-repo-discovery>
-Discover cross-repo dependencies:
-
-| Strategy | What to look for |
-|---|---|
-| **Configuration analysis** | Service discovery configs, docker-compose, Kubernetes manifests |
-| **HTTP client search** | `RestTemplate`, `WebClient`, `FeignClient`, `axios`, `fetch` with hostnames |
-| **Event topology** | `@KafkaListener`, `@RabbitListener`, `publish()`, `topic()` |
-| **Dependency manifests** | `pom.xml`, `build.gradle`, `package.json`, `go.mod` for internal packages |
-| **API contracts** | OpenAPI/Swagger specs, Protobuf files, GraphQL schemas |
-</multi-repo-discovery>
-<diagram-conventions>
-Choose by the message: C4 for architecture, sequence for interactions, flowchart for decisions, state for lifecycles, class/ER for data models.
-Draw, validate, and sync them via `draw-mermaid-diagrams` (`author-mermaid-diagram`, `validate-diagram-syntax`).
-</diagram-conventions>
-<progressive-disclosure-levels>
-Guide investigations from high-level to detail: C2 Container ("What systems exist?") → C3 Component ("What's inside?") → Sequence/Flowchart ("What's the message order or decision logic?") → Call Stack ("What happens in this method?"). Supplement with state diagrams (lifecycles), class diagrams (data models), or other types whenever they clarify the explanation better than the default level. Start at the level matching user familiarity — Level 1 for unfamiliar systems, Level 3-4 for specific flows.
-</progressive-disclosure-levels>
-<pattern-discovery-heuristics>
-Search for similar implementations (priority order):
-
-1. **Package naming** — Sibling packages often follow the same pattern
-2. **Suffix matching** — `*Controller`, `*Orchestrator`, `*Adapter`, `*Repository`
-3. **Interface implementations** — All classes implementing the same interface
-4. **Annotation presence** — Classes sharing the same annotations
-5. **Dependency mirroring** — Services calling the same adapters or siblings
-
-See [reference/pattern-discovery-strategies.md](reference/pattern-discovery-strategies.md) for the structural fingerprint format and inconsistency severity levels.
-</pattern-discovery-heuristics>
-<finding-confidence-model>
-Every finding must carry an epistemic status tag so the user can judge completeness — never present only what is certain:
-
-| Tag | Meaning | Example presentation |
+| Strategy | Use for | If absent |
 |---|---|---|
-| ✅ Verified | Directly read in code, file:line confirmed | "Verified — `ChargingService.java:42`" |
-| 🔶 Inferred | Reasoned from evidence, not directly confirmed | "Inferred — no config found, default assumed" |
-| 💭 Assumption | Taken for granted without direct evidence | "Assumed — sibling packages follow the same pattern" |
-| ⚠️ Inconsistency | Contradiction: code vs code, code vs docs, code vs config | "⚠️ README says 5 retries, `EmailAdapter.java` shows 3" |
-| ❓ Gap | Searched but not found, or not investigated | "Not covered — refund branch not traced" |
+| Semantic search | concepts | grep variants |
+| Grep | identifiers | `rg`, else `grep` |
+| File search | names, layouts | infer from imports |
 
-Detailed presentation format: [reference/confidence-and-coverage-guide.md](reference/confidence-and-coverage-guide.md)
+Tag reduced recall ❓ Gap.
+</search-strategies>
+
+<diagram-types>
+Choose by message: C4 for architecture, sequence for interactions, flowchart for decisions, state for lifecycles, class/ER for data.
+</diagram-types>
+
+<pattern-discovery-heuristics>
+Search peers in order: package naming → suffix (`*Controller`, `*Orchestrator`, `*Adapter`, `*Repository`) → interface implementations → shared annotations → dependency mirroring.
+Fingerprint, matrix, severities: [reference/pattern-discovery-strategies.md](reference/pattern-discovery-strategies.md).
+</pattern-discovery-heuristics>
+
+<finding-confidence-model>
+Tag every finding; never present only what is certain.
+
+| Tag | Meaning |
+|---|---|
+| ✅ Verified | read in code, `file:line` confirmed |
+| 🔶 Inferred | reasoned from evidence, unconfirmed |
+| 💭 Assumption | taken for granted, no evidence |
+| ⚠️ Inconsistency | two sources disagree |
+| ❓ Gap | searched but not found, or not investigated |
+
+When to use each tag, and phrasing: [reference/confidence-and-coverage-guide.md](reference/confidence-and-coverage-guide.md).
 </finding-confidence-model>
-<spike-integration>
-For a spike investigation, scope the investigation to the spike's area and read its existing evidence before re-scanning: load the spike folder's evidence doc (`docs/evidence-<area>.md`), then update its evidence map per the spike findings-document contract (entry points `file:line`, sequence diagrams for call chains, evidence ledger with the **finding-confidence-model**, searched-negatives). The human doc (`docs/findings-<area>.md`) carries no ledger. Do not load when no spike area has been defined yet.
-A brief's **known locations** and **already searched** digests are settled input: start from them, do not re-scan, and return your own search log so the next unit inherits it.
-</spike-integration>
-<concise-writing>
-All investigation prose and reports follow BLUF (conclusion first), hard caps, atomic bullets, and tables-over-prose. Every section opens with a bolded one-line takeaway; no banned phrases; every sentence passes the "so what?" test. Load **reference/writing-style.md** for the full rules (caps table, banned-phrase list, sentence surgery).
-</concise-writing>
+
+<quality-bar>
+Grade every answer — a gate alone passes correct-but-dull output.
+Pass ≥7/9 on three criteria, none at 0.
+</quality-bar>
+
 <plain-language-presentation>
-Issues and uncertainty must be understandable without domain context — explanation outranks brevity for findings. Render every issue (⚠️ Inconsistency, ❓ Gap with consequences, 🔶 Inferred needing verification) as an issue card: Problem / Evidence / Why it matters / What to do / Confidence. Add a one-line tag legend at first use and a 3-line human TL;DR for multi-finding responses; routine ✅ Verified facts stay terse. Load **reference/plain-language-presentation.md** for the full rules (issue-card anatomy, tag legend, non-expert test).
+Explain every issue so a non-expert can act on it; for findings, explanation outranks brevity.
+Render each ⚠️ Inconsistency, consequential ❓ Gap, and unverified 🔶 Inferred finding as an issue card.
+Add the legend at first use; open multi-finding answers with a 3-line TL;DR.
+Card anatomy: [reference/plain-language-presentation.md](reference/plain-language-presentation.md).
 </plain-language-presentation>
+
+<spike-integration>
+Inside a spike area, read the existing evidence doc at its absolute path before re-scanning.
+Its known locations and searched digests are settled input; return your search log for the next unit.
+Return tagged claims and searched-negatives; `document-findings` owns the doc write.
+Do not load when no spike area has been defined.
+</spike-integration>
+
 <context-loading-guide>
 | Load when | Provides | File |
 |---|---|---|
-| Conducting a typical investigation (any question type) | End-to-end example with clarification, discovery, tracing, and synthesis | [examples/investigation-workflow.md](examples/investigation-workflow.md) |
-| Tracing method-level call stacks | Frame format, cross-repo annotation, correlation with sequence diagrams | [reference/call-stack-trace-conventions.md](reference/call-stack-trace-conventions.md) |
-| Discovering patterns or detecting inconsistencies | Structural fingerprint format, comparison matrix, severity levels | [reference/pattern-discovery-strategies.md](reference/pattern-discovery-strategies.md) |
-| Investigating across multiple repos | Dependency matrix, C2 diagram, cross-repo call traces | [examples/multi-repo-dependency.md](examples/multi-repo-dependency.md) |
-| Running a progressive zoom-in (C2→C3→sequence→call stack) | End-to-end example with all four levels | [examples/progressive-zoom-in.md](examples/progressive-zoom-in.md) |
-| Compiling findings into a markdown report | Full report structure with all sections | [examples/markdown-report.md](examples/markdown-report.md) |
-| Finding similar features or flagging inconsistent patterns | End-to-end pattern discovery with inconsistency detection | [examples/pattern-discovery.md](examples/pattern-discovery.md) |
-| Presenting findings with confidence tags, gaps, and inconsistencies | 5-category presentation format with phrasing examples | [reference/confidence-and-coverage-guide.md](reference/confidence-and-coverage-guide.md) |
-| Reporting a standalone confidence & coverage profile | Standalone example with all five categories | [examples/confidence-and-coverage.md](examples/confidence-and-coverage.md) |
-| Writing or reviewing any investigation prose or report | BLUF rules, sentence/paragraph caps, banned-phrase list, atomic bullets | [reference/writing-style.md](reference/writing-style.md) |
-| Presenting any issue or uncertainty in plain language | Issue-card anatomy, tag legend, human TL;DR, non-expert test | [reference/plain-language-presentation.md](reference/plain-language-presentation.md) |
-| Seeing a terse→explained before/after | Plain-language findings model | [examples/plain-language-findings.md](examples/plain-language-findings.md) |
+| Any typical investigation | Walkthrough | [examples/investigation-workflow.md](examples/investigation-workflow.md) |
+| Grading an answer | Criteria | [reference/investigation-quality-bar.md](reference/investigation-quality-bar.md) |
+| Method-level call stacks | Frame format | [reference/call-stack-trace-conventions.md](reference/call-stack-trace-conventions.md) |
+| Pattern variants | Matrix, severities | [reference/pattern-discovery-strategies.md](reference/pattern-discovery-strategies.md) |
+| Across repos | Matrix, C2, traces | [examples/multi-repo-dependency.md](examples/multi-repo-dependency.md) |
+| Zooming C2 → call stack | All four levels | [examples/progressive-zoom-in.md](examples/progressive-zoom-in.md) |
+| Fanning one question across areas | Briefs, returns, merge | [examples/parallel-investigation.md](examples/parallel-investigation.md) |
+| Compiling a markdown report | Report structure | [examples/markdown-report.md](examples/markdown-report.md) |
+| Finding similar features | Pattern discovery | [examples/pattern-discovery.md](examples/pattern-discovery.md) |
+| Tags, gaps, inconsistencies | Five categories | [reference/confidence-and-coverage-guide.md](reference/confidence-and-coverage-guide.md) |
+| Prose rules | Caps, banned phrases | [reference/writing-style.md](reference/writing-style.md) |
+| Plain issue | Card anatomy | [reference/plain-language-presentation.md](reference/plain-language-presentation.md) |
+| Seeing terse → explained | Before/after | [examples/plain-language-findings.md](examples/plain-language-findings.md) |
 </context-loading-guide>
 
 </knowledge>
@@ -108,92 +106,129 @@ Issues and uncertainty must be understandable without domain context — explana
 <capabilities>
 
 <investigate-codebase>
-1. **Gate the question**: apply **request-intake** — restate it, show every inferred system, scope, and depth, and ask when anything was inferred; zero inferences → step 2. Never infer the question from the suspected area.
-2. **Discover relevant code**: Detect available search tools first (see search-strategies) — use semantic search when a tool exists, else grep/file search with keyword variants. Locate entry points, key classes, and configuration. Tag reduced recall from a missing semantic tool as ❓ Gap.
-3. **Trace control and data flow**: Follow entry points through the call chain — identify each component's role, how data transforms at each step, and how errors are handled.
-4. **Analyze dependencies**: List external libraries, internal module dependencies, service integrations, and configuration dependencies.
-5. **Extract structural fingerprint**: Note the feature's layer chain (e.g., Controller → Orchestrator → Service → Adapter), stereotypes, and external interactions. This feeds into discover-implementation-patterns.
-6. **Synthesize findings**: Present a coherent narrative — direct answer first, then supporting evidence with file:line references, key design decisions, and areas needing deeper investigation. Then apply present-findings-with-confidence to tag each finding as verified/inferred/assumed, report gaps, and raise inconsistencies.
-7. **Validate**: Verify that the restatement and inference list were shown before the first search, that all file:line references are accurate by checking the workspace, that the narrative answers the original question directly, that search-tool availability was detected rather than assumed, that every finding carries a confidence tag with no gap silently omitted, that every issue or uncertain finding passes the non-expert test per **plain-language-presentation**, and that prose follows **concise-writing** (answer first, ≤20-word sentences, no banned phrases).
+**Objective**: Answer a question about existing code with located, tagged evidence.
+
+1. Gate it per **request-intake** — restate, list every inference, ask the top 3 with options; none → step 2.
+2. Discover code per **search-strategies** — entry points, key classes.
+3. Trace control and data flow — role, data shape, errors.
+4. Analyze dependencies — libraries, modules, services.
+5. Extract the fingerprint: entry, layer chain, stereotypes, externals, errors.
+6. Synthesize — answer first, then `file:line` evidence and open areas.
+7. Present per **present-findings-with-confidence**.
+8. Validate — paths checked, no gap omitted, grade ≥7/9 per **quality-bar**.
 </investigate-codebase>
 
 <analyze-cross-repo-dependencies>
-1. **Identify repositories**: Determine which repos are involved from user input, workspace structure, or directory layout.
-2. **Discover interfaces per repo**: For each repo, find REST endpoints, event publishers/consumers, gRPC services, and shared library dependencies.
-3. **Build dependency matrix**: For each repo pair, determine direction (who calls whom), protocol (HTTP/Kafka/gRPC/DB), endpoints/topics, and error handling patterns.
-4. **Present the matrix**: Use a table with Source, Target, Protocol, Direction, Details columns. Highlight synchronous dependencies (potential failure cascades) vs. asynchronous (resilient). Mark protocol/direction inferred from endpoint shape as 🔶 Inferred, and list repos or endpoints not scanned as ❓ Gap.
-5. **Offer visualization**: Ask if the user wants a C2 container diagram via draw-c4-diagram.
-6. **Validate**: Verify that every dependency direction in the matrix matches the actual code — confirm the HTTP client, event publisher, or DB connection exists in the source repo — and that inferred directions are tagged rather than presented as verified.
+**Objective**: Build a verified dependency matrix across repositories.
+
+1. Identify repositories from the user, workspace, or layout.
+2. Find interfaces per repo — config, HTTP clients, events, manifests, contracts.
+3. Record each pair — direction, protocol, endpoints, error handling.
+4. Present one matrix: Source, Target, Protocol, Direction, Details.
+5. Flag sync links as failure cascades; tag inferred directions 🔶 and unscanned repos ❓.
+6. Offer the C2 diagram, then apply **draw-c4-diagram**.
+7. Validate — each direction confirmed in the source repo.
 </analyze-cross-repo-dependencies>
 
 <draw-c4-diagram>
-1. **Determine level**: C2 (Container) for system landscape across repos; C3 (Component) to zoom into one container's internals.
-2. **Load conventions**: apply `draw-mermaid-diagrams` (`author-mermaid-diagram` with its C4 syntax reference).
-3. **Define content**: List all elements (containers/components, databases, external systems, actors) and connections with protocol labels.
-4. **Create Mermaid**: apply `draw-mermaid-diagrams` — `C4Container` for C2, `C4Component` for C3, boundaries per level, and `Rel` labels carrying protocol.
-5. **Render and explain**: Present the Mermaid source, then describe each element's role and key connections. State which elements/connections were directly found in code (✅ Verified) vs. assumed from naming or config (💭 Assumption).
-6. **Offer next level**: For C2, ask which container to zoom into (C3). For C3, ask which interaction to sequence-diagram.
-7. **Validate**: Verify every container and connection appears in the dependency matrix; then apply `draw-mermaid-diagrams` (`validate-diagram-syntax`, 0 errors).
+**Objective**: Show the system landscape (C2) or one container's internals (C3).
+
+1. Pick the level and type per **diagram-types** — C2 landscape or C3 internals.
+2. List elements and connections with protocols.
+3. Draw `C4Container` (C2) or `C4Component` (C3) via `draw-mermaid-diagrams`.
+4. Present source and roles; code-found ✅, naming-based 💭.
+5. Offer the next level.
+6. Validate — every element traced to code or config; 0 syntax errors.
 </draw-c4-diagram>
 
 <draw-sequence-diagram>
-1. **Select the operation**: Based on user choice or the key interaction from the C2/C3 diagram.
-2. **Load conventions**: apply `draw-mermaid-diagrams` (`author-mermaid-diagram`).
-3. **Trace the message flow**: Identify all participants, message order with method signatures, sync vs. async calls, and return values.
-4. **Create Mermaid**: use `sequenceDiagram`; number messages sequentially for call-stack cross-referencing; apply the arrow semantics and flow discipline from the skill.
-5. **Render and explain**: Walk through numbered messages highlighting key interactions. Note flows inferred rather than traced directly, and calls left untraced (❓ Gap).
-6. **Offer method detail**: Ask which message to trace at the call-stack level via trace-call-stack.
-7. **Validate**: Verify message numbers are sequential and participants match the C2/C3 containers; then validate syntax via `draw-mermaid-diagrams` (0 errors).
+**Objective**: Show message order for one operation.
+
+1. Pick the operation from the user or the C2/C3 key interaction.
+2. Trace participants, order, signatures, sync vs async, returns.
+3. Draw via `draw-mermaid-diagrams`; numbers match call-stack frames.
+4. Present the walkthrough; inferred flows and untraced calls as ❓.
+5. Offer one message's call-stack trace.
+6. Validate — sequential numbers, participants traced to code, 0 errors.
 </draw-sequence-diagram>
 
 <trace-call-stack>
-1. **Select the target method**: Based on user choice or the most critical method from the sequence diagram.
-2. **Load conventions**: Load [reference/call-stack-trace-conventions.md](reference/call-stack-trace-conventions.md).
-3. **Trace the call chain**: Starting from the target method, follow depth-first. Record for each method: file path + line, full signature, parameter values, return value, 2-5 lines of relevant code, and side effects.
-4. **Format the trace**: Use depth-indexed `[N]` numbering, tree branches (`├─→`, `╰─→`) for hierarchy, `[repo: name]` for cross-repo calls. Match frame numbers to the sequence diagram message numbers.
-5. **Present insights**: Highlight key logic, error handling, and design decisions found in the trace. List untraced branches (error paths, optional calls, reflective/recursive calls) as ❓ Gap, and tag frames whose behavior was inferred.
-6. **Validate**: Verify that every frame `[N]` has a matching message number in the corresponding sequence diagram, that all file paths are verifiable in the workspace, and that untraced branches are listed rather than silently omitted.
+**Objective**: Walk one method's call chain frame by frame.
+
+1. Pick the method from the user or the sequence diagram's critical message.
+2. Trace depth-first per [reference/call-stack-trace-conventions.md](reference/call-stack-trace-conventions.md).
+3. Format `[N]` frames, `├─→`/`╰─→` branches, `[repo: name]` cross-repo calls.
+4. Present logic, errors, and decisions; untraced branches ❓ Gap.
+5. Validate — frame `[N]` matches message `N`; every path verified.
 </trace-call-stack>
 
 <discover-implementation-patterns>
-1. **Extract structural fingerprint**: From the already-investigated feature, capture: entry point type, layer chain, stereotypes, external interactions, error handling, and configuration.
-2. **Search for similar features**: Apply pattern-discovery-heuristics — start with naming conventions, then annotation/interface patterns, then structural similarity.
-3. **Compare each candidate**: Classify as match (same structure), variant (same layers, different tech/approach), or mismatch (different structure).
-4. **Synthesize findings**: If all match → present unified pattern with the current feature as canonical example. If variants exist → flag inconsistency explicitly: "⚠️ Inconsistency: N different patterns found." List each variant with structural differences and affected files. Explain what the inconsistency means in plain language, why it matters, and what to do (issue card per **plain-language-presentation**). State search coverage (which heuristics were used, what differently-named features could have been missed) and assumptions (e.g., sibling packages imply the same pattern).
-5. **Recommend**: If inconsistency found, suggest standardization. If unique pattern, state so.
-6. **Validate**: Verify that each comparison candidate's structural fingerprint is complete (all 6 dimensions: entry point, layer chain, stereotypes, external interactions, error handling, configuration), that inconsistency classifications (match/variant/mismatch) are justified by the evidence, that search-coverage limits are reported as gaps, and that every reported inconsistency carries an issue card per **plain-language-presentation**.
+**Objective**: Find peer implementations and state whether one pattern holds.
+
+1. Take the fingerprint from **investigate-codebase** step 5.
+2. Search peers per **pattern-discovery-heuristics**.
+3. Classify each — match, variant, mismatch — by fingerprint.
+4. Synthesize: one pattern → canonical example; variants → "⚠️ Inconsistency: N" with differences and files.
+5. Give an issue card per **plain-language-presentation**.
+6. Report heuristics used and names possibly missed as coverage limits.
+7. Recommend standardization, or state uniqueness.
+8. Validate — six dimensions per candidate, each classification evidenced.
 </discover-implementation-patterns>
 
 <compile-markdown-report>
-1. **Determine scope**: Ask if user wants all levels or a subset.
-2. **Load example**: Load [examples/markdown-report.md](examples/markdown-report.md) for structure reference.
-3. **Assemble sections**: System overview (C2 + dependency matrix) → Component internals (C3 per container) → Interaction flows (sequence diagrams) → Method details (call stacks) → Key decisions → Edge cases → Confidence & Coverage (verified/inferred/assumptions/gaps/inconsistencies) → Next steps.
-4. **Embed diagrams**: Mermaid source blocks with brief text descriptions.
-5. **Validate**: Ensure all file paths and line numbers are accurate, every investigation level is represented, the Confidence & Coverage section lists verified/inferred/assumed findings, gaps, and inconsistencies, every inconsistency/gap is explained in plain language (issue card + non-expert test per **plain-language-presentation**), and prose follows **concise-writing** (1-line takeaway per section, ≤3 sentences per paragraph, no banned phrases).
+**Objective**: Compile the investigation into one markdown report.
+
+1. Confirm scope — which levels the report covers.
+2. Assemble overview → internals → flows → methods.
+3. Add decisions → edge cases → Confidence & Coverage → next steps.
+4. Embed diagrams as Mermaid with a one-line description.
+5. Close with the block from **present-findings-with-confidence**.
+6. Validate — paths accurate, levels present, grade ≥7/9 per **quality-bar**.
 </compile-markdown-report>
 
 <present-findings-with-confidence>
-1. **Tag each finding**: Mark every claim as ✅ Verified (file:line confirmed), 🔶 Inferred (reasoned from evidence), or 💭 Assumption (taken for granted). Never present inferred or assumed as verified.
-2. **Report gaps**: List searched negatives (searched but not found), untraced paths, and coverage limits (e.g., "searched by suffix match only — differently-named features may be missed").
-3. **Raise inconsistencies**: Surface every contradiction found — code vs code, code vs docs, code vs config — with locations of both sides. Classify severity per [reference/pattern-discovery-strategies.md](reference/pattern-discovery-strategies.md).
-4. **Summarize**: Close with a compact "Confidence & Coverage" block listing ✅ Verified / 🔶 Inferred / 💭 Assumptions / ❓ Gaps / ⚠️ Inconsistencies. Offer to close any gap on request.
-5. **Validate**: Check that verified/inferred/assumed are clearly separated, every gap is stated (not silently omitted), every inconsistency has both sides located, the Confidence & Coverage block stays compact — one claim per line, ≤20 words — and every issue finding is rendered as a plain-language issue card per **plain-language-presentation** that passes the non-expert test.
+**Objective**: State what is known, what is not, and what was missed.
+
+1. Tag each claim ✅ Verified, 🔶 Inferred, or 💭 Assumption.
+2. Report gaps — searched negatives, untraced paths, limits.
+3. Raise inconsistencies per [reference/pattern-discovery-strategies.md](reference/pattern-discovery-strategies.md).
+4. Close with the block, one claim per line, ≤20 words:
+
+```
+### Confidence & Coverage
+- ✅ Verified: …
+- 🔶 Inferred: …
+- 💭 Assumptions: …
+- ❓ Gaps: …
+- ⚠️ Inconsistencies: …
+```
+
+5. Validate — tags separated, gaps stated and located, issues pass the non-expert test.
 </present-findings-with-confidence>
+
+<dispatch-investigation-clones>
+**Objective**: Investigate independent areas in parallel and merge one answer.
+
+1. Split into disjoint areas covering the question; run directly when no safe split exists.
+2. Write one brief per area — boundary, sub-question, depth, return contract.
+3. Require claims tagged per **finding-confidence-model**, an issue card per issue, and searched-negatives.
+4. Forbid user questions — clones return questions upward and never re-fan-out.
+5. Merge — dedupe, spot-check a claim per area, surface conflicts as ⚠️.
+6. Validate — areas disjoint and covering, every report used, grade ≥7/9.
+</dispatch-investigation-clones>
 
 </capabilities>
 
 <rules>
-<rule> When the user asks a question about existing code, gate it per **request-intake**, then apply investigate-codebase — never skip the gate because the question looks simple; zero inferences pass at once. </rule>
-<rule> When the question spans multiple repositories or the user asks about cross-system dependencies, apply analyze-cross-repo-dependencies before any diagramming. </rule>
-<rule> When the user wants to see system architecture, container internals, or how systems/components connect, apply draw-c4-diagram at the appropriate level (C2 for landscape, C3 for internals). </rule>
-<rule> When the user wants to see exact message ordering or interaction flow for an operation, apply draw-sequence-diagram. </rule>
-<rule> When drawing, validating, or syncing any diagram, apply the `draw-mermaid-diagrams` skill for mechanics. </rule>
-<rule> When the user wants method-level implementation details or code walkthrough, apply trace-call-stack. Correlate frame numbers with any existing sequence diagram. </rule>
-<rule> When the user wants a guided tour from high-level down to method detail, apply levels in sequence: draw-c4-diagram (C2) → draw-c4-diagram (C3) → draw-sequence-diagram → trace-call-stack. Start at the level matching user familiarity — do not always start at C2. </rule>
-<rule> When the user asks how a type of feature works generally, or wants to know if similar features follow a consistent pattern, apply investigate-codebase on one example, then apply discover-implementation-patterns to find and compare all similar implementations. </rule>
-<rule> When the user asks for a document, report, or all findings compiled, apply compile-markdown-report after completing the relevant investigation capabilities. </rule>
-<rule> When presenting any investigation findings (narrative, diagram, trace, matrix, or report), apply present-findings-with-confidence to tag verified/inferred/assumed findings, report gaps, and raise inconsistencies. </rule>
-<rule> When presenting any issue or uncertain finding (inconsistency, consequential gap, or inference needing verification), apply plain-language-presentation — render an issue card with plain-language why-it-matters and what-to-do, and pass the non-expert test. </rule>
-<rule> When the investigation question decomposes into several independent areas (multiple modules, entry points, or repositories), apply `fan-out-agents` to dispatch parallel investigation clones and merge their reports. </rule>
+<rule> When the user asks about existing code, apply investigate-codebase after **request-intake**. </rule>
+<rule> When the question spans repositories, apply analyze-cross-repo-dependencies first. </rule>
+<rule> When the user wants a landscape or container internals, apply draw-c4-diagram. </rule>
+<rule> When the user wants message order for one operation, apply draw-sequence-diagram. </rule>
+<rule> When the user wants method detail, apply trace-call-stack. </rule>
+<rule> When the user wants a guided tour, apply draw-c4-diagram (C2) → draw-c4-diagram (C3) → draw-sequence-diagram → trace-call-stack. </rule>
+<rule> When the user asks how a type of feature works, apply investigate-codebase then discover-implementation-patterns. </rule>
+<rule> When the user asks for a document, apply compile-markdown-report. </rule>
+<rule> When presenting findings, apply present-findings-with-confidence and, for issues, plain-language-presentation. </rule>
+<rule> When the question splits into independent areas, apply dispatch-investigation-clones via `fan-out-agents`. </rule>
+<rule> When drawing or validating a diagram, apply `draw-mermaid-diagrams`. </rule>
 </rules>
-

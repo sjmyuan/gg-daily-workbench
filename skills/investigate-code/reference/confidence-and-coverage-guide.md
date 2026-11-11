@@ -1,20 +1,24 @@
 # Confidence & Coverage Guide
 
-Presentation format for reporting findings honestly: what is certain, what is not, and what was missed. Backs the `<present-findings-with-confidence>` capability and the `<finding-confidence-model>` knowledge entry. Plain-language presentation (issue cards, tag legend, TL;DR, non-expert test) lives in **plain-language-presentation.md**.
+Presentation format for reporting findings honestly: what is certain, what is not, and what was missed.
 
-## The Five Categories
+Backs the `<present-findings-with-confidence>` capability.
+The tag vocabulary is defined once in `<finding-confidence-model>`; this file owns when to reach for a tag and how to phrase it.
+Plain-language presentation lives in **plain-language-presentation.md**.
 
-| Tag | Meaning | When to use |
-|---|---|---|
-| ✅ Verified | Directly read in source, file:line confirmed | You opened the file and read the line |
-| 🔶 Inferred | Reasoned from evidence, not directly confirmed | e.g., "no config file found, so the default serializer is assumed" |
-| 💭 Assumption | Taken for granted without direct evidence | e.g., "sibling packages follow the same pattern" |
-| ⚠️ Inconsistency | Contradiction between two sources of truth | code vs code, code vs docs, code vs config |
-| ❓ Gap | Searched but not found, or not investigated | unread branches, unscanned repos, coverage limits |
+## When to use each tag
+
+| Tag | Reach for it when |
+|---|---|
+| ✅ Verified | you opened the file and read the line |
+| 🔶 Inferred | the reasoning holds but nobody confirmed it — "no config found, so the default serializer is assumed" |
+| 💭 Assumption | a premise you did not test — "sibling packages follow the same pattern" |
+| ⚠️ Inconsistency | two sources of truth disagree: code vs code, docs, or config |
+| ❓ Gap | you searched and did not find it, or did not look |
 
 ## Confidence & Coverage Block Format
 
-Close every investigation with a compact block:
+Close every investigation with a compact block (in a compiled report, the section heading carries the block title; keep the five bullets verbatim):
 
 ```
 ### Confidence & Coverage

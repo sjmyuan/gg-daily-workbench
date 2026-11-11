@@ -1,10 +1,12 @@
 # Plain-Language Presentation
 
-Presentation rules that make findings comprehensible. Backs the `<plain-language-presentation>` knowledge entry. Complements `confidence-and-coverage-guide.md` (what to tag) and `writing-style.md` (how to write).
+Presentation rules that make findings comprehensible.
+Backs the `<plain-language-presentation>` knowledge entry; complements `confidence-and-coverage-guide.md` (what to tag) and `writing-style.md` (how to write).
 
 ## Core doctrine
 
-Explanation outranks brevity for findings. A finding the reader cannot act on is not concise — it is useless. Routine ✅ Verified facts stay terse; issues and uncertainty get plain-language explanation.
+Explanation outranks brevity for findings — a finding the reader cannot act on is not concise, it is useless.
+Routine ✅ Verified facts stay terse; issues and uncertainty get plain-language explanation.
 
 ## Explain only issues/uncertainty
 
