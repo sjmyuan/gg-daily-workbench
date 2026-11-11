@@ -4,10 +4,10 @@ Brief index + the shared **structured brief shape**, the **context inventory** g
 
 | Capability → agent | Brief file |
 |---|---|
-| investigate + compile pair + draft ADRs (phases 1–3) → `spike-area-analyst` | [area-analyst-brief.md](area-analyst-brief.md) |
+| investigate + pair + ADRs (single return) → `spike-area-analyst` | [area-analyst-brief.md](area-analyst-brief.md) |
 | compile-solution-doc → `solution-doc-writer` | [solution-doc-brief.md](solution-doc-brief.md) |
 
-Dispatch one brief per area per phase; dispatch the same phase across areas concurrently. Fill each brief from its file per the **structured brief shape**, then review each returned receipt against the capability's spike-specific checks (in its brief file). All briefs carry the shared contracts below; a re-dispatched unit also carries the verification-result contract.
+Dispatch one brief per area and run all areas concurrently; each session returns once, carrying its written pair and ADRs — never a bare evidence map or an intermediate phase. Fill each brief from its file per the **structured brief shape**, then review the returned receipt against the capability's spike-specific checks (in its brief file). All briefs carry the shared contracts below; a re-dispatched unit also carries the verification-result contract.
 
 ## Structured brief shape
 
@@ -18,7 +18,7 @@ Every dispatch brief follows the same 7-section skeleton so a filled brief is se
 | 1 | Mission | Who I am + the one-sentence deliverable |
 | 2 | Context | Spike goal, scope-map slice (area/problems + boundaries), user-stated context, brownfield/greenfield |
 | 3 | Inputs | Prior-artifact paths, established facts, known locations, and prior searches — with how to use each |
-| 4 | Tasks | Ordered actions, ending at the phase stop |
+| 4 | Tasks | Ordered actions, ending with the single return (pair + ADRs) |
 | 5 | Output contract | Exactly what to return and its format |
 | 6 | Constraints | Guardrails — what never to do, including the write boundary |
 | 7 | Report back | What to flag to the orchestrator |
@@ -32,7 +32,7 @@ A brief is complete when **nothing the orchestrator holds is missing from it**. 
 3. Drop an item only because the unit cannot need it — never because it is obvious, cheap to redo, or findable.
 4. Fail the brief when an item has no home: add the field instead of dropping the item.
 
-A path is a pointer, not knowledge. A sub-agent that receives only a path must open the file, re-read it, and re-derive what the orchestrator already concluded — the inventory exists to make that re-derivation unnecessary. Because one area session now spans the chain, a brief covers one hop instead of four; the inventory shrinks accordingly.
+A path is a pointer, not knowledge. A sub-agent that receives only a path must open the file, re-read it, and re-derive what the orchestrator already concluded — the inventory exists to make that re-derivation unnecessary. Because one area session spans the chain in a single return, a brief covers the whole chain instead of four hops; the inventory shrinks accordingly.
 
 ## Three fill modes
 
@@ -90,17 +90,18 @@ A dispatched agent's skill may run its own intake gate and refuse to search on a
 
 ## Area-session contract
 
-One analyst session per area runs the chain; the brief names the phase where it stops, and [area-analyst-brief.md](area-analyst-brief.md) owns that phase's inputs and receipt.
+One analyst session per area runs the whole chain and returns once; [area-analyst-brief.md](area-analyst-brief.md) owns its inputs and receipt.
 
-- **Pair before decisions** — phase 2 completes the pair (human doc, then evidence doc per `document-findings`) before phase 3; the evidence doc is the session's durable state.
-- **Resume, do not rebuild** — continue the same session for the next phase; if the platform cannot continue it, re-dispatch with the written artifacts plus the prior phase receipt. Never re-investigate to recover context.
-- **Batch mode** — **batch** in the phase-stop field runs phases 1–3 in one dispatch, only when the user waives the pauses.
+- **One return** — the session investigates, writes the pair, drafts the ADRs, then returns. No intermediate return; the artifacts are the only handoff.
+- **Drivers before dispatch** — the brief carries each problem's decision drivers; the analyst never infers one. Missing driver → the orchestrator asks the user before dispatching.
+- **Pair before decisions** — the pair (human doc, then evidence doc per `document-findings`) is written before the ADRs, so every decision cites it.
+- **Resume only to revise** — feedback or a repair re-dispatches with the written artifacts plus the verification result; never re-investigate to recover context.
 - **Split, do not thin** — an area that cannot be covered in one pass returns a split request.
 
 ## Artifacts as inputs
 
 - **The pair always travels together** — `docs/findings-<area>.md` (orients) plus `docs/evidence-<area>.md` (claim ledger, `file:line`, searched-negatives). Never pass one alone.
-- **Phase 3 receives its own pair** — the pair the same session authored, or the verified pair on a fresh dispatch. Instruct it to treat **Verified** claims as settled and dig only into marked **Gap**s/**Inconsistencies** or **Inferred**/**Assumption** claims.
+- **A re-dispatch receives its own pair** — the pair the same session authored, or the verified pair on a fresh dispatch. Instruct it to treat **Verified** claims as settled and dig only into marked **Gap**s/**Inconsistencies** or **Inferred**/**Assumption** claims.
 - **Searched-negatives travel forward** — a documented "not found" belongs in the next brief's **already searched** digest, so no session repeats the scan.
 - **Solution-doc briefs** receive every findings pair plus the decisions digest; verification briefs receive established `file:line`, the settled-vs-open split, and searched-negatives.
 
@@ -125,6 +126,6 @@ Run on every filled brief; any failed check stops the dispatch:
 - Every inventory item has a home — nothing was dropped for being obvious.
 - Every path is absolute and carries its section anchor.
 - The intake record's four fields are filled or explicitly declared unknowable.
-- The phase stop is stated and the brief carries that phase's inputs (phase 3: drivers + pair).
+- The brief states the single return (pair + ADRs) and carries every problem's drivers; a missing driver blocks the dispatch.
 - Known locations and already-searched items are present whenever the orchestrator has any.
 - Unpersisted prior receipts are inline, not referenced as if they were files.

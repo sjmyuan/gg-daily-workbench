@@ -1,11 +1,11 @@
 # Findings-Doc Compilation
 
-Full procedure for the `compile-findings-doc` capability — phase 2 of an area session, loaded on demand when the spike reaches findings-doc compilation, so the solution-doc procedure is never pulled in. Brief: **reference/area-analyst-brief.md**; format and evidence rules: **reference/findings-document-guide.md**.
+Full procedure for the `compile-findings-doc` capability — the confirmation pass over each area's findings pair, loaded on demand when the spike reaches findings confirmation, so the solution-doc procedure is never pulled in. Brief: **reference/area-analyst-brief.md**; format and evidence rules: **reference/findings-document-guide.md**.
 
 Findings docs are **one pair per area, always** — `docs/findings-<area>.md` (human) plus `docs/evidence-<area>.md` (evidence) for every area on the scope map, each from its area's verified investigation results.
 
-1. For each area on the scope map, resume its analyst session for **phase 2** per **multi-agent-orchestration** — one brief per area with `Phase stop: 2`. When the session cannot be resumed, re-dispatch the analyst with the phase-1 receipt (the verified evidence map) inline; never re-investigate.
-2. Apply `question-everything`'s **verify-sub-agent-results** at **fidelity** depth — IDs, counts, and cross-references against the verified ledger; no evidence sweep.
+1. Take each area's pair returned and verified by **investigate-per-area**. For an area seeded with pre-existing user findings, dispatch the same brief with phase 1 skipped — the analyst writes the pair and the ADRs from the supplied material; never re-investigate.
+2. Verify a pair this step produced at **single pass + fidelity**; a pair already verified by **investigate-per-area** needs no second evidence pass — validate it in step 3.
 3. Validate each pair per **reference/findings-document-guide.md** §Validation (pair) — structure, ledger completeness, and cross-consistency; never vague references, never inference presented as evidence.
 4. Cross-reference between areas (2+ areas) per the same validation list.
 5. Ask: "Does this accurately capture the current state? Anything to add, correct, or remove?"

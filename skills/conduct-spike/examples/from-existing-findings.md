@@ -2,7 +2,7 @@
 
 **Scenario**: The user has already done informal investigation on a caching strategy problem and has notes. They want to formalize the findings into ADRs and a solution document without re-doing the investigation.
 
-**Applies**: `define-spike-scope` → `compile-findings-doc` → `draft-problem-adrs` (option evaluation via `draft-adr`) → `compile-solution-doc` (skipping `investigate-per-area`; compile-findings-doc formalizes the provided findings)
+**Applies**: `define-spike-scope` → `compile-findings-doc` → `draft-problem-adrs` (option evaluation via `draft-adr`) → `compile-solution-doc` (phase 1 skipped: the same area session formalizes the notes and returns the pair and ADRs together)
 
 ## Define Spike Scope
 
@@ -91,7 +91,7 @@ Coverage: invalidation mechanisms, write path. Cross-area reference: `docs/evide
 
 ## Draft Problem ADRs — Evaluate + Draft
 
-*(Per problem, the area's `spike-area-analyst` runs the `draft-adr` flow headlessly — drivers → options → **evaluate-options** → compile-adr — seeded from the provided notes; the orchestrator confirms each proposed chosen option. The evaluation tables below are the evaluate stage of each drafting session.)*
+*(Per problem, the area's `spike-area-analyst` runs the `draft-adr` flow headlessly — drivers → options → **evaluate-options** → compile-adr — seeded from the provided notes; the ADRs arrive in the same return as the pair. The orchestrator verifies and confirms each proposed chosen option. The evaluation tables below are the evaluate stage.)*
 
 ### Area 1: Cache Topology
 

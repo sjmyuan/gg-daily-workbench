@@ -14,16 +14,16 @@ Choose the least powerful model that can do the unit; **state it explicitly** �
 | Re-investigation after a DISAGREE / UNCERTAIN | Evidence-matched to the challenged claim; one tier above the original analyst |
 
 - Specify the model in every dispatch brief.
-- The area session runs on one model for all its phases; do not downgrade a resumed phase below the model that produced the evidence.
+- The area session runs on one model for all its phases; do not downgrade a resumed session below the model that produced the artifacts.
 - A unit that stays stuck is escalated to a more capable model — never retried unchanged on the same model.
 - A re-investigation brief carries the verification result (open challenges + verdicts) — never retry a unit blind.
 
 ## Resuming an area session
 
-- Keep a session ledger in the orchestrator — area → session, phase returned, receipt — until the area's ADRs are accepted; it is the only handle the next phase needs.
-- Resume the same analyst session for the next phase; the phase receipt and the written artifacts are the durable state.
-- When the session cannot be resumed, re-dispatch the same agent type with the phase's artifacts plus the prior receipt — never with a blank brief.
-- A resumed phase inherits the prior phase's evidence; it never re-investigates to rebuild context.
+- Keep a session ledger in the orchestrator — area → session, return receipt — until the area's pair and ADRs are accepted.
+- The artifacts are the durable state: the pair and ADRs are written before the session returns.
+- Resume the same session only to revise on feedback or a repair; when it cannot be resumed, re-dispatch the same agent type with the artifacts plus the feedback — never with a blank brief.
+- A resumed session inherits the prior evidence from the artifacts; it never re-investigates to rebuild context.
 - Close the session only when its area's pair and ADRs are accepted; a later sync or rework starts a new session from the artifacts.
 
 ## Waiting on sub-agents
@@ -43,7 +43,7 @@ Before dispatching, detect the platform's agent mechanism and map each unit to t
 
 | Situation | Fallback |
 |---|---|
-| No `spike-area-analyst` | Ask the user; else run the area session in-session with the same brief and phases, keeping verification independent |
+| No `spike-area-analyst` | Ask the user; else run the area session in-session with the same brief and single return, keeping verification independent |
 | No suitable agent for a unit | Ask the user how to proceed; else run the unit in-session with the same brief and verification — never skip the unit |
 | Verification with no evidence-matched agent | Verify in-session against primary sources per `question-everything`'s protocol |
 | No explicit model routing | Ask the user once, or use the cheapest capable default and state it in the brief |
@@ -56,9 +56,11 @@ Before dispatching, detect the platform's agent mechanism and map each unit to t
 | "A short brief is a cheap brief" | The brief saves tokens; the re-search spends them back many times over. A missing digest is a cost, not a saving. |
 | "The path is enough — it can read the file" | A path forces a re-read and a re-derivation; the digest is what removes the re-scan. |
 | "It can grep for the entry point" | That search already ran. Forward the location, not the task. |
-| "Single area / single ADR — dispatching is overhead" | Context preservation is the goal, not parallelism; the area is still dispatched and its phases run in one session. |
+| "Single area / single ADR — dispatching is overhead" | Context preservation is the goal, not parallelism; the area is still dispatched and its whole chain runs in one session. |
 | "Split the area across agents — each phase is simpler" | The split serializes a live evidence map at every hop; findings compilation becomes a re-read and ADR nuance dies in the digest. |
-| "Re-dispatch phase 2 with a blank brief" | The prior receipt is the session's state; a blank re-run pays for the investigation twice. |
+| "Re-dispatch for feedback with a blank brief" | The artifacts plus the feedback are the session's state; a blank re-run pays for the investigation twice. |
+| "Return the evidence map first, verify, then write the pair" | The map exists only in the session; a resumed or compacted phase rebuilds the reasoning from a receipt. Write the pair and ADRs before returning, then verify the artifacts. |
+| "Return the pair, then resume for the ADRs — each return is simpler" | The decision is drafted where the evidence lives; an intermediate return drops the reasoning before the ADR is written. |
 | "The analyst was thorough — verification is redundant" | Verification is the gate; the producing session is never reused as the verifier. |
 | "Just the evidence doc is enough" | An area's findings always travel as a pair — human doc + evidence doc; never one alone. |
 | "I'll verify it myself in this session" | Dispatch a NEW evidence-matched agent; verify in-session only when none exists. |

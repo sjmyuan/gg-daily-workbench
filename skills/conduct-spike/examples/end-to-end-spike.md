@@ -42,7 +42,7 @@ User: "Q1: B." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, u
 
 ## Investigate Per Area
 
-*(investigate-code applied per area; evidence maps recorded)*
+*(investigate-code applied per area; each area session writes its findings pair and ADRs before returning)*
 
 | Area | Current State | Key Constraint |
 |---|---|---|
@@ -53,14 +53,14 @@ User: "Q1: B." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, u
 
 ### Completion Checkpoint
 
-> "Investigation complete — is this sufficient, or should we investigate further before formalizing?"
-> User: "It's sufficient — let's formalize. We can dig into the orchestrator call graph after the first round of ADRs."
+> "The four pairs and five ADRs are written — is this sufficient, or should we dig further?"
+> User: "It's sufficient — let's review. We can dig into the orchestrator call graph after the first round of ADRs."
 
 ---
 
-## Compile Findings Documents
+## Confirm Findings Documents
 
-*(one findings pair per area, always: `docs/findings-<area>.md` (human) + `docs/evidence-<area>.md` (evidence); four areas → four pairs, compiled concurrently.)*
+*(one findings pair per area, always: `docs/findings-<area>.md` (human) + `docs/evidence-<area>.md` (evidence); four areas → four pairs, written in each area session's single return and validated here.)*
 
 | Findings human doc | Current-state orientation | Representative topic answers |
 |---|---|---|
@@ -79,7 +79,7 @@ Each area's `evidence-<area>.md` holds the claim ledger (IDs, `file:line`, confi
 
 ## Draft Problem ADRs — Evaluate + Draft
 
-*(Per problem, the area's `spike-area-analyst` session runs the `draft-adr` flow headlessly from the drivers and findings already in session; the orchestrator confirms each proposed chosen option. A whole area's problems share the session when evidence is shared.)*
+*(Per problem, the area's `spike-area-analyst` session runs the `draft-adr` flow headlessly from the drivers and findings already in session — the ADRs arrive in the same return as the pair, shown here in artifact order. The orchestrator verifies and reviews each proposed chosen option.)*
 
 | Area → Problem | Options evaluated | Chosen Option |
 |---|---|---|

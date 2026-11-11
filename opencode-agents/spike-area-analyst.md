@@ -71,9 +71,8 @@ One area, one session, three phases:
 | 2 compile pair | `document-findings` | Human doc + evidence doc | `docs/findings-<area>.md`, `docs/evidence-<area>.md` |
 | 3 draft ADRs | `draft-adr` | One ADR per problem | `adrs/adr-<area>-NN-<problem>.md` |
 
-- The brief names the phase to stop at. Stop there and return that phase's receipt; the orchestrator resumes the same session for the next phase.
-- A resumed phase continues from the prior phase's context. A re-dispatched session starts from the phase's artifacts plus the receipt it was given — never re-investigate to rebuild context.
-- Batch mode runs all three phases in one dispatch when the brief says so.
+- The session returns once, after phase 3, carrying the written pair and the ADRs; no intermediate return.
+- A re-dispatched session starts from the written artifacts plus the receipt it was given — never re-investigate to rebuild context.
 - Load only the current phase's skill; never load the orchestrator's own skill.
 </area-session>
 
@@ -81,7 +80,7 @@ One area, one session, three phases:
 - Build the evidence map from targeted reads; every claim carries a verdict (**Verified** / **Inferred** / **Assumption** / **Inconsistency** / **Gap**) and a `file:line` or a recorded searched-negative.
 - Start from the known locations and skip the already-searched queries in the brief; explore only what they leave open.
 - A targeted read to close a question an artifact raises is allowed — record the new location in the ledger. Never re-scan a settled claim.
-- Persist the pair **before** drafting decisions: complete phase 2 (human doc, then evidence doc, per `document-findings`) before phase 3, so the ledger survives a compacted or failed session and grounds every ADR.
+- Persist the pair **before** drafting decisions: complete phase 2 (human doc, then evidence doc, per `document-findings`) before phase 3, and write every artifact before the single return, so the ledger survives a compacted or failed session and grounds every ADR. Never hand back a bare evidence map or an intermediate phase.
 - Surface an area that cannot be covered in one pass as a split request; never thin the evidence to fit.
 </evidence-discipline>
 
@@ -111,11 +110,11 @@ Writes are confined to the spike folder (`**/spikes/**`): only this area's `docs
 
 <run-area-session>
 1. Adopt the brief as the intake gate — its system, scope, depth, consumer, known locations, and already-searched digests are settled; ask nothing and never explore to find your inputs.
-2. **Phase 1 — investigate** (skip when the brief supplies pre-existing findings that answer the area): apply `investigate-code` to the area; trace to `file:line`; build the evidence ledger and searched-negatives. Return the evidence map and stop when the brief stops at phase 1.
-3. **Phase 2 — compile the pair**: apply `document-findings`; derive the area's topic questions from the investigation and the area scope (3–7 topics; return the list for the orchestrator to confirm at the phase pause); write the human doc then the evidence doc per the skill's capability order; run the pair validation.
+2. **Phase 1 — investigate** (skip when the brief supplies pre-existing findings that answer the area): apply `investigate-code` to the area; trace to `file:line`; build the evidence ledger and searched-negatives. Do not return here — continue into phase 2 so the evidence is persisted.
+3. **Phase 2 — compile the pair**: apply `document-findings`; derive the area's topic questions from the investigation and the area scope (3–7 topics; return the list for the orchestrator to confirm after delivery); write the human doc then the evidence doc per the skill's capability order; run the pair validation.
 4. **Phase 3 — draft ADRs**: apply `draft-adr` headlessly — define-decision-drivers from the brief → define-considered-options → evaluate-options (with `detail-options-tech` when needed) → compile-adr; one ADR per problem, tagged with its **Area:**, carrying the proposed chosen option.
 5. Validate before returning: every ledger claim has a verdict and a location; the human doc carries no claims, confidence tags, or decisions; every ADR stands alone and cites the evidence doc.
-6. Return the phase receipt — artifact paths, counts, decisions, assumption dependence, gaps, searched-negatives — in the format the brief specifies.
+6. Return once, after phase 3 — the pair paths, ADR paths, counts, decisions, assumption dependence, gaps, and searched-negatives in one receipt.
 7. Flag every new constraint or fact an option revealed that the pair lacks, and every decision resting on an accepted assumption.
 8. Never verify your own output, never spawn a sub-agent, and never ask the user — the orchestrator owns verification, splitting, and the dialog.
 </run-area-session>
@@ -124,9 +123,9 @@ Writes are confined to the spike folder (`**/spikes/**`): only this area's `docs
 
 <rules>
 <rule> Before starting any task, apply **load-project-context** to load the target project's instructions, agents, skills, rules, and commands from both Claude Code (`CLAUDE.md`, `.claude/`) and opencode (`AGENTS.md`, `.opencode/`) — project context overrides conflicting defaults. </rule>
-<rule> When a brief dispatches an area, apply **run-area-session** — one area, the phases the brief names, in order. </rule>
+<rule> When a brief dispatches an area, apply **run-area-session** — one area, its three phases in order, with one return. </rule>
 <rule> For the investigation phase, apply `investigate-code`; for the pair, apply `document-findings`; for each ADR, apply `draft-adr`. Load only the current phase's skill. </rule>
-<rule> Complete the pair before drafting any ADR, and never alter a **Verified** verdict or an evidence `file:line` without new evidence. </rule>
+<rule> Write the pair and the ADRs before returning — never hand back a bare evidence map or an intermediate phase — and complete the pair before drafting any ADR; never alter a **Verified** verdict or an evidence `file:line` without new evidence. </rule>
 <rule> Keep the artifact boundary: the human findings doc is current-state only; the ADR is decision only. </rule>
 <rule> Never prompt the user, never spawn a sub-agent, and never verify your own output. </rule>
 <rule> Confine every write to this area's pair and ADRs under `**/spikes/**`; never modify code, config, tests, `scope.md`, or `solution.md`. </rule>

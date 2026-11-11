@@ -4,9 +4,7 @@ Dispatch by **evidence axis**: one agent owns one area's whole chain — investi
 
 | Capability | Agent | Applies skill | Brief |
 |---|---|---|---|
-| Investigate (phase 1) | `spike-area-analyst` | `investigate-code` | [area-analyst-brief.md](area-analyst-brief.md) |
-| Compile findings pair (phase 2) | `spike-area-analyst` | `document-findings` | [area-analyst-brief.md](area-analyst-brief.md) |
-| Draft problem ADRs (phase 3) | `spike-area-analyst` | `draft-adr` (headless) | [area-analyst-brief.md](area-analyst-brief.md) |
+| Investigate + compile pair + draft ADRs (single return) | `spike-area-analyst` | `investigate-code` → `document-findings` → `draft-adr` (headless) | [area-analyst-brief.md](area-analyst-brief.md) |
 | Compile solution doc | `solution-doc-writer` | `write-solution-doc` | [solution-doc-brief.md](solution-doc-brief.md) |
 
 ## Why one session per area
@@ -16,19 +14,19 @@ Splitting the chain across agents serializes a live evidence map at every hop:
 - **Findings compilation is a projection, not a judgment** — a separate writer only re-reads the evidence the investigator just built. In one session that document is authored from memory; the orchestrator never re-serializes the map.
 - **ADR nuance survives** — a fresh ADR writer receives only a "known locations" digest, so the reasoning about why an option is risky dies at the handoff. In one session it evaluates options against the evidence it gathered.
 - **Gap closure is local** — a missing fact found during option evaluation becomes a targeted read and a new ledger row, instead of a return → re-brief → new investigator round trip.
-- **The artifact is the contract** — phase receipts and written artifacts carry state, so the orchestrator holds only the cross-state and never the narrative.
+- **One return, after the decisions** — the pair and the ADRs leave together, so the decision is drafted where the evidence lives; an intermediate return would put the reasoning outside the session that holds it.
+- **The single return is the artifacts** — the pair and ADRs are written before the session returns, so verification lands on durable state and a lost or compacted session resumes from them instead of replaying a receipt.
 
-The cost is that an area's phases run serially; parallelize by **phase across areas**, not by agent type. A single area is still dispatched — context preservation is the goal, not parallelism.
+The cost is that an area's phases run serially; parallelize **across areas**, never by agent type. A single area is still dispatched — context preservation is the goal, not parallelism.
 
 ## Dispatching pattern
 
-1. **Scope stays in the orchestrator** — it establishes the cross-state (goal, areas, problems, drivers) every brief depends on.
-2. **One brief per area** per [area-analyst-brief.md](area-analyst-brief.md), carrying the phase stop and the complete context inventory.
-3. **Phased dispatch** — the default: dispatch phase 1 to every area in parallel, verify and pause; resume each area for phase 2, verify and pause; then phase 3. **Batch** dispatch phases 1–3 in one brief only when the user waives the pauses between capabilities.
-4. **Resume the same session** — continue the analyst's session for the next phase where the platform supports it; otherwise re-dispatch the same agent with the written artifacts plus the prior phase receipt. Never rebuild the evidence by re-investigating.
-5. **Parallelize by phase** — all areas' phase 1 together, then all areas' phase 2, and so on.
-6. **Collect and forward** — each later phase inherits the area's own artifacts and its prior receipt inline; the next area's brief inherits the searched-negatives digest.
-7. **Verify before accepting** — see below; the producing session is never the verifier.
+1. **Scope stays in the orchestrator** — it establishes the cross-state (goal, areas, problems, drivers) every brief depends on, and collects the drivers before dispatch.
+2. **One brief per area** per [area-analyst-brief.md](area-analyst-brief.md), carrying the drivers and the complete context inventory.
+3. **Dispatch once per area** — all areas concurrently; each session returns once with its pair and ADRs. There is no second dispatch in the standard path.
+4. **Resume only to revise** — on user feedback or a repair, re-dispatch the same agent with the written artifacts plus the feedback; never rebuild the evidence by re-investigating.
+5. **Collect and forward** — each later area's brief inherits the searched-negatives digest and the decided sibling ADRs inline.
+6. **Verify before accepting** — see below; the producing session is never the verifier.
 
 A brief that carries only the goal and an output name is the failure mode this ordering prevents: the sub-agent cannot see the orchestrator's context, so it re-derives the scope, hunts for its own inputs, and repeats searches already run.
 
@@ -38,14 +36,13 @@ Verify via `question-everything`'s **verify-sub-agent-results**, with depth set 
 
 | Returned unit | Depth | What is verified |
 |---|---|---|
-| Phase 1 evidence map | **Single pass** (default) | Material code claims, each against primary sources |
-| Phase 2 findings pair | **Fidelity** | IDs, counts, and `file:line` match the verified ledger; no evidence sweep |
-| Phase 3 ADR decision (load-bearing) | **Full loop** (cap 2) | Chosen-option fit plus any new code claims; verify → repair once → confirm changed claims |
+| Returned pair (same return) | **Single pass + fidelity** | Material code claims against primary sources; IDs, counts, and `file:line` consistent with the ledger |
+| Returned ADRs (same return) | **Full loop** on a load-bearing decision | Chosen-option fit plus any new code claims; verify → repair once → confirm changed claims |
 | Solution doc | **Fidelity** | Fidelity to verified ADRs and evidence; no evidence sweep |
 
 - `code-investigator` verifies code claims; non-code claims go to a NEW instance of the producer's type. Never reuse the producing `spike-area-analyst` session — it anchors on its own output.
 - A fidelity check that finds a new `file:line` claim drops to a **single pass** on that claim.
-- The re-dispatch brief carries the **verification result** (open challenges + verdicts) so the new agent resolves them instead of redoing settled work (see **reference/dispatch-briefs.md**).
+- The re-dispatch brief carries the **verification result** (open challenges + verdicts) and the artifacts, so the new agent repairs them instead of redoing settled work (see **reference/dispatch-briefs.md**).
 - `UNCERTAIN` → tag the claim **unverified** in the evidence doc and surface it; never add a round to converge.
 
 ### Verification questions

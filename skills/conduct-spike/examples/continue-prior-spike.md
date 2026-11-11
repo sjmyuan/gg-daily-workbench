@@ -42,7 +42,7 @@
 
 ## Step 3: Investigate Deeper (Seeded, Targeted)
 
-*(Dispatched as a `spike-area-analyst` phase-1 session seeded with the area's existing evidence map so covered code is not re-scanned — see `reference/multi-agent-orchestration.md`.)*
+*(Dispatched as a `spike-area-analyst` session seeded with the area's existing evidence map so covered code is not re-scanned; it updates the pair and the affected ADRs in place before returning — see `reference/multi-agent-orchestration.md`.)*
 
 > "Deep-diving into: Database Decomposition Strategy — can we split the monolithic DB without breaking settlement logic? And which schema-migration approach fits the stored procedures?"
 
@@ -61,7 +61,7 @@
 
 ## Step 4: Draft/Revise Problem ADRs — Evaluate + Draft (Rewrite In Place)
 
-*(draft-problem-adrs applied per problem, seeded with the updated evidence doc; each ADR's evaluation runs via `draft-adr`'s **evaluate-options** inside the drafting session.)*
+*(The same area session evaluated each problem via `draft-adr`'s **evaluate-options** before returning; the orchestrator verifies and reviews here, with the updated evidence doc as the base.)*
 
 **Problem 1 — break up the database — evaluation**:
 
