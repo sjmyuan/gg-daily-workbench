@@ -1,9 +1,7 @@
 # Example: Plain-Language Findings (Before → After)
 
-## User Request
-"Review this change: a bug fix for duplicate product events."
-
-**Applies**: **conducting-code-review**
+**Scenario**: A bug fix for duplicate product events, reviewed twice — once as a vague draft, once as the skill's plain-language output.
+**Applies**: **conducting-code-review** (plain-language presentation)
 
 ## Before — vague, unactionable
 
@@ -21,7 +19,7 @@ No exact behavior, no specific consequence, no concrete fix, and the anchor is a
 
 > Severity legend: 🚫 Blocker = must fix before merge · 🔴 Major = should fix · 🟡 Minor = nice to fix · 🟢 Nit = polish · ⚠️ Inconsistency = decision required
 
-### 🔴 Major Issues
+### 🚫 Blockers (Must Fix)
 
 #### Unbounded in-memory Set grows for the lifetime of the process
 - **File**: `src/events/EventPublisherImpl.java:27`

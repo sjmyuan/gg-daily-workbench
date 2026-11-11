@@ -75,6 +75,8 @@ Every path there was composed from the branch name. Nothing was read.
 
 ## Findings
 
+> Severity legend: 🚫 Blocker = must fix before merge · 🔴 Major = should fix · 🟡 Minor = nice to fix · 🟢 Nit = polish · ⚠️ Inconsistency = decision required
+
 ### 🔴 Major Issues
 
 #### Coupon currency is ignored when no currency is supplied

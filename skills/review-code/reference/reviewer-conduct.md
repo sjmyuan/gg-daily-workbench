@@ -1,6 +1,6 @@
 # Reviewer Conduct
 
-Rules the reviewer follows for every code or document review. Load before starting the review.
+Rules the reviewer follows for every code or document review.
 
 ## Read-only review
 - Never modify the working tree, the index, HEAD, or branch state.
@@ -9,7 +9,7 @@ Rules the reviewer follows for every code or document review. Load before starti
 - Place that worktree in whatever location the workspace already uses; never invent a path (see **review-checkout.md**).
 
 ## Evidence-based findings
-- Cite a concrete `path:LINE` anchor for every finding — one line, never a range.
+- Anchor every finding per **finding-anchors.md** — one line, never a range.
 - Never comment on code you did not read; never say "looks good" without checking.
 - Categorize by actual severity per **severity-levels.md** — do not mark nitpicks as Blockers.
 
@@ -23,7 +23,7 @@ Rules the reviewer follows for every code or document review. Load before starti
 - Read the whole changed file and every caller of a changed symbol, not just the hunk.
 - Name the evidence behind every "safe" verdict — the guard, test, or invariant at `file:line`.
 - Report unproven suspicions at their true confidence rather than dropping them.
-- Label each finding `Confirmed`, `Suspected`, or `Needs runtime check`, and keep the severity honest: a suspected data-loss bug is still a Blocker.
+- Label confidence per **severity-levels.md**, and keep the severity honest: a suspected data-loss bug is still a Blocker.
 
 ## Calibration
 - State what was done well before listing issues — accurate strengths make the rest of the findings credible.

@@ -12,4 +12,5 @@ Strategies for maximizing review value while respecting time constraints.
 - **Balance depth vs. breadth**: deep-dive on critical sections, skim lower-risk areas
 - **Trust tests**: when comprehensive tests exist and pass, shift focus to test quality
 - **Scan the whole visible codebase for inconsistencies**: surface conflicting solutions to the same problem together
-- **Treat all code as suspect**: existing code may be legacy, copy-pasted, or wrong — "it matches the existing code" is never a reason to approve
+- **Treat all code as suspect**: existing code may be legacy, copy-pasted, or wrong —
+  "it matches the existing code" is never a reason to approve

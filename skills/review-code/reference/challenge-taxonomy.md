@@ -32,13 +32,19 @@ no output; a probe that fails or cannot be settled becomes a challenge.
 | Settles it | The document, rule, or answer that closes it |
 | Blocking | `yes`, `no`, or `maybe` |
 
-## Blocking rules
+## Blocking and imported ids
 
-| Blocking | Verdict effect |
+Set `Blocking` and its verdict effect per **severity-levels.md**. A challenge raised by `question-everything` keeps its id; map its fields into this record:
+
+| Imported field (`question-everything`) | Lands here as |
 |---|---|
-| `yes` | Verdict becomes `No` or `With fixes` until answered |
-| `maybe` | Verdict may stand; state that the answer can still flip it |
-| `no` | Advisory; listed, never dropped |
+| `C<N>` | `C<N>`, unchanged |
+| `<dimension>, <priority>` | Prefix in the Question cell |
+| Claim questioned | Question |
+| Why it is suspect | Why it looks unreasonable |
+| Satisfactory answer | Settles it |
+| — | Assumed meanwhile: what the review did while unresolved |
+| — | `Blocking`, derived from the claim's impact |
 
 ## Delegation
 

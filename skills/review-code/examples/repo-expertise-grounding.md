@@ -62,6 +62,8 @@ belong; the reviewer would otherwise file a 🟡 style nit or nothing at all.
 
 ## Findings
 
+> Severity legend: 🚫 Blocker = must fix before merge · 🔴 Major = should fix · 🟡 Minor = nice to fix · 🟢 Nit = polish · ⚠️ Inconsistency = decision required
+
 ### 🔴 Major Issues
 
 #### Hand-rolled retry loop bypasses the shared resilience kit

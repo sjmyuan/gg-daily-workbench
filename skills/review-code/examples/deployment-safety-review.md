@@ -3,14 +3,13 @@
 
 **Scenario**: Review of a PR that adds a new `/api/v1/orders/summary` endpoint backed by a new `order_summary` table, a Flyway migration, and a Redis cache layer.
 
-**Review Focus**: Observability, deployment safety, migration backward-compatibility, and cache correctness.
-
 **Applies**: **conducting-code-review**
 
 ## Code Review Summary
 
 **Scope**: `feature/order-summary-endpoint` — new REST endpoint, DB migration, and Redis caching
 **Focus Areas**: Observability, deployment safety, correctness, security
+**Reviewed**: 4 files, +161/-4 — `OrderSummaryService.java` (+96/-4), `OrderSummaryController.java` (+41), `V20_create_order_summary.sql` (+18), `application.yaml` (+6)
 **Overall Assessment**: Requires two blockers to be addressed before merge; deployment sequence must be documented
 **Ready to merge?**: No — the migration is not backward-compatible and the cache has no eviction path
 **Repo expertise**: `AGENTS.md`, `docs/adr/`, `.github/workflows/`
@@ -20,13 +19,20 @@
 
 ## Findings
 
+> Severity legend: 🚫 Blocker = must fix before merge · 🔴 Major = should fix · 🟡 Minor = nice to fix · 🟢 Nit = polish · ⚠️ Inconsistency = decision required
+
 ### 🚫 Blockers (Must Fix)
 
 #### DB Migration Is Not Backward-Compatible
-- **File**: [db/migration/V20_create_order_summary.sql](db/migration/V20_create_order_summary.sql)
-- **Issue**: The migration adds a `NOT NULL` column `summary_status` to `orders` without a default value. If the old app version is still running during a rolling deploy, any `INSERT` from the old code will fail because it does not supply `summary_status`.
-- **Impact**: Data loss and 500 errors during the deployment window in any rolling or blue/green deployment strategy.
-- **Recommendation**: Add a default value, or split into two migrations (add nullable → backfill → add `NOT NULL` constraint) deployed across two separate releases.
+- **File**: `db/migration/V20_create_order_summary.sql:7`
+- **Confidence**: Confirmed
+```sql
+7 │ ALTER TABLE orders ADD COLUMN summary_status VARCHAR(32) NOT NULL;
+```
+- **Issue**: The migration adds a `NOT NULL` column to `orders` with no default value.
+  Old code still running during a rolling deploy inserts rows without `summary_status`, so every such `INSERT` fails.
+- **Impact**: 500 errors and lost writes for the whole deployment window under any rolling or blue/green strategy.
+- **Recommendation**: Add a default value, or split into two migrations — add nullable, backfill, then enforce `NOT NULL` in a later release.
 
 #### Cache Has No Invalidation on Order Update
 - **File**: `src/main/java/com/shop/order/OrderSummaryService.java:72`
@@ -34,7 +40,7 @@
 ```java
 72 │ cache.put("orderSummary::" + orderId, summary, Duration.ofHours(1));
 ```
-- **Issue**: Summaries are cached in Redis with a 1-hour TTL but there is no `@CacheEvict` on `updateOrder()` or `cancelOrder()`. A cancelled order will appear as active in the summary for up to 60 minutes.
+- **Issue**: Summaries are cached for an hour with no `@CacheEvict` on `updateOrder()` or `cancelOrder()`; a cancelled order stays active in the summary for up to 60 minutes.
 - **Impact**: Users see stale financial data; regulatory and support risk depending on the domain.
 - **Recommendation**:
 ```java
@@ -45,14 +51,12 @@ public void updateOrder(String orderId, OrderUpdate update) { ... }
 public void cancelOrder(String orderId) { ... }
 ```
 
----
-
 ### 🔴 Major Issues
 
 #### No Logging on Cache Miss or Slow Query Path
 - **File**: `src/main/java/com/shop/order/OrderSummaryService.java:57`
 - **Confidence**: Confirmed
-- **Issue**: When the cache misses and the DB query runs, there is no log statement and no metric counter. In production it will be impossible to distinguish "cache is working" from "cache is always missing" without querying Redis directly.
+- **Issue**: A cache miss runs the DB query with no log line and no counter, so production cannot tell a working cache from one that always misses.
 - **Impact**: The performance improvement cannot be validated post-deployment; latency regressions will be invisible.
 - **Recommendation**:
 ```java
@@ -62,15 +66,13 @@ if (summary == null) {
     meterRegistry.counter("order.summary.cache", "result", "miss").increment();
     summary = repository.findSummaryById(orderId);
     cache.put(orderId, summary);
-} else {
-    meterRegistry.counter("order.summary.cache", "result", "hit").increment();
 }
 ```
 
 #### New Endpoint Has No Authorization Check
 - **File**: `src/main/java/com/shop/order/OrderSummaryController.java:31`
 - **Confidence**: Confirmed
-- **Issue**: `GET /api/v1/orders/summary` has no `@PreAuthorize` annotation and is not listed in the security config's restricted paths. Any authenticated user can retrieve any other user's order summary by passing a different `orderId`.
+- **Issue**: `GET /api/v1/orders/summary` has no `@PreAuthorize` and is absent from the restricted paths; any authenticated user can read another user's summary by changing `orderId`.
 - **Impact**: Horizontal privilege escalation — OWASP A01:2021 Broken Access Control.
 - **Recommendation**: Add ownership check:
 ```java
@@ -82,7 +84,7 @@ public ResponseEntity<OrderSummary> getSummary(@PathVariable String orderId) { .
 #### No Deployment Runbook
 - **File**: `docs/deploy-runbook.md (file absent — create here)`
 - **Confidence**: Confirmed
-- **Issue**: This PR requires a specific deployment sequence: migration must run before the new code is deployed. There is no runbook, no PR checklist item, and no note in the README about this prerequisite.
+- **Issue**: The migration must run before the new code deploys, yet there is no runbook, checklist item, or README note stating that order.
 - **Impact**: If a developer deploys app code before running the migration, the new endpoint will throw on every request.
 - **Recommendation**: Add a deployment notes section to the PR and to the service README:
 ```markdown
@@ -118,13 +120,21 @@ cache:
 
 ## Positive Highlights
 - Flyway versioning is correctly sequenced; no gaps in version numbers.
-- Redis cache key design (`"orderSummary::" + orderId`) is clean and avoids namespace collisions with other cache regions.
 - The new endpoint follows the existing REST naming and response conventions consistently.
 
 ---
 
+## Failure Modes Checked
+
+| Mode | Change under test | Result |
+|---|---|---|
+| Empty / null | Order with no summary row | not verified — the miss path returns an empty object rather than 404 |
+| Partial failure | Migration runs, app deploy fails | not verified — no documented rollback for the new table |
+| Concurrency | Two copies warm one cache key | not verified — no stampede guard |
+| Rollback / undo | Revert after the migration ran | not verified — no down-migration, old code ignores the new column |
+
 ## Risks & Assumptions
-- Review was based on source code alone; actual rolling deployment behavior depends on the orchestration platform (Kubernetes, ECS, etc.) — verify the deployment strategy handles the migration window correctly.
+- Review covered source only; rolling-deploy behavior depends on the orchestrator — verify it handles the migration window.
 - Redis failure mode was not verified in code; if Redis is unavailable the cache miss path will fall through to the DB (acceptable), but this was not explicitly tested.
 
 ---

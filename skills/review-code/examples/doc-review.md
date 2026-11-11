@@ -3,14 +3,13 @@
 
 **Scenario**: Review of `services/payment-service/README.md` for a new microservice being onboarded to the platform.
 
-**Review Focus**: Structure, clarity, completeness, and accuracy for developer onboarding.
-
 **Applies**: **reviewing-document**
 
 ## Code Review Summary
 
 **Scope**: `services/payment-service/README.md` — new microservice README
 **Focus Areas**: Structure, completeness, accuracy, audience alignment
+**Reviewed**: 1 file — `services/payment-service/README.md` (127 lines)
 **Overall Assessment**: Needs work before the service is onboarded — critical setup steps are missing and one command is incorrect.
 **Ready to merge?**: With fixes — the documented setup cannot succeed as written
 **Repo expertise**: `CONTRIBUTING.md`, `services/payment-service/` sources
@@ -20,12 +19,14 @@
 
 ## Findings
 
+> Severity legend: 🚫 Blocker = must fix before merge · 🔴 Major = should fix · 🟡 Minor = nice to fix · 🟢 Nit = polish · ⚠️ Inconsistency = decision required
+
 ### 🔴 Major Issues
 
 #### Missing Prerequisites Section
 - **File**: `services/payment-service/README.md:1 (after — add a Prerequisites section here)`
 - **Confidence**: Confirmed
-- **Issue**: No prerequisites section. The README jumps straight to "Getting Started" without listing required tools (Java 21, Docker, AWS CLI, etc.). A developer without those tools will hit cryptic errors before reading a single line of service code.
+- **Issue**: No prerequisites section — the README jumps to "Getting Started" without listing Java 21, Docker, or the AWS CLI, so onboarding fails on cryptic tool errors.
 - **Impact**: Onboarding friction; developers waste time debugging missing tools rather than running the service.
 - **Recommendation**: Add a **Prerequisites** section before "Getting Started":
 ```markdown
@@ -53,7 +54,7 @@
 #### Environment Variable Table Is Incomplete
 - **File**: `services/payment-service/README.md:52`
 - **Confidence**: Confirmed
-- **Issue**: The config reference table lists 8 variables but `application.yaml` declares 12. `PAYMENT_RETRY_MAX_ATTEMPTS`, `PAYMENT_TIMEOUT_MS`, `STRIPE_WEBHOOK_SECRET`, and `DB_POOL_SIZE` are absent.
+- **Issue**: The table lists 8 variables; `application.yaml` declares 12 — `PAYMENT_RETRY_MAX_ATTEMPTS`, `PAYMENT_TIMEOUT_MS`, `STRIPE_WEBHOOK_SECRET`, `DB_POOL_SIZE` are absent.
 - **Impact**: Developers miss required configuration and encounter startup failures with no guidance on what is missing.
 - **Recommendation**: Audit `application.yaml` and synchronize the README table. Consider generating the table from code comments to prevent future drift.
 
@@ -68,9 +69,26 @@
 
 ### 🟢 Nits / Suggestions
 
-- `services/payment-service/README.md:22` — the "Architecture" ASCII diagram is helpful but hard to read at scale — consider replacing with a Mermaid diagram for automatic rendering in GitHub.
-- Section headings are inconsistently capitalized: "Getting Started" vs "local development" vs "API Reference" — standardize to title case throughout.
-- The "Contributing" section is a single line linking to a global `CONTRIBUTING.md` — fine for a shared doc, but verify the link is not broken.
+#### Architecture diagram is hard to scan at scale
+- **File**: `services/payment-service/README.md:22`
+- **Confidence**: Confirmed
+- **Issue**: The ASCII diagram is unreadable on narrow screens and does not render in the wiki.
+- **Impact**: Readers skip the only structural overview of the service.
+- **Recommendation**: Replace it with a Mermaid diagram so GitHub and the wiki render it.
+
+#### Section headings use mixed capitalization
+- **File**: `services/payment-service/README.md:11`
+- **Confidence**: Confirmed
+- **Issue**: Headings vary between "Getting Started", "local development", and "API Reference".
+- **Impact**: Cosmetic inconsistency only; navigation is unaffected.
+- **Recommendation**: Standardize to title case throughout.
+
+#### Contributing section may link to a stale target
+- **File**: `services/payment-service/README.md:96`
+- **Confidence**: Suspected
+- **Issue**: The section is one line linking to a global `CONTRIBUTING.md`; the link was not followed.
+- **Impact**: Onboarding readers hit a dead end if the global file moved.
+- **Recommendation**: Verify the link resolves, then leave the pointer as is.
 
 ---
 
@@ -95,13 +113,4 @@
 5. Standardize heading capitalization (minor polish)
 6. Consider adding a PR checklist item: "Did you update the README?" to prevent future drift
 
----
-
-## Key Review Characteristics
-
-- **Review Type**: Document review (README)
-- **Severity Distribution**: 2 major, 2 minor, 3 nits
-- **Primary Concerns**: Missing prerequisites, incorrect commands, incomplete environment variable table, stale deployment instructions
-- **Action Required**: Fix major issues before onboarding the service
-- **Testing Recommendation**: Have a developer unfamiliar with the service attempt to onboard using only the README and report any friction points
 ````

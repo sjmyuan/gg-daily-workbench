@@ -23,7 +23,7 @@ Standard template for all review output. Every finding anchors to one line — s
 | C1 | Should `Pricing` stay in `src/orders/do-something/`? | No rule or sibling module puts feature code in a feature folder | Reviewed as if the package stays put; the currency finding assumes it | A documented placement rule, or a sibling precedent | yes |
 | C2 | Is the `order-discount` module intended to exist? | The path appears only in the branch name, not in the tree | Treated as a path error, not a design change | The author confirming the module is new | maybe |
 
-- `Blocking: yes` forces the verdict to `No` or `With fixes` until answered — say which findings depend on the answer.
+- `Blocking: yes` forces the verdict per **severity-levels.md** — say which findings depend on the answer.
 - A challenge is not a finding: it has no proven defect, so it never carries a severity.
 - Ask one answerable question per row; never bundle two decisions into one challenge.
 - When the challenge questions a claim another agent returned, raise it through `question-everything` and keep its `C<N>` id.
@@ -65,7 +65,7 @@ Standard template for all review output. Every finding anchors to one line — s
 *[Call out well-done aspects: clear naming, good test coverage, clever solution, etc.]*
 
 ---
-## Failure Modes Checked
+## Failure Modes Checked *(code reviews only)*
 *A row per changed behavior. Mark each mode `verified` or `not verified` with the reason — never leave a changed behavior unassessed.*
 
 | Mode | Change under test | Result |
@@ -84,7 +84,7 @@ Standard template for all review output. Every finding anchors to one line — s
 *[p50/p95/p99 latency, cache hit rate, DB query count, error rate, etc.]*
 
 ---
-## Repo Expertise Applied
+## Repo Expertise Applied *(include when a repo rule changed a finding; always state the gaps)*
 
 *One row per rule or fact that changed a finding's severity, wording, or outcome; cite the source line.*
 
@@ -118,25 +118,18 @@ Challenges & Questions instead — never here.*
 ````
 
 **Formatting guidelines**:
+- Fill every summary field; write `none` when a field is genuinely empty. Never drop `**Ready to merge?**` or the challenge count.
 - Always give a clear merge verdict (`Yes | No | With fixes`) with a one-line reason — never leave the requester to infer readiness from the findings
-- Anchor each finding to exactly one line: `` `path/file.ext:42` `` plus the verbatim anchored line in a fenced code block labeled with its line number — never a `#L10-L15` range
-- Put additional affected places in a `**Related**` field or split the finding — never concatenate paths in `**File**`
-- Anchor missing code to the nearest existing line with a direction: `path/Test.java:120 (after — insert the regression test here)`
-- Label every finding with **Confidence**: `Confirmed` (proven from code), `Suspected` (plausible, evidence named in the Recommendation), or `Needs runtime check` (depends on data, load, or environment)
-- Report suspected bugs at Major or Blocker when the plausible consequence is severe — a suspicion is not a reason to drop a finding
-- Include code snippets when suggesting changes (use diff format for clarity)
-- Keep findings concise (2-4 sentences per issue); explanation outranks brevity for complex findings — never strip the why to hit the cap
-- Group related findings together
-- Reference symbols/functions by name in backticks: `` `handleSubmit()` ``
-- Write every finding in plain language: the **Issue** names the exact behavior and why it's wrong, the **Impact** is a specific consequence, and the **Recommendation** is a concrete fix or next step. Every finding gets a Recommendation — one without it is incomplete
+- Anchor, relate, and quote each finding per **finding-anchors.md** — one `path:LINE`, never a `#L10-L15` range
+- Label every finding with **Confidence** per **severity-levels.md**: `Confirmed`, `Suspected`, or `Needs runtime check`
+- Write every finding in plain language: the **Issue** names the exact behavior and why it's wrong,
+  the **Impact** is a specific consequence, and the **Recommendation** is a concrete fix or next step.
+  Every finding gets a Recommendation — one without it is incomplete
 - For clean reviews with no findings in a severity tier, omit that section rather than writing "None identified"
 - Put Challenges & Questions before Findings; a blocking challenge must agree with the merge verdict, and the summary must count both open challenges and unverified referents
 - Ground every path, package, symbol, flag, and config key per **referent-grounding.md** — a referent you did not read is labeled `unverified` with the failed search, never presented as fact
-- Never recommend a move, extraction, rename, or new directory without citing the rule, ADR, observed structure, or build constraint that places code there
-- Cite the source line whenever repo expertise drives a severity, a name, or a placement — "the project style" is not evidence
-- Add a `**Location**: `path:LINE`` line per finding only when the requester needs machine-readable output or PR-inline comments (see **finding-anchors.md**)
 
-## Non-expert test
+## Plain-language presentation: the non-expert test
 Before delivering, read each finding as the developer who must act on it. Pass means each finding lets them state:
 1. What is wrong (plain language, no jargon)
 2. Why it matters (specific consequence)
@@ -144,3 +137,14 @@ Before delivering, read each finding as the developer who must act on it. Pass m
 
 Fail → tighten the vague field. Every finding must pass — not just the top ones. This is the same
 plain-language doctrine the document-findings pipeline applies; keep the wording local to this skill.
+
+## Review quality grade
+
+Grade the delivered review before returning it. Pass bar: **≥7/8 and no criterion at 0**.
+
+| Criterion | 0 | 1 | 2 |
+|---|---|---|---|
+| Evidence grounding | A finding names a path or symbol nobody resolved | Every finding is anchored; referents resolved or `unverified` | Anchors quote the line, and each unverified referent names its failed search |
+| Surface coverage | One dimension applied to the whole change | Most dimensions applied where relevant | Every dimension checked against the changed surfaces, gaps named |
+| Actionability | A finding states a preference | Issue and Impact stated, fix vague | Each finding states what is wrong, why it matters, and the next action |
+| Risk calibration | Severity asserted, no rubric | Severity follows the rubric | Severity follows the rubric, and repo expertise justifies any escalation |

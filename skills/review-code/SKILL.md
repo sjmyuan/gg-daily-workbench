@@ -1,6 +1,6 @@
 ---
 name: review-code
-description: Review code and documents for correctness, security, performance, and blast radius; raise unreasonable changes as blocking challenges. Use when requesting reviews, bug hunting, or checking changes against repo conventions.
+description: Review code and documents for correctness, security, performance, and blast radius; raise unreasonable changes as blocking challenges. Use when reviewing diffs, commits, pull requests, branches, documents, or repo conventions.
 ---
 
 <when-to-use-this-skill>
@@ -45,10 +45,9 @@ Load on demand — one row per trigger.
 | Reviewing a diff, commit, or bug fix | Output example | [examples/diff-commit-review.md](examples/diff-commit-review.md) |
 | Comparing two branches | Output example | [examples/branch-diff-review.md](examples/branch-diff-review.md) |
 | Reviewing a pull request | PR worktree example | [examples/pull-request-review.md](examples/pull-request-review.md) |
-| Reviewing a performance change | Output example | [examples/performance-improvement.md](examples/performance-improvement.md) |
+| Reviewing a performance, migration, or deployment change | Output examples | [examples/performance-improvement.md](examples/performance-improvement.md) · [examples/deployment-safety-review.md](examples/deployment-safety-review.md) |
 | Reviewing a document | Output example | [examples/doc-review.md](examples/doc-review.md) |
-| Reviewing a migration, endpoint, or cache | Deployment-safety example | [examples/deployment-safety-review.md](examples/deployment-safety-review.md) |
-| Writing plain-language findings | Terse → explained example | [examples/plain-language-findings.md](examples/plain-language-findings.md) |
+| Writing plain-language findings | **plain-language-presentation** doctrine, terse → explained example | [examples/plain-language-findings.md](examples/plain-language-findings.md) |
 </context-loading-guide>
 
 </knowledge>
@@ -59,11 +58,10 @@ Load on demand — one row per trigger.
 
 **Steps**:
 1. Classify the scope: single file, files with integration points, diff with callers, or a folder's interfaces.
-2. Obtain the checkout for a branch diff or pull request per **preparing-review-checkout**.
-3. State the intent — fix, feature, refactor, optimization, document — and where it came from.
-4. Read the referenced files, tests, and documentation the change depends on.
-5. Prioritize by change type — correctness, requirements, equivalence, benchmarks, structure.
-6. **Validate**: scope, intent, and missing context are written before analysis; each gap becomes a challenge.
+2. State the intent — fix, feature, refactor, optimization, document — and where it came from.
+3. Read the referenced files, tests, and documentation the change depends on.
+4. Prioritize by change type — correctness, requirements, equivalence, benchmarks, structure.
+5. **Validate**: scope, intent, and missing context are written before analysis; each gap becomes a challenge.
 </gathering-review-context>
 
 <preparing-review-checkout>
@@ -110,17 +108,18 @@ Load on demand — one row per trigger.
 1. State the intent hypothesis and a failure hypothesis per changed behavior; read each changed file in full.
 2. Load the expertise card per **surveying-repo-expertise** and record its gaps before judging placement.
 3. Apply dimension 10 of [review-dimensions.md](reference/review-dimensions.md) — every caller, contract, consumer.
-4. Walk each behavior through the **Failure-mode enumeration** and **Negative space** passes, naming each search.
-5. Re-read once as an attacker and once as a careless maintainer; log one new hypothesis per changed function.
-6. Apply dimensions 1–9 to every relevant ✓ item, prioritizing by risk per **review-efficiency**.
+4. Run the **Failure-mode enumeration** and **Negative space** passes over each changed behavior.
+5. Run the **Adversarial stance** pass, logging one hypothesis per changed function.
+6. Apply dimensions 1–9 to every relevant ✓ item, prioritizing by risk per **review-efficiency**;
+   report every dimension-8 finding as both variants plus a decision.
 7. Apply **challenging-the-change** to the change's structure and record the resulting challenges.
 8. Assign severity per **severity-and-confidence** and prepare Issue, Impact, Recommendation, and Confidence.
-9. For dimension 8, capture both variants with anchors and trade-offs, then request a decision.
-10. Anchor each finding per **finding-anchors**.
-11. Format the report per [review-output-format.md](reference/review-output-format.md), loading a matching example.
-12. **Validate**: (a) one anchor, quoted line, severity, and Confidence per finding; (b) every referent grounded;
+9. Anchor each finding per **finding-anchors**.
+10. Format the report per [review-output-format.md](reference/review-output-format.md), loading a matching example.
+11. **Validate**: (a) one anchor, quoted line, severity, and Confidence per finding; (b) every referent grounded;
     (c) blocking challenges set the verdict; (d) Failure Modes Checked and Positive Highlights present;
-    (e) no empty severity sections; (f) non-expert test passed; (g) merge verdict present.
+    (e) no empty severity sections; (f) non-expert test passed; (g) merge verdict present;
+    (h) the **Review quality grade** meets its pass bar.
 </conducting-code-review>
 
 <reviewing-document>
@@ -132,7 +131,8 @@ Load on demand — one row per trigger.
 3. Apply the correctness, maintainability, and inconsistency dimensions plus the **Negative space** pass.
 4. Ground every path, command, version, and config key the document cites per **referent-grounding**.
 5. Record claims the document makes about code you did not read as challenges.
-6. Anchor per **finding-anchors** and **Validate** each finding carries a severity, Confidence, and Recommendation.
+6. Anchor per **finding-anchors**, **Validate** each finding carries a severity, Confidence, and Recommendation,
+   and grade the review per the **Review quality grade**.
 </reviewing-document>
 </capabilities>
 

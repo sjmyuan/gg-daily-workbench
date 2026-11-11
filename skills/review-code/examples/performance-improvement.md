@@ -3,18 +3,20 @@
 
 **Scenario**: Review of performance optimization PR for slow API endpoint - user profile data aggregation taking 2-3 seconds
 
-**Review Focus**: Performance validation, algorithmic improvements, caching strategies, maintainability
-
 **Applies**: **conducting-code-review**
 
 ## Code Review Summary
 **Scope**: Performance optimization for `UserProfileService.java` and `UserDataRepository.java`
-**Focus**: Query optimization, caching, algorithm complexity reduction
+**Focus Areas**: Query optimization, caching, algorithm complexity reduction
+**Reviewed**: 2 files, +96/-41 — `UserProfileService.java` (+71/-38), `UserDataRepository.java` (+25/-3)
 **Overall Assessment**: Strong improvements, but requires benchmark validation and one blocker fix before merge
 **Ready to merge?**: With fixes — the cache invalidation bug must land with the optimization
 **Repo expertise**: `AGENTS.md`, `docs/adr/`
 **Open challenges**: 0 open, 0 blocking · **Unverified referents**: 0
+
 ## Findings
+
+> Severity legend: 🚫 Blocker = must fix before merge · 🔴 Major = should fix · 🟡 Minor = nice to fix · 🟢 Nit = polish · ⚠️ Inconsistency = decision required
 
 ### 🚫 Blockers (Must Fix)
 
@@ -104,36 +106,26 @@ public UserProfile getUserProfile(String userId) {
 }
 ```
 
-### 🟢 Nits / Suggestions
-
-#### Consider Connection Pooling Configuration
-- **File**: `src/main/resources/application.yaml (file absent — add the pool config here)`
-- **Confidence**: Needs runtime check
-- **Issue**: No mention of database connection pool tuning (HikariCP configuration)
-- **Impact**: Minimal - likely using defaults which are reasonable
-- **Recommendation**: Document recommended settings for production:
-```yaml
-spring.datasource.hikari:
-  maximum-pool-size: 20
-  connection-timeout: 30000
-```
-
 ## Positive Highlights
-- **Excellent algorithmic improvement**: Changed from multiple sequential queries to single JOIN - reduces DB round-trips from O(n) to O(1)
+- **Excellent algorithmic improvement**: sequential queries replaced with a single JOIN — DB round-trips drop from O(n) to O(1)
 - **Smart caching layer**: Redis cache with proper serialization avoids repeated expensive queries
-- **Clear performance intent**: Code changes directly target the identified bottlenecks
-- **Good database indexing**: Composite index on `(userId, status, createdDate)`
+- **Clear performance intent**: the change targets the identified bottlenecks directly
+- **Good database indexing**: composite index on `(userId, status, createdDate)`
+
+## Failure Modes Checked
+
+| Mode | Change under test | Result |
+|---|---|---|
+| Empty / null | New user with no profile row | not verified — no test covers the empty-result path |
+| Retry / duplicate | Two cache fills for one `userId` | not verified — no dedup; both hit the DB |
+| Concurrency | `updateUserProfile` during a cache read | not verified — no eviction, see the blocker |
+| Scale | 10× follower volume | not verified — the followers N+1 loop still scales linearly |
+| Rollback / undo | Revert the optimization | verified — code-only change, no migration |
 
 ## Performance Analysis
-### Improvements Confirmed
-1. **Database queries reduced**: 5-10 queries → 1 query (JOIN optimization)
-2. **Algorithmic complexity**: O(n²) nested loop → O(n log n) with sorting and HashMap
-3. **Caching added**: Redis cache for frequently accessed profiles
-
 ### Concerns & Risks
-1. **Cache stampede risk**: If cache expires during high traffic, many requests will hit DB simultaneously. Consider cache warming or probabilistic early expiration.
-2. **Memory footprint increased**: Redis cache needs capacity planning
-3. **Single point of failure**: If Redis goes down, every request hits the DB
+1. **Cache stampede risk**: on expiry under load, many requests hit the DB at once — consider warming or early expiration
+2. **Single point of failure**: if Redis goes down, every request hits the DB
 
 ### Metrics to Monitor Post-Deployment
 - API endpoint latency (p50, p95, p99)

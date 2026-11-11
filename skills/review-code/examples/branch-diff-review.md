@@ -47,9 +47,15 @@ Total: +327 / -29 across 5 files
 
 **Scope**: `feature/order-discount` vs `main` — adds discount calculation to the order flow  
 **Focus Areas**: Correctness, security, performance, test coverage  
-**Overall Assessment**: Close to merge-ready; one security issue and one race condition must be addressed first
+**Reviewed**: 5 files, +327/-29 — `OrderService.java` (+82/-14), `OrderRequest.java` (+12/-2), `DiscountCalculator.java` (+120), `DiscountRepository.java` (+18/-5), `OrderServiceTest.java` (+95/-8)  
+**Overall Assessment**: Close to merge-ready; one security issue and one race condition must be addressed first  
+**Ready to merge?**: With fixes — the JPQL injection is exploitable and the usage counter can over-redeem  
+**Repo expertise**: `AGENTS.md`, `docs/adr/` — no rule changes a severity here  
+**Open challenges**: 0 open, 0 blocking · **Unverified referents**: 0
 
 ## Findings
+
+> Severity legend: 🚫 Blocker = must fix before merge · 🔴 Major = should fix · 🟡 Minor = nice to fix · 🟢 Nit = polish · ⚠️ Inconsistency = decision required
 
 ### 🚫 Blockers (Must Fix)
 
@@ -77,9 +83,9 @@ query.setParameter("code", discountCode);
 #### Race Condition in Discount Usage Counter
 - **File**: `src/discount/DiscountRepository.java:63`
 - **Confidence**: Confirmed
-- **Issue**: `usageCount` is read, incremented, and saved in separate steps without pessimistic locking. Under concurrent requests the counter can be under-incremented and a single-use discount may be applied multiple times.
+- **Issue**: `usageCount` is read, incremented, and saved in separate steps without locking; concurrent requests can under-increment it and apply a single-use discount twice.
 - **Impact**: Financial loss from discount over-redemption under load.
-- **Recommendation**: Use `@Lock(LockModeType.PESSIMISTIC_WRITE)` on the repository method, or an atomic SQL `UPDATE discount SET usage_count = usage_count + 1 WHERE id = :id AND usage_count < max_usage`.
+- **Recommendation**: Use `@Lock(LockModeType.PESSIMISTIC_WRITE)` on the repository method, or one atomic `UPDATE … SET usage_count = usage_count + 1 WHERE id = :id AND usage_count < max_usage`.
 
 #### Missing Test for Expired Discount
 - **File**: `src/discount/OrderServiceTest.java:140 (after — insert the expired-discount test here)`
@@ -121,6 +127,15 @@ void shouldRejectExpiredDiscountCode() {
 - Test coverage is thorough for the happy path and covers several edge cases already.
 - `OrderRequest` DTO cleanly separates concerns from the domain entity.
 
+## Failure Modes Checked
+
+| Mode | Change under test | Result |
+|---|---|---|
+| Empty / null | `discountCode` absent or `""` | not verified — the query runs with an empty literal |
+| Boundary | `usageCount` at `maxUsage` | not verified — the read-then-write race can exceed the limit |
+| Retry / duplicate | The same order retried by the client | not verified — nothing makes redemption idempotent |
+| Concurrency | Two requests apply the same code | not verified — see the counter race in Major |
+
 ## Risks & Assumptions
 - Assumes discount codes are case-insensitive — no normalization observed; verify DB collation matches.
 - Distributed lock may be needed if the service runs with multiple replicas (see race condition finding).
@@ -132,11 +147,4 @@ void shouldRejectExpiredDiscountCode() {
 4. Add `@Min(1)` to `OrderRequest.quantity` (minor)
 5. Handle unknown discount strategy explicitly (minor)
 
-## Key Review Characteristics
-
-- **Review Type**: Branch diff (`main` → `feature/order-discount`)
-- **Diff obtained via**: `git diff main...feature/order-discount`
-- **Files reviewed**: 5 (327 lines added, 29 removed)
-- **Severity Distribution**: 1 blocker, 2 major, 2 minor, 2 nits
-- **Action Required**: Fix security and concurrency issues before merge
 ````

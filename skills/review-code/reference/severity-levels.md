@@ -8,6 +8,7 @@ Apply consistently when categorizing review findings.
 - Critical functionality broken
 - Build/deployment failures
 - Breaking API changes without migration path
+- An unbounded in-memory collection or cache on a hot path — growth that ends in an OOM restart is a Blocker, not a minor performance note
 
 ## 🔴 Major (SHOULD fix before merge, requires strong justification to skip)
 - Significant correctness issues (wrong results, unhandled errors)

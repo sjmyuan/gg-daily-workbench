@@ -3,7 +3,7 @@
 
 **Scenario**: Review of a change that widens `NotificationSender.send()` from two positional arguments to a single `NotificationRequest` object in a shared internal library.
 
-**Applies**: **conducting-code-review** (steps 1-4 — adversarial stance, blast radius, failure modes, negative space)
+**Applies**: **conducting-code-review** (steps 1–5 — hypotheses, blast radius, failure modes, negative space, adversarial re-read)
 
 **Review Focus**: Blast radius, behavior change, missed call sites
 
@@ -61,6 +61,10 @@
 
 ## Resulting findings
 
+> Severity legend: 🚫 Blocker = must fix before merge · 🔴 Major = should fix · 🟡 Minor = nice to fix · 🟢 Nit = polish · ⚠️ Inconsistency = decision required
+
+### 🚫 Blockers (Must Fix)
+
 #### One call site still uses the old signature
 - **File**: `src/notify/LegacyNotificationFacade.java:44`
 - **Confidence**: Confirmed
@@ -70,6 +74,8 @@
 - **Issue**: The facade was not migrated; the two-argument overload no longer exists, so this path fails at compile time in the module that consumes the facade.
 - **Impact**: The notification path used by scheduled reports stops compiling — release blocked until fixed.
 - **Recommendation**: Migrate the facade to the request object and delete it in the same change.
+
+### 🔴 Major Issues
 
 #### Absent template silently changes notification content
 - **File**: `src/notify/NotificationRequest.java:31`

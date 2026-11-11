@@ -5,8 +5,6 @@
 
 **Applies**: **preparing-review-checkout**, **conducting-code-review**
 
-**Review Focus**: Blast radius, correctness, test coverage — read from the full branch, not the patch.
-
 ---
 
 ## Step 1 – Identify the PR and its base
@@ -48,14 +46,6 @@ BASE=$(git merge-base origin/main review/pr-482)
 git diff "$BASE"...review/pr-482 --stat
 ```
 
-```
- src/order/OrderService.java        | 84 ++++++++++++++++-------
- src/order/dto/OrderRequest.java    | 12 ++--
- src/discount/DiscountRule.java     | 41 ++++++++++
- src/discount/DiscountRules.java    | 6 ++
- 4 files changed, 118 insertions(+), 25 deletions(-)
-```
-
 ## Step 5 – Review inside the worktree
 
 What the worktree made visible — none of it appears in the patch:
@@ -70,6 +60,16 @@ What the worktree made visible — none of it appears in the patch:
 
 ## Step 6 – Findings
 
+## Code Review Summary
+
+**Scope**: PR #482 in `order-service` — `applyDiscount()` takes a required code; new `discount_rule` table
+**Focus Areas**: Blast radius, correctness, test coverage
+**Reviewed**: 4 files, +118/-25 — `OrderService.java` (+84/-19), `OrderRequest.java` (+12/-2), `DiscountRule.java` (+41), `DiscountRules.java` (+6/-4)
+**Overall Assessment**: The change reads correctly inside the patch and breaks two consumers outside it
+**Ready to merge?**: No — an unmigrated call site breaks the nightly reconciliation job
+**Repo expertise**: `AGENTS.md`, `docs/adr/014-layout.md` — no rule changes a severity here
+**Open challenges**: 0 open, 0 blocking · **Unverified referents**: 0
+
 > Severity legend: 🚫 Blocker = must fix before merge · 🔴 Major = should fix · 🟡 Minor = nice to fix · 🟢 Nit = polish · ⚠️ Inconsistency = decision required
 
 ### 🚫 Blockers (Must Fix)
@@ -81,7 +81,7 @@ What the worktree made visible — none of it appears in the patch:
 ```java
 88 │     orderService.applyDiscount(order, null);
 ```
-- **Issue**: The PR makes `discountCode` a required argument of `applyDiscount()`. This caller was not updated and passes `null`, which now reaches `DiscountRule.evaluate()` without a guard. The file is outside the diff, so the patch alone never showed it.
+- **Issue**: `discountCode` is now required, but this caller still passes `null` into `DiscountRule.evaluate()` unguarded. It sits outside the diff, so the patch never showed it.
 - **Impact**: Every nightly reconciliation run throws on the first order with a discount — the whole batch fails, and no orders are reconciled.
 - **Recommendation**: Pass the request's discount code or guard the null case:
 ```java
@@ -115,6 +115,11 @@ if (code != null) orderService.applyDiscount(order, code);
 - **Recommendation**: Regenerate the spec from the DTO or remove the property.
 
 ---
+
+## Positive Highlights
+- Reading the branch in a worktree surfaced both consumers the patch hid
+- The new `DiscountRule` entity keeps evaluation out of the service layer
+- `DiscountRules` is a small, single-purpose collection wrapper
 
 ## Failure Modes Checked
 
