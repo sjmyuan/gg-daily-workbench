@@ -1,10 +1,12 @@
 # Area-Analyst Brief
 
-Ready-to-fill structured brief for a spike area → `spike-area-analyst` — the single session that investigates the area, compiles its findings pair, and drafts its problem ADRs. Loaded on demand when dispatching an area. Fills the **structured brief shape**; carries the shared context-inventory, fill-mode, intake-record, and session contracts: **reference/dispatch-briefs.md**.
+Ready-to-fill structured brief for a spike area → `spike-area-analyst` — the single session that investigates the area, compiles or updates its findings pair, and drafts its problem ADRs. Loaded on demand when dispatching an area. Fills the **structured brief shape**; carries the shared context-inventory, fill-mode, intake-record, and session contracts: **reference/dispatch-briefs.md**.
 
 **Announce**: "Dispatching area [name] to a spike-area-analyst sub-agent (single return)."
 
 One brief per area. Every path is absolute.
+
+**Model**: **[tier]** — per **dispatch-discipline**.
 
 ## 1. Mission
 You are the `spike-area-analyst`. Deliver for **[area]** in one session and one return: its findings doc pair and one ADR per problem, in that order, then stop.
@@ -17,7 +19,7 @@ You are the `spike-area-analyst`. Deliver for **[area]** in one session and one 
 - Accepted assumptions **(digest, from `scope.md#accepted-assumptions`)**: **[A<N> → assumed value]** — carry each into the ledger as 💭 Assumption and into any decision that depends on it
 - User-stated context **(inline)**: **[business context, constraints, facts, decisions, and domain details the user already gave]**
 - Mode: **brownfield** (trace code) | **greenfield** (research approaches + comparable systems; see **greenfield-scenarios**)
-- Cross-area constraints **(path + digest)**: sibling pairs `docs/findings-*.md` + `docs/evidence-*.md`, decided sibling ADRs — **[each constraint in one line]**
+- Cross-area constraints **(path + digest; re-dispatch or after a sibling returns)**: sibling pairs `docs/findings-*.md` + `docs/evidence-*.md`, decided sibling ADRs — **[each constraint in one line]**
 
 ## 3. Inputs
 - Intake record **(inline)**: system **[...]** · scope **[...]** · depth **[...]** · consumer **[...]** — the gate is already passed; adopt it, do not re-derive it.
@@ -25,7 +27,7 @@ You are the `spike-area-analyst`. Deliver for **[area]** in one session and one 
 - Known locations **(digest)**: **[symbols / files / entry points / `file:line` already located]** — start here; do not re-discover them.
 - Already searched **(digest)**: **[query + root + outcome, including "no matches"]** — do not repeat any listed search.
 - Findings pair **(path, re-dispatch only)**: **[`docs/findings-<area>.md`] + [`docs/evidence-<area>.md`]** — the verified pair supplied on a re-dispatch; it is the **write baseline**: keep its topic list, heading anchors, and claim IDs, and treat **Verified** claims as settled.
-- Prior receipt **(inline, re-dispatch only)**: **[the receipt returned by the earlier session]** — the session's durable state; inherit it instead of rebuilding.
+- Prior receipt **(inline, re-dispatch only)**: **[the receipt returned by the earlier session]** — supplementary context for resuming a live session; the artifacts above are the durable state.
 - Sibling unit results **(path + digest)**: **[area → verified pair path, or decision]** — inherit these; never re-scan code a sibling already covered.
 - Pre-existing user findings **(inline)**: **[notes/findings the user supplied]** — treat as known; when they answer the area, skip phase 1 and start at phase 2, verifying only what they leave unresolved.
 - Decision drivers **(inline, mandatory)**: **[drivers the orchestrator collected from the user]** — the ADR needs these; never infer them. A driver absent here is a question for the orchestrator, not a guess.
@@ -53,7 +55,7 @@ One return, after the ADRs. Every receipt also carries the area and the artifact
 - Never prompt the user — the orchestrator owns every confirmation and the ADR dialog.
 - Never verify your own output and never spawn a sub-agent — the orchestrator owns the verification seat.
 - Keep the artifact boundary: the human findings doc is current-state only; the ADR is decision only.
-- Never return early — the pair and the ADRs leave together, written; a re-dispatch continues from them, not from a receipt.
+- Never return early — the pair and the ADRs leave together, written; a re-dispatch continues from them; a receipt is supplementary.
 - Never add claims beyond the evidence; never alter a **Verified** verdict or an evidence `file:line` without new evidence.
 - Never re-derive scope, re-ask, or search for your inputs — this brief is the gate result.
 - Complete the pair before drafting any ADR — the evidence doc is what every decision cites.

@@ -23,6 +23,8 @@ Every dispatch brief follows the same 7-section skeleton so a filled brief is se
 | 6 | Constraints | Guardrails — what never to do, including the write boundary |
 | 7 | Report back | What to flag to the orchestrator |
 
+Every brief also states **Model** — the tier chosen per **dispatch-discipline**. An omitted model inherits the orchestrator's session model, which is usually the most expensive.
+
 ## Context inventory before every brief
 
 A brief is complete when **nothing the orchestrator holds is missing from it**. Before filling a brief, inventory the orchestrator's own context — not only the artifacts on disk:

@@ -34,7 +34,7 @@ Writes stay inside `**/spikes/**` — never code, config, tests, or outside file
 </write-boundary>
 
 <scope-acceptance-gate>
-No `scope.md` or findings compilation until `clarify-request`'s intake gate passes — on **every** entry path: new, continued, user-supplied, uncertainty. It returns restatement, itemized inferences, and gate state: nothing inferred → `ACCEPTED`; anything inferred → show the list and ask before decomposing. Record only decision-changing defaults in `## Accepted assumptions`; code facts are not assumptions. It replaces the scope confirmation — never a second checkpoint. Procedure: **reference/define-spike-scope-procedure.md**.
+No `scope.md` or findings compilation until `clarify-request`'s intake gate passes — on **every** entry path: new, continued, user-supplied, uncertainty. Apply its **intake-gate** and **assumption-admission** for the states, inference list, and admission test; do not restate them. The gate is the single pause: fold the proposed area/problem split and admission-tested assumptions into its confirmation, then record the outcome in `scope.md`. Procedure: **reference/define-spike-scope-procedure.md**.
 </scope-acceptance-gate>
 
 <scope-map>
@@ -113,8 +113,7 @@ Chain **Findings Docs → ADRs → Solution Doc** stays current: findings pairs 
 
 <define-spike-scope>
 1. Restate the request as given and itemize every inference it left open — ask nothing yet.
-2. Apply **scope-acceptance-gate** — show the inference list and ask before decomposing; stop while `BLOCKED`.
-3. Apply the scope-definition procedure per **reference/define-spike-scope-procedure.md** — clarify goal, decompose, record `scope.md`, validate, note greenfield.
+2. Apply the scope-definition procedure per **reference/define-spike-scope-procedure.md** — clarify the goal, propose the decomposition, then run **scope-acceptance-gate** once (inference list + proposed split in one confirmation), record `scope.md`, validate, note greenfield.
 </define-spike-scope>
 
 <investigate-per-area>
@@ -150,7 +149,7 @@ Chain **Findings Docs → ADRs → Solution Doc** stays current: findings pairs 
 <rules>
 <rule>When the user initiates a spike investigation from scratch, apply **run-spike-workflow**.</rule>
 <rule>Dispatch each area as one `spike-area-analyst` session — never split its phases across agents — and verify its single return on an independent seat, never the producing session. The return carries the written pair and ADRs; never accept a bare evidence map or an intermediate phase.</rule>
-<rule>Before `scope.md` is written, a continuation starts, user-supplied material is compiled, or an uncertainty spike begins, apply **scope-acceptance-gate** — accept only `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS`, and only after the inference list was shown.</rule>
+<rule>Before `scope.md` is written, a continuation starts, user-supplied material is compiled, or an uncertainty spike begins, apply **scope-acceptance-gate** — accept only `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS`; when anything was inferred, only after the inference list was shown.</rule>
 <rule>When the user supplies pre-existing investigation material, apply **compile-findings-doc** directly, skipping **investigate-per-area** — after the gate.</rule>
 <rule>When the user resumes a prior spike or re-investigates a decided ADR, apply **continue-prior-spike**.</rule>
 <rule>When a fact or decision changes after spike artifacts exist, or an area question is answered, apply **sync-update-artifacts**.</rule>

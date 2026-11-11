@@ -4,7 +4,7 @@ The spike's findings docs explain **what exists in a code area today**: a **huma
 
 ## Producer
 
-Findings docs are produced by the `document-findings` skill, compiled per area by the `spike-area-analyst` agent as phases 1–2 of its area session. That skill owns the structure, question style, evidence ledger, and stable IDs; this guide covers only the spike-specific handoff.
+Findings docs are produced by the `document-findings` skill, compiled or updated per area by an area session's investigate-and-compile phases. That skill owns the structure, question style, evidence ledger, and stable IDs; this guide covers only the spike-specific handoff.
 
 ## One pair per area — always
 
@@ -23,7 +23,7 @@ All of the following live in the **evidence doc**, not the human doc:
 
 - **Entry points & key locations**: `Symbol (file:line)` beside the component or flow; never vague references like "the service layer".
 - **Call chains**: topic sequence diagrams annotated with `file:line`.
-- **Evidence ledger**: claim ID → claim → verdict → evidence → confidence (5-tag model: ✅ Verified, 🔶 Inferred, 💭 Assumption, ⚠️ Inconsistency, ❓ Gap).
+- **Evidence ledger**: claim ID → claim → verdict → evidence → confidence, using `investigate-code`'s **finding-confidence-model** (5 tags).
 - **Searched-negatives**: dead-end searches recorded so later sub-agents don't repeat them.
 - **Stable IDs**: `<area>/<topic-slug>#cN`, cited by ADRs and the solution doc.
 

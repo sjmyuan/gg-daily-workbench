@@ -77,7 +77,7 @@ Every finding must carry an epistemic status tag so the user can judge completen
 Detailed presentation format: [reference/confidence-and-coverage-guide.md](reference/confidence-and-coverage-guide.md)
 </finding-confidence-model>
 <spike-integration>
-For a spike investigation, scope the investigation to the spike's area and read its existing evidence before re-scanning: load the spike folder's evidence doc (`docs/evidence-<area>.md`), then update its evidence map per the findings-document guide in **conduct-spike** (entry points `file:line`, sequence diagrams for call chains, evidence ledger with the 5-tag confidence model, searched-negatives). The human doc (`docs/findings-<area>.md`) carries no ledger. Do not load when no spike area has been defined yet.
+For a spike investigation, scope the investigation to the spike's area and read its existing evidence before re-scanning: load the spike folder's evidence doc (`docs/evidence-<area>.md`), then update its evidence map per the spike findings-document contract (entry points `file:line`, sequence diagrams for call chains, evidence ledger with the **finding-confidence-model**, searched-negatives). The human doc (`docs/findings-<area>.md`) carries no ledger. Do not load when no spike area has been defined yet.
 A brief's **known locations** and **already searched** digests are settled input: start from them, do not re-scan, and return your own search log so the next unit inherits it.
 </spike-integration>
 <concise-writing>

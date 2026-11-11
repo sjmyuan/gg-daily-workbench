@@ -5,7 +5,7 @@ Full procedure for the `compile-findings-doc` capability — the confirmation pa
 Findings docs are **one pair per area, always** — `docs/findings-<area>.md` (human) plus `docs/evidence-<area>.md` (evidence) for every area on the scope map, each from its area's verified investigation results.
 
 1. Take each area's pair returned and verified by **investigate-per-area**. For an area seeded with pre-existing user findings, dispatch the same brief with phase 1 skipped — the analyst writes the pair and the ADRs from the supplied material; never re-investigate.
-2. Verify a pair this step produced at **single pass + fidelity**; a pair already verified by **investigate-per-area** needs no second evidence pass — validate it in step 3.
+2. Verify a pair this step produced at **single pass + fidelity**, and its same-return ADRs at the **full loop** on each load-bearing decision — the verification `investigate-per-area` would have run; a pair already verified by **investigate-per-area** needs no second evidence pass — validate it in step 3.
 3. Validate each pair per **reference/findings-document-guide.md** §Validation (pair) — structure, ledger completeness, and cross-consistency; never vague references, never inference presented as evidence.
 4. Cross-reference between areas (2+ areas) per the same validation list.
 5. Ask: "Does this accurately capture the current state? Anything to add, correct, or remove?"

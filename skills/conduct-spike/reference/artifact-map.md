@@ -83,7 +83,7 @@ Never copy a spike artifact into `index.md`, `context.md`, or `plan.md` — link
 | Trigger | Route |
 |---|---|
 | New current-state fact | `document-findings` update → ADR (if a decision is affected) → solution doc → index re-route |
-| ADR decision change | `spike-area-analyst` (revise in place) → `write-solution-doc` → **handle-adr-change** → re-plan / rework |
+| ADR decision change | **sync-update-artifacts** → `draft-adr` (revise in place) → `write-solution-doc` → **handle-adr-change** → re-plan / rework |
 | Delivery defect, no decision change | **amend-plan** or **rework** — no spike edit |
 | New option or new area | L3 spike via **triage-issue** |
 
@@ -100,7 +100,7 @@ Never copy a spike artifact into `index.md`, `context.md`, or `plan.md` — link
 
 ## Do-not list
 
-- `scope.md` never tracks delivery status; the index never lists spike problems as tasks.
+- `scope.md` never tracks delivery status; a bounded `## Next actions` line records an implementation need, never a plan or feature breakdown. The index never lists spike problems as tasks.
 - Findings never contain target state or decisions.
 - ADRs never contain investigation narratives or raw evidence; they cite claim IDs.
 - The solution doc never restates findings; it mirrors ADR decisions.

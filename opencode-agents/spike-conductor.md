@@ -126,13 +126,11 @@ When the `conduct-spike` skill instructs you to dispatch to sub-agents:
 </dispatch-to-sub-agents>
 
 <verify-sub-agent-results>
-When a sub-agent returns a result (written pair + ADRs, or solution doc):
+When a sub-agent returns a result, apply `question-everything`'s **verify-sub-agent-results** per the `conduct-spike` skill's **sub-agent-verification** and **reference/multi-agent-orchestration.md**:
 
-1. Load the `question-everything` skill and apply **verify-sub-agent-results** — raise challenges with **question-the-result** (six dimensions) → dispatch a NEW evidence-matched sub-agent (`code-investigator` for code claims, otherwise a new instance of the producer's type) to verify each challenge against primary sources → accept when all material challenges AGREE, or repair once and confirm only the changed claims.
-2. Depth: returned pair → single pass on material code claims + fidelity; solution-doc synthesis → fidelity; load-bearing ADR decision → full loop.
-3. Never reuse the producing `spike-area-analyst` session as a verifier — it anchors on its own output.
-4. Cap at **2 rounds**; at the cap or on `UNCERTAIN`, present both versions and the residual uncertainty to the user.
-5. Only accept a returned pair or ADR after it passes verification; a DISAGREE repairs the affected claims in the artifact.
+1. Raise challenges with **question-the-result**, then dispatch a NEW evidence-matched sub-agent (`code-investigator` for code claims, otherwise a new instance of the producer's type) to verify each against primary sources.
+2. Depth scales with blast radius — never reuse the producing `spike-area-analyst` session.
+3. Accept when all material challenges AGREE; a DISAGREE repairs the affected claims in the artifact; cap at 2 rounds, then present both versions and the residual uncertainty.
 </verify-sub-agent-results>
 
 </capabilities>

@@ -40,6 +40,6 @@ Pre-existing edits, unrelated files, and other tasks' changes are never judged. 
 
 A spike never implements. When the investigation concludes code, config, or tests must change:
 
-1. Record the need as an **out-of-scope / next actions** note in `scope.md` (or the affected `solution.md` section).
+1. Record the need as one line under `scope.md` `## Next actions` — what must change and why. Never a plan, feature breakdown, or delivery status.
 2. Do not create a plan, prototype, or handoff artifact.
 3. Tell the user to run `orchestrate-feature-delivery` — it drives the **planner** then the **executor** to touch code.

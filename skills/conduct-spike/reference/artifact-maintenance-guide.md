@@ -24,7 +24,7 @@ When a decision or fact changes (ADR revision, continuation round, mid-spike cor
 |---|---|---|
 | ADR | ❌ No notes, changelogs, or process history | In the evidence document, or spoken in conversation |
 | Solution document | ❌ No notes, version markers, or change lists | In the evidence document, or spoken in conversation |
-| Evidence documents | ✅ Yes — current-state record may note raw data, metrics, searched-negatives | In the evidence document itself |
+| Evidence documents | ✅ Yes — raw data, metrics, searched-negatives | In the ledger's evidence column or the Searched-negatives table; never a new section |
 | Conversation | ✅ Yes — the assistant narrates what changed and why | In chat, not in the artifacts |
 
 ### No-note scan (validation gate)

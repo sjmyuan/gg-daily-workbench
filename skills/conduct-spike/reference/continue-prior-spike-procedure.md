@@ -9,5 +9,5 @@ Full procedure for the `continue-prior-spike` capability — loaded on demand wh
 5. Run the standard workflow in revise-in-place mode per **continuation-mode**: apply **investigate-per-area** (seeded with the existing pairs, returning each updated pair and ADRs), **compile-findings-doc**, **draft-problem-adrs**, then **sync-update-artifacts**.
 6. Update `scope.md` statuses as each step completes.
 7. Run the **final consistency review** — cross-check findings → ADRs → solution doc and cross-area constraints; surface inconsistencies before concluding.
-8. Ask whether to continue with another round or conclude.
-9. **Focused rework** (L3 from `orchestrate-feature-delivery`): treat it as a continuation — reuse the prior evidence maps, investigate only the delta, and update only the affected ADR/solution section; still update that area's findings pair (revise the affected topic, add a topic for a newly answered question).
+8. **Focused rework** (L3 from `orchestrate-feature-delivery`): treat it as a continuation — reuse the prior evidence maps, investigate only the delta, and update only the affected ADR/solution section; still update that area's findings pair (revise the affected topic, add a topic for a newly answered question).
+9. Ask whether to continue with another round or conclude; never conclude while the final consistency review reports an inconsistency.
