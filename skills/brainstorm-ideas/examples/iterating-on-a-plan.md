@@ -35,13 +35,13 @@ Facilitator: "Four candidates, quick pass:"
 ```
 Faster Reviews
 ├── Inversion — smaller PRs
-│   └── Enforce PR size limits
+│   └── Enforce PR size limits — large PRs wait longer, so cap the size
 ├── Combination — scheduled review slots
-│   └── Shared review calendar
+│   └── Shared review calendar — reviewers reserve a review slot
 ├── Elimination — no full re-review
-│   └── One-pass approval, fix later
+│   └── One-pass approval, fix later — skip the second pass
 └── Analogy — like a queue
-    └── Reviewer rotation queue
+    └── Reviewer rotation queue — every PR gets an owner
 ```
 
 User: "PR size limits and the rotation queue feel strongest."
@@ -51,45 +51,43 @@ Facilitator: "Scoring and stress-testing in one pass since these are few:"
 
 | Idea | Value | Feasibility | Scope | Challenge result |
 |---|---|---|---|---|
-| PR size limits | High | High | Fits | Allow exceptions for big refactors |
-| Reviewer rotation | High | High | Fits | One reviewer per PR, less context — acceptable |
-| Review calendar | Medium | Medium | Fits | Dropped — coordination overhead |
-| One-pass + fix later | Medium | Low | Fits | Dropped — quality risk |
+| PR size limits | 2 | 2 | 2 | Allow exceptions for big refactors |
+| Reviewer rotation | 2 | 2 | 2 | One reviewer per PR, less context — acceptable |
+| Review calendar | 1 | 1 | 2 | Dropped — coordination overhead |
+| One-pass + fix later | 1 | 0 | 2 | Dropped — quality risk |
 
 **Refined idea**: Speed up reviews with PR size limits and a reviewer rotation queue.
 
 ### compile-actionable-plan (round 1)
 Facilitator: "Here is the round-1 plan:"
 
-## Refined Idea
-Speed up code reviews with PR size limits and a reviewer rotation queue.
+## Plan
+Get non-trivial PRs reviewed within one working day using PR size limits and a reviewer rotation queue.
 
-## Delta
-Moved from "days of waiting" to two concrete levers: smaller PRs and assigned reviewers.
+## Why this plan
+- Reaches G1 — size limits shrink the queue and rotation assigns an owner.
+- Removes C1 and C2 — no PR waits for a volunteer, and no PR grows before review.
+- Leaves out the review calendar and one-pass approval — coordination cost and quality risk.
 
 ## Goals
-- Median review time under 24 hours
-- Reviewer nitpick comments near zero
+- **G1** Median review time under 24 hours — success: median under 24h for four weeks.
+- **G2** Reviewer nitpick comments near zero — success: nitpick comments under 10% of review comments.
 
-## Challenges & Solutions
-| Challenge | Solution |
-|---|---|
-| Reviewer availability | Rotation queue assigns a reviewer up front |
-| Oversized PRs | PR size limits, exceptions for large refactors |
+## Decisions
+- **D1** Chose PR size limits — smaller PRs are faster to review.
+- **D2** Chose a reviewer rotation queue — assigns an owner before review starts.
+- **D3** Dropped the review calendar — coordination overhead for little gain.
+- **D4** Dropped one-pass + fix later — quality risk.
+- **D5** Open: how to enforce size limits without blocking large refactors.
 
-## Decisions & Deferred
-- **Chose:** PR size limits; reviewer rotation queue
-- **Dropped:** review calendar; one-pass + fix later
-- **Open:** enforcing size limits without blocking big refactors
+## Risks
+- **C1** Reviewer availability — impact: High — mitigation: rotation queue assigns up front — serves: G1.
+- **C2** Oversized PRs — impact: High — mitigation: size limit with a refactor exception — serves: G1.
 
-## Key Components
-- PR size limit rule
-- Reviewer rotation queue
-
-## Next Steps
-1. Define the PR size limit (depends on: team norms)
-2. Set up the rotation queue
-3. Pilot on one team and measure median review time
+## Next steps
+1. **S1** Define the PR size limit → produces a size rule — done when the team agrees on a line count — serves: G1, C2.
+2. **S2** Set up the rotation queue → produces a queue and owner rule — done when every new PR gets an owner — serves: G1, C1.
+3. **S3** Pilot on one team and measure median review time → produces a four-week measurement — done when the median is under 24h — serves: G1.
 
 Facilitator: "Round 1 done. Want to go further — deepen a direction, combine, or pivot?"
 
@@ -102,11 +100,11 @@ Facilitator: "Three sub-ideas for the rotation:"
 ```
 Rotation Queue
 ├── By expertise
-│   └── Route to the owner of the touched area
+│   └── Route to the owner of the touched area — fastest, most accurate review
 ├── By availability
-│   └── Pick from reviewers free today
+│   └── Pick from reviewers free today — no waiting on a busy owner
 └── By fairness
-    └── Round-robin across the team
+    └── Round-robin across the team — nobody is skipped
 ```
 
 User: "Expertise routing, with a round-robin fallback so nobody is skipped."
@@ -118,26 +116,35 @@ User: "Yes — the fallback keeps it fair and unblocked."
 **Refined addition**: rotation routes by expertise, falling back to round-robin.
 
 ### Update the plan
-Facilitator: "Round-2 plan, updated with the queue decision (unchanged sections elided):"
+Facilitator: "Round-2 plan, updated with the queue decision:"
 
-## Refined Idea
-Speed up code reviews with PR size limits and a rotation queue that routes by expertise with a round-robin fallback.
+## Plan
+Speed up code reviews with PR size limits and a rotation queue that routes by expertise, falling back to round-robin.
 
-## Delta
-Round 1 added the two levers; round 2 made the queue concrete.
+## Why this plan
+- Reaches G1 — expertise routing removes the "who reviews?" wait.
+- Keeps C1 low — the round-robin fallback prevents stalls.
+- Leaves out the review calendar and one-pass approval — unchanged from round 1.
 
 ## Goals
-Unchanged: median review under 24h; nitpick comments near zero.
+- **G1** Median review time under 24 hours — success: median under 24h for four weeks.
+- **G2** Reviewer nitpick comments near zero — success: under 10% of review comments.
 
-## Decisions & Deferred
-- **Chose:** PR size limits; expertise-first rotation queue
-- **Dropped:** review calendar; one-pass + fix later
-- **Open:** size-limit enforcement mechanics
+## Decisions
+- **D1** Chose PR size limits — unchanged from round 1.
+- **D2** Chose expertise-first rotation — routes to the owner of the touched area.
+- **D3** Chose a round-robin fallback — no reviewer is skipped when no expert is free.
+- **D4** Dropped availability routing — the fallback already prevents stalls.
+- **D5** Open: size-limit enforcement mechanics.
 
-## Next Steps
-1. Define the PR size limit (depends on: team norms)
-2. Map reviewers to expertise areas
-3. Build the queue: expertise match, then round-robin fallback
-4. Pilot on one team and measure median review time
+## Risks
+- **C1** Reviewer availability — impact: High — mitigation: rotation queue assigns up front — serves: G1.
+- **C2** Oversized PRs — impact: High — mitigation: size limit with a refactor exception — serves: G1.
+
+## Next steps
+1. **S1** Define the PR size limit → produces a size rule — done when the team agrees on a line count — serves: G1, C2.
+2. **S2** Map reviewers to expertise areas → produces an expertise map — done when every area has an owner — serves: G1.
+3. **S3** Build the queue: expertise match, then round-robin fallback → produces the queue — done when a PR is assigned within one hour — serves: G1, C1.
+4. **S4** Pilot on one team and measure median review time → produces a four-week measurement — done when the median is under 24h — serves: G1.
 
 Facilitator: "Round 2 captured. Anything else to deepen, or is this the plan we lock in?"

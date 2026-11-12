@@ -29,12 +29,15 @@ Cover these across the set:
 - Frame ideas as outcomes and value, not just features
 
 ## Present as a mind map
-Show relationships as a tree; keep depth to 2–3 levels; use descriptive labels, not keywords.- Label each branch with the technique that produced it so the diversity is visible
+Show relationships as a tree; keep depth to 2–3 levels.
+- Label each branch with the technique that produced it so the diversity is visible.
+- Write each leaf as `Idea — what it is / why it might work`, one short line.
+
 ```
 Central Theme
-├── Branch 1
-│   ├── Sub-idea 1a
-│   └── Sub-idea 1b
-├── Branch 2
-└── Branch 3
+├── Technique A — branch name
+│   ├── Idea 1a — what it is / why it might work
+│   └── Idea 1b — what it is / why it might work
+├── Technique B — branch name
+└── Technique C — branch name
 ```

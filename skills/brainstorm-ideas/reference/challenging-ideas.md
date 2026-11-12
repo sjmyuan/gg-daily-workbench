@@ -10,6 +10,7 @@ Used by **challenge-ideas** to stress-test the top ideas.
 - Push for simpler, more focused solutions
 - Suggest an MVP or phased rollout when scope is too large
 - Identify the core value proposition
+- Carry the top risk and its impact into the plan
 
 ## Tone
 - Be direct but supportive — challenge the idea, not the person

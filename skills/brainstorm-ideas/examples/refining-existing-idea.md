@@ -41,20 +41,20 @@ Facilitator: "Here are 5–7 diverse ideas, presented as a mind map:"
 
 ```
 Running Group
-├── Commitment
-│   ├── Weekly RSVP
-│   ├── Route rotation
-│   └── Run-streak badges
-├── Inclusion
-│   ├── Two pace groups
-│   ├── Buddy system
-│   └── Walk-run intervals
-├── Social
-│   ├── Post-run coffee
-│   └── Monthly social run
-└── Reach
-    ├── Neighborhood flyers
-    └── Group chat
+├── Analogy — commitment
+│   ├── Weekly RSVP — a headcount makes showing up a promise
+│   ├── Route rotation — a new route keeps the weekly run interesting
+│   └── Run-streak badges — visible progress rewards consistency
+├── Combination — inclusion
+│   ├── Two pace groups — every runner has someone at their speed
+│   ├── Buddy system — a partner notices when you are missing
+│   └── Walk-run intervals — newcomers can finish the route
+├── Constraint flip — social
+│   ├── Post-run coffee — turns the run into a social habit
+│   └── Monthly social run — a bigger event once a month
+└── Inversion — reach
+    ├── Neighborhood flyers — reach people who are not online
+    └── Group chat — coordinate the weekly run
 ```
 
 User: "Pace groups, the buddy system, and post-run coffee feel most relevant."
@@ -64,15 +64,13 @@ User: "Pace groups, the buddy system, and post-run coffee feel most relevant."
 ### evaluate-ideas
 Facilitator: "Scoring the candidates:"
 
-| Idea | Value | Feasibility | Differentiation | Scope | Impact |
-|---|---|---|---|---|---|
-| Two pace groups | High | High | High | Fits | High |
-| Buddy system | High | High | Medium | Fits | High |
-| Post-run coffee | Medium | High | Low | Fits | Medium |
-| Weekly RSVP | Medium | High | Low | Fits | Medium |
-| Route rotation | Low | High | Low | Fits | Low |
+| Idea | Value | Feasibility | Differentiation | Scope | Impact | Why |
+|---|---|---|---|---|---|---|
+| Two pace groups | 2 | 2 | 2 | 2 | 2 | Every runner has someone at their speed; low cost |
+| Buddy system | 2 | 2 | 1 | 2 | 2 | A partner notices absence; needs a roster |
+| Post-run coffee | 1 | 2 | 1 | 2 | 1 | Social hook; easy to run; not required to start |
 
-Facilitator: "By effort vs impact, pace groups and the buddy system are the top priorities."
+Facilitator: "By effort vs impact, pace groups and the buddy system are the top priorities. Coffee is a cheap social add for later; RSVP and route rotation drop."
 
 **Confirmed priorities**: two pace groups, buddy system.
 
@@ -89,38 +87,45 @@ User: "Nice extra for month one, not required to start."
 ### refine-idea
 Facilitator: "What is essential versus nice-to-have?"
 User: "Essential: two pace groups and a rotating buddy system. Nice-to-have: post-run coffee and RSVP."
-Facilitator: "What would make it more robust?"
-User: "A simple group chat to coordinate weekly."
+Facilitator: "Which remaining risk or gap does the idea still not cover?"
+User: "Coordination — a simple group chat covers weekly logistics."
 
 **Refined idea**: A weekly neighborhood running group built on two pace groups and a rotating buddy system, coordinated through a group chat.
 
 ### compile-actionable-plan
 The facilitator compiles the plan per **plan-output-format**:
 
-## Refined Idea
-A weekly neighborhood running group for any pace, built on two pace groups and a rotating buddy system, coordinated through a group chat.
+## Plan
+A free weekly neighborhood running group with two pace groups and a rotating buddy system, coordinated in one group chat.
+
+## Why this plan
+- Reaches G1 — pace groups and buddies give newcomers a reason to return.
+- Removes C2 and C3 — no one runs alone, and the group never depends on one organizer.
+- Leaves out coffee and flyers — nice extras after the first month.
 
 ## Goals
-- Reach 15–20 regulars in 3 months
-- Keep weekly attendance above 10
+- **G1** Reach 15–20 regulars in 3 months — success: 15 regulars by month 3.
+- **G2** Keep weekly attendance above 10 — success: 10+ runners for four consecutive weeks.
 
-## Challenges & Solutions
-| Challenge | Solution |
-|---|---|
-| Schedule inconsistency | Group chat + weekly RSVP |
-| Intimidation for newcomers | Two pace groups + buddy system |
-| Low critical mass | Start with 5 committed runners, invite one more each week |
+## Decisions
+- **D1** Chose two pace groups — inclusion without splitting the group further.
+- **D2** Chose a rotating buddy roster — support without burning out one organizer.
+- **D3** Dropped post-run coffee — optional social hook for month two.
+- **D4** Dropped weekly RSVP — the group chat already gives a headcount.
+- **D5** Added a group chat — covers weekly coordination.
+- **D6** Dropped route rotation — low value for the first three months.
+- **D7** Open: whether a third pace group is needed.
 
-## Key Components
-- Two pace groups
-- Rotating buddy system
-- Group chat coordination
+## Risks
+- **C1** Schedule inconsistency — impact: High — mitigation: fixed weekly slot and group chat — serves: G2.
+- **C2** Intimidation for newcomers — impact: High — mitigation: two pace groups and a buddy — serves: G1.
+- **C3** Low critical mass — impact: High — mitigation: start with 5 committed runners, invite one more each week — serves: G1.
 
-## Next Steps
-- Recruit 5 committed co-runners
-- Set the route, time, and pace split
-- Launch the group chat and first runs
-- Add post-run coffee as a social hook
-- Review attendance and adjust
+## Next steps
+1. **S1** Recruit 5 committed co-runners → produces a starter group — done when 5 confirm the weekly slot — serves: G1, C3.
+2. **S2** Set the route, time, and pace split → produces a one-page run guide — done when both paces have a route and leader — serves: G1, C2.
+3. **S3** Launch the group chat and first run → produces an active chat and a first run — done when the first run happens with both paces — serves: G2.
+4. **S4** Pair every newcomer with a buddy → produces a buddy roster — done when each newcomer has a named buddy — serves: G1, C2.
+5. **S5** Review attendance weekly and adjust → produces a four-week attendance note — done when each run's attendance is reviewed — serves: G2.
 
-Facilitator: "Here is the plan. Would you like to refine any section before we finalize?"
+Facilitator: "Here is the plan — it passes the four quality checks. Want to amend any section before we lock it?"
