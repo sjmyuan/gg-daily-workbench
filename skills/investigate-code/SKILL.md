@@ -209,12 +209,10 @@ Do not load when no spike area has been defined.
 <dispatch-investigation-clones>
 **Objective**: Investigate independent areas in parallel and merge one answer.
 
-1. Split into disjoint areas covering the question; run directly when no safe split exists.
-2. Write one brief per area — boundary, sub-question, depth, return contract.
-3. Require claims tagged per **finding-confidence-model**, an issue card per issue, and searched-negatives.
-4. Forbid user questions — clones return questions upward and never re-fan-out.
-5. Merge — dedupe, spot-check a claim per area, surface conflicts as ⚠️.
-6. Validate — areas disjoint and covering, every report used, grade ≥7/9.
+1. Apply `fan-out-agents` **fan-out-tasks** for the split, briefs, dispatch, and merge.
+2. Add the investigation return contract to every brief — boundary, sub-question, depth, claims tagged per **finding-confidence-model**, an issue card per issue, searched-negatives.
+3. Require clones to return open questions upward — never ask the user, never re-fan-out.
+4. Validate — areas disjoint and covering, every report used, conflicts surfaced as ⚠️, grade ≥7/9 per **quality-bar**.
 </dispatch-investigation-clones>
 
 </capabilities>
