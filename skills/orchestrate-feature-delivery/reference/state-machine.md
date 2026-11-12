@@ -13,7 +13,7 @@ The delivery index is the single source of truth; **update-delivery-index** and 
 | **verified** | Independent verification gate passed; awaits merge |
 | **done** | PR merged (recorded head commit included) or user-confirmed |
 | **failed** | Agent error (reason recorded) |
-| **blocked** | Waiting on a dependency merge or user decision |
+| **blocked** | Waiting on a dependency merge or an escalated user decision — never a cause the recovery ladder can clear |
 | **poc-ready** | POC implemented + MR open, gate passed |
 | **adopted** / **rejected** | User-recorded POC decision |
 | **superseded** | Existing implementation replaced by an adopted POC |
@@ -23,6 +23,7 @@ The delivery index is the single source of truth; **update-delivery-index** and 
 `unplanned → planned → in-progress → verified → done`, plus recoverable `failed` / `blocked`.
 
 - **in-progress** covers execution running or complete, not yet verified.
+- A recovered **failed** cell returns to **in-progress** on the recovery dispatch; escalation is what makes it **blocked**.
 - **verified** requires the independent verification gate (**verify-cell**) to pass.
 - POC cells fork: `verified → poc-ready → adopted | rejected`; adopted → promote → merge → `done`.
 - A replaced cell is **superseded**.

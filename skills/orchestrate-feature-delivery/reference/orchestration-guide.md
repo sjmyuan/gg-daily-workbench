@@ -1,6 +1,6 @@
 # Orchestration Guide
 
-Tables the orchestration capabilities read. Statuses and readiness: **reference/state-machine.md**; index schema: **reference/delivery-index-format.md**; briefs: **reference/dispatch-briefs.md**.
+Tables read by the orchestration capabilities and **agent-recovery**. Statuses and readiness: **reference/state-machine.md**; index schema: **reference/delivery-index-format.md**; briefs: **reference/dispatch-briefs.md**.
 
 ## Agent dispatch
 
@@ -28,14 +28,54 @@ Tables the orchestration capabilities read. Statuses and readiness: **reference/
 | **No conflict** | Never run two cells with a conflict edge at once — serialize them |
 | **Capacity** | Match parallel agents to the platform; ask the user when unsure |
 
-## Failure handling
+## Recovery ladder
 
-| Signal | Meaning | Recovery |
-|---|---|---|
-| **failed** | Agent hit an error (record the reason) | Ask the user: retry, or dispatch the planner to amend the same plan when the error is a plan defect |
-| **blocked** | Waiting on an unmerged dependency or a user decision (record the blocker) | Do not dispatch until the blocker clears |
-| **plan defect** | A pending step is wrong, missing, or obsolete | Dispatch the planner to **amend** the same `plan.md`; the cell stays **in-progress** — no new plan folder, file, or cell |
-| **in-progress** | The agent was interrupted mid-execution | Resume from the last completed step in the active `rework-<date>.md` (or `plan.md`), skipping ✅ and ⏭ |
+A stall, question, or failure is the orchestrator's problem before it is the user's — it holds the record the agent needs. Match the signal to the cheapest rung that clears it; one rung per attempt.
+
+| Rung | Signal | Action | Extra dispatches |
+|---|---|---|---|
+| **1 Answer** | The agent asks what the record already settled (index, ADR, `context.md`, plan, prior verdicts) | Reply with the digest and let the agent continue — no re-dispatch | 0 |
+| **2 Investigate** | A code fact is missing, contradicted, or guessed | Dispatch **code-investigator** (L1) with that question; feed the evidence back | 1 |
+| **3 Re-brief** | A path, intake field, dependency contract, or convention was missing — the agent searched or re-asked | Return the corrected brief to the same agent; completed steps stay done | 0 |
+| **4 Re-route** | Wrong agent or rung, or a pending plan step is wrong or obsolete | Planner **amends** the same `plan.md`; ADR drift → **adr-writer**; cell stays **in-progress** — no new plan folder, file, or cell | 1 |
+| **5 Clear record** | Stale status, missing plan file, wrong base or branch, unrecorded dependency | Correct the index or dispatch order, then continue — never code | 0 |
+| **6 Retry** | Transient error, no diagnosis, work unchanged | Re-dispatch the same brief once | 1 |
+| **Escalate** | A trigger below | Ask with the trail and a recommendation; **blocked** only when the cell cannot proceed without the answer | 0 |
+
+- A rung that already failed for the same cause is never repeated; two attempts on one cause, or a spec gap recurring after a gate round (**verification-gate** cap), ends recovery.
+- Never invent an answer: a question the record does not settle is rung 2 or an escalation.
+- Resume an interrupted agent from the last completed step in the active `rework-<date>.md` (or `plan.md`), skipping ✅ and ⏭.
+- No follow-up channel → re-dispatch with the completed steps and the digest; a resumed cell never restarts.
+- Record `<cell> — <cause> → <rung>` in the index `## Notes` when the status changed; detail stays in the plan, rework file, and git.
+
+## Escalation triggers (the only interrupts)
+
+- The **epic's** scope changes: feature set, wave order, a cell's done-means, priority, or an accepted `Assumption`. Enabling work inside a cell is delegated — see **Delegated scope**.
+- A governing ADR decision is challenged, or a trade-off needs choosing — **adr-writer** drafts, the user decides.
+- POC **adopted** / **rejected**; a gate waiver; push, PR, or merge approval.
+- Credentials, access, cost, or capacity the orchestrator cannot obtain.
+- An irreversible or destructive action outside the plan.
+- Evidence conflict that an independent verifier cannot settle.
+
+An escalation carries the cell, the attempt trail, the decision needed, options with cost, and one recommendation.
+Batch escalations at the next wave boundary; interrupt immediately only when a cell cannot proceed, or the pending action is irreversible.
+
+## Delegated scope
+
+A cell often needs enabling work its plan did not list. Approve it and continue when every check holds — approval is a decision, not work: the planner still plans it and the executor builds it.
+
+| Approve (delegated) | Escalate |
+|---|---|
+| Enables the cell's existing done-means | Changes a feature, wave, or a cell's done-means |
+| Additive — no delivered contract, public API, or schema semantics change | Changes a decided contract, or forces another cell to change |
+| Same repo, branch, cell, and governing ADR decision | New repo, service, dependency, infra, migration, or deploy |
+| Reversible on the cell branch; no data or deployment impact | Would need its own PR or cell to be reviewable |
+| A plan amendment, not a new feature or cell | That class was denied before, or the work belongs to another cell's done-means |
+
+- Record `Scope +<what> (delegated, <date>)` in the cell brief and have the planner amend `plan.md`; the delta travels to the verifier — an unrecorded bump returns as **Extra**.
+- A class the user pre-authorized in `## Notes` is never asked again.
+- A new outcome is a feature, not a bump; approval never widens the epic.
+- Two bumps on one cell mean the plan missed the work — re-plan, do not keep patching.
 
 ## ADR changes
 

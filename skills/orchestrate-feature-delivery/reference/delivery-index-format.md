@@ -64,6 +64,7 @@ POC feature rows add `Type`, `Replaces`, and `Compare` columns — see **POC cel
 ```
 
 A **gate waiver** is a `## Notes` line in that exact form; it is the only place the index records one.
+A **recovery** is a `## Notes` line — `<cell> — <cause> → <rung>` — only when it changed the cell's status; detail stays in the plan, rework file, and git.
 
 Plan locations use the feature's **kebab-case name** (`wallet-contracts`), never its ID (`F1`).
 **Branch**, **PR**, and **Commit** are pointers, always tracked and easy to verify; work history stays in `plan.md` / git.
@@ -86,6 +87,7 @@ Each cell carries a brief that seeds **plan-development-task** and every later d
 - **Known locations**: `file:line` and symbols already located for this cell — never re-searched by the agent
 - **Ruled out**: rungs already failed, options already rejected, questions already answered for this cell
 - **Constraints**: one PR per repo per feature (soft — may merge with other features when convenient)
+- **Delegated scope**: enabling-work bumps approved during delivery — `Scope +<what> (delegated, <date>)`; passed to the planner and the verifier
 - **Branch**: the branch name for this cell, per the repo's convention; created during the agent's Prepare Environment step, pushed only after user confirmation
 - **Integration**: push and open the PR after user approval; return the PR reference in the executor handoff
 - **PR / Commit**: recorded **after** work, from the handoff — never dispatch context

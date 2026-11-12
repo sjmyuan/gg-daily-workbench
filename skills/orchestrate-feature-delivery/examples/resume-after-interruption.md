@@ -19,7 +19,7 @@
 |---|---|---|
 | shared-contracts/F1 | **skip** | done |
 | order-service/F2 | **resume** | continue execution from step 4 in plan.md, skipping ✅ and ⏭ |
-| api-gateway/F3 | **amend** | failed — compile errors from a missing planned step; planner amends the same plan, no new folder |
+| api-gateway/F3 | **amend** | failed — compile errors from a missing planned step; rung 4 (plan defect): planner amends the same plan, no new folder |
 | order-service/F4 | **wait** | blocked-by F2 + F3 |
 | api-gateway/F4 | **wait** | blocked-by F2 + F3 |
 

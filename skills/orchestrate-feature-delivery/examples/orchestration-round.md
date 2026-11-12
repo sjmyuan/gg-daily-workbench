@@ -51,6 +51,19 @@ F2 and F3 become develop-ready (F1 planned; contract-first allows planning in pa
 > **Delegation rule in action**: when any agent's plan or execution surfaces a solution-doc or ADR change, the orchestrator dispatches a **solution-doc-writer** / **adr-writer** agent.
 > It never edits artifacts itself.
 
+## 4b. Unblock without interrupting
+
+| Signal from an agent | Rung | Orchestrator action |
+|---|---|---|
+| Executor A asks whether the envelope version may bump | **1 Answer** | Solution-doc §3 fixes the contract as additive; reply with the digest and let it continue — no re-plan, no user |
+| Planner B searched the repo for the branch convention | **3 Re-brief** | The brief omitted it; send the detected convention and base ref back; Planner B keeps its drafted plan |
+| Executor A cannot locate the envelope codegen entry point | **2 Investigate** | L1 locates it (`file:line`); the evidence goes back to Executor A, which resumes at the failed step |
+| Executor A needs a serializer helper beside the planned DTOs | **4 Re-route** | Enabling, additive, same repo and ADR — approve; the planner amends `plan.md` and the delta joins the verifier brief |
+| Planner C asks to fold the ledger migration into F3 | **Escalate** | It changes F3's scope and agreed done means — ask the user with the trail, options, and a recommendation |
+
+No rung restarted a cell or re-ran a completed step; the helper was recorded as `Scope +serializer helper (delegated)` and the user was interrupted only for the epic-level scope question.
+Status-changing recoveries were recorded in `## Notes` as `<cell> — <cause> → <rung>`.
+
 ## 5. Verify the gate
 
 F1's execution completes → the orchestrator applies **verify-cell**: a fresh **code-reviewer** gets the recorded range, `plan.md`, `context.md`, the governing ADR, and the cell digest.
