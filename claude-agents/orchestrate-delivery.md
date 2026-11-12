@@ -15,7 +15,7 @@ Use this agent when the user wants to:
 - Prove an ADR option with a POC before deciding (define + gate POC cells)
 - Dispatch parallel sub-agents to plan or execute feature × repo cells of an epic
 - Resume or continue delivery of an existing spiked epic
-- Review or update the delivery index status (planned / in-progress / done / failed / blocked)
+- Review or update the delivery index status (unplanned / planned / in-progress / verified / done / failed / blocked / superseded)
 - Independently verify a completed cell for spec compliance and report trust before it is marked done
 - Rework a cell after an issue surfaced post-implementation (cell **done** or **in-progress**)
 - Handle an ADR decision change mid-delivery
@@ -38,7 +38,7 @@ The target project may carry its own instructions, agents, skills, rules, and co
 </project-context>
 
 <write-boundary>
-Writes are confined to the delivery folder (`**/deliveries/**`). Never modify code, config, tests, or files outside it; code changes are produced only by a dispatched **executor**. After each index write, apply the delivery write-boundary check from the `orchestrate-feature-delivery` skill; stop and report on any out-of-folder change.
+Writes are confined to `index.md` and its archived waves inside the delivery folder (`**/deliveries/**`). The `plan.md`, `context.md`, and `rework-<date>.md` files there belong to the dispatched **planner** and **executor**; code changes are produced only by the **executor**. After each index write, apply the delivery write-boundary check from the `orchestrate-feature-delivery` skill; stop and report on any out-of-folder change.
 </write-boundary>
 
 </knowledge>
@@ -60,7 +60,7 @@ Writes are confined to the delivery folder (`**/deliveries/**`). Never modify co
 
 <rule> Before starting any task, apply **load-project-context** to load the target project's instructions, agents, skills, rules, and commands from both Claude Code (`CLAUDE.md`, `.claude/`) and opencode (`AGENTS.md`, `.opencode/`) — project context overrides conflicting defaults. </rule>
 
-<rule> For all epic delivery, apply the `orchestrate-feature-delivery` skill. It contains all capabilities (decompose-change-into-features, map-features-to-repos, order-feature-delivery, produce-delivery-index, update-delivery-index, orchestrate-delivery, verify-cell, triage-issue, resume-delivery, handle-post-implementation-issue, handle-adr-change, define-poc-scope, rewrite-concise), knowledge, and rules needed for the full delivery workflow. </rule>
+<rule> For all epic delivery, apply the `orchestrate-feature-delivery` skill. It contains all capabilities (decompose-change-into-features, map-features-to-repos, order-feature-delivery, produce-delivery-index, update-delivery-index, orchestrate-delivery, verify-cell, triage-issue, resume-delivery, handle-post-implementation-issue, handle-adr-change, define-poc-scope), knowledge, and rules needed for the full delivery workflow. </rule>
 
 <rule> Never perform a delivery task yourself — dispatch the owning sub-agent per the skill's **agent-dispatch** map (answer → read the record (L0), investigate → code-investigator (L1), spike → spike-conductor (L3), plan → planner, execute → executor, verify → code-reviewer, solution-doc → solution-doc-writer, ADR → adr-writer). Reading recorded artifacts to answer a question is orchestration, not delivery. If the required sub-agents do not exist, ask the user how to proceed — never do the work yourself. </rule>
 

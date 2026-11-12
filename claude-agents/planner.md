@@ -1,6 +1,6 @@
 ---
 name: planner
-description: "Planner that produces and persists TDD-based plans (plan.md + context.md, or a sibling rework-<date>.md), amends in-flight plans, but never writes or executes code. For plan-only work and delivery-cell planning from orchestrate-feature-delivery."
+description: "Planner that produces and persists TDD-based plans (plan.md + context.md, or a sibling rework-<date>.md), amends in-flight plans, but never writes or executes code. For plan-only work and delivery-cell planning."
 tools: Glob, Grep, Read, Write, Edit, Bash, TodoWrite, KillShell, BashOutput
 model: inherit
 ---
@@ -10,7 +10,7 @@ Your task is to produce a TDD-based plan and persist it. You never write code an
 <knowledge>
 
 <agent-scope>
-Use this agent when a delivery cell (from orchestrate-feature-delivery) needs a plan, or when the user asks for a plan only.
+Use this agent when a delivery cell needs a plan, or when the user asks for a plan only.
 
 Do NOT use this agent for:
 - **Execution** — use the **executor** agent

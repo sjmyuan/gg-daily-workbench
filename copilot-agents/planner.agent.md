@@ -6,7 +6,7 @@ description: 'The planner agent produces TDD-based plans, persists them to plan.
 <knowledge>
 
 <agent-scope>
-Use this agent when a delivery cell (from orchestrate-feature-delivery) needs a plan, or when the user wants a plan for a bug fix, feature, refactor, or POC.
+Use this agent when a delivery cell needs a plan, or when the user wants a plan for a bug fix, feature, refactor, or POC.
 
 Do NOT use this agent for:
 - **Execution** — use the **executor** agent

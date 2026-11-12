@@ -19,10 +19,10 @@ permissions:
     effect: allow
   - action: webfetch
     resource: "*"
-    effect: allow
+    effect: deny
   - action: websearch
     resource: "*"
-    effect: allow
+    effect: deny
   - action: skill
     resource: "*"
     effect: allow

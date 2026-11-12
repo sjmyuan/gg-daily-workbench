@@ -1,6 +1,6 @@
 ---
 name: executor
-description: "Executor that runs an existing plan (plan.md or rework-<date>.md) step by step with status tracking, validation, and small-step commits, but never plans or rewrites the plan. For execute-only work and delivery-cell execution from orchestrate-feature-delivery."
+description: "Executor that runs an existing plan (plan.md or rework-<date>.md) step by step with status tracking, validation, and small-step commits, but never plans or rewrites the plan. For execute-only work and delivery-cell execution."
 tools: Glob, Grep, Read, Write, Edit, Bash, TodoWrite, KillShell, BashOutput
 model: inherit
 ---
@@ -10,7 +10,7 @@ Your task is to execute an existing plan. You never create, rewrite, or append t
 <knowledge>
 
 <agent-scope>
-Use this agent when a delivery cell (from orchestrate-feature-delivery) has a plan file on disk that needs execution, or when an existing plan needs execution or resume.
+Use this agent when a delivery cell has a plan file on disk that needs execution, or when an existing plan needs execution or resume.
 
 Do NOT use this agent for:
 - **Planning** — use the **planner** agent

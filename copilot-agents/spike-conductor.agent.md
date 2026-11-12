@@ -15,7 +15,7 @@ Use this agent when the user wants to:
 - Produce ADRs and a consolidated solution document
 - Break down a large technical problem into areas, each holding its decision problems ("How to …")
 - Parallelize area sessions across sub-agents for faster completion
-- Re-investigate an issue found after a feature was implemented — a **focused** rework spike on the governing ADR, typically triggered by the **orchestrate-feature-delivery** skill
+- Re-investigate an issue found after a feature was implemented — a **focused** rework spike on the governing ADR, when the decision itself is challenged
 
 Do NOT use this agent for:
 - **Quick answers or informal recommendations** — use a regular conversation instead

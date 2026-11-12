@@ -81,16 +81,16 @@ Each file uses native **OpenCode V2** frontmatter per the
 
 ### Permission rules in these files
 
-Each agent declares its tool set explicitly — `read`, `glob`, `grep`, `edit`, `shell`, `webfetch`, `websearch`, `skill`, and `subagent` — so the frontmatter states the agent's access instead of leaving it to inherited defaults:
+Each agent declares its tool set explicitly — `read`, `glob`, `grep`, `edit`, `shell`, `webfetch`, `websearch`, `skill`, and `subagent` — so the frontmatter states the agent's access instead of leaving it to inherited defaults. `webfetch` and `websearch` are denied everywhere: no agent reaches the network.
 
 | Agent pattern | Rules |
 |---|---|
 | Doc-only writers — `adr-writer`, `findings-doc-writer`, `planner`, `solution-doc-writer` | `edit *` deny, then `edit *.md` allow; everything else allowed |
-| Read-only — `code-investigator`, `code-reviewer` | `edit *` deny; discovery, shell, web, skills allowed |
-| Text-only — `english-corrector`, `translator` | `edit *`, `shell *`, `webfetch *`, `websearch *` denied; discovery and skills allowed |
+| Read-only — `code-investigator`, `code-reviewer` | `edit *` deny; discovery, shell, skills allowed |
+| Text-only — `english-corrector`, `translator` | `edit *` and `shell *` denied; discovery and skills allowed |
 | Folder-scoped writers — `orchestrate-delivery` (`deliveries`), `spike-conductor` and `spike-area-analyst` (`spikes`) | `edit *` deny, then `edit */deliveries/*` allow (V1 `**/deliveries/**` translated literally; same for `spikes`) |
 | Dispatch-restricted — `orchestrate-delivery`, `spike-conductor` | `subagent *` deny, then one `subagent <id>` allow per target |
-| Web search off — six writing/authoring agents | `websearch *` deny |
+| No network — **every** agent | `webfetch *` and `websearch *` deny |
 | Full access — `executor`, `learner` | every action above allowed; `learner` also allows `subagent` for self-dispatch |
 
 - Per V2's base policy, actions not listed (`question`, `external_directory`, Code Mode's `execute`, MCP tools) remain allowed.

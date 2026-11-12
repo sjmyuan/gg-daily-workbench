@@ -6,7 +6,7 @@ description: 'The executor agent runs an existing plan step by step with status 
 <knowledge>
 
 <agent-scope>
-Use this agent when a delivery cell (from orchestrate-feature-delivery) has a plan file on disk that needs execution, or when an existing plan needs execution or resume.
+Use this agent when a delivery cell has a plan file on disk that needs execution, or when an existing plan needs execution or resume.
 
 Do NOT use this agent for:
 - **Planning** — use the **planner** agent
