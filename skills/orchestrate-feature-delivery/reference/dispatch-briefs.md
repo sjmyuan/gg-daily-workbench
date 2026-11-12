@@ -1,16 +1,22 @@
 # Dispatch Briefs (Delivery)
 
-Backs **agent-dispatch**, **orchestrate-delivery**, **resume-delivery**, **verify-cell**, and **triage-issue**. Every dispatched unit — planner, executor, verifier, investigator, spike conductor, ADR or solution-doc writer — receives a brief built from this contract. Cell-level content (feature, repo, scope, branch, plan location) is owned by **reference/delivery-index-format.md** (per-cell scope brief); this file owns how all known context reaches the agent.
+Backs **agent-dispatch**, **orchestrate-delivery**, **resume-delivery**, **verify-cell**, and **triage-issue**.
+Every dispatched unit — planner, executor, verifier, investigator, spike conductor, ADR or solution-doc writer — receives a brief built from this contract.
+Cell-level content (feature, repo, scope, branch, plan location) is owned by **reference/delivery-index-format.md** (per-cell scope brief); this file owns how all known context reaches the agent.
 
 ## Why it matters here
 
-The orchestrator holds state no dispatched agent can see: the index, the user's answers, L0/L1 findings, prior cells' delivered contracts, gate verdicts, and detected repo conventions. A brief that names only paths sends the agent back through the spike artifacts, the record, and the code to rediscover what is already settled — at full cost, in a context that cannot report it back.
+The orchestrator holds state no dispatched agent can see: the index, the user's answers, L0/L1 findings, prior cells' delivered contracts, gate verdicts, and detected repo conventions.
+A brief that names only paths sends the agent back through the spike artifacts, the record, and the code to rediscover what is already settled — at full cost, in a context that cannot report it back.
 
 ## Context inventory before every brief
 
 A brief is complete when **nothing the orchestrator holds is missing from it**.
 
-1. List every item: the user's ask and answers (gate record, `Assumption (user-accepted, unverified)` lines), the index rows (statuses, dependencies, waves, cell brief), each spike artifact already read and what it established, L0/L1 answers, prior cells' delivered contracts and merge state, open gate findings, plan/rework state, detected repo conventions (branch prefix, test command, layout), and the resolved absolute paths.
+1. List every item: the user's ask and answers (gate record, `Assumption (user-accepted, unverified)` lines), the index rows (statuses, dependencies, waves, cell brief),
+   then each spike artifact already read with what it established.
+2. Add the L0/L1 answers, prior cells' delivered contracts and merge state, open gate findings, plan/rework state,
+   detected repo conventions (branch prefix, test command, layout), and the resolved absolute paths.
 2. Classify each item by fill mode (below) and place it in the brief.
 3. Drop an item only when the unit cannot need it — never because it is findable or cheap to re-read.
 4. Fail the brief when an item has no home: add the field instead of dropping the item.
@@ -23,7 +29,7 @@ A brief is complete when **nothing the orchestrator holds is missing from it**.
 | **Digest** | The item is persisted **and** the orchestrator already holds a conclusion from it | That conclusion in 1–5 lines, marked `from <path#section>` — the agent acts on it and opens the file only to go deeper |
 | **Inline** | The item lives only in conversation, or the agent must write it into its output | The value itself |
 
-- **Digest is the anti-re-investigation mode**: located `file:line`, settled decisions, the contract surface a prior cell delivered, what a record read established, and what was ruled out at which rung.
+- **Digest is the anti-re-investigation mode**: located `file:line`, settled decisions, the contract surface a prior cell delivered, what a record read established, and what each rung ruled out.
 - **Never replace a path with a digest** — pass both. The digest removes the re-read; the path keeps the full detail reachable.
 - **Persist-once**: when unpersisted context is needed by several later dispatches, write it into the cell's `context.md` (planner-owned) or the index cell brief, then pass the path plus its digest.
 
@@ -61,7 +67,8 @@ A brief carrying these fields **is** the gate result: the agent adopts them, ask
 
 ## Cross-cell context
 
-- **Dependencies travel as contract surface**: a later cell receives its dependency's delivered interfaces, exported types, endpoints, PR reference, and merge state as a digest — never re-derives a dependency's implementation.
+- **Dependencies travel as contract surface**: a later cell receives its dependency's delivered interfaces, exported types, endpoints, PR reference, and merge state as a digest.
+  It never re-derives a dependency's implementation.
 - **Same-wave siblings** receive the agreed stubs and interface names (contract-first), not each other's code.
 - **A rework** receives the cell charter by path plus the prior round's findings **inline**; implemented steps are never re-derived or re-read.
 - **A resumed cell** receives the index state, the active plan/rework path, and what was already completed — never a from-scratch brief.

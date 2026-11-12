@@ -1,10 +1,15 @@
 # Example: Pre-Merge Rework — Sibling Rework File on an Unmerged Cell
 
-**Scenario**: `order-service/F4` is **in-progress** — **execute-plan** finished the implementation and committed locally, but the branch is not yet pushed and no PR opened (per **branch-and-push-conventions**). Reviewing the unmerged diff, the team finds a defect: the checkout flow maps a payment-gateway timeout to the wrong error code — an implementation bug, not a flawed decision. The user says: "We found a bug in the unmerged checkout work — fix it before we push."
+**Scenario**: `order-service/F4` is **in-progress** — **execute-plan** finished the implementation and committed locally.
+The branch is not yet pushed and no PR is open (**delivery-layout**'s branch conventions).
+Reviewing the unmerged diff, the team finds a defect: the checkout flow maps a payment-gateway timeout to the wrong error code — an implementation bug, not a flawed decision.
+The user says: "We found a bug in the unmerged checkout work — fix it before we push."
 
 **Applies**: **handle-post-implementation-issue** → **update-delivery-index**
 
-**What makes this distinct**: The same append-only rework as `examples/post-implementation-rework.md`, but on an **unmerged** cell — the mode line, cell branch, and index handling change, and no new feature or wave appears. The full rework-file shape and step format are shown there; this example shows only the pre-merge differences.
+**What makes this distinct**: the same append-only rework as **examples/post-implementation-rework.md**, but on an **unmerged** cell.
+The mode line, cell branch, and index handling change, and no new feature or wave appears.
+The full rework-file shape and step format are shown there; this example shows only the pre-merge differences.
 
 ## 1. Identify scope + status
 
@@ -14,7 +19,8 @@
 
 ## 2. Write the sibling rework file (never modify the original)
 
-`plan-development-task` writes a new sibling `deliveries/wallet-migration/order-service/order-wallet-integration/rework-2026-08-08.md` — `plan.md` is the frozen original and never gains a section. Same shape as `examples/post-implementation-rework.md` §4, with these differences:
+`plan-development-task` writes a new sibling `deliveries/wallet-migration/order-service/order-wallet-integration/rework-2026-08-08.md` — `plan.md` is the frozen original and never gains a section.
+Same shape as `examples/post-implementation-rework.md` §4, with these differences:
 
 ```markdown
 # Rework 2026-08-08 — checkout timeout error mapping
@@ -61,8 +67,9 @@ Original `plan.md` steps 1–N remain byte-for-byte unchanged.
 |---|---|---|---|---|---|---|
 | order-service/F4 | 1234-f4 | — | d4e5f6a | in-progress | executor | deliveries/wallet-migration/order-service/order-wallet-integration/ |
 
-`F4` keeps its identity and **in-progress** status — no `F4-r1`, no new wave, and no index change; the sibling `rework-2026-08-08.md` (listed in the `context.md` manifest) is the only record of the rework.
+`F4` keeps its identity and **in-progress** status — no `F4-r1`, no new wave, no index change.
+The sibling `rework-2026-08-08.md` (listed in the `context.md` manifest) is the only record.
 
 ## 5. Next actions
 
-The executor asks before pushing and opens the PR (per **branch-and-push-conventions**); after the rework + original work merge, `F4` → **done** and its downstream cells unlock.
+The executor asks before pushing and opens the PR (per **delivery-layout**'s branch conventions); after the rework + original work merge, `F4` → **done** and its downstream cells unlock.

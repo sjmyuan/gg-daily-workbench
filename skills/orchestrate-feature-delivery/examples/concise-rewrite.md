@@ -1,8 +1,9 @@
 # Example: Concise Rewrite of Index Prose
 
-**Scenario**: An orchestration round just ran for the wallet-migration epic. Agents reported; the index update drifted wordy — it narrates the process and buries facts in prose. The user asks for the updated index.
+**Scenario**: An orchestration round just ran for the wallet-migration epic. Agents reported; the index update drifted wordy — it narrates the process and buries facts in prose.
+The user asks for the updated index.
 
-**Applies**: **rewrite-concise**
+**Applies**: **produce-delivery-index** step 5 — the index **Finalise** checklist (move-then-shorten, re-scan)
 
 ## Input (wordy draft)
 
@@ -11,7 +12,9 @@
 It is important to note that we now have 5 features across 3 repos, and the critical path goes from F1 to F2 and F3, and then to F4, in order to complete the epic.
 
 ## Cell plan status
-I dispatched agent-A to plan shared-contracts/F1, and it was successful, so F1 is now planned. Agent-B reported that order-service/F2 is in-progress and it might possibly finish tomorrow, but in general we cannot merge it until F1's contract merges first. As mentioned above, api-gateway/F3 and order-service/F4 are still unplanned.
+I dispatched agent-A to plan shared-contracts/F1, and it was successful, so F1 is now planned.
+Agent-B reported that order-service/F2 is in-progress and it might possibly finish tomorrow, but in general we cannot merge it until F1's contract merges first.
+As mentioned above, api-gateway/F3 and order-service/F4 are still unplanned.
 ```
 
 ## Rewritten output

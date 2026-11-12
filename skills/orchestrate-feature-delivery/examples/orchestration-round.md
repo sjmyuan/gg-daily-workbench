@@ -48,19 +48,22 @@ F2 and F3 become develop-ready (F1 planned; contract-first allows planning in pa
 - **Planner B** → plan `order-service/F2`
 - **Planner C** → plan `api-gateway/F3`
 
-> **Delegation rule in action**: when any agent's plan or execution surfaces a solution-doc or ADR change, the orchestrator dispatches a **solution-doc-writer** / **adr-writer** agent for the update — it never edits artifacts itself.
+> **Delegation rule in action**: when any agent's plan or execution surfaces a solution-doc or ADR change, the orchestrator dispatches a **solution-doc-writer** / **adr-writer** agent.
+> It never edits artifacts itself.
 
 ## 5. Verify the gate
 
-F1's execution completes → the orchestrator applies **verify-cell**: a fresh **code-reviewer** gets the recorded commit range plus `plan.md`, `context.md`, the governing ADR, and the cell digest (done means, decided behaviour), and returns spec-compliance + trust verdicts. F1 advances to **verified** (see **examples/cell-verification-gate.md**). Never mark a cell **done** without this gate.
+F1's execution completes → the orchestrator applies **verify-cell**: a fresh **code-reviewer** gets the recorded range, `plan.md`, `context.md`, the governing ADR, and the cell digest.
+It returns spec-compliance and trust verdicts.
+F1 advances to **verified** (see **examples/cell-verification-gate.md**). Never mark a cell **done** without this gate.
 
 ## 6. Push approval + merge + update index
 
-Per **branch-and-push-conventions**, the executor pushes and opens the PR after user approval — F1 becomes **done** only after the PR merges with the recorded head commit.
+Per **delivery-layout**'s branch conventions, the executor pushes and opens the PR after user approval — F1 becomes **done** only after the PR merges with the recorded head commit.
 
 | Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|
-| shared-contracts/F1 | 1234-f1-contracts | #1 | a1b2c3d | **done** (verified, then PR merged) | code-reviewer-A | deliveries/wallet-migration/shared-contracts/wallet-contracts/ |
+| shared-contracts/F1 | 1234-f1-contracts | #1 | a1b2c3d | **done** | code-reviewer-A | deliveries/wallet-migration/shared-contracts/wallet-contracts/ |
 | order-service/F2 | 1234-f2-wallet | — | — | **planned** | planner-B | deliveries/wallet-migration/order-service/wallet-service/ |
 | api-gateway/F3 | 1234-f3-gateway | — | — | **planned** | planner-C | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
 | order-service/F4 | — | — | — | unplanned | — | — |
@@ -68,4 +71,5 @@ Per **branch-and-push-conventions**, the executor pushes and opens the PR after 
 
 ## 7. Next actions
 
-Verify F2 + F3 plan files, then execute both in parallel (develop-ready, no conflict); apply **verify-cell** to each on completion. With F1 **done**, F2 and F3 are now merge-ready. F4 cells remain wave-2 until F2 + F3 merge. All status changes landed in the index before the next round was dispatched.
+Verify F2 + F3 plan files, then execute both in parallel (develop-ready, no conflict); apply **verify-cell** to each on completion. With F1 **done**, F2 and F3 are now merge-ready.
+F4 cells remain wave-2 until F2 + F3 merge. All status changes landed in the index before the next round was dispatched.

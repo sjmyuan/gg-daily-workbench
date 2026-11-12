@@ -17,14 +17,14 @@ description: Classify, clarify, and generate TDD-based step-by-step plans for bu
 - User asks for code cleanup, restructuring, or quality improvements
 - User wants to reduce technical debt or improve code organization
 - User requests improvements to maintainability, readability, or performance without changing behavior
-- User wants to plan rework for an already-implemented feature — write a sibling `rework-<date>.md`, a focused rework triggered by orchestrate-feature-delivery's handle-post-implementation-issue flow
+- User wants to plan rework for an already-implemented or delivered feature — write a sibling `rework-<date>.md` for a focused, cell-scoped rework
 - An in-flight plan needs steps added, removed, or reordered before they run — amend the existing plan, never create a second one
 - User asks to revert, restore, copy, or keep code unchanged ("same as main") — plan a mechanical restore
 - A change already exists in another branch, commit, or PR and must be brought over as-is
 
 **Differentiation rules** (when multiple skills could apply):
 - **Multi-feature / multi-repo decomposition?** → Do NOT plan the whole breakdown here — apply **orchestrate-feature-delivery** first, then plan each feature × repo cell with this skill
-- **Rework for an already-delivered feature?** → Apply this skill per **rework-plan-convention** — write a sibling `rework-<date>.md`; orchestrate-feature-delivery triggers it; never rewrite the implemented plan
+- **Rework for an already-delivered feature?** → Apply this skill per **rework-plan-convention** — write a sibling `rework-<date>.md`; never rewrite the implemented plan
 - **Defect in a plan that is mid-execution?** → Apply **amend-plan** — adjust pending steps in the same `plan.md`; never create a second plan file
 - **Target state already exists in a ref, commit, or file?** → Plan a mechanical restore per **change-provenance**
 </when-to-use-this-skill>

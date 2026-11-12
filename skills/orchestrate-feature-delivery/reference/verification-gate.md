@@ -1,6 +1,8 @@
 # Verification Gate
 
-Backs the **verify-cell** capability and the `verified` status in `orchestrate-feature-delivery`. The gate is independent and scoped to what the executor does not provide: **spec compliance** and **trust verification**. Quality review stays with **execute-plan**'s `review-post-execution` — the gate never duplicates it.
+Backs the **verify-cell** capability and the `verified` status in `orchestrate-feature-delivery`.
+The gate is independent and scoped to what the executor does not provide: **spec compliance** and **trust verification**.
+Quality review stays with **execute-plan**'s `review-post-execution` — the gate never duplicates it.
 
 ## Division of labor
 
@@ -23,23 +25,32 @@ No separate files — the gate reuses the feature folder's existing docs (`<feat
 | **Findings** | dispatch prompt → **planner**; recorded in `rework-<date>.md` | orchestrator → planner | Gate findings handed straight to the planner — not stored in the index |
 
 - Seed the brief from the index per-cell brief plus `context.md` (which carries the cell charter: why, must-hold invariants, unknowns, done criteria, and pointers).
-- Carry the **cell digest** per **reference/dispatch-briefs.md**: done means, decided behaviour, accepted assumptions, the plan's step list, and any located `file:line`. The verifier gates the diff against the decision as stated — it never re-derives the spec from the spike artifacts or re-investigates the code.
+- Carry the **cell digest** per **reference/dispatch-briefs.md**: done means, decided behaviour, accepted assumptions, the plan's step list, and any located `file:line`.
+  The verifier gates the diff against the decision as stated — it never re-derives the spec from the spike artifacts or re-investigates the code.
 - Use **absolute paths** for the feature folder, `plan.md`, `context.md`, the governing ADR, and the solution-doc section; the verifier fetches the diff itself from the recorded range.
 - `context.md` is **planner- and executor-owned** — the orchestrator never writes it; the planner registers the rework in `context.md`.
 - The index tracks **status only** — no findings record.
 - The executor **overwrites** `## Execution` each round; deferred concerns persist in `## Open concerns`; no log is written — git/PR are the history.
-- The gate reads the latest handoff, the range, and `## Open concerns`. `context.md` stays a 40–60-line charter (ceiling 8,000 chars / 120).
+- The gate reads the latest handoff, the range, and `## Open concerns`. `context.md` stays within its charter budget — owned by **plan-development-task**.
 - A POC cell is verified exactly like any other cell. The gate checks the implementation; it never measures or judges the option — the user evaluates the MR.
-- The gate result travels **inline** to the fix-round planner — the unresolved findings and verdicts are not yet an artifact; once recorded in `rework-<date>.md`, later rounds pass that file by **path**.
+- The gate result travels **inline** to the fix-round planner — the unresolved findings are not yet an artifact.
+  Once recorded in `rework-<date>.md`, later rounds pass that file by **path**.
 
 ## Gate inputs
 
-Dispatch a **fresh code-reviewer** agent (**review-code**) with: the cell brief (index scope + spike references), the cell digest, the recorded `base7..head7`, `<feature-folder>/plan.md`, `context.md`, the governing ADR, the solution-doc section, and global constraints — the intake record is already in the brief, so the review starts from the decision, not from discovery. A POC cell needs no special input; the same brief, plan, context, ADR, and range apply. The code-reviewer fetches the diff from git over the recorded range — no diff file. Never the executor instance that produced the work.
+Dispatch a **fresh code-reviewer** agent (**review-code**) with: the cell brief (index scope + spike references), the cell digest, the recorded `base7..head7`,
+`<feature-folder>/plan.md`, `context.md`, the governing ADR, the solution-doc section, and global constraints.
+The intake record is already in the brief, so the review starts from the decision, not from discovery.
+A POC cell needs no special input; the same brief, plan, context, ADR, and range apply. The code-reviewer fetches the diff from git over the recorded range — no diff file.
+Never the executor instance that produced the work.
 
 ## Verdicts
 
 1. **Spec compliance** — Missing / Extra / Misunderstood against the brief and governing ADR.
-2. **Trust check** — verify the executor's claimed review outcome and gate receipt against the diff. A receipt matching an earlier head is stale → back to the executor. Do not re-run the suite locally; sample the claimed Blocker/Major fixes. The gate is local — never wait for or poll a remote pipeline, and never treat pipeline status as the receipt.
+2. **Trust check** — verify the executor's claimed review outcome and gate receipt against the diff.
+   A receipt matching an earlier head is stale → back to the executor.
+   Do not re-run the suite locally; sample the claimed Blocker/Major fixes.
+   The gate is local — never wait for or poll a remote pipeline, nor treat pipeline status as the receipt.
 
 A full quality re-review is out of scope — `review-post-execution` already ran it.
 
@@ -62,7 +73,9 @@ Never silently discard a finding.
 
 ## Epic integration review
 
-When all cells are **done**, run one cross-cell review + integration test pass over the epic. Triage the deferred Minors from each cell's `context.md` `## Open concerns`; surface residual load-bearing findings to the user. This is the epic-level analog of a whole-branch review — per-cell gates do not cover cross-cell interaction.
+When all cells are **done**, run one cross-cell review + integration test pass over the epic.
+Triage the deferred Minors from each cell's `context.md` `## Open concerns`; surface residual load-bearing findings to the user.
+This is the epic-level analog of a whole-branch review — per-cell gates do not cover cross-cell interaction.
 
 ## Dispatch discipline
 
@@ -75,7 +88,7 @@ When all cells are **done**, run one cross-cell review + integration test pass o
 - [ ] `plan.md` (or `rework-<date>.md`) shows every step ✅ or ⏭, with the **Exit gate** last.
 - [ ] `context.md` `## Execution` is the latest round only — return status, commit range, PR, one-line gate receipt, one-line review outcome.
 - [ ] The gate receipt matches `head7`, or a user-ratified waiver is recorded.
-- [ ] `context.md` is a 40–60-line charter (ceiling 8,000 chars / 120); deferred concerns are in `## Open concerns`; no raw log exists.
+- [ ] `context.md` is within the charter budget owned by **plan-development-task**; deferred concerns are in `## Open concerns`; no raw log exists.
 - [ ] code-reviewer fetched the diff over the recorded range.
 - [ ] code-reviewer is a fresh instance, not the executor.
 - [ ] Both verdicts present: spec compliance and trust check.

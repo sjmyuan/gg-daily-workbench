@@ -1,12 +1,15 @@
 # Example: ADR Change Mid-Delivery
 
-**Scenario**: The wallet-migration epic is mid-delivery — `order-service/F2` is **done**, `api-gateway/F3` is **planned**, `order-service/F4` is **in-progress**. Integration testing of F2 reveals the payment gateway does not reject atomically; the team revises `adr-wallet-01-payment-failure-handling.md` (compensating transactions). The user says: "The payment-failure decision changed — route what's affected."
+**Scenario**: The wallet-migration epic is mid-delivery — `order-service/F2` is **done**, `api-gateway/F3` is **planned**, `order-service/F4` is **in-progress**.
+Integration testing of F2 reveals the payment gateway does not reject atomically; the team revises `adr-wallet-01-payment-failure-handling.md` (compensating transactions).
+The user says: "The payment-failure decision changed — route what's affected."
 
 **Applies**: **handle-adr-change** → **update-delivery-index**
 
 ## 1. Confirm the change + list governed cells
 
-- Changed decision: `adr-wallet-01-payment-failure-handling.md` — revised to compensating transactions. Drift is signaled by the **adr-writer** agent's return; the ADR itself stays versionless (rewritten in place, per **adr-drift**).
+- Changed decision: `adr-wallet-01-payment-failure-handling.md` — revised to compensating transactions.
+- Drift is signaled by the **adr-writer** agent's return; the ADR stays versionless, rewritten in place.
 - Governed cells (index `ADRs:` per feature): F2 (done) · F3 (planned) · F4 (in-progress).
 
 ## 2. Route each cell by status
@@ -33,10 +36,12 @@ Rework mechanics — sibling file, append-only steps, execution — are walked t
 |---|---|---|---|---|---|---|
 | order-service/F2 | 1234-f2-wallet | #42 (merged) | e5f6a7b | done | — | deliveries/wallet-migration/order-service/wallet-service/ |
 | order-service/F2-r1 | — | — | — | unplanned | — | deliveries/wallet-migration/order-service/wallet-service/rework-2026-08-24.md |
-| api-gateway/F3 | 1234-f3-gateway | — | — | planned (re-planning against the revised ADR) | planner-A | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
-| order-service/F4 | 1234-f4 | — | d4e5f6a | in-progress (rework) | executor-B | deliveries/wallet-migration/order-service/order-wallet-integration/ |
+| api-gateway/F3 | 1234-f3-gateway | — | — | planned | planner-A | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
+| order-service/F4 | 1234-f4 | — | d4e5f6a | in-progress | executor-B | deliveries/wallet-migration/order-service/order-wallet-integration/ |
 
-Recorded per **update-delivery-index**: F3 stays **planned** with its re-plan note, F4 keeps **in-progress** (sibling rework file is the record), `F2-r1` added in a new wave — the Features table records `Rework of: F2`. Then **rewrite-concise**.
+Recorded per **update-delivery-index**: F3 stays **planned** (re-planned against the revised ADR), F4 keeps **in-progress** (its rework file is the record), and `F2-r1` is added in a new wave.
+The Features table records `Rework of: F2`.
+Then run **Finalise**.
 
 ## 5. Next actions
 

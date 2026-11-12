@@ -1,6 +1,7 @@
 # Example: Verifying a Completed Cell (Independent Gate)
 
-**Scenario**: `order-service/F2` finished execution. The executor reported `DONE_WITH_CONCERNS` with commit range `a1b2c3d..d4e5f6a`. The orchestrator must verify spec compliance and report trust before F2 advances to **verified**.
+**Scenario**: `order-service/F2` finished execution. The executor reported `DONE_WITH_CONCERNS` with commit range `a1b2c3d..d4e5f6a`.
+The orchestrator must verify spec compliance and report trust before F2 advances to **verified**.
 
 **Applies**: **verify-cell** → **update-delivery-index**
 
@@ -21,7 +22,8 @@
 
 ## 2. Dispatch a fresh code-reviewer
 
-- **code-reviewer A** (**review-code**) — inputs: `plan.md`, `context.md`, recorded range `a1b2c3d..d4e5f6a`, `adr-wallet-01-payment-failure-handling.md`, solution-doc §2 System Topology and §3 Interaction Details (wallet slice), global constraints, and the **cell digest** (done means, decided behaviour) — it gates the diff against the stated decision instead of re-deriving it.
+- **code-reviewer A** (**review-code**) — inputs: `plan.md`, `context.md`, range `a1b2c3d..d4e5f6a`, the governing ADR, solution-doc §2 + §3, global constraints, and the **cell digest**.
+  It gates the diff against the stated decision instead of re-deriving it.
 - code-reviewer A fetches the diff from git over the range — no diff file, and the output never enters the orchestrator's context.
 - Not executor-B, the agent that produced the work.
 
@@ -53,8 +55,15 @@
 | order-service/F2 | 1234-f2-wallet | — | d4e5f6a | **verified** | code-reviewer-A | deliveries/wallet-migration/order-service/wallet-service/ |
 
 - F2 awaits merge; with F1 **done**, F2 is now merge-ready.
-- The executor handles push approval and PR creation per **branch-and-push-conventions**; the orchestrator records the reference.
+- The executor handles push approval and PR creation per **delivery-layout**'s branch conventions; the orchestrator records the reference.
 
 ## 6. Fix-round variant
 
-Had the code-reviewer found a Missing requirement or a Critical finding, the orchestrator would dispatch the **planner** immediately with the findings to write a sibling `rework-<date>.md`, then the **executor** to run it, then a scoped re-review — capped at 2 rounds, escalating any recurring or unresolved finding to the user (see **reference/verification-gate.md**). The findings travel **inline** in the fix-round brief (not yet an artifact); the scoped re-review then receives them plus the new `rework-<date>.md` **path** to confirm each is resolved. The cell stays **in-progress**; the rework file is the record. A cell never reaches **verified** with an unresolved spec gap.
+Had the code-reviewer found a Missing requirement or a Critical finding, the orchestrator dispatches the **planner** with the findings to write a sibling `rework-<date>.md`.
+Then the **executor**, then a scoped re-review.
+The loop is capped at 2 rounds (see **reference/verification-gate.md**).
+
+- Findings travel **inline** in the fix-round brief; the scoped re-review receives them plus the new `rework-<date>.md` **path**.
+- The cell stays **in-progress**; the rework file is the record.
+- A cell never reaches **verified** with an unresolved spec gap.
+- A recurring or unresolved finding escalates to the user immediately.

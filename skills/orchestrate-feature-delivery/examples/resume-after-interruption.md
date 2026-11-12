@@ -25,10 +25,12 @@
 
 ## 3. Dispatch
 
-- **Executor A** → resume `order-service/F2` from step 4 (execute-plan) — works from plan.md + context.md (spike references embedded); reloads `adr-wallet-01-payment-failure-handling.md` / solution-doc from the index's Spike References if a step needs more detail
+- **Executor A** → resume `order-service/F2` from step 4 (execute-plan), working from `plan.md` + `context.md`.
+  Spike references are embedded; a step needing more detail reloads the ADR or solution doc from the index's Spike References.
 - **Planner B** → amend `api-gateway/F3`'s existing `plan.md` (insert the missing step, mark obsolete pending steps ⏭) — same path, no second plan
 - **Executor B** → resume F3 at the first ⏳ step after the amendment (execute-plan), same cell
-- **Agent C** (solution-doc-writer / adr-writer) → update solution-doc §2 System Topology and §3 Interaction Details (wallet slice) and `adr-wallet-01-payment-failure-handling.md` if F2's execution surfaces artifact changes — the orchestrator never edits them itself
+- **Agent C** (`solution-doc-writer` / `adr-writer`) → update solution-doc §2 System Topology and §3 Interaction Details (wallet slice), plus the ADR if F2's execution surfaces artifact changes.
+  The orchestrator never edits them itself.
 - Both F4 cells wait
 
 ## 4. Update index
@@ -36,10 +38,13 @@
 | Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|
 | shared-contracts/F1 | 1234-f1-contracts | #1 | a1b2c3d | done | executor-A | deliveries/wallet-migration/shared-contracts/wallet-contracts/ |
-| order-service/F2 | 1234-f2-wallet | — | d4e5f6a | in-progress (step 4 🔄) | executor-A | deliveries/wallet-migration/order-service/wallet-service/ |
-| api-gateway/F3 | 1234-f3-gateway | — | — | in-progress (amended; same plan) | planner-B → executor-B | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
-| order-service/F4 | — | — | — | unplanned (blocked-by F2/F3) | — | — |
-| api-gateway/F4 | — | — | — | unplanned (blocked-by F2/F3) | — | — |
+| order-service/F2 | 1234-f2-wallet | — | d4e5f6a | in-progress | executor-A | deliveries/wallet-migration/order-service/wallet-service/ |
+| api-gateway/F3 | 1234-f3-gateway | — | — | in-progress | planner-B | deliveries/wallet-migration/api-gateway/wallet-api-gateway/ |
+| order-service/F4 | — | — | — | blocked | — | — |
+| api-gateway/F4 | — | — | — | blocked | — | — |
+
+Both F4 cells are now recorded **blocked** — their dependency merges are pending, moving them off **unplanned**.
+F2 resumes at step 4; F3's execution follows the amendment under executor-B.
 
 ## 5. Reported to the user
 

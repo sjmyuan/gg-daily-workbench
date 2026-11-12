@@ -2,7 +2,8 @@
 
 Rules for POC cells in `orchestrate-feature-delivery` (**define-poc-scope**).
 
-A POC is a **temporary implementation** of one ADR option, delivered as an MR. The skill implements and verifies it; the **user** evaluates the MR and decides. There is no measurement step, report, or verdict.
+A POC is a **temporary implementation** of one ADR option, delivered as an MR. The skill implements and verifies it; the **user** evaluates the MR and decides.
+There is no measurement step, report, or verdict.
 
 ## POC cell metadata
 
@@ -12,12 +13,13 @@ A POC is a **temporary implementation** of one ADR option, delivered as an MR. T
 | `adr` | Governing ADR — recorded in the cell's `plan.md` header (`**ADR**`) |
 | `option` | The option under test — recorded in `plan.md` (`**Option**`) |
 | `success-criteria` | Optional — the user's review checklist, recorded in `plan.md` (`**Success criteria**`); never a gate or plan step |
-| `replaces` | Optional index metadata — existing feature/implementation superseded on adoption |
-| `compare` | Optional index metadata — sibling POC cells for other options (run in parallel) |
+| `Replaces` | Index column — the existing feature superseded on adoption; blank when none |
+| `Compare` | Index column — sibling POC cells for other options (run in parallel) |
 
 ## Status transitions
 
-`unplanned → planned → in-progress → verified → poc-ready → adopted | rejected` (plus `failed`/`blocked`). The independent verification gate (**verify-cell**) passes before **poc-ready**. A replaced feature is marked **superseded**.
+`unplanned → planned → in-progress → verified → poc-ready → adopted | rejected` (plus `failed`/`blocked`). The independent verification gate (**verify-cell**) passes before **poc-ready**.
+A replaced feature is marked **superseded**.
 
 - **poc-ready**: implementation complete, gate passed, MR open — awaits the user's review. No merge yet.
 - **adopted**: user/team chose the option → **POC-as-implementation** (merge the MR → done) or **POC-as-decision-input** (close the MR; dispatch the **poc-gated** feature).
@@ -25,7 +27,9 @@ A POC is a **temporary implementation** of one ADR option, delivered as an MR. T
 
 ## Decision gate
 
-The orchestrator never evaluates or decides. At **poc-ready**, the user reviews/tests the MR — optionally against `success-criteria` — and records **adopted** or **rejected** directly in the index, with a one-line rationale in `## Notes`. If the governing ADR changes while the POC is in flight, its criteria may be moot — surface the change to the user first (see **handle-adr-change**). Once recorded, the orchestrator reacts:
+The orchestrator never evaluates or decides.
+At **poc-ready**, the user reviews/tests the MR — optionally against `success-criteria` — and records **adopted** or **rejected** directly in the index, with a one-line rationale in `## Notes`.
+If the governing ADR changes while the POC is in flight, its criteria may be moot — surface the change to the user first (see **handle-adr-change**). Once recorded, the orchestrator reacts:
 
 1. Dispatch **adr-writer** (draft-adr) to record the outcome in the ADR.
 2. **Adopted** — apply the matching adoption model below.
@@ -34,7 +38,8 @@ The orchestrator never evaluates or decides. At **poc-ready**, the user reviews/
 
 ## Dispatch brief
 
-The POC planner and executor briefs carry the governing `adr` (path + decision digest), the `option` under test, and the optional `success-criteria` — the same fields the user reviews the MR against. Compare siblings carry their own option and each other's decision surface, never each other's code (see **reference/dispatch-briefs.md**).
+The POC planner and executor briefs carry the governing `adr` (path + decision digest), the `option` under test, and the optional `success-criteria` — the same fields the user reviews the MR against.
+Compare siblings carry their own option and each other's decision surface, never each other's code (see **reference/dispatch-briefs.md**).
 
 ## Adoption models
 

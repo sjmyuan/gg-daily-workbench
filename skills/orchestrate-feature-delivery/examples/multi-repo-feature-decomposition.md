@@ -1,6 +1,7 @@
 # Example: Multi-Repo Feature Decomposition
 
-**Scenario**: A wallet-migration spike just finished. Its solution doc defines ~18 target-state changes across `api-gateway`, `order-service`, and `shared-contracts`. The user asks: "Split the spiked work into features, align which can be done in parallel, and give me an index so agents can plan and execute in parallel."
+**Scenario**: A wallet-migration spike just finished. Its solution doc defines ~18 target-state changes across `api-gateway`, `order-service`, and `shared-contracts`.
+The user asks: "Split the spiked work into features, align which can be done in parallel, and give me an index so agents can plan and execute in parallel."
 
 **Applies**: **decompose-change-into-features** → **map-features-to-repos** → **order-feature-delivery** → **produce-delivery-index**
 
@@ -13,7 +14,8 @@
 
 ## 1. Decomposition (features)
 
-- **F1 wallet-contracts** — `shared-contracts` only: wallet DTOs + envelope schema. *Small but widely-shared (consumed by F2/F3/F4) → extracted as a leading feature so consumers develop against a contract.*
+- **F1 wallet-contracts** — `shared-contracts` only: wallet DTOs + envelope schema.
+*Small but widely-shared (consumed by F2/F3/F4) → extracted as a leading feature so consumers develop against a contract.*
 - **F2 wallet-service** — `order-service`: `WalletService` + `wallet_ledger` migration + tests.
 - **F3 wallet-api-gateway** — `api-gateway`: token endpoint + route.
 - **F4 order-wallet-integration** — `order-service` + `api-gateway`: order flow consumes wallet, retire `BankTransferService`.
@@ -38,7 +40,8 @@
 
 ## 4. Delivery index (initial state)
 
-Written to `deliveries/wallet-migration/index.md` (see **delivery-layout**); plan folders are `deliveries/wallet-migration/{repo}/{feature-name}/` — the feature folder uses the kebab-case name (e.g. `wallet-contracts`), never the ID (`F1`).
+Written to `deliveries/wallet-migration/index.md` (see **delivery-layout**); plan folders are `deliveries/wallet-migration/{repo}/{feature-name}/` — the feature folder uses the kebab-case name (e.g.
+`wallet-contracts`), never the ID (`F1`).
 
 ```markdown
 # Delivery Index: Wallet Migration
@@ -85,6 +88,8 @@ Artifact base: `~/work/my-work` · migrate wallet services out of the monolith
 - All 5 cells start **unplanned**; none is ready to execute before its plan file exists.
 ```
 
-Branches are assigned when a cell is planned and the head **Commit** is recorded on the first execution handoff (per **branch-and-push-conventions**) — both columns are empty here because all 5 cells start **unplanned**.
+Branches are assigned when a cell is planned, and the head **Commit** is recorded on the first execution handoff (**delivery-layout** branch conventions).
+Both columns are empty here because all 5 cells start **unplanned**.
 
-All 5 cells start **unplanned** → the epic is now driven by **orchestrate-delivery** (see **examples/orchestration-round.md**): wave 0 dispatches `shared-contracts/F1`, then F2/F3 in parallel, then F4.
+All 5 cells start **unplanned** → the epic is now driven by **orchestrate-delivery** (see **examples/orchestration-round.md**).
+Wave 0 dispatches `shared-contracts/F1`, then F2/F3 in parallel, then F4.

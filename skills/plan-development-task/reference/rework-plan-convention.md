@@ -2,8 +2,7 @@
 
 Used by **rework-plan-convention**, **export-plan**, and **amend-plan**.
 
-A rework (triggered by **orchestrate-feature-delivery**'s **handle-post-implementation-issue**) is
-a new sibling file `rework-<date>.md` in the feature folder — `plan.md` is the frozen original and
+A rework — an implemented or delivered cell needs a scoped change — is a new sibling file `rework-<date>.md` in the feature folder — `plan.md` is the frozen original and
 is never modified.
 
 - Applies only when executed or delivered behavior must change; pending-step defects are amended

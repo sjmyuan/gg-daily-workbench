@@ -14,7 +14,9 @@ deliveries/<epic-name>/               # one folder per epic (epic-name = spike n
 └── index.md                          # delivery index (single source of truth)
 ```
 
-- **Base root**: `deliveries/` is a sibling of the spike's `spikes/` under the artifact base the spike recorded (`scope.md` `Artifact root:`). Inherited, never re-resolved; only a missing record triggers `resolve-artifact-location`. The epic folder always carries a `deliveries/` path segment, anchoring the write boundary.
+- **Base root**: `deliveries/` is a sibling of the spike's `spikes/` under the artifact base the spike recorded (`scope.md` `Artifact root:`).
+  Inherited, never re-resolved; only a missing record triggers `resolve-artifact-location`.
+  The epic folder always carries a `deliveries/` path segment, anchoring the write boundary.
 - **Feature folders** are named by the feature's kebab-case name (e.g. `wallet-contracts`), never its ID (`F1`).
 - **context.md** carries the cell charter (why, must-hold, unknowns, done, pointers), the `## Reworks` manifest, and the latest handoff — never a copy of spike content.
 - **plan.md** is the original plan; each rework is a sibling `rework-<date>.md` (see **reference/rework-modes.md**), implemented steps never modified.
@@ -26,7 +28,8 @@ deliveries/<epic-name>/               # one folder per epic (epic-name = spike n
 
 Execution agents commit locally and small-step; they push and open the PR only after user confirmation.
 
-- One branch per repo per cell, named per the **repo's branch convention** (detect from existing branches / git config / team docs — or ask; never assume a prefix like `feat/`); created during the execution agent's **Prepare Environment** step.
+- One branch per repo per cell, named per the **repo's branch convention** (detect from existing branches / git config / team docs — or ask; never assume a prefix like `feat/`).
+  The branch is created during the execution agent's **Prepare Environment** step.
 - The executor opens the PR after push approval, following the target repo's convention; the index records the returned reference.
 - Pushing and PR creation are separate approvals.
 - The index records the branch up front, the PR reference (number/URL) and **head commit** from the executor handoff — pointers only; work history stays in `plan.md` / git.

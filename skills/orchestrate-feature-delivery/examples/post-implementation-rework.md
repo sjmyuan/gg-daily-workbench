@@ -1,6 +1,9 @@
 # Example: Reworking a Delivered Feature After a Post-Implementation Issue
 
-**Scenario**: `order-service/F2` is **done** (merged). Integration testing reveals a defect: the delivered checkout flow mishandles partial payment failures — the decision in `adr-wallet-01-payment-failure-handling.md` assumed the payment gateway rejects atomically, which is false. The user says: "We found an issue in the delivered checkout rework — investigate and fix it."
+**Scenario**: `order-service/F2` is **done** (merged).
+Integration testing reveals a defect: the delivered checkout flow mishandles partial payment failures.
+The decision in `adr-wallet-01-payment-failure-handling.md` assumed the payment gateway rejects atomically, which is false.
+The user says: "We found an issue in the delivered checkout rework — investigate and fix it."
 
 **Applies**: **handle-post-implementation-issue** → **update-delivery-index**
 
@@ -32,7 +35,8 @@
 | order-service/F2 | 1234-f2-wallet | #42 (merged) | e5f6a7b | done | — | deliveries/wallet-migration/order-service/wallet-service/ |
 | order-service/F2-r1 | — | — | — | unplanned | — | deliveries/wallet-migration/order-service/wallet-service/rework-2026-08-08.md |
 
-The index records state + pointers — F2's status stays **done**, its branch + merged PR stay recorded; the Features table records `Rework of: F2` for `F2-r1`, and the rework's spike focus and steps live in the sibling rework file (see §4).
+The index records state + pointers: F2 stays **done** with its branch and merged PR, and the Features table records `Rework of: F2` for `F2-r1`.
+The rework's spike focus and steps live in the sibling rework file (see §4).
 
 New **Wave 3**: `F2-r1` (after F2 merged). The rework traces to the revised `adr-wallet-01-payment-failure-handling.md`.
 
@@ -100,7 +104,8 @@ New **Wave 3**: `F2-r1` (after F2 merged). The rework traces to the revised `adr
 **Status**: ⏳ Pending
 ```
 
-The rework file carries only the delta — trigger, Scope Boundary, Done means, changed steps. It inherits the cell's charter (`Why`, `Must hold`, `Pointers`) by reference and never creates a second `context.md`.
+The rework file carries only the delta and opens per **plan-development-task**'s rework convention — mode, cell, branch, ADR focus, inherited gate, Scope Boundary, Done means, then the delta steps.
+It inherits the cell's charter (`Why`, `Must hold`, `Pointers`) by reference and never creates a second `context.md`.
 
 `context.md` gains a `## Reworks` manifest row:
 
@@ -120,4 +125,4 @@ Original `plan.md` steps 1–N remain byte-for-byte unchanged.
 ## 6. Next actions
 
 - After execution, update the index (`F2-r1` → in-progress → done after PR merge); the executor handles push approval and PR creation.
-- Pre-merge variant: when the cell is implemented but not yet pushed/merged (status **in-progress**), the rework is still **append-only** (implemented steps never modified) but stays on the same cell — see **examples/pre-merge-rework.md**.
+- Pre-merge variant: when the cell is implemented but not pushed or merged (status **in-progress**), the rework stays **append-only** on the same cell — see **examples/pre-merge-rework.md**.

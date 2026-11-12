@@ -1,6 +1,7 @@
 # Concise Writing Style
 
-Applies to all prose in `index.md` and the `context.md` charter. Tables carry the detail; prose states takeaways. Size caps live in **reference/delivery-index-format.md** (index) and **reference/verification-gate.md** (charter) — this file governs wording only.
+Applies to all prose in `index.md` and the `context.md` charter. Tables carry the detail; prose states takeaways.
+Size caps live in **reference/delivery-index-format.md** (index); the charter budget is owned by **plan-development-task**. This file governs wording only.
 
 ## Core rule: BLUF (Bottom Line Up Front)
 - The **Summary** line states the epic state in one line.
@@ -25,7 +26,7 @@ Applies to all prose in `index.md` and the `context.md` charter. Tables carry th
 - Anything comparative (features, waves, cell statuses, dependencies) is a table.
 - Prose's only job: one line summarizing the table.
 
-## Rewrite transforms (apply via rewrite-concise)
+## Rewrite transforms (applied at index Finalise)
 Move-then-shorten: move facts that belong in a table (status, wave, dependency, PR) there first, then shorten.
 Facts outrank brevity — never drop a fact to hit a cap; a 20-word sentence is fine if it is the shortest faithful form.
 
@@ -46,4 +47,4 @@ Facts outrank brevity — never drop a fact to hit a cap; a 20-word sentence is 
 
 ## The "So what?" test
 - Every sentence must add a new fact or answer "So what?" — otherwise delete it.
-- Run this check during **rewrite-concise**, before confirming.
+- Run this check during the index **Finalise** step, before confirming.

@@ -1,12 +1,15 @@
 # Investigation Triage (L0–L3)
 
-Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orchestrate-delivery**, and **resume-delivery**. Pick the cheapest rung that actually answers the question — the spike is the exception, not the default.
+Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orchestrate-delivery**, and **resume-delivery**.
+Pick the cheapest rung that actually answers the question — the spike is the exception, not the default.
 
 ## Ladder
 
+The **intake gate** runs before any rung: restate the ask, show every inference, and ask when anything was inferred (see **request-intake**).
+It costs nothing and ends only when nothing was inferred — a precondition, not a rung.
+
 | Rung | Answers | Test | Action | Dispatches | Artifacts |
 |---|---|---|---|---|---|
-| **L-1 Clarify** | What is actually being asked? | Any inference was needed to make the ask decidable | Restate, show the inference list, ask `clarify-request`'s intake gate with options plus a recommendation | 0 | none |
 | **L0 Answer** | What did we decide, why, or what is the status? | Index, `context.md`, plan/rework, ADR, findings/evidence, git log settle it | Read in-session and answer | 0 | none |
 | **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | One read-only `code-investigator` with the L1 brief below | 1 | none |
 | **L2 Decision** | Was exactly one ADR decision wrong or incomplete? | One decision changes; no new options | `adr-writer` revises in place; `solution-doc-writer` only if target state changes | 1–2 | ADR (+ solution section) |
@@ -16,7 +19,7 @@ Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orch
 
 The investigator receives everything L0 already established, so it never re-reads the record:
 
-- **Question** — one sentence, restated at L-1.
+- **Question** — one sentence, restated at intake.
 - **Intake record** — system (repo + module), scope (symbols/paths), depth (call-chain or C4 level), consumer (this answer).
 - **Record digest** — the artifacts read at L0 and what each established: index status, `context.md` charter, plan/rework state, ADR decision, findings claim IDs. Mark what the L0 pass ruled out.
 - **Known locations / already searched** — `file:line` already confirmed, queries already run, with outcomes.
@@ -26,8 +29,7 @@ A brief carrying all five **is** the intake gate's result: the investigator adop
 
 ## Escalation rules
 
-- L-1 is a precondition, not a rung: it costs nothing, runs before the ladder, and ends only when nothing was inferred.
-- An assumption L-1 accepts is recorded in the index cell brief, labeled `Assumption (user-accepted, unverified)` — never in `context.md`, which the planner and executor own.
+- An assumption the intake gate accepts is recorded in the index cell brief, labeled `Assumption (user-accepted, unverified)` — never in `context.md`, which the planner and executor own.
 - Stop at the first rung that answers; never skip a rung without naming why it failed.
 - State the question, rung, recorded evidence checked, and expected output before dispatching.
 - Escalate one rung per attempt — L0 → L1 → L2 → L3.
@@ -67,8 +69,8 @@ A brief carrying all five **is** the intake gate's result: the investigator adop
 | Anti-pattern | Why it costs | Instead |
 |---|---|---|
 | "Investigate" always means `spike-conductor` | A full conductor for a one-line answer | L0 or L1 |
-| Classifying an ambiguous report | The rung answers the wrong question | Restate expected versus actual first (L-1) |
-| Deciding "is this ambiguous?" first | The misreading is what L-1 exists to catch | Count the inferences: zero → proceed, else show the list |
+| Classifying an ambiguous report | The rung answers the wrong question | Restate expected versus actual first (intake) |
+| Deciding "is this ambiguous?" first | The misreading is what the intake gate exists to catch | Count the inferences: zero → proceed, else show the list |
 | Recording an assumption in `context.md` | Only the planner and executor write it | Record it in the index cell brief |
 | Treating artifact reads as doing the work | The mandate forbids delivery work, not reading | Answer from the record at L0 |
 | Running L2 through a full spike | Scope, findings pair, and solution rebuild for one ADR | `adr-writer` directly |

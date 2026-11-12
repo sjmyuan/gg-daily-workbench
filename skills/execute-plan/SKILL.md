@@ -1,6 +1,6 @@
 ---
 name: execute-plan
-description: Execute structured development plans with progress tracking, validation, and recovery. Use when executing, resuming, recovering, or reviewing an executed plan from plan-development-task, or a delivery cell / rework from orchestrate-feature-delivery.
+description: Execute structured development plans with progress tracking, validation, and recovery. Use when executing, resuming, recovering, or reviewing an executed plan, a delivery cell, or a rework plan.
 ---
 
 <when-to-use-this-skill>
@@ -10,9 +10,9 @@ description: Execute structured development plans with progress tracking, valida
 - All plan steps are complete and a post-execution review with the review-code skill is needed
 - A step has failed or is blocked and needs error recovery before proceeding
 - A pending step is defective and needs an amendment request instead of a new plan
-- A delivery index from orchestrate-feature-delivery points to planned feature × repo cells ready for execution
+- A delivery index points to planned feature × repo cells ready for execution
 - You need to execute a POC plan (a normal feature implementing one ADR option) and offer an MR for the user's review
-- You need to execute a rework plan (`rework-<date>.md`, triggered by orchestrate-feature-delivery) — run only the rework file's steps, never re-run the completed original steps
+- You need to execute a rework plan (`rework-<date>.md`) — run only the rework file's steps, never re-run the completed original steps
 - Do NOT load when no plan has been generated yet — if the user describes a problem without referencing an existing plan, let plan-development-task handle it first
 </when-to-use-this-skill>
 
@@ -116,7 +116,7 @@ All prose written into `plan.md` / `context.md` follows **reference/writing-styl
 </concise-writing>
 
 <orchestrator-handoff>
-When executed inside a dispatched agent (e.g., by **orchestrate-feature-delivery** via the **executor** agent), write the execution handoff to `context.md` `## Execution` — **latest round only, overwritten, never appended**. Fields: status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), `base7..head7` (base = branch point on first run, previous head for a rework), PR, the one-line gate receipt (`build=0 · test=N passed · lint=0`, or the ratified waiver), one-line `review-code` outcome, plus the amendment request when `NEEDS_CONTEXT`. Record the actual range; drift from the plan is not a failure. Deferred concerns go to `## Open concerns` (persistent, ≤5, delete when resolved), not the handoff. Never edit the planner-owned charter sections (Why, Must hold, Unknowns, Done means, Pointers) — report a needed change instead. Do not write a log; git/PR are the history. A POC's MR is the user's evaluation vehicle.
+When executed inside a dispatched agent (a parent orchestrator's executor), write the execution handoff to `context.md` `## Execution` — **latest round only, overwritten, never appended**. Fields: status (`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`), `base7..head7` (base = branch point on first run, previous head for a rework), PR, the one-line gate receipt (`build=0 · test=N passed · lint=0`, or the ratified waiver), one-line `review-code` outcome, plus the amendment request when `NEEDS_CONTEXT`. Record the actual range; drift from the plan is not a failure. Deferred concerns go to `## Open concerns` (persistent, ≤5, delete when resolved), not the handoff. Never edit the planner-owned charter sections (Why, Must hold, Unknowns, Done means, Pointers) — report a needed change instead. Do not write a log; git/PR are the history. A POC's MR is the user's evaluation vehicle.
 </orchestrator-handoff>
 
 <context-loading-guide>
@@ -295,7 +295,7 @@ Load only the example most relevant to the current execution scenario to minimiz
 <rule> **Before Any Push**: Apply **request-push-approval** — never push without user confirmation. </rule>
 <rule> **When the User Asks to Open a PR/MR**: Apply **create-pull-request** after the push — it resolves the PR conventions and gets approval on the full draft; never reuse a generic title or body. </rule>
 <rule> **When the Folder Contains a Rework Plan**: Apply **track-plan** and **execute-step** to the active `rework-<date>.md` steps only. </rule>
-<rule> **When Executed as a Dispatched Agent** (orchestrate-feature-delivery): Apply **orchestrator-handoff** — overwrite `context.md` `## Execution` with the latest handoff and update `## Open concerns` before reporting; never write a log — git/PR are the history. </rule>
+<rule> **When Executed as a Dispatched Agent**: Apply **orchestrator-handoff** — overwrite `context.md` `## Execution` with the latest handoff and update `## Open concerns` before reporting; never write a log — git/PR are the history. </rule>
 <rule> **When Writing or Updating `context.md`**: Apply the **charter budget** — a 40–60-line charter, planner-owned sections untouched, latest handoff only, resolved unknowns deleted; never append a round or a log. </rule>
 <rule> **When the Plan is a POC** (`**Type**: poc`): Run it as a normal plan; offer to open the MR for the user's review and never merge before the user's decision. </rule>
 <rule> **When a Step, Recovery Fix, or Review Fix Is Material Against the Boundary, or When Deviating from the Plan**: Apply **check-scope-boundary** — hold and ask with options; log incidental drift instead of stopping. </rule>

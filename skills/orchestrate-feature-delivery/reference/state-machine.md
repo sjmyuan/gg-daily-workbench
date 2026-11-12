@@ -1,6 +1,7 @@
 # Delivery State Machine
 
-Canonical statuses and transitions for every cell in `orchestrate-feature-delivery`. The delivery index is the single source of truth; **update-delivery-index** and **reference/orchestration-guide.md** apply these transitions.
+Canonical statuses and transitions for every cell in `orchestrate-feature-delivery`.
+The delivery index is the single source of truth; **update-delivery-index** and **reference/orchestration-guide.md** apply these transitions.
 
 ## Cell statuses
 
@@ -38,4 +39,5 @@ Canonical statuses and transitions for every cell in `orchestrate-feature-delive
 
 ## Gate waiver
 
-The independent gate is mandatory. A user may explicitly waive it for a specific cell; record the waiver (cell, reason, who) in the index before marking **done**. Never waive silently.
+The independent gate is mandatory. A user may explicitly waive it for a specific cell; record it as the index's `## Notes` waiver line — `<cell> — <reason> — <who, date>` — before marking **done**.
+Never waive silently.

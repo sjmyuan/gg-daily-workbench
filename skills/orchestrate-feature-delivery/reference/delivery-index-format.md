@@ -1,6 +1,9 @@
 # Delivery Index Format
 
-The index is written at **`<base>/deliveries/<epic-name>/index.md`** — one folder per epic, named after the spiked epic. Its base is the spike's recorded `scope.md` `Artifact root:` (inherited, never re-resolved; `resolve-artifact-location` only when the record is missing). Layout and naming: **reference/delivery-layout.md**. The spike's artifacts stay untouched in `spikes/<spike-name>/` and are referenced from **Spike References** — never copied. Map: **reference/artifact-map.md**.
+The index is written at **`<base>/deliveries/<epic-name>/index.md`** — one folder per epic, named after the spiked epic.
+Its base is the spike's recorded `scope.md` `Artifact root:` (inherited, never re-resolved; `resolve-artifact-location` only when the record is missing).
+Layout and naming: **reference/delivery-layout.md**. The spike's artifacts stay untouched in `spikes/<spike-name>/` and are referenced from **Spike References** — never copied.
+Map: **reference/artifact-map.md**.
 
 The index is the epic's **single source of truth for state**: the orchestrator reads it to decide next actions, updates it as agents report, and briefs every dispatch from it.
 
@@ -13,7 +16,7 @@ The index is a **board**, not a report: **≤8,000 chars / ≤120 lines**; style
 - Detail lives in `<repo>/<feature-name>/context.md`; history lives in git/PR.
 - Archive a fully done wave to `archive/index-wave-<n>.md`; leave one pointer row. Never delete.
 - No narrative sections ("Outcome", incident retellings): keep ≤5 lines in `## Notes`.
-- Measure `wc -l` and `wc -m` after every write; over budget blocks the update.
+- Measure `wc -l` and `wc -m` after every write; over budget blocks the update — see **Finalise**.
 
 ## Structure
 
@@ -39,7 +42,7 @@ Artifact base: `[<base>]` · [one-line epic scope]
 | F1 | wallet-contracts | 0 | repo-a | — | adr-wallet-01 | — | Wallet DTOs + envelope |
 | F2 | wallet-service | 1 | repo-b | F1 (merge-blocked) | adr-wallet-01 | — | Wallet service + ledger |
 
-POC feature rows add a `Type` column set to `poc` — see **POC cells** below.
+POC feature rows add `Type`, `Replaces`, and `Compare` columns — see **POC cells** below.
 
 ## Waves
 | Wave | Features | Merge gate |
@@ -57,11 +60,17 @@ POC feature rows add a `Type` column set to `poc` — see **POC cells** below.
 
 ## Notes
 - [current decision or blocker + date; ≤5 lines]
+- Waiver <cell> — <reason> — <who, date>
 ```
 
-Plan locations use the feature's **kebab-case name** (`wallet-contracts`), never its ID (`F1`). **Branch**, **PR**, and **Commit** are pointers, always tracked and easy to verify; work history stays in `plan.md` / git. The branch is recorded when the cell is planned, the head **Commit** from the first execution handoff, the **PR** reference once opened — `—` until then.
+A **gate waiver** is a `## Notes` line in that exact form; it is the only place the index records one.
 
-The index tracks **status only**: verification findings go straight to the planner/executor and the `rework-<date>.md` file is their record (see **verify-cell**). Statuses, transitions, and readiness predicates: **reference/state-machine.md**.
+Plan locations use the feature's **kebab-case name** (`wallet-contracts`), never its ID (`F1`).
+**Branch**, **PR**, and **Commit** are pointers, always tracked and easy to verify; work history stays in `plan.md` / git.
+The branch is recorded when the cell is planned, the head **Commit** from the first execution handoff, the **PR** reference once opened — `—` until then.
+
+The index tracks **status only**: verification findings go straight to the planner/executor and the `rework-<date>.md` file is their record (see **verify-cell**).
+Statuses, transitions, and readiness predicates: **reference/state-machine.md**.
 
 ## Per-cell scope brief
 
@@ -83,10 +92,25 @@ Each cell carries a brief that seeds **plan-development-task** and every later d
 
 ## POC cells
 
-Record `Type: poc` in the feature row and `replaces` / `compare` as index metadata; the cell's `plan.md` header carries `**Type**`, `**ADR**`, `**Option**`, and the optional `**Success criteria**`; `context.md` holds the ADR/solution pointers. Lifecycle, decision gate, and adoption: **reference/poc-lifecycle.md**.
+A POC feature row fills the three extra columns: `Type: poc`, `Replaces: <feature ID this one supersedes on adoption>`, and `Compare: <sibling POC IDs>` — both blank when unused.
+The cell's `plan.md` header carries `**Type**`, `**ADR**`, `**Option**`, and the optional `**Success criteria**`; `context.md` holds the ADR/solution pointers.
+Lifecycle, decision gate, and adoption: **reference/poc-lifecycle.md**.
 
 ## ADR changes and rework
 
-ADRs are **versionless** — drift comes from the **adr-writer** return or the user, never a file diff. Routing by status: **reference/orchestration-guide.md** (ADR changes); record each cell's re-route in the index before dispatching.
+ADRs are **versionless** — drift comes from the **adr-writer** return or the user, never a file diff.
+Routing by status: **reference/orchestration-guide.md** (ADR changes); record each cell's re-route in the index before dispatching.
 
-Rework adds no work history: **post-merge** (cell **done**) adds a rework feature `F2-r1` in a new wave with `**Rework of**: F2` and its plan location pointing at `rework-<date>.md`, original stays **done**; **pre-merge** (cell **in-progress**) changes no index row. Modes and lineage: **reference/rework-modes.md**.
+Rework adds no work history.
+**Post-merge** (cell **done**) adds a rework feature `F2-r1` in a new wave with `**Rework of**: F2` and its plan location pointing at `rework-<date>.md`; the original stays **done**.
+**Pre-merge** (cell **in-progress**) changes no index row.
+Modes and lineage: **reference/rework-modes.md**.
+
+## Finalise
+
+Run after every index write, and before presenting the index to the user.
+
+1. **Move-then-shorten** — move facts that belong in a table (status, wave, dependency, PR) into it, then shorten what remains per **reference/writing-style.md**.
+2. **Re-scan** to zero violations — no filler, hedge, narration, multi-claim bullet, or banned phrase; every sentence passes the So-what test.
+3. **Measure** — `wc -m` and `wc -l`; over the budget, collapse feature sections to rows and archive a completed wave to `archive/index-wave-<n>.md`, leaving one pointer row. Never delete.
+4. **Boundary check** — the own-writes snapshot delta per **reference/write-boundary-guide.md**; any path outside the delivery folder stops delivery.

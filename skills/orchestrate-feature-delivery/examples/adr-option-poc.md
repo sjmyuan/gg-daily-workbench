@@ -1,18 +1,21 @@
 # Example: Proving an ADR Option with Compare-POCs as MRs
 
-**Scenario**: `adr-caching-01-cache-option.md` weighs two cache options — **Redis** vs **in-process**. The team can't decide on drivers alone; the user says: "Implement each option as a temporary slice and open an MR. I'll try both and pick."
+**Scenario**: `adr-caching-01-cache-option.md` weighs two cache options — **Redis** vs **in-process**.
+The team can't decide on drivers alone; the user says: "Implement each option as a temporary slice and open an MR. I'll try both and pick."
 
 **Applies**: **define-poc-scope** → **orchestrate-delivery** → **update-delivery-index**
 
 ## 1. Flag + sequence POC cells
 
-Decomposition marks two POC cells (Wave 0, parallel) and one **poc-gated** implementation cell:
+Decomposition marks two POC cells (Wave 0, parallel) and one **poc-gated** implementation cell. The index feature rows carry `Type`, `Replaces`, and `Compare`:
 
-| Cell | Type | ADR / Option | Status |
-|---|---|---|---|
-| order-service/F5a | poc | adr-caching-01-cache-option.md · Redis | unplanned |
-| order-service/F5b | poc | adr-caching-01-cache-option.md · in-process | unplanned |
-| order-service/F5 | feature | — (poc-gated on F5a/F5b decision) | unplanned |
+| ID | Name | Wave | Repos | Dependencies | ADRs | Rework of | Type | Replaces | Compare | Goal |
+|---|---|---|---|---|---|---|---|---|---|---|
+| F5a | cache-redis | 0 | order-service | — | adr-caching-01 | — | poc | — | F5b | Redis option slice |
+| F5b | cache-in-process | 0 | order-service | — | adr-caching-01 | — | poc | — | F5a | In-process option slice |
+| F5 | cache-productionize | 1 | order-service | F5a (poc-gated) | adr-caching-01 | — | feature | — | — | Ship the chosen option |
+
+`Replaces` names the existing feature the POC's adoption supersedes — filled only when one exists.
 
 `success-criteria` is optional — the user may note "p99 < 50ms; ≤ 3 new ops deps" as a review checklist, but it is not a plan step or a gate.
 
@@ -36,7 +39,7 @@ The orchestrator never evaluates or decides.
 ## 4. Adopt + reject
 
 - Dispatch **adr-writer** (draft-adr): `adr-caching-01-cache-option.md` records the Redis decision + the user's rationale.
-- **F5a (POC-as-implementation)**: merge MR #51 → **done**. No `replaces` target, so nothing is **superseded**.
+- **F5a (POC-as-implementation)**: merge MR #51 → **done**. Its `Replaces` column is empty, so no cell is marked **superseded**.
 - **F5b**: close MR #52 → **rejected**; update index.
 - **F5 (poc-gated)**: now dispatchable with the chosen option — if the POC slice already ships the full feature, F5 may be dropped or reduced to the remaining scope.
 
