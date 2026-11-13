@@ -48,6 +48,7 @@ A path is a pointer, not knowledge. A sub-agent that receives only a path must o
 - **Must-write → inline**: when the sub-agent writes the info into its output (drivers → ADR, investigation results → evidence doc), pass it inline.
 - **Persist-once (optional)**: when unpersisted context is needed across several dispatches, persist it once and pass the path plus its digest.
 - A `[bracketed]` field is a **path** when an artifact holds it, a **digest** when the orchestrator concluded something from it, a **value** otherwise — never leave a required one empty; a `(re-dispatch only)` field is filled exactly when re-dispatching.
+- **Never the transcript**: a brief carries the accepted request, not its clarification — no gate state, inference list, or which round settled what. The sub-agent applies the request; it never adjudicates the dialogue.
 
 ## Known context in every brief
 
@@ -55,10 +56,10 @@ Everything the orchestrator already holds travels in the brief — a sub-agent n
 
 | Known-context item | Source | Mode |
 |---|---|---|
-| Spike goal, area problems | `scope.md` | Path + digest |
-| Gate record: restatement, inferences, admitted assumptions | `scope.md` (gate block + `## Accepted assumptions`) | Digest |
-| Area boundaries, out-of-scope siblings | scope dialog | Inline |
-| User-stated constraints, facts, decisions, rejected options | user dialog | Inline |
+| Accepted request: goal, boundaries, constraints, done criteria, area problems | `scope.md` | Path + digest |
+| Scope-owned premises (`A<n>`) | `scope.md` `## Accepted assumptions` | Digest |
+| Area boundaries, out-of-scope siblings | `scope.md` + scope dialog | Digest + inline |
+| Settled decisions and rejected options the artifacts must respect | user dialog | Inline |
 | Decision drivers, candidate options | user dialog | Inline |
 | Resolved paths: artifact root, spike folder, target repo root | `resolve-artifact-location`, work dialog | Inline |
 | Files, symbols, and `file:line` already located | orchestrator's own reads, prior receipts | Digest |
@@ -87,7 +88,7 @@ A dispatched agent's skill may run its own intake gate and refuse to search on a
 | **Depth** | The evidence depth required — C4 level, call-chain depth, or "current state to `file:line`" |
 | **Consumer** | What the result feeds — the area's findings pair, an ADR's options, the solution doc |
 
-- A brief carrying the intake record **is** the gate result: the sub-agent adopts it, asks nothing, and explores only what it leaves open.
+- A brief carrying the intake record satisfies the callee's intake gate: the sub-agent adopts it, asks nothing, and explores only what it leaves open.
 - An unfilled field becomes the sub-agent's guess and an extra exploration pass — fill all four, or state why one is unknowable.
 
 ## Area-session contract

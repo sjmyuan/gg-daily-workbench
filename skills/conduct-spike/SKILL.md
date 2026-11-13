@@ -35,11 +35,11 @@ Check after every write: **reference/write-boundary-guide.md**.
 No `scope.md` or findings compilation until `clarify-request`'s intake gate passes — on **every** entry path: new, continued, user-supplied, uncertainty.
 Apply its **intake-gate** and **assumption-admission**; do not restate them.
 The gate is the only scope-acceptance pause.
-Fold the proposed area/problem split and each problem's driver question into its one confirmation, then record the outcome in `scope.md`.
+Fold the proposed area/problem split and each problem's driver question into its one confirmation, then record the **accepted request** in `scope.md` — goal, boundaries, constraints, done criteria, split, drivers — not the gate's transcript, which stays in the session.
 User-supplied notes that arrive after acceptance are gated before they are compiled. Procedure: **reference/define-spike-scope-procedure.md**.
 </scope-acceptance-gate>
 <scope-map>
-The spike's **area → problem map** and status in `scope.md`; each problem maps to one ADR with its `Area:` tag.
+The spike's accepted request, **area → problem map**, and status in `scope.md`; each problem maps to one ADR with its `Area:` tag.
 Problem (stored): `investigating` → `deciding` → `done`.
 Area (derived, never stored): `preparing` → `spiking` → `done`.
 A `done` problem has its ADR; an area is never `done` with an open problem. Model: **reference/scope-map-guide.md**.

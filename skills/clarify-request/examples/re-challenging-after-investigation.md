@@ -39,7 +39,7 @@ Default if unanswered: none — a constraint belongs to the user, never to the a
 | Accepted assumptions | None — the corrected constraint is user-stated |
 
 Restated constraint: "No new infrastructure; the existing awaited queue may be changed".
-Artifact update: `scope.md` — the five fields with the false constraint rewritten in place; git holds the history.
+Artifact update: `scope.md` receives only the corrected constraint — rewritten in place under the accepted request; git holds the history, and the record itself stays in the session.
 Unaffected claims: not re-opened — round 1 answers stand.
 Rounds used: 2, within the gate's budget.
 

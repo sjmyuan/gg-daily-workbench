@@ -10,10 +10,22 @@
 
 ## Point 1 — After define-spike-scope
 
-Goal: replace the in-process session store with a shared, scalable store.
-Problems `investigating` (no ADR); the derived area status is `preparing` (no findings pair).
+The document records the accepted request as fact; the clarification that produced it stays in the session. Problems `investigating` (no ADR); the derived area status is `preparing` (no findings pair).
 
 ```markdown
+# Spike Scope: Session Store Replacement
+**Artifact root:** /work/acme
+
+**Goal:** Decide how to replace the in-process session store with a shared, scalable one.
+
+## Accepted request
+- Boundaries: in — session read/write paths · out — auth and cookie policy
+- Constraints: no user-visible logout on deploy · one region for now
+- Done criteria: one adopted ADR per problem, mirrored in the solution doc
+
+## Accepted assumptions
+- A1 — Assumption (user-accepted, unverified): sessions may expire on deploy — moves the done criteria
+
 ## Area: Session storage
 **Findings**: —
 - `investigating` How to choose the session store? → (no ADR)
@@ -69,3 +81,4 @@ A later measurement shows the chosen store's failover exceeds the SLA → **sync
 - A `done` problem always has its ADR; an area is never `done` with an open problem.
 - Area status is derived from its problems and findings-pair link — never stored.
 - Statuses track saved artifacts, not in-flight dispatches.
+- `scope.md` records the accepted request as fact; the gate's questions, inferences, and round answers stay in the session.

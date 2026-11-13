@@ -57,6 +57,7 @@ Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with 
 
 - The gate runs in the **calling session** — user dialogue is single-threaded.
 - The gate returns the **acceptance record** — restatement, inferences, questions asked, gate state, assumptions. A caller holding no record did not run the gate.
+- The record stays in the session; the caller persists its **outcome** — the settled request and the labeled assumptions — never the dialogue that produced them.
 - A dispatched sub-agent returns open questions upward; it never asks the user.
 - The gate **replaces** an existing confirmation step; never add a second checkpoint.
 
@@ -72,6 +73,7 @@ Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with 
 | A **private** restatement — read, assume, start work | Show the inference list and get it confirmed |
 | Presenting push-back as clarification | Label it **push back** |
 | Keeping assumptions in conversation | Write them into the owning artifact |
+| Copying the gate transcript into the scope, plan, or brief | Persist the settled request and the labeled assumptions only |
 | Recording a code fact as an assumption | Investigate it; record a Gap where the evidence lives |
 | Keeping every inference as an assumption | Admit only decision-changing premises; show the rest |
 

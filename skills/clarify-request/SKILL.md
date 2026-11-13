@@ -51,9 +51,10 @@ Protocol: **reference/request-clarification-protocol.md**.
 </intake-gate>
 
 <acceptance-record>
-The caller owns the record and writes it into the artifact it already maintains — a spike scope, a plan charter, a delivery index brief, an investigation answer, or the session itself.
-Never a second checkpoint, never a new doc.
+The caller owns the record. It lives in the **session**: the gate state, restatement, inference list, the questions asked, and what each round settled are the clarification process, never artifact content. The artifact receives only the **outcome** — the settled request (goal, boundaries, constraints, done criteria) and each labeled assumption — in the artifact the caller already maintains: a spike scope, a plan charter, a delivery index brief, an investigation answer.
+Never a second checkpoint, never a new doc, never a copy of the dialogue.
 
+- Findings, ADRs, plans, and solution docs are generated from the settled request, not from the transcript that produced it.
 - Label every admitted default `Assumption (user-accepted, unverified)` and carry it until evidence or the user settles it.
 - A record with a gate state but no inference list is evidence the gate did not run.
 - Promote an assumption to fact only with evidence, cited at its source.
@@ -103,14 +104,14 @@ Re-open the affected claims only, narrower than round 1, and say what changed.
 5. Apply the reference's materiality test and question format — drop every finding a different answer would not change.
 6. Ask the surviving questions as one batch, ordered by impact, within the gate's question budget.
 7. Record each answer; re-ask only what is still undecidable, within the gate's round budget.
-8. Set the gate state per **intake-gate** and hand the record to the caller, which writes it per **acceptance-record**.
+8. Set the gate state per **intake-gate** and hand the record to the caller, which keeps it in the session and persists only its outcome per **acceptance-record**.
 9. Validate:
    - The inference list was shown before any work started.
    - Every question carried options plus an evidence-backed recommendation, and a default only when non-blocking.
    - No material finding was dropped unrecorded.
    - Each decision-changing default is labeled `Assumption (user-accepted, unverified)` and none is obtainable from code.
    - The batch meets the reference's question quality bar.
-   - The record names the artifact that owns it.
+   - The record names where it lives and which artifact receives its outcome.
 </clarify-the-ask>
 
 <re-challenge-the-ask>

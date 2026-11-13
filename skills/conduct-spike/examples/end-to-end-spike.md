@@ -23,11 +23,12 @@
 Recommendation: B — the request names three payment types with different scaling needs.
 Default if unanswered: none — blocking.
 
-User: "Q1: B." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, unverified)`: the spike ends at documents, not code — recorded in `scope.md` `## Accepted assumptions` because it changes the done criteria. The other inferences stay in the gate list, unpersisted: (i) is an ADR driver and (ii) was settled by Q1.
+User: "Q1: B." → `ACCEPTED-WITH-ASSUMPTIONS`; the gate record stays in the session. Only A1 — the spike ends at documents, not code — is persisted in `scope.md` `## Accepted assumptions`, because it moves the done criteria; (i) is an ADR driver and (ii) was settled by Q1.
 
 ### Assistant Output (after the gate)
 
 **Spike Goal**: Determine the target architecture for decomposing the payment monolith into independently deployable services, selecting technologies, and defining a migration strategy.
+`scope.md` records in/out, constraints (99.9% SLA), and done criteria (one adopted ADR per problem).
 
 **Areas and problems** (each problem → one ADR, recorded in `scope.md`):
 

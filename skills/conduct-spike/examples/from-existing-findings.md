@@ -16,7 +16,7 @@
   A) Treat them as 💭 Assumption, formalize and flag them
   B) Verify both metrics against production before drafting
 Recommendation: A — the evidence doc records confidence per claim, so unverified numbers stay Assumptions. Default if unanswered: none.
-User: "A — from last month's load test." → `ACCEPTED-WITH-ASSUMPTIONS`, A1 `Assumption (user-accepted, unverified)`: the load-test figures are representative.
+User: "A — from last month's load test." → `ACCEPTED-WITH-ASSUMPTIONS`, A1 `Assumption (user-accepted, unverified)`: the load-test figures are representative — recorded in `scope.md` `## Accepted assumptions` because it keeps a verification problem out of the split.
 
 ### Assistant Output
 

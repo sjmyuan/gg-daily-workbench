@@ -16,8 +16,8 @@ You are the `spike-area-analyst`. Deliver for **[area]** in one session and one 
 - Area: **[name]** — **[description]**
 - Problems **(path)**: `scope.md` — this area's "How to …?" rows; one ADR each
 - Boundaries **(inline)**: **[modules/files/teams inside; what is out of scope — name the sibling areas]**
-- Accepted assumptions **(digest, from `scope.md#accepted-assumptions`)**: **[A<N> → assumed value]** — carry each into the ledger as 💭 Assumption and into any decision that depends on it
-- User-stated context **(inline)**: **[business context, constraints, facts, decisions, and domain details the user already gave]**
+- Accepted assumptions **(digest, from `scope.md#accepted-assumptions`)**: **[A<N> → assumed value]** — a premise the ADRs may rely on; one this area's evidence can settle is recorded as a Gap, never carried as a claim
+- Business context **(inline)**: **[the outcome the user wants and the domain facts the artifacts may rely on — not who said what, or in which round]**
 - Mode: **brownfield** (trace code) | **greenfield** (research approaches + comparable systems; see **greenfield-scenarios**)
 - Cross-area constraints **(path + digest; re-dispatch or after a sibling returns)**: sibling pairs `docs/findings-*.md` + `docs/evidence-*.md`, decided sibling ADRs — **[each constraint in one line]**
 
@@ -57,7 +57,7 @@ One return, after the ADRs. Every receipt also carries the area and the artifact
 - Keep the artifact boundary: the human findings doc is current-state only; the ADR is decision only.
 - Never return early — the pair and the ADRs leave together, written; a re-dispatch continues from them; a receipt is supplementary.
 - Never add claims beyond the evidence; never alter a **Verified** verdict or an evidence `file:line` without new evidence.
-- Never re-derive scope, re-ask, or search for your inputs — this brief is the gate result.
+- Never re-derive scope, re-ask, or search for your inputs — this brief carries the accepted request.
 - Complete the pair before drafting any ADR — the evidence doc is what every decision cites.
 
 ## 7. Report back

@@ -65,8 +65,7 @@ Default if unanswered: A.
 | Gate state | `ACCEPTED-WITH-ASSUMPTIONS` |
 | Accepted assumptions | A1 `Assumption (user-accepted, unverified)` — target is p95 first-token under 300ms, per the Q3 default |
 
-Handed to the calling skill: goal = reduce first-token latency on web checkout; scope = one repo, one area.
-Recorded in: `scope.md` — the five fields, then `## Accepted assumptions`.
+Handed to the calling skill: the record stays in the session; `scope.md` receives only the outcome — goal = reduce first-token latency on web checkout, boundaries = one repo and one area, and A1 under `## Accepted assumptions`.
 Round 2: not due — no re-challenge trigger.
 
 Validation:
