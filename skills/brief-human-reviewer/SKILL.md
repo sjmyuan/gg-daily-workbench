@@ -1,6 +1,6 @@
 ---
 name: brief-human-reviewer
-description: Brief a human before they confirm AI-produced artifacts: an orientation route into the code, a stated prediction, a falsifiable self-check, and a recorded skip. Use when presenting artifacts for confirmation, pacing a lagging reviewer, or briefing a new code area. Not for intake gates or one-line confirmations.
+description: Brief a human before they confirm AI-produced artifacts; an orientation route into the code, a stated prediction, a falsifiable self-check, and a recorded skip. Use when presenting artifacts for confirmation, pacing a lagging reviewer, or briefing a new code area. Not for intake gates or one-line confirmations.
 ---
 
 <when-to-use-this-skill>
