@@ -8,6 +8,6 @@ Findings docs are **one pair per area, always** — `docs/findings-<area>.md` (h
 2. Verify a pair this step produced at **single pass + fidelity**, and its same-return ADRs at the **full loop** on each load-bearing decision. A pair already verified by **dispatch-area-session** needs no second evidence pass — validate it in step 3.
 3. Validate each pair per **reference/findings-document-guide.md** §Validation (pair) — structure, ledger completeness, and cross-consistency; never vague references, never inference presented as evidence.
 4. Cross-reference between areas (2+ areas) per the same validation list.
-5. Ask: "Does this accurately capture the current state? Anything to add, correct, or remove?"
+5. Brief before the question per `brief-human-reviewer` — the route the area session returned, the prediction, the self-check — then ask: "Does this accurately capture the current state? Anything to add, correct, or remove?" Record `reviewed` or `waived` for the area per **scope-map**.
 6. When the answer changes a claim a returned ADR relies on, re-dispatch that area session to revise the ADR in place before the pair is confirmed.
 7. Confirm each pair is written to `<spike-folder>/docs/findings-<area>.md` + `<spike-folder>/docs/evidence-<area>.md` per **spike-artifact-layout**, then set the area's pair link in `scope.md` — the area's derived status becomes `spiking` per **scope-map**. The evidence doc is the **current-state evidence home** — update the pair in place on new evidence, no round/version tracking.

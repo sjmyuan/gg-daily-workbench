@@ -14,3 +14,4 @@ Used by **facilitate-session** to match session depth to idea maturity and user 
 - In focused mode, ask fewer questions and merge adjacent phases.
 - Never force the full sequence on a clear idea, and never rush a fuzzy one.
 - The three checkpoints are the idea statement, the priorities, and the final plan.
+- Every checkpoint presents an artifact; brief per `brief-human-reviewer` before its question. Depth follows the mode — focused mode may drop the route, never the prediction or the self-check.

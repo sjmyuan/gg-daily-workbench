@@ -1,6 +1,8 @@
 # Run-Spike-Workflow Procedure
 
-Full procedure for the `run-spike-workflow` capability — loaded on demand when a spike investigation starts from scratch. User checkpoints: the scope gate, the findings confirmation, the ADR review, and the solution-doc approval; never add a pause between an area session's internal phases. Run the own-writes write-boundary check after every write capability per **reference/write-boundary-guide.md**; stop and report on newly written out-of-folder paths.
+Full procedure for the `run-spike-workflow` capability — loaded on demand when a spike investigation starts from scratch. User checkpoints: the scope gate, then three artifact reviews — findings confirmation, ADR review, solution-doc approval — each briefed per `brief-human-reviewer` before its question; never add a pause between an area session's internal phases. Run the own-writes write-boundary check after every write capability per **reference/write-boundary-guide.md**; stop and report on newly written out-of-folder paths.
+
+The scope gate is briefed by nothing: it accepts the request, and `brief-human-reviewer` serves the reviews that follow.
 
 1. Apply **define-spike-scope** — its single gate confirmation also accepts or amends the proposed areas, problems, and drivers.
 2. Do not proceed until the gate is `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS` and `scope.md` records the scope.

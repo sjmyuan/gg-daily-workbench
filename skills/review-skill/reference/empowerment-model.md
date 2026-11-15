@@ -32,7 +32,7 @@ Ask of every step: would a competent expert need this instruction?
 | A judgment capability with no exemplar of excellent, or of plausible-but-wrong, output | 🟡 Minor |
 | A non-obvious constraint with no reason, or the reason repeated in every step | 🟢 Nit |
 | No delegation boundary where the agent must make judgment calls | 🟢 Nit |
-| A judgment skill with no behavioral evidence claimed and none on record | 🟢 Nit — recommend the author run the baseline test |
+| A judgment skill with no behavioral evidence claimed and none on record | 🟡 Minor — per **behavioral-evidence**; never 🟢, since unproven is the default state of every new skill |
 
 ## Reading the balance
 

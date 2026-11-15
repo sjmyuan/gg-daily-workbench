@@ -9,7 +9,11 @@ Repo `acme/order-service`, remote `git@gitlab.com:acme/order-service.git`. Branc
 
 ## Output
 
-Applied **publish-pull-request** step 2 — approval block:
+Applied **publish-pull-request** step 2 — brief first, then the approval block. Route over the riskiest hunk and the draft claims it supports:
+
+> **Predict first**: the body says retries are bounded for idempotent calls only — does `retry.ts` carry that check, or does the bound rely on the caller? — my read: caller, which the body does not say.
+>
+> **Check yourself** (<2 min): search `maxRetries` under `src/gateway` → expect the bound inside `retry.ts`; wrong if only callers set it, because the body implies the module owns it.
 
 ```
 Base:      develop

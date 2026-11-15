@@ -46,6 +46,7 @@ You are the `spike-area-analyst`. Deliver for **[area]** in one session and one 
 |---|---|
 | Pair | Pair paths, the topic list (for the orchestrator to confirm), ledger claim count, pair validation result |
 | ADRs | ADR paths, per-problem chosen option + one-line rationale, cited evidence IDs, assumption-dependent decisions |
+| Route | 3–5 `<path>:<from>-<to> — <mechanism> — notice <what to notice>` stops for the reviewer, in dependency order, drawn from the code just read; plus one falsifiable claim with its expected result and wrong-if |
 | Flags | Gaps and inconsistencies; cross-area conflicts; new facts the pair lacks; a split request when the area exceeded one pass |
 
 One return, after the ADRs. Every receipt also carries the area and the artifact paths, so a re-dispatch resumes from the artifacts without re-reading the conversation.
@@ -64,4 +65,5 @@ One return, after the ADRs. Every receipt also carries the area and the artifact
 - Flag every **Gap** / **Inconsistency** the pair does not already record, and anything contradicting another area.
 - Flag every decision resting on an accepted assumption, and every driver you had to infer.
 - Return the search log so the next area inherits it.
+- Return the reviewer route with the pair — the orchestrator briefs the confirmation and cannot re-derive a route without re-reading the code.
 - Request a split when the area cannot be covered in one pass; do not thin the evidence.

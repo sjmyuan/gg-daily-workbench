@@ -33,12 +33,6 @@ description: Assist blog writing: gather ideas, fill gaps, and keep one document
 
 | Load when | Provides | File |
 |---|---|---|
-| Marker blocks or update loop unclear | Document-as-single-source convention | [reference/document-as-single-source.md](reference/document-as-single-source.md) |
-| Choosing a style or structuring | Four styles with structure and fit | [reference/writing-styles.md](reference/writing-styles.md) |
-| Composing, reviewing, refining prose | Blacklist, rhythm, chatty-voice section, delivery gate | [reference/human-voice.md](reference/human-voice.md) |
-| A draft reads terse or summary-like | Deletion test, density floors, expansion moves, colloquial ladder | [reference/prose-density.md](reference/prose-density.md) |
-| Matching a personal voice, or a sample is shared | Exemplars, the author's samples, the exemption procedure | [reference/style-exemplars.md](reference/style-exemplars.md) |
-| Suggesting or generating an illustration | Image types, placement, naming, SVG rules | [reference/illustration-standards.md](reference/illustration-standards.md) |
 | User pastes content or shares scattered ideas | Walkthrough of ingest, collect, and gaps | [examples/ingest-and-collect.md](examples/ingest-and-collect.md) |
 | User asks to draft, review, or refine an article | Walkthrough of compose, reference, review, refine | [examples/compose-and-review.md](examples/compose-and-review.md) |
 | User asks to generate an illustration | Walkthrough of SVG generation and placement | [examples/generate-illustrations.md](examples/generate-illustrations.md) |

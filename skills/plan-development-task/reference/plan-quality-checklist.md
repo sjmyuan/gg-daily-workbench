@@ -90,3 +90,12 @@ Before presenting a development plan to the user, verify all items below.
 - [ ] Prose follows concise writing (see **concise-writing**): one objective per step sentence, one claim per scope-boundary bullet, no banned phrases
 - [ ] `context.md` is a 40–60-line charter (ceiling 8,000 chars / 120), passes the admission test, duplicates no `plan.md` fact, and holds no pre-flight evidence or log content (see **doc-budgets**)
 - [ ] A POC plan is a normal TDD feature plan with **Type** `poc` + ADR/option metadata; no measurement or evaluation step; success criteria are optional header notes
+
+## Presenting the plan
+
+A plan is the largest artifact a user approves before any code exists, and every step depends on the one above it. Per `brief-human-reviewer`:
+
+- Give a route over the 2–3 steps that carry the risk — not a walk through all of them.
+- Ask the user which step they expect to break first, then reveal the plan's own answer.
+- Offer one self-check they can falsify before approving: the `Files` list of the riskiest step, or the `Gate` line's evidence.
+- Never open the presentation with the full `## Steps` list.

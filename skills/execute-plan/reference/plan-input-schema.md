@@ -10,4 +10,4 @@ The plan may be provided as:
 - A plan summarized in the conversation by plan-development-task
 - A plan described ad-hoc by the user
 
-This skill is responsible for materializing the plan into `plan.md` with the **step-tracking-format** if it does not already exist as a file.
+This skill is responsible for materializing the plan into `plan.md` with the **step-tracking-format.md** format if it does not already exist as a file.

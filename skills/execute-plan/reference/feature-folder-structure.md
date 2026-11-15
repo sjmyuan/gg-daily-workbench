@@ -6,7 +6,7 @@ Each feature implementation lives in its own folder with two core docs:
 {location}/{repo}/{feature-name}/
 ├── plan.md                  # Step-by-step execution plan with live status tracking
 ├── context.md               # Charter + latest handoff (40–60 lines; 8k ceiling)
-└── rework-<date>.md         # Sibling rework plan (optional — see **rework-plan-execution**)
+└── rework-<date>.md         # Sibling rework plan (optional — see **execution-modes.md**)
 ```
 
 No `evidence-raw.md`: execution proof is the step's `Validation` line plus its commit;
@@ -20,6 +20,6 @@ history is git/PR.
 | Plan file | Contains the numbered step list with status emojis, updated in real-time as execution progresses. Serves as the live execution dashboard. |
 | Context file | The **charter**: outcome, why, must-hold invariants, unknowns, done criteria, pointers, `## Open concerns`, and `## State`. Target **40–60 lines**, hard ceiling **8,000 chars / 120 lines**; never restates `plan.md` decisions or pre-flight evidence. The planner owns the charter sections; the executor owns only `## Open concerns` / `## State` / `## Execution`. On hand-off the executor overwrites `## Execution` with the latest status, `base7..head7`, PR, one-line gate receipt, and one-line review outcome. Never appends a round. |
 | No log file | Do not create `evidence-raw.md`. A step's proof is its `Validation` line plus its commit; history is git/PR. A decision-changing fact goes to the spike evidence doc; a deferred concern goes to `## Open concerns`. |
-| Rework files | Each rework is a sibling `rework-<date>.md` in the same folder — `plan.md` stays the frozen original; the active rework file is found via the `## Reworks` manifest in `context.md` (see **rework-plan-execution**). |
+| Rework files | Each rework is a sibling `rework-<date>.md` in the same folder — `plan.md` stays the frozen original; the active rework file is found via the `## Reworks` manifest in `context.md` (see **execution-modes.md**). |
 | POC | Executes like any feature. Its MR is the user's evaluation vehicle; no measurement step, report, or verdict. |
 | Permanent record | `plan.md` and `context.md` are kept after execution completes — never deleted. |

@@ -51,7 +51,7 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 1. Ask the user to describe the decision in 2–3 sentences.
 2. If vague, ask follow-ups to clarify scope, stakeholders, and systems involved.
 3. Resolve ambiguous terms and implicit assumptions.
-4. Restate the problem as a structured summary and ask: "Does this accurately capture the problem?"
+4. Restate the problem as a structured summary and ask: "Does this accurately capture the problem?" — brief per `brief-human-reviewer` first when the summary carries claims the user cannot check from the conversation.
 5. Iterate until the user confirms.
 6. Draw the context diagram per **reference/diagram-contract.md** — C4 context carrying volumes, protocols, and external dependencies, zooming to a flowchart or sequence where the decision turns on one flow.
 </define-problem>
@@ -100,7 +100,7 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 5. Draw the target-state C4/flowchart view per **reference/diagram-contract.md** and embed it with the session's diagrams.
 6. Fill the Consequences section from the evaluated pros/cons and risks.
 7. Load **reference/adr-quality-checklist.md** and pass every item; fix the ADR, not the checklist.
-8. Present the completed ADR for final review: "Would you like to adjust any section before saving?"
+8. Brief before the review per `brief-human-reviewer` — a route over the option cards and the chosen option's anchors, one prediction, one self-check — then present the completed ADR: "Would you like to adjust any section before saving?" State `reviewed` or `waived` in the return.
 </compile-adr>
 
 <sync-diagrams>
@@ -121,4 +121,5 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 <rule>When the user corrects confirmed content or reveals new context, apply **sync-diagrams** to update affected diagrams and add new ones.</rule>
 <rule>When explaining context or a solution, draw the matching diagram without being asked — mechanics via `draw-mermaid-diagrams`, content per **reference/diagram-contract.md**.</rule>
 <rule>Never present an option without its mechanism flow, its own target-state diagram, and — when code is accessible — its change set.</rule>
+<rule>When the problem restatement or the completed ADR goes for confirmation, brief per `brief-human-reviewer` — never present a large artifact cold.</rule>
 </rules>

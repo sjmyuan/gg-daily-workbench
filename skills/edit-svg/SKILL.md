@@ -24,15 +24,15 @@ description: Create SVG diagrams with professional PPT-quality layout, clear con
 | **Script-based** | Flowchart, architecture, sequence, concept, chart | Python scripts compute positions, paths, SVG elements. |
 | **Hand-crafted** | Comparison, pyramid, step-flow, container, donut | Write SVG directly following visual patterns. No scripts. |
 
-**Design standards**: 16:9 (960×540) default. Drop shadows, linear gradients, rounded corners (`rx="6"`+). Font stack: `system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif` (add `'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei'` for CJK). Title: 16–22px bold, body: 13–15px, annotations: 9–11px. WCAG AA contrast (≥4.5:1). 5–8 main elements per diagram, ≤15 words per shape. See [reference/design-standards.md](reference/design-standards.md).
+**Design standards**: 16:9 (960×540) default. Drop shadows, linear gradients, rounded corners (`rx="6"`+). Font stack: `system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif`, plus a CJK fallback. Title: 16–22px bold, body: 13–15px, annotations: 9–11px. WCAG AA contrast (≥4.5:1). 5–8 main elements per diagram, ≤15 words per shape. See [reference/design-standards.md](reference/design-standards.md).
 
 **SVG assembly pattern**: `<svg viewBox="..." font-family="...">` → `<defs>` (shadow + gradients + arrow markers) → title bar → shapes (backgrounds → panels → connections → node shapes → labels) → `</svg>`.
 
-**Text conventions**: `text-anchor="middle"` + `dominant-baseline="middle"` for single-line centered text. For multi-line CJK in `<tspan>`, use `dy`-based positioning (baseline offset ≈ 0.32×font_size). Color-code semantically: red=problems, green=success, blue=info, orange=warnings.
+**Text conventions**: `text-anchor="middle"` + `dominant-baseline="middle"` centers single-line text; multi-line CJK in `<tspan>` uses `dy` offsets (≈0.32×font_size). Color-code: red=problems, green=success, blue=info, orange=warnings.
 
-**Column/Row centering**: Same-column nodes must share the same `center_x = col_left + max_width_in_col / 2`, with each node's `x = center_x - node_width / 2`. Same-row nodes must share the same `center_y`. For left-right fork/comparison layouts, mirror columns as `center ± D` around the fork and use uniform box widths (see [reference/design-standards.md](reference/design-standards.md)).
+**Column/Row centering**: same-column nodes share `center_x = col_left + max_width_in_col / 2`, each at `x = center_x - node_width / 2`; same-row nodes share `center_y`. Mirror fork layouts as `center ± D` with uniform box widths.
 
-**Scripts directory**: `skills/edit-svg/scripts/` — 7 Python modules. Dependencies: `pip install svgwrite networkx matplotlib`. See [reference/computation-snippets.md](reference/computation-snippets.md) for the full API reference.
+**Scripts**: `scripts/` — 7 Python modules needing `svgwrite`, `networkx`, `matplotlib`: [reference/computation-snippets.md](reference/computation-snippets.md).
 
 <context-loading-guide>
 

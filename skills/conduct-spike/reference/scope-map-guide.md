@@ -15,6 +15,17 @@ Full model for `scope.md` — the accepted request it records, its status model,
 
 Area status is derived from its problems + findings-pair link — never stored separately.
 
+## Review state
+
+Each area and each problem carries one trailing `review:` token — `reviewed` or `waived`; absent means the briefing has not been asked yet.
+
+| Token | Meaning |
+|---|---|
+| `reviewed` | The reviewer reported which stops they opened, or answered the prediction |
+| `waived` | The reviewer declined or skipped the read; the unread claim was named once |
+
+Never store `ACCEPTED` here — that word belongs to the intake gate and records permission, not comprehension. `waived` never blocks work and never becomes `reviewed`.
+
 ## Scope vs delivery index
 
 `scope.md` tracks **spike areas/problems** only. Delivery features, cells, and status live in `deliveries/<epic>/index.md`. The two decompositions are not 1:1 and their statuses are never mirrored. Map: **[artifact-map.md](artifact-map.md)**.
@@ -48,8 +59,8 @@ Area status is derived from its problems + findings-pair link — never stored s
 - A1 — Assumption (user-accepted, unverified): <premise> — moves <split | driver | done criteria>
 
 ## Area: <name>
-**Findings**: docs/findings-<area>.md + docs/evidence-<area>.md
-- `investigating` How to …? → (no ADR)
+**Findings**: docs/findings-<area>.md + docs/evidence-<area>.md · review: <reviewed|waived>
+- `investigating` How to …? → (no ADR) · review: <reviewed|waived>
 
 ## Cross-area constraints
 - <one line per constraint one area's decision puts on another>
@@ -97,6 +108,7 @@ A spike never implements. Record each discovered implementation need as one line
 - The accepted request (goal, boundaries, constraints, done criteria) is recorded before any area; no gate state, restatement, inference list, question log, or per-round answer appears in `scope.md`.
 - Every `## Accepted assumptions` line names the row it can move (split, driver, or done criteria), is not obtainable from code or artifacts, and survives the removal test; a line recording a step, a request, or one option's rationale is a defect.
 - Every `## Next actions` line is one bounded implementation need — never a plan, feature breakdown, or status.
+- Every area and problem line whose checkpoint ran carries a `review:` token that traces to the reviewer's own words; `reviewed` with no reported read is a defect.
 
 ## In-flight units (recovery)
 

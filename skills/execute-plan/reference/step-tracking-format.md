@@ -12,7 +12,16 @@ Record each step in the plan file using this format (each line one fact):
 **Status**: [Status emoji] [Status description — 1 line]
 ```
 
-Status emojis per **step-status-definitions** (see the skill's knowledge section).
+## Status emojis
+
+| Status | Emoji | Meaning |
+|---|---|---|
+| Pending | ⏳ | Not yet started |
+| In Progress | 🔄 | Currently being worked on |
+| Completed | ✅ | Successfully finished |
+| Failed | ❌ | Encountered errors (include error details) |
+| Blocked | 🚫 | Cannot proceed (include blocker details) |
+| Abandoned | ⏭ | Deliberately not executed (reason required, no commit); ignored by completion checks |
 
 `[letter]` appears only for amendment insertions (`Step 3a`); file order is execution order.
 

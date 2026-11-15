@@ -287,7 +287,7 @@ Repos and PRs:
 
 ---
 
-### Step 1: analyze-code-changes
+### Step 11: analyze-code-changes
 
 **Repo map**: Two repos — `api-repo` (backend) and `web-repo` (frontend).
 
@@ -302,7 +302,7 @@ Repos and PRs:
 
 ---
 
-### Step 2: extract-and-refine-capability (extract phase, two levels)
+### Step 12: extract-and-refine-capability (extract phase, two levels)
 
 **Level 1 — Repo-level capabilities**:
 

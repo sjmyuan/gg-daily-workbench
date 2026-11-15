@@ -150,4 +150,7 @@ flowchart TD
 **Agent loads reference/adr-template.md, populates it, orders `C1`–`C3` into the Implementation Plan, then loads reference/adr-quality-checklist.md and passes every item.**
 
 **Agent output**:
+> **Decision**: adopt the compiled ADR and save it as `draft`. **Start here** — 2 stops: `C1` (schema change) carries the driver weights; `C2`'s verification line is what the rollout depends on.
+> **Predict first**: does `C2`'s rollback line cover the dual-write window? — my read: no, and that is the gap to fix before saving.
+> **Check yourself** (<2 min): open `C2` in [database-selection-adr.md](database-selection-adr.md) → expect a rollback line after the verification step; wrong if a switch-back path is implied but never written.
 > The compiled ADR is in [database-selection-adr.md](database-selection-adr.md). Would you like to adjust any section before saving?

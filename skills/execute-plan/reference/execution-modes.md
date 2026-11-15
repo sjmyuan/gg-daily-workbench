@@ -8,7 +8,7 @@ A POC executes **exactly like a normal feature plan** — no special mode, no me
 ## Rework mode — sibling `rework-<date>.md`
 A rework plan (an implemented or delivered cell needs a scoped change) is a sibling `rework-<date>.md` in the feature folder — `plan.md` is the frozen original:
 - Execute **only** the rework file's steps — the original steps are all ✅ and are never re-run or modified.
-- Treat the rework steps as a fresh step sequence with **step-status-definitions** statuses (⏳ → 🔄 → ✅) and the same six-field block.
+- Treat the rework steps as a fresh step sequence with the **step-tracking-format.md** statuses (⏳ → 🔄 → ✅) and the same six-field block.
 - When resuming, find the active rework file via the `## Reworks` manifest in `context.md` (the latest file with incomplete steps).
 - **verify-prerequisites** still applies — the rework runs on its own branch per the repo's branch convention (the original branch/PR may already be merged).
 - Commit conventions, **request-push-approval**, and **review-post-execution** apply exactly as for a normal plan.

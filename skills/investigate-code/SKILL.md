@@ -89,15 +89,12 @@ Do not load when no spike area has been defined.
 | Any typical investigation | Walkthrough | [examples/investigation-workflow.md](examples/investigation-workflow.md) |
 | Grading an answer | Criteria | [reference/investigation-quality-bar.md](reference/investigation-quality-bar.md) |
 | Method-level call stacks | Frame format | [reference/call-stack-trace-conventions.md](reference/call-stack-trace-conventions.md) |
-| Pattern variants | Matrix, severities | [reference/pattern-discovery-strategies.md](reference/pattern-discovery-strategies.md) |
 | Across repos | Matrix, C2, traces | [examples/multi-repo-dependency.md](examples/multi-repo-dependency.md) |
 | Zooming C2 → call stack | All four levels | [examples/progressive-zoom-in.md](examples/progressive-zoom-in.md) |
 | Fanning one question across areas | Briefs, returns, merge | [examples/parallel-investigation.md](examples/parallel-investigation.md) |
 | Compiling a markdown report | Report structure | [examples/markdown-report.md](examples/markdown-report.md) |
 | Finding similar features | Pattern discovery | [examples/pattern-discovery.md](examples/pattern-discovery.md) |
-| Tags, gaps, inconsistencies | Five categories | [reference/confidence-and-coverage-guide.md](reference/confidence-and-coverage-guide.md) |
 | Prose rules | Caps, banned phrases | [reference/writing-style.md](reference/writing-style.md) |
-| Plain issue | Card anatomy | [reference/plain-language-presentation.md](reference/plain-language-presentation.md) |
 | Seeing terse → explained | Before/after | [examples/plain-language-findings.md](examples/plain-language-findings.md) |
 </context-loading-guide>
 

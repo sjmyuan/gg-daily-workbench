@@ -78,7 +78,7 @@ Steps cite these standards by name; load the Details file when one is listed.
    b. Justification: an element whose removal breaks no step, objective, trigger, or quality bar; a guard with no nameable failure; an unjustified example, reference, or script.
    c. Content outranks form — a content defect that makes the agent act wrongly is 🔴; a form defect is 🟡 or 🟢 unless it breaks loading.
    d. A capability that cannot be checked is inadequate: each ends with a gate or grade per **reference/evaluation-process.md**; absent → 🟡, absent with no validation example → 🔴.
-   e. Prescriptiveness per **reference/empowerment-model.md** — scripted judgment work, missing tradeoffs or exemplars, missing reasons, behavioral evidence neither claimed nor run.
+   e. Prescriptiveness per **reference/empowerment-model.md** — scripted judgment work, missing tradeoffs or exemplars, missing reasons; behavioral evidence per **reference/behavioral-evidence.md**.
 3. **Check description and triggers** — load **reference/trigger-correctness.md**:
    a. Verify the two-part template via **reference/description-template.md**; missing trigger phrase → 🔴 Major.
    b. Score the five dimensions via **reference/description-scoring.md**; report x/10; ≤5 → 🔴 Major, 6–8 → 🟡 Minor.

@@ -52,7 +52,7 @@ The service now supports transforming data categories from source format to exte
 
 ## 3. docs/data.md
 
-```markdown
+````markdown
 ## Category Mapping Structure
 
 Categories are mapped using hierarchical rules defined in `application.yaml`:
@@ -63,6 +63,8 @@ category-mapping:
     "hardware-tools": "api-tools"
     "safety-equipment": "api-safety"
 ```
+````
+
 
 ## 4. Usage Example (in docs/README.md)
 

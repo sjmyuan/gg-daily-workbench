@@ -94,14 +94,14 @@ Load only the example directly relevant to the current task to minimize context 
 
 | Load when | Provides | File |
 |---|---|---|
-| Adding a new page to a subpackage — applying **configure-subpackage** | Full walkthrough: subpackage page file creation and app.json registration | [examples/add-subpackage-page.md](examples/add-subpackage-page.md) |
-| Implementing Canvas 2D drawing, image processing, or export — applying **canvas-setup-and-draw** | Full walkthrough: node acquisition, drawing, and export patterns | [examples/canvas-feature.md](examples/canvas-feature.md) |
-| Creating a custom component (observers, lifetimes, event triggering) — applying **create-component** | Full file templates: observers, lifetimes, and triggerEvent patterns | [examples/custom-component.md](examples/custom-component.md) |
-| Managing data flow between pages (route params, storage, globalData, EventChannel) — applying **add-page** | All four inter-page data passing patterns with code templates | [examples/inter-page-data-flow.md](examples/inter-page-data-flow.md) |
-| Implementing persistent storage (read/write/trim) — applying **manage-storage** | Read/write/trim code templates with try/catch error handling | [examples/storage-patterns.md](examples/storage-patterns.md) |
-| Using WeChat APIs (network requests, permissions, media) — applying **add-page** or **create-component** | Network request, permission authorization, and media code templates | [examples/wechat-api-usage.md](examples/wechat-api-usage.md) |
-| Setting up TypeScript types for a miniprogram codebase — applying **apply-typescript-patterns** | tsconfig setup, IAppOption declaration, and WeChat canvas type cast examples | [examples/apply-typescript-patterns.md](examples/apply-typescript-patterns.md) |
-| Styling pages or components with the SCSS design system — applying **apply-styling** | Design token definitions, BEM class naming patterns, and rpx vs px guidance | [examples/apply-styling.md](examples/apply-styling.md) |
+| Adding a subpackage page (**configure-subpackage**) | Page file and app.json registration | [examples/add-subpackage-page.md](examples/add-subpackage-page.md) |
+| Canvas 2D drawing or export (**canvas-setup-and-draw**) | Node acquisition, drawing, export | [examples/canvas-feature.md](examples/canvas-feature.md) |
+| Custom component (**create-component**) | Observers, lifetimes, triggerEvent templates | [examples/custom-component.md](examples/custom-component.md) |
+| Inter-page data flow (**add-page**) | Route params, storage, globalData, EventChannel | [examples/inter-page-data-flow.md](examples/inter-page-data-flow.md) |
+| Persistent storage (**manage-storage**) | Read/write/trim with try/catch | [examples/storage-patterns.md](examples/storage-patterns.md) |
+| WeChat APIs (**add-page**, **create-component**) | Network, permission, and media templates | [examples/wechat-api-usage.md](examples/wechat-api-usage.md) |
+| TypeScript types (**apply-typescript-patterns**) | tsconfig, IAppOption, canvas type casts | [examples/apply-typescript-patterns.md](examples/apply-typescript-patterns.md) |
+| Styling with the SCSS system (**apply-styling**) | Design tokens, BEM naming, rpx vs px | [examples/apply-styling.md](examples/apply-styling.md) |
 </context-loading-guide>
 
 </knowledge>

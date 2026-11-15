@@ -74,6 +74,7 @@ first, on every element the edit touches or is tempted to keep.
 | Routing + guard | Which capability would be missed, or which observed failure would return? | Neither |
 
 - "Why must it exist?" and "what breaks if we remove it?" are the same question; a vague answer is a deletion.
+- A rule that looks like restatement may be a **counterweight**: "stop and ask" balances "proceed autonomously"; "ask before acting" balances "deliver a draft". Delete one and behaviour drifts to the other — observed, not hypothetical. Before deleting a restating rule, name the rule it balances; if it balances one, keep it as a single line.
 - An unjustified element outside the edit's scope is a finding for the user — report it, never delete it silently.
 - Justification removes whole elements; **conciseness-check** shortens the wording of the ones that stay.
 - Supporting files answer the same test at file level — see the supporting-file table in **content-model**.

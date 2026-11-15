@@ -22,17 +22,18 @@ Steps cite these standards by name; load the Details file when one is listed.
 | **naming-conventions** | Skill and capability names take imperative verbs; knowledge names take noun phrases. | **reference/naming-conventions.md** |
 | **description-quality** | Domain summary + "Use when…" triggers, self-scored ≥9 on five dimensions. | **reference/description-quality.md** |
 | **example-standards** | One linked example per capability: template fidelity, set continuity, no contradictions. | **reference/example-standards.md** |
-| **empowerment-model** | Regime per capability (contractual vs judgment), expert test, judgment content, rationale budget, delegation boundary. | **reference/empowerment-model.md** |
+| **empowerment-model** | Regime per capability (contractual vs judgment), expert test, judgment content, rationale budget, delegation. | **reference/empowerment-model.md** |
 | **platform-agnostic-writing** | No platform tool names or context paths; abstract the context, detect don't assume. | **reference/platform-agnostic-writing.md** |
-| **script-and-cli-policy** | CLI first, inline one-liner second, `scripts/` last after four tests; Python 3 stdlib; fixed output contract. | **reference/script-and-cli-policy.md** |
-| **pipeline-integration** | 5 points: handoff, shared schema, one-way awareness (caller → callee), guard clauses, link self-containment. | **reference/pipeline-integration.md** |
+| **script-and-cli-policy** | CLI first, inline second, `scripts/` last after four tests; Python 3 stdlib; fixed output contract. | **reference/script-and-cli-policy.md** |
+| **pipeline-integration** | 5 points: handoff, shared schema, one-way awareness, guard clauses, link self-containment. | **reference/pipeline-integration.md** |
 | **writing-style** | Directive voice, BLUF, caps, atomic bullets, tables over prose, no narration. | **reference/writing-style.md** |
 | **size-limits** | SKILL.md and `reference/` ≤12,000 chars / 150 lines; `examples/` ≤9,000; >120-char lines flagged. | **reference/size-limits.md** |
 | **size-remediation** | Re-encode → reuse → cut → redistribute → reduce → escalate; chars only gate. | **reference/size-remediation.md** |
-| **conciseness-check** | Every element justifies its existence; one line = one idea. | **reference/conciseness-check.md** |
+| **conciseness-check** | Every element justifies its existence; one line, one idea. | **reference/conciseness-check.md** |
 | **evaluation-process** | Gate for contractual, graded rubric for judgment; absence severity in file. | **reference/evaluation-process.md** |
+| **behavioral-acceptance** | A/B proof the skill beats the bare model: frozen rubric, symmetric framing, repeats, blind score. | **reference/behavioral-acceptance.md** |
 | **severity-levels** | Blocker 🚫 / Major 🔴 / Minor 🟡 / Nit 🟢 / Inconsistency ⚠️. | **reference/severity-levels.md** |
-| **refactor-first** | Reshape before appending: reclassify, merge, split, rename, redistribute, or rewrite an existing element; append only when none can carry it. | **reference/edit-skill-procedure.md** |
+| **refactor-first** | Reshape before appending: reclassify, merge, split, rename, redistribute, or rewrite an existing element; append only if none can carry it. | **reference/edit-skill-procedure.md** |
 | **same-name-live-copy-ban** | Never read, compare, or edit a live/loaded same-named skill; the user-provided files are the only subject. | — |
 </named-standards>
 <context-loading-guide>
@@ -51,7 +52,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 **Objective**: Gather what defines the new skill's purpose, scope, and capabilities.
 
 1. Run `clarify-request`'s intake gate, else fill its record from step 2's fields.
-2. Fill that record with **name** (action verb), **description**, **when-to-use**, **capabilities** (contractual or judgment per **empowerment-model**), **knowledge**, **rules**, **examples**, **references** — from supplied materials first.
+2. Fill that record with **name** (action verb), **description**, **when-to-use**, **capabilities** (contractual or judgment per **empowerment-model**), **knowledge**, **rules**, **examples**, **references** — from supplied materials.
 3. Set the gate state and one `Assumption (user-accepted, unverified)` per default; `BLOCKED` → write no file.
 4. Validate: every inference is a field or a labeled assumption; every capability has a regime; name, description, and triggers agree.
 </collect-skill-requirements>
@@ -79,10 +80,9 @@ Steps cite these standards by name; load the Details file when one is listed.
 7. Re-run the **content-model** gates on the written sections; delete what breaks nothing.
 8. Write the frontmatter: `name` per **naming-conventions**; `description` per **description-quality**.
 9. Write `<when-to-use-this-skill>` per **description-quality**; every verb mirrors the trigger phrase.
-10. Write all prose per **writing-style**.
-11. Write all prose per **platform-agnostic-writing**.
-12. Check each file against **size-limits**; over → **size-remediation**.
-13. In a multi-skill pipeline, verify the 5 integration points per **pipeline-integration**.
+10. Write all prose per **writing-style** and **platform-agnostic-writing**.
+11. Check each file against **size-limits**; over → **size-remediation**.
+12. In a multi-skill pipeline, verify the 5 integration points per **pipeline-integration**.
 </create-skill-file>
 
 <create-skill-examples>
@@ -102,7 +102,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 2. If a schema already exists, extend its owner file; never add a parallel template.
 3. Create one `.md` per topic with a title, the rubric, and a cross-reference to its capability.
 4. Emit every template as a literal fenced skeleton with fixed field order and required labels.
-5. Check each file: skeletons literal, within **size-limits**; over → **size-remediation** (split or condense).
+5. Check each file: skeletons literal, within **size-limits**; over → **size-remediation**.
 6. Route each reference from its knowledge entry or a guide row; step-tied files also route inline.
 </create-skill-references>
 
@@ -119,7 +119,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 <validate-created-skill>
 **Objective**: Validate the created or edited skill files before delivery.
 
-1. Run the checks in **reference/validate-skill-procedure.md** in order; content checks precede structural ones.
+1. Run the checks in **reference/validate-skill-procedure.md** in order, including 21's **behavioral-acceptance** run; content checks precede structural ones.
 2. Report each finding with a severity label per **severity-levels** and an actionable fix; re-run step 1 after the fix.
 </validate-created-skill>
 
@@ -140,10 +140,10 @@ Steps cite these standards by name; load the Details file when one is listed.
 <rules>
 <rule>When the user requests a new skill, use **collect-skill-requirements** — it owns intake and the requirements record.</rule>
 <rule>When deciding what a skill must know, do, or forbid, use **classify-skill-content**; set each capability's regime per **empowerment-model** — the class decides the section.</rule>
-<rule>After requirements are confirmed, use **create-skill-file** for SKILL.md, and **create-skill-examples** plus **create-skill-references** in parallel.</rule>
+<rule>After requirements are confirmed, use **create-skill-file**, with **create-skill-examples** and **create-skill-references** in parallel.</rule>
 <rule>After creating or editing all files, use **validate-created-skill** before presenting the result.</rule>
 <rule>When creating or validating a skill, operate only on the user-provided files per **same-name-live-copy-ban**.</rule>
-<rule>When the user asks to edit, improve, or revise an existing skill, use **edit-skill**; run an open-ended "improve" through `review-skill` first per **reference/edit-skill-procedure.md**.</rule>
+<rule>When the user asks to edit or improve an existing skill, use **edit-skill**; run an open-ended "improve" through `review-skill` first per **reference/edit-skill-procedure.md**.</rule>
 <rule>When an edit would add an element, apply **refactor-first** — reshape an existing rule, capability, knowledge row, reference, or example to carry it; append only when none can.</rule>
 <rule>When the user asks for a read-only review of an existing skill file, delegate to the `review-skill` skill instead.</rule>
 <rule>When a capability step needs automation, use **create-skill-scripts** — pick an installed CLI before a script, and Python 3 stdlib before any other language.</rule>

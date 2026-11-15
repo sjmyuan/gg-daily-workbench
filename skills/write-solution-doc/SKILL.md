@@ -47,12 +47,6 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
 
 | Load when | Provides | File |
 |---|---|---|
-| Compiling the final document | Canonical titles, numbering, template | [reference/solution-doc-structure.md](reference/solution-doc-structure.md) |
-| Defining API/event contracts | Contract fields, conventions | [reference/api-design-standards.md](reference/api-design-standards.md) |
-| Running RAID or RACI | Item schema, matrix rules | [reference/raid-raci-frameworks.md](reference/raid-raci-frameworks.md) |
-| Producing/evolving a current-state document | As-is mode, baseline-input rules | [reference/current-state-mode.md](reference/current-state-mode.md) |
-| Embedding in a sub-agent dispatch | Seed, guard, return contract | [reference/seed-input-contract.md](reference/seed-input-contract.md) |
-| Writing document prose | BLUF, caps, banned phrases | [reference/writing-style.md](reference/writing-style.md) |
 | Full end-to-end example | Final solution document | [examples/full-solution-document.md](examples/full-solution-document.md) |
 | Diagram-focused example | C2, C3, sequence, flowchart | [examples/c4-and-interaction-diagrams.md](examples/c4-and-interaction-diagrams.md) |
 | API/event contract example | REST + Kafka/Avro | [examples/api-contracts.md](examples/api-contracts.md) |
@@ -181,7 +175,7 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
 5. Validate every Mermaid block via `draw-mermaid-diagrams` (`validate-diagram-syntax`); fix to 0 errors.
 6. Match the user's language preference.
 7. Run the concise check (see **concise-writing**): ≤20-word sentences, no banned phrases, one claim per bullet, a takeaway per heading, no restated fact, ~20% cut.
-8. Present the document and offer to refine any section.
+8. Brief before presenting per `brief-human-reviewer` — a route over the document's decision points and one self-check on a target-state claim — then present it and offer to refine any section; state `reviewed` or `waived`.
 </structure-solution-doc>
 
 <sync-diagrams>

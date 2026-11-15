@@ -7,7 +7,7 @@ Brief index + the shared **structured brief shape**, the **context inventory** g
 | investigate + pair + ADRs (single return) → `spike-area-analyst` | [area-analyst-brief.md](area-analyst-brief.md) |
 | compile-solution-doc → `solution-doc-writer` | [solution-doc-brief.md](solution-doc-brief.md) |
 
-Dispatch one brief per area and run all areas concurrently; each session returns once, carrying its written pair and ADRs — never a bare evidence map or an intermediate phase. Fill each brief from its file per the **structured brief shape**, then review the returned receipt against the capability's spike-specific checks (in its brief file). All briefs carry the shared contracts below; a re-dispatched unit also carries the verification-result contract.
+Dispatch one brief per area and run all areas concurrently; each session returns once, carrying its written pair, ADRs, and the reviewer route — never a bare evidence map or an intermediate phase. Fill each brief from its file per the **structured brief shape**, then review the returned receipt against the capability's spike-specific checks (in its brief file). All briefs carry the shared contracts below; a re-dispatched unit also carries the verification-result contract.
 
 ## Structured brief shape
 
@@ -129,6 +129,6 @@ Run on every filled brief; any failed check stops the dispatch:
 - Every inventory item has a home — nothing was dropped for being obvious.
 - Every path is absolute and carries its section anchor.
 - The intake record's four fields are filled or explicitly declared unknowable.
-- The brief states the single return (pair + ADRs) and carries every problem's drivers; a missing driver blocks the dispatch.
+- The brief states the single return (pair + ADRs + reviewer route) and carries every problem's drivers; a missing driver blocks the dispatch.
 - Known locations and already-searched items are present whenever the orchestrator has any.
 - Unpersisted prior receipts are inline, not referenced as if they were files.

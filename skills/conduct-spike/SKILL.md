@@ -72,6 +72,10 @@ Chain **Findings Docs → ADRs → Solution Doc** stays current: findings pairs 
 No version markers; notes live only in evidence docs and conversation.
 Propagation stops at the first unaffected artifact. Guide: **reference/artifact-maintenance-guide.md**.
 </artifact-maintenance-doctrine>
+<review-pacing>
+Three of the four checkpoints are **artifact reviews** — findings confirmation, ADR review, solution-doc approval. At each, brief the reviewer before the question: apply `brief-human-reviewer` using the route the area session returned, then record `reviewed` or `waived` per unit in `scope.md`.
+The scope gate is **not** a briefing checkpoint — the intake gate owns request acceptance, `brief-human-reviewer` owns review comprehension, and the two never share a message.
+</review-pacing>
 <context-loading-guide>
 
 | Load when | Provides | File |
@@ -83,6 +87,7 @@ Propagation stops at the first unaffected artifact. Guide: **reference/artifact-
 | Multi-area parallel spike | Parallel dispatch | [examples/multi-agent-investigation.md](examples/multi-agent-investigation.md) |
 | ADR discussion on unverified assumptions | Spike suggestion example | [examples/adr-uncertainty-spike-suggestion.md](examples/adr-uncertainty-spike-suggestion.md) |
 | Fact/decision change propagated through artifacts | Sync walkthrough | [examples/sync-update-across-artifacts.md](examples/sync-update-across-artifacts.md) |
+| Findings pair, ADR batch, or solution doc reaches user confirmation | Route, prediction, self-check, `reviewed`/`waived` | `brief-human-reviewer` skill |
 | Handing artifacts to delivery, or placing a fact | Two-plane map, handoff, ownership, routing | [reference/artifact-map.md](reference/artifact-map.md) |
 </context-loading-guide>
 </knowledge>
@@ -91,7 +96,7 @@ Propagation stops at the first unaffected artifact. Guide: **reference/artifact-
 <run-spike-workflow>
 **Objective**: Run a spike from an unaccepted request to a consistent, decision-only artifact bundle.
 1. Apply the workflow per **reference/run-spike-workflow-procedure.md**.
-2. Honor its four user checkpoints — scope gate, findings confirmation, ADR review, solution-doc approval — and never pause between an area session's phases.
+2. Honor its four user checkpoints — scope gate, then the three artifact reviews — and never pause between an area session's phases. Apply **review-pacing** at each artifact review.
 </run-spike-workflow>
 <continue-prior-spike>
 **Objective**: Add, adjust, or remove scope on a prior spike without re-investigating settled work.
@@ -135,6 +140,7 @@ Propagation stops at the first unaffected artifact. Guide: **reference/artifact-
 <rule>When the gate runs, accept only `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS`, and only after the inference list was shown.</rule>
 <rule>When the user supplies pre-existing investigation material, apply **compile-findings-doc** directly, skipping **dispatch-area-session** — after the gate.</rule>
 <rule>When the user resumes a prior spike or re-investigates a decided ADR, apply **continue-prior-spike**.</rule>
+<rule>When a findings pair, ADR batch, or solution doc reaches confirmation, apply **review-pacing** — brief per `brief-human-reviewer` before the question, record `reviewed` or `waived` in `scope.md`, never `reviewed` for a skipped read, never brief into the scope gate.</rule>
 <rule>When a fact or decision changes after spike artifacts exist, or an area question is answered, apply **sync-update-artifacts**.</rule>
 <rule>When an ADR hinges on unverified assumptions or missing evidence, apply **suggest-spike-on-adr-uncertainty** before finalizing it.</rule>
 <rule>When an ADR, findings doc, or solution doc must change, apply its owning skill (`draft-adr`, `document-findings`, `write-solution-doc`) — never hand-edit.</rule>

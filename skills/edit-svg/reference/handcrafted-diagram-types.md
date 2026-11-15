@@ -2,7 +2,7 @@
 
 Applies **create-handcrafted-diagram** in the edit-svg skill.
 
-Load [reference/design-standards.md](reference/design-standards.md) for PPT design rules.
+Load [design-standards.md](design-standards.md) for PPT design rules.
 
 ---
 

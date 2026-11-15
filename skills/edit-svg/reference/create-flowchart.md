@@ -2,11 +2,11 @@
 
 Applies **create-scripted-diagram** in the edit-svg skill.
 
-Load [reference/computation-snippets.md](reference/computation-snippets.md) and [reference/design-standards.md](design-standards.md) for script calls and PPT standards.
+Load [computation-snippets.md](computation-snippets.md) and [design-standards.md](design-standards.md) for script calls and PPT standards.
 
-Also load [reference/diagram-workflow.md](reference/diagram-workflow.md) for routing rules, multi-port allocation, and side-entry avoidance.
+Also load [diagram-workflow.md](diagram-workflow.md) for routing rules, multi-port allocation, and side-entry avoidance.
 
-The full algorithm code is in [scripts/routing.py](scripts/routing.py) (scenario classification, path selection, obstacle detection, overlap tracking) and [scripts/graph_layout.py](scripts/graph_layout.py) (topological sort, grid layout, column gap). Import functions from these into your standalone scripts.
+The full algorithm code is in [scripts/routing.py](../scripts/routing.py) (scenario classification, path selection, obstacle detection, overlap tracking) and [scripts/graph_layout.py](../scripts/graph_layout.py) (topological sort, grid layout, column gap). Import functions from these into your standalone scripts.
 
 ## Node Types & Colors
 

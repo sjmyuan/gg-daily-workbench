@@ -49,7 +49,7 @@ public Response execute(Request request, int maxRetries) { ... }
 
 No restating Javadoc preamble, no `// ===== Step 1` banner, no "added/generated" notes.
 
-Applying **commit-step** — deterministic pattern scan on the staged diff (per **code-comment-conventions**):
+Applying **commit-step** — deterministic pattern scan on the staged diff (per **execution-conventions**):
 
 ```
 git add src/client/RetryHandler.java

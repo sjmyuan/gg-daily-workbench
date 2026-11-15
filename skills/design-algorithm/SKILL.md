@@ -134,7 +134,7 @@ A final algorithm design covers six items. Present all six in order.
 **Objective**: Produce the final algorithm design per the output template.
 1. Confirm the chosen approach with the user.
 2. Fill the **algorithm-output-template**: name and paradigm, core idea, pseudocode, Mermaid diagram, complexity analysis, implementation notes.
-3. Present the design and ask for adjustment requests.
+3. Brief before presenting per `brief-human-reviewer` — a route over the pseudocode's tricky branches and the case list, one prediction, one self-check — then present the design and ask for adjustment requests.
 4. Verify the design covers all six template items.
 </design-algorithm>
 

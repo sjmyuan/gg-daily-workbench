@@ -54,7 +54,7 @@ A thin four-line brief would send each analyst hunting for its own scope, its ow
 
 ### Analysts Return
 
-Four written pairs (`docs/findings-<area>.md` + `docs/evidence-<area>.md`) and 5 ADRs, one per problem (the database area's session produces two). Each receipt carries the pair paths, topic list, ledger count, ADR paths, and the chosen option per problem with its evidence IDs.
+Four written pairs (`docs/findings-<area>.md` + `docs/evidence-<area>.md`) and 5 ADRs, one per problem (the database area's session produces two). Each receipt carries the pair paths, topic list, ledger count, ADR paths, the chosen option per problem with its evidence IDs, and the reviewer route — 3–5 stops plus one falsifiable claim — so the orchestrator briefs the confirmation without re-reading the code.
 
 ### Orchestrator: Verify
 
@@ -66,11 +66,11 @@ Cross-area consistency: A + C both flag tight coupling; B + D both note missing 
 
 ## Confirm and Review (NO NEW DISPATCH)
 
-Each pair is structurally validated and cross-referenced per `reference/findings-document-guide.md`, then confirmed with the user: "Does this accurately capture the current state?"
+Each pair is structurally validated and cross-referenced per `reference/findings-document-guide.md`, then briefed and confirmed per `brief-human-reviewer` — the returned route, the prediction, and one self-check, then "Does this accurately capture the current state?" — with `reviewed` or `waived` recorded per area in `scope.md`.
 
 **Cross-area constraints**: `docs/evidence-service-decomposition.md` ↔ `docs/evidence-database.md` (shared `transactions`/`accounts`/`audit_log`); `docs/evidence-communication.md` ↔ `docs/evidence-migration.md` (no async/traffic-split infra → migration starts synchronous).
 
-The user reviews the ADRs after the area return: "Review the decisions; would you like any adjusted before compiling the solution document?" Feedback re-dispatches the affected area session with the artifacts — it revises in place, and the orchestrator re-verifies only the changed claims.
+The user reviews the ADRs after the area return, briefed per `brief-human-reviewer` one problem at a time: "Review the decisions; would you like any adjusted before compiling the solution document?" Each problem records `reviewed` or `waived` in `scope.md`. Feedback re-dispatches the affected area session with the artifacts — it revises in place, and the orchestrator re-verifies only the changed claims.
 
 > If a session fails before writing its artifacts: re-dispatch it with the same brief and its search log — a written pair and ADRs are the only acceptable return.
 
