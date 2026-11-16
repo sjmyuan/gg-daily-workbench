@@ -52,14 +52,12 @@ User: "Q1: B." → `ACCEPTED-WITH-ASSUMPTIONS`; the gate record stays in the ses
 | 3. Database decomposition | Single PostgreSQL ~80 tables; `transactions`/`accounts`/`audit_log` shared; 12 settlement stored procedures (2000+ lines) | No per-type access control; procs block decomposition |
 | 4. Migration strategy | K8s (3 replicas); Kong routes `/api/payments/*`; GitHub Actions canary CI/CD | No feature flags or traffic splitting |
 
-### Completion Checkpoint
-
-> "The four pairs and five ADRs are written — is this sufficient, or should we dig further?"
-> User: "It's sufficient — let's review. We can dig into the orchestrator call graph after the first round of ADRs."
-
 ---
 
 ## Confirm Findings Documents
+
+*The confirmation also settles whether to dig further: "The four pairs and five ADRs are written — is this sufficient, or should we dig further?"*
+*"It's sufficient; we can dig into the orchestrator call graph after the first round of ADRs." No fifth checkpoint.*
 
 *(one findings pair per area, always: `docs/findings-<area>.md` (human) + `docs/evidence-<area>.md` (evidence); four areas → four pairs, written in each area session's single return and validated here.)*
 

@@ -175,7 +175,7 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
 5. Validate every Mermaid block via `draw-mermaid-diagrams` (`validate-diagram-syntax`); fix to 0 errors.
 6. Match the user's language preference.
 7. Run the concise check (see **concise-writing**): ≤20-word sentences, no banned phrases, one claim per bullet, a takeaway per heading, no restated fact, ~20% cut.
-8. Brief before presenting per `brief-human-reviewer` — a route over the document's decision points and one self-check on a target-state claim — then present it and offer to refine any section; state `reviewed` or `waived`.
+8. Brief before presenting per `brief-human-reviewer` — a route over the document's decision points and one self-check on a target-state claim — then present it and offer to refine any section; state `reviewed` or `waived`. In a seeding brief, return the route, prediction, and self-check instead of presenting; the caller briefs and records the state.
 </structure-solution-doc>
 
 <sync-diagrams>

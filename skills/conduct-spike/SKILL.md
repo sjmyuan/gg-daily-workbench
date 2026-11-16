@@ -1,6 +1,6 @@
 ---
 name: conduct-spike
-description: Run spike investigations that turn uncertainty into findings pairs, ADRs, and a solution document. Use when scoping, clarifying, challenging, investigating, deciding, formalizing, re-investigating, continuing, or syncing a spike.
+description: Run spikes that turn uncertainty into findings pairs, ADRs, and a solution document. Use when scoping, clarifying, challenging, investigating, deciding, suggesting, formalizing, re-investigating, continuing, or syncing a spike.
 ---
 
 <when-to-use-this-skill>
@@ -35,7 +35,8 @@ Check after every write: **reference/write-boundary-guide.md**.
 No `scope.md` or findings compilation until `clarify-request`'s intake gate passes — on **every** entry path: new, continued, user-supplied, uncertainty.
 Apply its **intake-gate** and **assumption-admission**; do not restate them.
 The gate is the only scope-acceptance pause.
-Fold the proposed area/problem split and each problem's driver question into its one confirmation, then record the **accepted request** in `scope.md` — goal, boundaries, constraints, done criteria, split, drivers — not the gate's transcript, which stays in the session.
+Fold the proposed area/problem split and each problem's driver question into its one confirmation.
+Record the **accepted request** in `scope.md` — goal, boundaries, constraints, done criteria, split, drivers — not the gate's transcript, which stays in the session.
 User-supplied notes that arrive after acceptance are gated before they are compiled. Procedure: **reference/define-spike-scope-procedure.md**.
 </scope-acceptance-gate>
 <scope-map>
@@ -44,9 +45,6 @@ Problem (stored): `investigating` → `deciding` → `done`.
 Area (derived, never stored): `preparing` → `spiking` → `done`.
 A `done` problem has its ADR; an area is never `done` with an open problem. Model: **reference/scope-map-guide.md**.
 </scope-map>
-<greenfield-scenarios>
-No existing implementation: research approaches, comparables, constraints.
-</greenfield-scenarios>
 <multi-agent-orchestration>
 One `spike-area-analyst` session per area writes the pair and the ADRs and returns once; dispatch the solution doc separately.
 Verify each return on an independent seat — never the producing session — by blast radius, cap 2 rounds, tag residual uncertainty.
@@ -73,8 +71,8 @@ No version markers; notes live only in evidence docs and conversation.
 Propagation stops at the first unaffected artifact. Guide: **reference/artifact-maintenance-guide.md**.
 </artifact-maintenance-doctrine>
 <review-pacing>
-Three of the four checkpoints are **artifact reviews** — findings confirmation, ADR review, solution-doc approval. At each, brief the reviewer before the question: apply `brief-human-reviewer` using the route the area session returned, then record `reviewed` or `waived` per unit in `scope.md`.
-The scope gate is **not** a briefing checkpoint — the intake gate owns request acceptance, `brief-human-reviewer` owns review comprehension, and the two never share a message.
+Three of the four checkpoints are **artifact reviews** — findings confirmation, ADR review, solution-doc approval.
+At each, apply `brief-human-reviewer` with the returned route, then record `reviewed` or `waived` per unit in `scope.md`; never brief the scope gate.
 </review-pacing>
 <context-loading-guide>
 
@@ -137,10 +135,9 @@ The scope gate is **not** a briefing checkpoint — the intake gate owns request
 <rule>When the user initiates a spike investigation from scratch, apply **run-spike-workflow**.</rule>
 <rule>Dispatch one `spike-area-analyst` session per area — never split its phases — and verify its single return on an independent seat: not the producer, not a bare evidence map.</rule>
 <rule>Before `scope.md` is written, a continuation starts, user-supplied notes are compiled, or an uncertainty spike begins, apply **scope-acceptance-gate**.</rule>
-<rule>When the gate runs, accept only `ACCEPTED` or `ACCEPTED-WITH-ASSUMPTIONS`, and only after the inference list was shown.</rule>
 <rule>When the user supplies pre-existing investigation material, apply **compile-findings-doc** directly, skipping **dispatch-area-session** — after the gate.</rule>
 <rule>When the user resumes a prior spike or re-investigates a decided ADR, apply **continue-prior-spike**.</rule>
-<rule>When a findings pair, ADR batch, or solution doc reaches confirmation, apply **review-pacing** — brief per `brief-human-reviewer` before the question, record `reviewed` or `waived` in `scope.md`, never `reviewed` for a skipped read, never brief into the scope gate.</rule>
+<rule>When a findings pair, ADR batch, or solution doc reaches confirmation, apply **review-pacing** before the question.</rule>
 <rule>When a fact or decision changes after spike artifacts exist, or an area question is answered, apply **sync-update-artifacts**.</rule>
 <rule>When an ADR hinges on unverified assumptions or missing evidence, apply **suggest-spike-on-adr-uncertainty** before finalizing it.</rule>
 <rule>When an ADR, findings doc, or solution doc must change, apply its owning skill (`draft-adr`, `document-findings`, `write-solution-doc`) — never hand-edit.</rule>

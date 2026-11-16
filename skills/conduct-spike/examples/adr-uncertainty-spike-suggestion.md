@@ -39,7 +39,7 @@
 
 ### Assistant
 
-> "Understood. New spike scope — **Goal**: determine whether EventBridge can handle the 10K orders/sec peak and what replay/redelivery semantics it offers. **Area**: communication mechanism. **Problems**: (1) EventBridge throughput limits and current usage, (2) replay/redelivery semantics vs. team needs. The communication ADR stays provisional. Let me define the scope details..."
+> "Understood. Before I write a scope: this is a new spike, so here is what I am inferring — (i) the throughput answer decides the bus, (ii) the spike stays decision-only and builds no prototype. Confirm those and I will record: **Goal** — whether EventBridge can handle the 10K orders/sec peak and what replay/redelivery semantics it offers. **Area**: communication mechanism. **Problems**: (1) EventBridge throughput limits and current usage, (2) replay/redelivery semantics vs. team needs. The communication ADR stays provisional."
 
 ---
 

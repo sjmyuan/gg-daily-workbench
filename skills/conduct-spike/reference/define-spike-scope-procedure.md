@@ -11,5 +11,5 @@ Full procedure for the `define-spike-scope` capability — loaded on demand when
 7. Resolve the artifact base root via `resolve-artifact-location` when the user named no folder (spike folder = `<base>/spikes/<spike-name>/`).
 8. Record `scope.md` per **reference/scope-map-guide.md**: `Artifact root:`, then the accepted request as facts — goal in one sentence, boundaries, binding constraints, done criteria — under one `## Accepted assumptions` only the premises that can move the split, a driver, or the done criteria, then each area (no stored status — it derives `preparing`) with its problems (`investigating`). The gate state, inference list, and each round's answers stay in the session.
 9. Validate the breakdown and the goal per **reference/decomposition-rubric.md** — limits, decision independence, and a completion test the user can recognize — and apply the scope-map removal test to every `scope.md` line.
-10. Note greenfield per **greenfield-scenarios**.
+10. Note greenfield per **decomposition-rubric** §Greenfield — no code to trace, no prototype to build.
 11. Validate the resolved spike folder carries a `spikes/` path segment (write-boundary anchor per **reference/write-boundary-guide.md**).

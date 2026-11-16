@@ -17,6 +17,9 @@ permissions:
   - action: edit
     resource: "*/spikes/*"
     effect: allow
+  - action: edit
+    resource: "spikes/*"
+    effect: allow
   - action: shell
     resource: "*"
     effect: allow

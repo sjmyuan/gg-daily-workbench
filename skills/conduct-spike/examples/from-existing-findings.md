@@ -115,7 +115,7 @@ Coverage: invalidation mechanisms, write path. Cross-area reference: `docs/evide
 
 ### ADR: Cache topology — position caches
 
-*(draft-adr applied — full ADR produced; saved as `adr-cache-topology-01-position-caches.md`. Summary below; the full record follows `draft-adr`'s template with `Area: Cache topology` and `Status: adopt`.)*
+*(draft-adr applied — full ADR produced; saved as `adr-cache-topology-01-position-caches.md`. Summary below; the full record follows `draft-adr`'s template with `Area: Cache topology` and `Status: draft` — `adopt` is set only after the user confirms at ADR review.)*
 
 **Title**: Adopt Two-Tier Caching (In-Memory + Redis) for Product Catalog
 

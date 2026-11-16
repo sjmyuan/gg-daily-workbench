@@ -100,7 +100,7 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 5. Draw the target-state C4/flowchart view per **reference/diagram-contract.md** and embed it with the session's diagrams.
 6. Fill the Consequences section from the evaluated pros/cons and risks.
 7. Load **reference/adr-quality-checklist.md** and pass every item; fix the ADR, not the checklist.
-8. Brief before the review per `brief-human-reviewer` — a route over the option cards and the chosen option's anchors, one prediction, one self-check — then present the completed ADR: "Would you like to adjust any section before saving?" State `reviewed` or `waived` in the return.
+8. Brief before the review per `brief-human-reviewer` — a route over the option cards and the chosen option's anchors, one prediction, one self-check — then present the completed ADR: "Would you like to adjust any section before saving?" State `reviewed` or `waived` in the return. In a seeding brief, return the route, prediction, and self-check instead of presenting; the caller briefs and records the state.
 </compile-adr>
 
 <sync-diagrams>

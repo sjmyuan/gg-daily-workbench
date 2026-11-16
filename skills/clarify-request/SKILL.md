@@ -4,7 +4,7 @@ description: Clarify a request before accepting it: restate it, list inferences,
 ---
 
 <when-to-use-this-skill>
-- A request, spike brief, issue report, or rework ask is about to be accepted and its reading is uncorroborated
+- A request, brief, issue report, or rework ask is about to be accepted and its reading is uncorroborated
 - The ask leaves its goal, scope, success criteria, constraints, or conflict with a prior decision open
 - An ask must be made decidable without over-questioning — options and a recommendation per question, a default when non-blocking
 - Investigation evidence contradicts an accepted goal, constraint, or vocabulary, and the accepted claim must be re-challenged

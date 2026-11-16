@@ -18,7 +18,7 @@ You are the `spike-area-analyst`. Deliver for **[area]** in one session and one 
 - Boundaries **(inline)**: **[modules/files/teams inside; what is out of scope — name the sibling areas]**
 - Accepted assumptions **(digest, from `scope.md#accepted-assumptions`)**: **[A<N> → assumed value]** — a premise the ADRs may rely on; one this area's evidence can settle is recorded as a Gap, never carried as a claim
 - Business context **(inline)**: **[the outcome the user wants and the domain facts the artifacts may rely on — not who said what, or in which round]**
-- Mode: **brownfield** (trace code) | **greenfield** (research approaches + comparable systems; see **greenfield-scenarios**)
+- Mode: **brownfield** (trace code) | **greenfield** (research approaches + comparable systems; see **decomposition-rubric** §Greenfield)
 - Cross-area constraints **(path + digest; re-dispatch or after a sibling returns)**: sibling pairs `docs/findings-*.md` + `docs/evidence-*.md`, decided sibling ADRs — **[each constraint in one line]**
 
 ## 3. Inputs

@@ -34,6 +34,8 @@ Audits **only the acting agent's own writes** via a before/after snapshot — pr
 5. Pass when the delta is empty or every delta path contains a `spikes/` segment.
 6. On any delta path outside it: stop, report only the offending delta paths, and ask the user to revert them before the spike continues.
 
+Git unavailable, or the folder untracked? List the paths the capability wrote from the tool log and apply the same `spikes/` delta test; a non-zero command exit is a stop.
+
 Pre-existing edits, unrelated files, and other tasks' changes are never judged. The delta also catches writes made through a shell in the same window.
 
 ## Recording implementation needs

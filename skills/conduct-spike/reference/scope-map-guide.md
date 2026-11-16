@@ -18,6 +18,7 @@ Area status is derived from its problems + findings-pair link — never stored s
 ## Review state
 
 Each area and each problem carries one trailing `review:` token — `reviewed` or `waived`; absent means the briefing has not been asked yet.
+Semantics are owned by `brief-human-reviewer`'s **record-review-state**; this section owns only where the token is stored.
 
 | Token | Meaning |
 |---|---|

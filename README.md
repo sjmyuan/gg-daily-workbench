@@ -88,7 +88,7 @@ Each agent declares its tool set explicitly — `read`, `glob`, `grep`, `edit`, 
 | Doc-only writers — `adr-writer`, `findings-doc-writer`, `planner`, `solution-doc-writer` | `edit *` deny, then `edit *.md` allow; everything else allowed |
 | Read-only — `code-investigator`, `code-reviewer` | `edit *` deny; discovery, shell, skills allowed |
 | Text-only — `english-corrector`, `translator` | `edit *` and `shell *` denied; discovery and skills allowed |
-| Folder-scoped writers — `orchestrate-delivery` (`deliveries`), `spike-conductor` and `spike-area-analyst` (`spikes`) | `edit *` deny, then `edit */deliveries/*` allow (V1 `**/deliveries/**` translated literally; same for `spikes`) |
+| Folder-scoped writers — `orchestrate-delivery` (`deliveries`), `spike-conductor` and `spike-area-analyst` (`spikes`) | `edit *` deny, then `edit */deliveries/*` allow (V1 `**/deliveries/**` translated literally; same for `spikes`), plus a `deliveries/*` / `spikes/*` allow for in-project paths |
 | Dispatch-restricted — `orchestrate-delivery`, `spike-conductor` | `subagent *` deny, then one `subagent <id>` allow per target |
 | No network — **every** agent | `webfetch *` and `websearch *` deny |
 | Full access — `executor`, `learner` | every action above allowed; `learner` also allows `subagent` for self-dispatch |
@@ -117,7 +117,7 @@ Adoption belongs to the **dispatching parent**, not to the agent doing the work.
 - V1 → V2: `permission:` map → ordered `permissions:` list; `bash` → `shell`; `task` → `subagent`; `write`/`patch` → `edit`; `list`, `lsp`, `todowrite` dropped.
 - Every V1 `allow`/`deny` is carried over 1:1, including `executor` and `learner`, which previously listed no tools and now spell out their set (from their `claude-agents/` tool list and prior behavior).
 - V1 path globs translate literally, one rule per V1 pattern: `"*": deny` + `"*.md": allow`, and `**/deliveries/**` → `*/deliveries/*` (both `*`s collapse to the same "any characters" wildcard). Every file is an exact permission translation — verified rule by rule against `git show HEAD`.
-- Because V2 resolves in-project write paths as Location-relative, `*/deliveries/*` does not match `deliveries/<epic>/index.md` when the artifact base is the project root. That reproduces V1's behavior; to allow it, add `{ action: "edit", resource: "deliveries/*", effect: "allow" }` (after the deny) to `orchestrate-delivery.md`.
+- Because V2 resolves in-project write paths as Location-relative, `*/deliveries/*` does not match `deliveries/<epic>/index.md` when the artifact base is the project root. That reproduces V1's behavior; to allow it, add `{ action: "edit", resource: "deliveries/*", effect: "allow" }` (after the deny) to `orchestrate-delivery.md`. The spike agents carry the equivalent `spikes/*` rule.
 - Claude paths → opencode: `CLAUDE.md` → `AGENTS.md`, `.claude/agents/` → `.opencode/agents/`, `.claude/skills/` → `.opencode/skills/`, `.claude/rules/` → project instructions.
 
 ### Notes

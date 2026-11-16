@@ -10,7 +10,7 @@
 
 ## Point 1 — After define-spike-scope
 
-The document records the accepted request as fact; the clarification that produced it stays in the session. Problems `investigating` (no ADR); the derived area status is `preparing` (no findings pair).
+The document records the accepted request as fact; the clarification that produced it stays in the session. Problems `investigating` (no ADR); the derived area status is `preparing` (no findings pair). No `review:` token yet — no checkpoint has run.
 
 ```markdown
 # Spike Scope: Session Store Replacement
@@ -38,7 +38,7 @@ Findings pair saved → the derived area status becomes `spiking`. Problems stil
 
 ```markdown
 ## Area: Session storage
-**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
+**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md · review: reviewed
 - `investigating` How to choose the session store? → (no ADR)
 - `investigating` How to migrate existing sessions? → (no ADR)
 ```
@@ -49,31 +49,31 @@ Each ADR saved → its problem `deciding`. The derived area status stays `spikin
 
 ```markdown
 ## Area: Session storage
-**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
+**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md · review: reviewed
 - `deciding` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md
 - `deciding` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md
 ```
 
 ## Point 4 — After user confirmation
 
-User confirms both options → problems `done`; all problems `done` → the derived area status is `done`.
+The user answers the store-choice prediction and waives the migration read; both problems go `done`; all problems `done` → the derived area status is `done`.
 
 ```markdown
 ## Area: Session storage
-**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
-- `done` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md
-- `done` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md
+**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md · review: reviewed
+- `done` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md · review: reviewed
+- `done` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md · review: waived
 ```
 
 ## Point 5 — New evidence reopens a problem
 
-A later measurement shows the chosen store's failover exceeds the SLA → **sync-update-artifacts** reopens the store-choice problem `done` → `deciding`; the derived area status returns to `spiking`; the ADR and solution doc are rewritten in place.
+A later measurement shows the chosen store's failover exceeds the SLA → **sync-update-artifacts** reopens the store-choice problem `done` → `deciding`; the derived area status returns to `spiking`; the ADR and solution doc are rewritten in place. The revised ADR carries no token until its briefing runs; the waived migration review stands.
 
 ```markdown
 ## Area: Session storage
-**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md
+**Findings**: docs/findings-session-storage.md + docs/evidence-session-storage.md · review: reviewed
 - `deciding` How to choose the session store? → adrs/adr-session-storage-01-store-choice.md
-- `done` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md
+- `done` How to migrate existing sessions? → adrs/adr-session-storage-02-migration.md · review: waived
 ```
 
 ## Rules in play
@@ -81,4 +81,5 @@ A later measurement shows the chosen store's failover exceeds the SLA → **sync
 - A `done` problem always has its ADR; an area is never `done` with an open problem.
 - Area status is derived from its problems and findings-pair link — never stored.
 - Statuses track saved artifacts, not in-flight dispatches.
+- `reviewed` traces to the reviewer's own words; a bare confirmation is `waived`.
 - `scope.md` records the accepted request as fact; the gate's questions, inferences, and round answers stay in the session.
