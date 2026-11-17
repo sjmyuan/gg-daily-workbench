@@ -1,6 +1,6 @@
 # Plan Amendment
 
-Used by **amend-plan**, **plan-file-format**, and **plan-quality-checklist**.
+Used by **amend-plan**, **plan-file-format**, and **plan-rubric**.
 
 ## Rule
 Change what has **not run** → amend the plan. Change what **has run** → sibling rework file.
@@ -34,7 +34,7 @@ A step that is deliberately not executed:
 4. Mark obsolete pending steps `⏭ abandoned — <reason>`; keep the step's other fields and change only `Status`; never delete.
 5. Tighten the boundary freely; widen only with user ratification.
 6. Add one `## Amendments` row to `context.md`.
-7. Re-run the plan-quality checklist and show the step diff.
+7. Re-grade against **plan-rubric** and show the step diff.
 
 ## `## Amendments` row
 

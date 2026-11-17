@@ -1,7 +1,7 @@
 # Example: Verifying a Completed Cell (Independent Gate)
 
 **Scenario**: `order-service/F2` finished execution. The executor reported `DONE_WITH_CONCERNS` with commit range `a1b2c3d..d4e5f6a`.
-The orchestrator must verify spec compliance and report trust before F2 advances to **verified**.
+The orchestrator must verify spec compliance, report trust, and judge quality before F2 advances to **verified**.
 
 **Applies**: **verify-cell** → **update-delivery-index**
 
@@ -16,13 +16,14 @@ The orchestrator must verify spec compliance and report trust before F2 advances
   | Commits | `a1b2c3d..d4e5f6a` |
   | PR | — (not opened) |
   | Gate receipt | `build=0 · test=18/18 passed · lint=0` |
-  | Review outcome | `review-code` clean; 2 Blocker/Major fixed |
+  | Self-review | own diff clean; 2 Blocker/Major fixed before hand-off |
 
 - `context.md` `## Open concerns` — "retry cap hard-coded" (deferred Minor).
 
 ## 2. Dispatch a fresh code-reviewer
 
-- **code-reviewer A** (**review-code**) — inputs: `plan.md`, `context.md`, range `a1b2c3d..d4e5f6a`, the governing ADR, solution-doc §2 + §3, global constraints, and the **cell digest**.
+- **Tier**: **Full** — F2 changes the wallet service's retry contract, which F4 consumes.
+- **code-reviewer A** (**review-code**) — inputs: `plan.md`, `context.md`, range `a1b2c3d..d4e5f6a`, the governing ADR, solution-doc §2 + §3, global constraints, the **cell digest**, and the tier.
   It gates the diff against the stated decision instead of re-deriving it.
 - code-reviewer A fetches the diff from git over the range — no diff file, and the output never enters the orchestrator's context.
 - Not executor-B, the agent that produced the work.
@@ -41,7 +42,14 @@ The orchestrator must verify spec compliance and report trust before F2 advances
 - Executor claimed a Blocker fix ("unbounded retry") — confirmed resolved in the diff (`wallet-service/retry.ts:41`).
 - Gate receipt `build=0 · test=18/18 · lint=0` matches `d4e5f6a`; no re-run needed.
 
-**Verdict**: spec compliant; report trustworthy.
+**Quality** (graded, one call):
+
+- Blocker: none.
+- Major: none. The retry loop's backoff is extracted and tested; the hard-coded cap is the only smell and it is Minor.
+- Minor: retry cap hard-coded; envelope construction repeats a literal key.
+- **Merge recommendation**: merge.
+
+**Verdict**: spec compliant, report trustworthy, quality acceptable — merge.
 
 ## 4. Handle the open concern
 
@@ -59,7 +67,7 @@ The orchestrator must verify spec compliance and report trust before F2 advances
 
 ## 6. Fix-round variant
 
-Had the code-reviewer found a Missing requirement or a Critical finding, the orchestrator dispatches the **planner** with the findings to write a sibling `rework-<date>.md`.
+Had the code-reviewer found a Missing requirement, a Critical finding, or a quality Major, the orchestrator dispatches the **planner** with the findings to write a sibling `rework-<date>.md`.
 Then the **executor**, then a scoped re-review.
 The loop is capped at 2 rounds (see **reference/verification-gate.md**).
 

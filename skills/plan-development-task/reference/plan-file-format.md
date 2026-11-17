@@ -12,7 +12,7 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 # Plan: <feature-name> — <outcome in one line>
 **Type**: bug-fix | feature | refactor | poc | restore
 **Branch**: `<branch>` off `<base>`
-**TDD variant**: Full cycle | Streamlined | Mixed | None (restore) — <one-line rationale; name groups when mixed>
+**Test strategy**: test-first | characterization-first | type/config-only | none (mechanical) — <one-line why it fits; name the unit that departs>
 **Gate**: build=`<cmd>` · test=`<cmd>` · lint-type=`<cmd>`
 **Gate waiver**: <scope> — <named failures> — ratified by <user> on <date>   (only when ratified)
 **ADR**: `adr-<name>.md` · **Option**: <option>            (POC only)
@@ -24,6 +24,10 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 **Expected files**: <likely files> (advisory)
 **Must not change**: <observable behaviors and contracts to preserve>
 **Protected zones**: <additions to the default set, or "none added">
+
+## Risk
+- <assumption the code will test> → <step that tests it or the fallback>
+- **Expected to break first**: Step N — <why>
 
 ## Decisions
 - PD1 <decision> — <reason>                              (only when context.md cites a PD)
@@ -60,9 +64,9 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 | Element | Rule |
 |---|---|
 | Title | `# Plan: <feature> — <outcome>`; one line. |
-| Metadata | `Type` (`bug-fix` · `feature` · `refactor` · `poc` · `restore`); `Branch` as `<branch>` off `<base>`; `TDD variant` (`Full cycle` · `Streamlined` · `Mixed` · `None` for restore) + rationale; `ADR`/`Option`/`Success criteria` only for POC. |
+| Metadata | `Type` (`bug-fix` · `feature` · `refactor` · `poc` · `restore`); `Branch` as `<branch>` off `<base>`; `Test strategy` (`test-first` · `characterization-first` · `type/config-only` · `none (mechanical)`) + why it fits; `ADR`/`Option`/`Success criteria` only for POC. |
 | Gate | One `**Gate**` line — `build=` · `test=` · `lint-type=`, each evidence-backed (`file:line`); monorepos repeat the line per module. `**Gate waiver**` only when user-ratified (see **exit-gate**). |
-| Order | Title → metadata → `## Scope Boundary` → `## Decisions` (optional) → `## Steps`. |
+| Order | Title → metadata → `## Scope Boundary` → `## Risk` → `## Decisions` (optional) → `## Steps`. |
 | Scope Boundary | Zone order fixed per **scope-boundary**; write `Protected zones: none added` when nothing is added. |
 | Steps | One `### Step N: <title> <status>` block per step, in file order; all six field lines, in order. |
 | Objective | One sentence, ≤20 words, imperative. |
@@ -70,12 +74,13 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 | Source | Every step names `Source · Ref · Equality` per **change-provenance** — `no-op · n/a · n/a` when nothing changes; `generate` states its justification in `Implementation`, ratified when the user confirms the plan. |
 | Validation | Behavioral or `Must match` equality; the exit gate's pass rule is every gate command exit 0 — never a commit hash. |
 | Status | Generated plans use `⏳`; the executor owns `🔄 ✅ ❌ 🚫`; the planner sets `⏭` only. |
+| Step shape | A step is a **unit with one verdict**, never a phase. Test, implement, refactor, and cleanup fold into the unit they serve; a step earns existence only when its `Validation` differs from its neighbour's. |
+| Open by design | A step whose shape depends on unread code states the check that closes it plus a fallback, and appears in `## Risk` — never a guessed diff. |
+| Risk | Two or three assumptions, each naming the step that tests it; plus the step expected to break first. Six lines maximum. |
 | Exit gate | Final step, six fields, `Source: no-op · n/a · n/a`; its `Status` receipt carries commands, exit codes, and counts. Never abandoned or deferred — only a ratified waiver removes it. |
 | Amendment | Append the next number or insert `3a`; never renumber (see **plan-amendment**). |
 
-Not in `plan.md`: root cause, requirement narrative, background, consolidation prose,
-per-step rationale, issue history, "key characteristics". Root cause → `context.md` **Why**;
-variant rationale → the `TDD variant` line; decisions `context.md` must not restate → `## Decisions`.
+Not in `plan.md`: requirement narrative, background, consolidation prose, per-step rationale, issue history, "key characteristics". Root cause → `context.md` **Why**; strategy rationale → the `Test strategy` line; decisions `context.md` must not restate → `## Decisions`; risk → `## Risk`.
 
 ## rework-<date>.md template
 
@@ -99,6 +104,9 @@ Written when executed behavior must change; `plan.md` stays frozen (see **rework
 | Criterion | Verification | Pass rule |
 |---|---|---|
 | <delta criterion> | <test or diff check> | <pass rule> |
+
+## Risk
+- **Expected to break first**: Step N — <why>
 
 ## Steps
 

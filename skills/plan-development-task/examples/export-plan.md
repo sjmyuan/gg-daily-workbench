@@ -20,7 +20,7 @@ The single-repo workspace has no docs home or convention, so **resolve-artifact-
 # Plan: fix-null-pointer-in-transformer — no crash when the transform result is null
 **Type**: bug-fix
 **Branch**: `fix-null-pointer` off `main`
-**TDD variant**: Full cycle — a crash path needs a reproducing failing test.
+**Test strategy**: test-first — a crash path needs a reproducing failing test.
 **Gate**: build=`./mvnw compile` · test=`./mvnw test` · lint-type=`./mvnw checkstyle:check` — `pom.xml:41`
 
 ## Scope Boundary
@@ -28,6 +28,10 @@ The single-repo workspace has no docs home or convention, so **resolve-artifact-
 **Expected files**: handler + its tests (advisory)
 **Must not change**: transformer behavior, publisher behavior, other handlers
 **Protected zones**: none added
+
+## Risk
+- The null payload arrives through a queue path the local suite cannot exercise → Step 2 uses the recorded fixture; fallback: log it in `## Open concerns`.
+- **Expected to break first**: Step 2 — the reproduction may fail for a different reason.
 
 ## Steps
 
@@ -39,31 +43,15 @@ The single-repo workspace has no docs home or convention, so **resolve-artifact-
 **Validation**: Gate commands on `main` — `baseline: green` (build=0 · 214 passed · lint=0).
 **Status**: ⏳ Pending
 
-### Step 2: Write the null-payload test ⏳
-**Objective**: Reproduce the crash for a missing payload.
-**Files**: `DataImportedHandlerTest.java`
-**Source**: generate · n/a · behavior-equal
-**Implementation**: New test feeds a record whose transform result is null.
-**Validation**: Test compiles and joins the suite.
-**Status**: ⏳ Pending
-
-### Step 3: Confirm test failure (RED) ⏳
-**Objective**: Prove the test fails with the observed null dereference.
-**Files**: none
-**Source**: no-op · n/a · n/a
-**Implementation**: Run only the new test.
-**Validation**: Fails on the null dereference — not an unrelated error.
-**Status**: ⏳ Pending
-
-### Step 4: Guard the null result ⏳
-**Objective**: Skip publication on a null result and drop the superseded workaround.
-**Files**: `DataImportedHandler.java`, `DataImportedHandlerTest.java`
+### Step 2: Reproduce and guard the null payload ⏳
+**Objective**: A null transform result is skipped, not dereferenced.
+**Files**: `DataImportedHandlerTest.java`, `DataImportedHandler.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**: Add the null guard before building the event; delete the dead defensive check and its fixture.
-**Validation**: Step 2 test passes; handler suite green after the removal.
+**Implementation**: Test first — a record whose transform result is null; then add the null guard before building the event and delete the dead defensive check and its fixture.
+**Validation**: Test fails on the null dereference before the guard and passes after; handler suite green.
 **Status**: ⏳ Pending
 
-### Step 5: Exit gate ⏳
+### Step 3: Exit gate ⏳
 **Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
@@ -102,7 +90,7 @@ Boundary: **plan.md** §Scope Boundary.
 |---|---|---|
 | Missing payload no longer crashes | handler test suite | all pass |
 | Transformer and publisher untouched | diff against `main` | no changes |
-| Build, full suite, static checks green | `plan.md` Step 5 (Exit gate) | every gate command exit 0 |
+| Build, full suite, static checks green | `plan.md` Step 3 (Exit gate) | every gate command exit 0 |
 
 ## Pointers
 
@@ -134,7 +122,7 @@ Boundary: **plan.md** §Scope Boundary.
 `## Reworks` and `## Amendments` start with their first row.
 ```
 
-No branch metadata, TDD rationale, or decisions here — they live in `plan.md`. Charter ~50 lines.
+No branch metadata, strategy rationale, or decisions here — they live in `plan.md`. Charter ~50 lines.
 
 ## Save Location
 
@@ -143,8 +131,8 @@ Saved to `<repo-root>/feature-implementations/fix-null-pointer-in-transformer/`;
 ## Validation
 
 - [x] Feature folder derived from the plan objective; repo-first layout applied
-- [x] `plan.md` matches the template: title, metadata, zones in fixed order, six-field steps
-- [x] The `Gate` line is evidence-backed; Step 1 records the baseline; Step 5 is the Exit gate
+- [x] `plan.md` matches the template: title, metadata, zones in fixed order, `## Risk`, unit steps
+- [x] The `Gate` line is evidence-backed; Step 1 records the baseline; Step 3 is the Exit gate
 - [x] `context.md` `Done means` cites the Exit gate step for the build, suite, and static-check rows
 - [x] Branch/base in `plan.md`; no branch metadata in `context.md`
 - [x] `context.md` is 40–60 lines, passes the admission test, and duplicates no plan fact

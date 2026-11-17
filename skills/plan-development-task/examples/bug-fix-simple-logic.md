@@ -40,7 +40,7 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 # Plan: fix-publisher-id — outgoing events carry the original source ID
 **Type**: bug-fix
 **Branch**: `fix-publisher-id` off `main`
-**TDD variant**: Full cycle — a data-correctness bug needs test-first proof.
+**Test strategy**: test-first — a data-correctness bug needs proof of the break.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
 
 ## Scope Boundary
@@ -48,6 +48,10 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 **Expected files**: `DataImportedHandler.java` + its tests (advisory)
 **Must not change**: transformer logic, publisher behavior, other handlers
 **Protected zones**: none added
+
+## Risk
+- The transformer has one consumer → Step 2 greps for others; fallback: keep the old assertion with a recorded exception.
+- **Expected to break first**: Step 2 — another handler may rely on the transformed ID.
 
 ## Steps
 
@@ -59,39 +63,15 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 **Validation**: Gate commands on `main` — `baseline: green` (build=0 · 168 passed · lint=0).
 **Status**: ⏳ Pending
 
-### Step 2: Write the ID assertion ⏳
-**Objective**: Assert the published message carries the original source ID.
-**Files**: `DataImportedHandlerTest.java`
-**Source**: generate · n/a · behavior-equal
-**Implementation**: New test feeds a record whose transformation changes the ID and captures the outgoing payload.
-**Validation**: Test compiles and joins the suite.
-**Status**: ⏳ Pending
-
-### Step 3: Confirm test failure (RED) ⏳
-**Objective**: Prove the new test fails for the wrong-ID reason.
-**Files**: none
-**Source**: no-op · n/a · n/a
-**Implementation**: Run only the new test.
-**Validation**: Fails asserting the source ID — not an error.
-**Status**: ⏳ Pending
-
-### Step 4: Pass the original ID ⏳
-**Objective**: Publish the source ID instead of the transformed ID.
-**Files**: `DataImportedHandler.java`
-**Source**: edit · n/a · behavior-equal
-**Implementation**: Replace `transformedData.getId()` with `record.getId()` in the outgoing message.
-**Validation**: Step 2 test passes; handler suite green.
-**Status**: ⏳ Pending
-
-### Step 5: Clean up ⏳
-**Objective**: Remove the obsolete ID-mapping helper and stale assertions.
+### Step 2: Publish the source ID ⏳
+**Objective**: Outgoing events carry the record's own ID.
 **Files**: `DataImportedHandler.java`, `DataImportedHandlerTest.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**: Delete the unused helper; drop assertions on the old transformed ID.
-**Validation**: Affected-area suite green after cleanup.
+**Implementation**: Add the ID assertion to the existing handler test (it feeds a record whose transformation changes the ID and captures the payload); replace `transformedData.getId()` with `record.getId()` in the outgoing message; drop the now-unused ID-mapping helper.
+**Validation**: New assertion fails on the source ID before the change and passes after; handler suite green.
 **Status**: ⏳ Pending
 
-### Step 6: Exit gate ⏳
+### Step 3: Exit gate ⏳
 **Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
@@ -104,6 +84,6 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 
 - [x] Type classified before planning; root cause confirmed by the user
 - [x] Boundary names behavior, not just files; protected zones explicit
-- [x] Every step is one six-field block with a `⏳` status
-- [x] RED precedes the fix; cleanup and the Exit gate precede hand-off
-- [x] 6 steps — consolidated from the 9-step full cycle, under the bug-fix cap of 20
+- [x] One unit (Step 2) carries the test, the fix, and the cleanup — one verdict, so one step
+- [x] The failing run is recorded inside Step 2's `Validation`, not as a step of its own
+- [x] 3 steps: prepare, unit, gate — nothing was added to meet a count

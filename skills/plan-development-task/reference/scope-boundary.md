@@ -1,6 +1,6 @@
 # Scope Boundary
 
-Used by **define-scope-boundary**, **plan-file-format**, and **plan-quality-checklist**.
+Used by **define-scope-boundary**, **plan-file-format**, and **plan-rubric**.
 
 ## Purpose
 The boundary gates on **behavior**, not on file paths. A diff that touches an unlisted file but changes no behavior is not a breach.

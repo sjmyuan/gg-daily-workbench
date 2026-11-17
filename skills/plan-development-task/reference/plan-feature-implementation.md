@@ -1,22 +1,28 @@
 # plan-feature-implementation
 
-1. **Prepare Environment (Prerequisites)**: Apply **plan-prerequisites** from the SKILL.md — ensure the feature branch exists, named per the **repo's branch convention** (detect from existing branches / git config / team docs, or ask the user; never assume a prefix), based on the correct base; no uncommitted changes overlapping the plan's work; dependencies and toolchain installed; the gate commands (`build` / `test` / `lint-type`) discovered from repo evidence (`file:line`) and run on the base, with `baseline: green` or the named failures recorded. Raise only necessary blockers to the user before continuing.
-2. Break down high-level software requirements into specific, independently testable functionalities.
-3. **Define Scope Boundary**: Apply **define-scope-boundary** — derive the **May change**/**Must not change** behaviors from the requirement scope and the governing ADR (for **orchestrate-feature-delivery** cells); present to the user for ratification.
-4. Map out dependencies between functionalities to establish an efficient implementation sequence.
-5. **Consolidate Steps**: Group related functionalities together when they share context or can be tested together, reducing the total step count while maintaining clarity. Consolidation strategies: (a) merge test-and-implement steps for simple getters/setters or config properties into a single step, (b) combine Clean Up Unused Code + Clean Up Tests + Verify Cleanup into one cleanup step when changes are small, (c) fold every static check into the single final Exit Gate step — the gate is mandatory, never optional.
-6. Load **reference/tdd-approach-selection.md** to select the appropriate TDD variant for each functionality. Document the rationale.
-7. Create a detailed step-by-step implementation plan using the template in **reference/plan-file-format.md** — title + metadata, the ratified `## Scope Boundary`, optional `## Decisions`, then one six-field `### Step N: <title> ⏳` block per step. For each functionality, include the following steps:
-   1. **Write Focused Tests**: Create precise tests for a single functionality that name the break they catch and assert real behavior — see **reference/test-quality.md**.
-   2. **Confirm Test Failure (RED)**: Run the tests and confirm each **fails** — not errors — for the expected reason because the behavior is missing. A test that passes immediately tests existing behavior: rewrite it. A test that errors: fix it and re-run until it fails correctly.
-   3. **Materialize Code**: produce the target from the step's `Source` — restore, port, copy, or minimally edit before generating; generate only when `Source: generate` (see **reference/provenance-first.md**).
-   4. **Verify Implementation**: Re-run the tests to confirm that the implemented code passes all test cases successfully. Debug and refine as necessary.
-   5. **Refactor**: Improve the code's structure, readability, and performance while maintaining functionality, ensuring no tests break during the process.
-   6. **Validate Refactoring**: Run the tests again after refactoring to ensure the updated code still passes all test cases without introducing regressions.
-   7. **Clean Up Unused Code**: Remove any obsolete or redundant code that is no longer needed after implementation.
-   8. **Clean Up Tests**: Update or remove tests that are no longer relevant, ensuring the test suite remains accurate and effective.
-   9. **Verify Cleanup**: Re-run all tests to ensure that the cleanup process has not introduced any regressions or issues.
-   10. **Exit Gate**: Run every recorded gate command — build, full suite, lint/type. All exit 0 with zero failures; red → repair twice, then stop and ask. See **reference/exit-gate.md**.
-8. Ensure the total number of steps in the plan is manageable and does not exceed 25 steps. The full TDD cycle can generate up to 10 steps per functionality; use consolidation strategies to reduce this where appropriate.
-9. **Validate Plan Quality**: Load **reference/plan-quality-checklist.md** and verify — every functionality has tests defined, dependency ordering is correct, step count ≤ 25, TDD variants are documented, and every **Exit Gate** item passes. Revise any failing items before presenting to the user.
-10. Summarize the complete plan to the user.
+Judgment capability: decompose the requirement, then shape the plan yourself.
+The acceptance evidence and the gate are not negotiable; the step list is.
+
+1. **Decompose the requirement** into independently observable behaviors. Every term the user left silent becomes a question or a labeled assumption (see **define-scope**).
+2. **Resolve the stated guarantee.** When the ask says never, always, exactly, or once, name the failure boundary that can break it — an ambiguous transport outcome, a retry after a partial write, a concurrent caller — and decide it: which side the plan takes, the test that proves it, and the fallback. Choosing "the library handles it" is a decision too; write it down. An open question on a stated guarantee is never an `Assumption` — it is a decision the plan makes or a question it asks before step 4 (see **plan-rubric** row 6).
+3. **Choose the test strategy** per **test-strategy** — prefer one across the plan, and name each unit's proof.
+4. **Ratify the scope boundary** per **define-scope-boundary**.
+5. **Derive units, not phases.** One unit per observable outcome. A small unit carries its test and its implementation in one step; a complex one may need several. Never emit "confirm RED", "refactor", "clean up", or "verify cleanup" as standalone steps — they are phases, not units.
+6. **Order by dependency.** Each step's precondition is the base or an earlier step; contract before consumer.
+7. **Write the plan** per **reference/plan-file-format.md** — header, `## Scope Boundary`, `## Risk`, optional `## Decisions`, unit steps, Exit gate.
+8. **Leave what the code decides open.** Name the check that closes the step, not a guessed diff. An unread seam is not an unresolved guarantee: that one was decided in step 2.
+9. **Self-check** against **plan-rubric**; present the risk route per its presentation row.
+
+Worked miss to avoid: "retries must never double-notify" planned as a config change plus a dedupe step, with "the transport cannot deliver then fail" written as an assumption. The plan implements a guarantee it never decided — it passes every box and fails the one thing the user asked for.
+
+```markdown
+### Step 3: Apply tiered pricing ⏳
+**Objective**: Orders over the threshold receive the tier discount, exactly once per order.
+**Files**: `pricing/TierRule.java`, `pricing/TierRuleTest.java`
+**Source**: generate · n/a · behavior-equal
+**Implementation**: Rule reads the tier from config; apply at the single pricing entry point. Generated because no existing rule composes two thresholds — rationale ratified with this plan.
+**Validation**: Table test covers below, at, and above the threshold, and a double-application guard; pricing suite green.
+**Status**: ⏳ Pending
+```
+
+One step, because it has one verdict: the table proves the behavior. Splitting it into RED / implement / refactor would buy the executor nothing.

@@ -28,7 +28,7 @@ Ladder: rung 1 (`no-op`) fails — a retry block exists. Rung 2 (`base`) reaches
 # Plan: revert-order-poller-retries — OrderPoller matches origin/main
 **Type**: restore
 **Branch**: `revert-order-poller-retries` off `main`
-**TDD variant**: None — non-behavioral restore; an equality proof replaces RED/GREEN.
+**Test strategy**: none (mechanical) — an equality proof replaces RED/GREEN.
 **Gate**: build=`npm run build` · test=`npm test` · lint-type=`npm run lint` — `package.json:12`
 
 ## Scope Boundary
@@ -38,6 +38,10 @@ Ladder: rung 1 (`no-op`) fails — a retry block exists. Rung 2 (`base`) reaches
 **Expected files**: `src/poller/order_poller.ts`, `src/poller/order_poller.test.ts` (advisory)
 **Must not change**: order submission contract, public API signatures
 **Protected zones**: none added
+
+## Risk
+- No later commit touched `OrderPoller` → Step 2's equality diff proves it; fallback: port the later commits instead.
+- **Expected to break first**: Step 2 — a path restore discards unrelated changes.
 
 ## Steps
 
@@ -84,4 +88,4 @@ Non-behavioral justification: restores pre-existing behavior; no new behavior is
 - [x] No RED/GREEN step; the non-behavioral justification is recorded
 - [x] `Gate` line is evidence-backed; Step 1 records the baseline
 - [x] Final step proves the restore and runs the exit gate
-- [x] 3 steps — under the restore cap of 5
+- [x] 3 steps — prepare, restore, gate; no step was added to meet a count

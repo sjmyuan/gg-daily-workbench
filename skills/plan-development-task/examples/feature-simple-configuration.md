@@ -27,7 +27,7 @@ Keywords "add", "configurable" → **Feature** (new configuration capability). *
 # Plan: configurable-retry-settings — retry count and delay come from configuration
 **Type**: feature
 **Branch**: `configurable-retry-settings` off `main`
-**TDD variant**: Streamlined — configuration-only change; test writing and wiring stay separate, cleanup folds into the exit gate.
+**Test strategy**: type/config-only — configuration-only change; the suite plus a startup check is the proof.
 **Gate**: build=`./mvnw compile` · test=`./mvnw test` · lint-type=`./mvnw checkstyle:check` — `pom.xml:53`
 
 ## Scope Boundary
@@ -35,6 +35,10 @@ Keywords "add", "configurable" → **Feature** (new configuration capability). *
 **Expected files**: `application.yaml`, `RetryConfig`, `EventPublisherImpl`, their tests (advisory)
 **Must not change**: message format, other Azure Service Bus settings
 **Protected zones**: none added
+
+## Risk
+- The key is read in one place → Step 2 greps for other readers; fallback: add the second site to the same unit.
+- **Expected to break first**: Step 2 — an existing default may mask the new value.
 
 ## Steps
 
@@ -46,47 +50,15 @@ Keywords "add", "configurable" → **Feature** (new configuration capability). *
 **Validation**: Gate commands on `main` — `baseline: green` (build=0 · 187 passed · lint=0).
 **Status**: ⏳ Pending
 
-### Step 2: Write configuration tests ⏳
-**Objective**: Assert defaults load and overrides apply to publishing retries.
-**Files**: `RetryConfigTest.java`, `EventPublisherImplTest.java`
-**Source**: generate · n/a · behavior-equal
-**Implementation**: Tests cover absent properties (3 / 100 ms) and explicit overrides.
-**Validation**: Tests compile and join the suite.
-**Status**: ⏳ Pending
-
-### Step 3: Confirm test failure (RED) ⏳
-**Objective**: Prove the tests fail because the properties are not consumed.
-**Files**: none
-**Source**: no-op · n/a · n/a
-**Implementation**: Run only the new tests.
-**Validation**: Fails on missing properties — not an error.
-**Status**: ⏳ Pending
-
-### Step 4: Add the properties and config class ⏳
-**Objective**: Bind the retry settings with documented defaults.
-**Files**: `application.yaml`, `RetryConfig.java`
-**Source**: generate · n/a · behavior-equal
-**Implementation**: New `@ConfigurationProperties` class under the existing `azure.servicebus` prefix.
-**Validation**: Configuration-binding test passes.
-**Status**: ⏳ Pending
-
-### Step 5: Consume the settings ⏳
-**Objective**: Publish with the configured retry count and delay.
-**Files**: `EventPublisherImpl.java`
+### Step 2: Bind the retry settings and publish with them ⏳
+**Objective**: Defaults load when the properties are absent, overrides apply, and publishing uses them.
+**Files**: `application.yaml`, `RetryConfig.java`, `EventPublisherImpl.java`, `RetryConfigTest.java`, `EventPublisherImplTest.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**: Replace hardcoded retry values with `RetryConfig` values.
-**Validation**: Publisher tests pass.
+**Implementation**: Failing tests first (absent properties → 3 / 100 ms; explicit overrides); add a `@ConfigurationProperties` class under the existing `azure.servicebus` prefix; replace the hardcoded retry values and delete the constants they replace.
+**Validation**: New tests fail on missing properties, then pass; publisher suite green.
 **Status**: ⏳ Pending
 
-### Step 6: Remove the hardcoded constants ⏳
-**Objective**: Delete the retry constants now supplied by configuration.
-**Files**: `EventPublisherImpl.java`
-**Source**: edit · n/a · behavior-equal
-**Implementation**: Remove the unused constants; no behavior change.
-**Validation**: Publisher tests pass after the removal.
-**Status**: ⏳ Pending
-
-### Step 7: Exit gate ⏳
+### Step 3: Exit gate ⏳
 **Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
@@ -98,7 +70,6 @@ Keywords "add", "configurable" → **Feature** (new configuration capability). *
 ## Validation
 
 - [x] Tests cover defaults and overrides — not just the happy path
-- [x] Streamlined keeps test-first; only cleanup is folded into the last code step
-- [x] Every step is one six-field block with a `⏳` status
+- [x] `type/config-only` is the strategy, and the suite plus a startup check is the stated proof
+- [x] Binding, consuming, and removing the constants share one verdict — so they share one step
 - [x] The `Gate` line is evidence-backed and the Exit gate is the final step
-- [x] 7 steps — small enough for fast review

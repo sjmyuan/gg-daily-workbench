@@ -10,7 +10,7 @@ NO BEHAVIOR CHANGE WITHOUT A FAILING TEST FIRST
 
 Applies to bug fixes, features, and behavior-changing refactors.
 
-- Streamlined (fewer, consolidated steps) is allowed when a test is still written first and watched to fail.
+- Fewer, merged units are allowed when a test is still written first and watched to fail. Consolidation never means skipping the failing run.
 - Skipping test creation is allowed only for non-behavioral changes — config values with no logic, type-only additions, docs, and mechanical restores or ports (see **change-provenance**). Record the justification in `context.md`.
 
 ## Rationalizations to Reject
@@ -30,12 +30,12 @@ Applies to bug fixes, features, and behavior-changing refactors.
 
 ## Red Flags — Stop and Rewrite the Plan
 
-- A test step follows its implementation step
-- "Write tests" and "implement" merged for a behavioral change
 - A test is expected to pass the first time it runs
-- No step watches a test fail before the fix or implementation
+- A merged test-and-implement unit with no recorded failing run
+- No evidence anywhere that the behavior was missing before the change
 - Cleanup removes tests without replacement coverage
-- A streamlined variant chosen for a change that alters behavior
+- `test-first` claimed for a behavior change, with no step recording a failure
+- A test step placed after its implementation step as a separate phase
 
 ## Testability Is a Design Signal
 

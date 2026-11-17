@@ -17,7 +17,7 @@ description: Execute structured development plans with progress tracking, valida
 <knowledge>
 <request-intake>
 Gate the request through `clarify-request`'s intake gate: restate the plan path, active rework, base ref, outcome, and itemize inferences. Zero inferences → **track-plan**; anything inferred → ask before step 1.
-A request arriving **mid-execution** is gated the same way before it becomes a step or an amendment — never silently absorbed, never a reason to stop in-scope work. Accepted defaults go to `## Open concerns` labeled `Assumption (user-accepted, unverified)`.
+A mid-execution request is gated the same way before it becomes a step or an amendment — never silently absorbed, never a reason to stop in-scope work. Accepted defaults go to `## Open concerns` as `Assumption (user-accepted, unverified)`.
 A seeding brief stating the plan path, rework, base ref, and outcome **is** the gate result: adopt it, ask nothing, never re-detect the folder.
 </request-intake>
 <plan-format>
@@ -98,7 +98,7 @@ Every plan carries a **green-only exit gate** — the plan is the contract, not 
 2. Record the decision in the step note and run the affected tests.
 </place-tests>
 <verify-prerequisites>
-1. Verify the feature branch — created only if the plan requires it and the user confirms name and base — then check dependencies, toolchain, and the affected baseline.
+1. Verify the feature branch — created only if the plan requires it and the user confirms name and base — then dependencies, toolchain, and the affected baseline.
 2. Detect the comment style and record the policy plus one exemplar in the plan note.
 3. A failed check → stop and raise it. Record ready or blocked before step 1.
 </verify-prerequisites>
@@ -108,9 +108,10 @@ Every plan carries a **green-only exit gate** — the plan is the contract, not 
 3. A `no-op` step records its empty-diff proof instead.
 </commit-step>
 <review-post-execution>
-1. After every step is ✅, apply **review-code** on all changed files.
-2. Per Blocker or Major: apply **check-scope-boundary**, record a ⏳ fix step, run **execute-step**, and repeat until none remain; document 🟡 and 🟢 without blocking.
-3. Re-run the **Exit gate** after the last fix — a pre-fix receipt is stale — and keep `plan.md` + `context.md` as the permanent record.
+1. Review your own diff against the plan's objectives and Scope Boundary.
+2. Run the full **review-code** pass only when no independent gate follows; in a delivery cell **verify-cell** owns that review — both is a duplicated cost.
+3. Per Blocker/Major: **check-scope-boundary**, record a ⏳ fix step, **execute-step**, repeat; log 🟡/🟢 only.
+4. Re-run the **Exit gate** after the last fix; keep `plan.md` + `context.md` as the record.
 </review-post-execution>
 <request-push-approval>
 1. Confirm the **Exit gate** receipt matches the current head; stale or red → re-run or stop.
