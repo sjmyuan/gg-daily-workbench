@@ -26,7 +26,7 @@ A capability whose output has no check leaves correctness to agent discretion.
 
 ## Grades
 
-- Use 3–5 criteria; each scores 0–2, or 1–4 when the levels need nuance.
+- Use 3–5 criteria; each scores 0–2, or 1–4 when the levels need nuance. A **behavioral test instrument** is not a capability rubric: it may hold 8–15 items, scores per item, and belongs to **behavioral-acceptance**.
 - Give every level an observable anchor: `0 = no reason given`, `2 = reason names the tradeoff`.
 - State the pass bar, for example "≥8/10 and no criterion at 0".
 - Score the artifact, never the intent; a criterion that no output can fail is deleted.

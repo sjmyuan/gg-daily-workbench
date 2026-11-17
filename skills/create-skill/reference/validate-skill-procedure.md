@@ -24,7 +24,7 @@ Used by **validate-created-skill** (step 1). Run the checks in order and report 
 | 18 | The example set is continuous: identifiers, counts, statuses, and doctrine order agree; a shared cross-skill example is updated in both. | 🟡 Minor (invalidating: 🔴 Major) |
 | 19 | Prescriptiveness matches each capability's regime per **empowerment-model**: no step a capable model would take unaided; a judgment capability states outcome, tradeoffs, failure modes, and an exemplar. | 🟡 Minor (judgment capability holding steps only: 🔴 Major) |
 | 20 | Non-obvious constraints keep one reason; delegation boundaries appear where the agent makes judgment calls. | 🟡 Minor |
-| 21 | Run the behavioral test per **behavioral-acceptance** on every judgment skill: the default is to run it, not to report it skipped. A skip needs a reason (`no representative tasks`, `contractual-only`) and costs 🟡. | 🟡 Minor (flat delta left in place, or a skip with no reason: 🔴 Major) |
+| 21 | Run the behavioral test per **behavioral-acceptance** on every judgment skill, with a claim register and per-item scoring: the default is to run it, not to report it skipped. A skip needs a reason (`no representative tasks`, `contractual-only`) and costs 🟡. | 🟡 Minor (a flat item on a predicted element left in place, or a skip with no reason: 🔴 Major) |
 
 ## Order of operations
 
@@ -35,7 +35,7 @@ Used by **validate-created-skill** (step 1). Run the checks in order and report 
 5. Stop when the gates pass; do not keep trimming a passing file.
 6. Separate **introduced** from **pre-existing** findings; report both, but never block a scoped fix on a pre-existing budget failure.
 7. When artifact templates exist, run `review-skill`'s `check_artifacts.py` with the template's field and zone lists before the manual checks; if the tool is absent, say so in the report.
-8. Run the behavioral test per **behavioral-acceptance** before delivery — batching edits is fine, since it grades the shipped skill. Neutralise the task text: a prompt that names the desired behaviour manufactures a tie.
+8. Run the behavioral test per **behavioral-acceptance** before delivery — batching edits is fine, since it grades the shipped skill. Write the claim register and audit the rubric before the run, neutralise the task text, and report per item: a prompt that names the desired behaviour manufactures a tie, and a total hides a flat element.
 
 ## Structural-integrity gate
 

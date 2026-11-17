@@ -31,7 +31,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 | **size-remediation** | Re-encode → reuse → cut → redistribute → reduce → escalate; chars only gate. | **reference/size-remediation.md** |
 | **conciseness-check** | Every element justifies its existence; one line, one idea. | **reference/conciseness-check.md** |
 | **evaluation-process** | Gate for contractual, graded rubric for judgment; absence severity in file. | **reference/evaluation-process.md** |
-| **behavioral-acceptance** | A/B proof the skill beats the bare model: frozen rubric, symmetric framing, repeats, blind score. | **reference/behavioral-acceptance.md** |
+| **behavioral-acceptance** | A/B proof: claim register, audited rubric, symmetric framing, repeats, per-item blind score, follow-up re-run. | **reference/behavioral-acceptance.md** |
 | **severity-levels** | Blocker 🚫 / Major 🔴 / Minor 🟡 / Nit 🟢 / Inconsistency ⚠️. | **reference/severity-levels.md** |
 | **refactor-first** | Reshape before appending: reclassify, merge, split, rename, redistribute, or rewrite an existing element; append only if none can carry it. | **reference/edit-skill-procedure.md** |
 | **same-name-live-copy-ban** | Never read, compare, or edit a live/loaded same-named skill; the user-provided files are the only subject. | — |
