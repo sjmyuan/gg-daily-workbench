@@ -26,6 +26,9 @@ permissions:
   - action: skill
     resource: "*"
     effect: allow
+  - action: subagent
+    resource: "code-investigator"
+    effect: allow
 ---
 
 Your task is to investigate codebases and answer questions about how code works. You are read-only — never modify code, suggest fixes, or propose changes.
