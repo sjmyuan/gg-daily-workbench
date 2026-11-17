@@ -48,6 +48,10 @@ The original `plan.md` is never modified; the rework inherits the original bound
 **Must not change**: original **Must not change**, otherwise unchanged
 **Protected zones**: none added
 
+## Risk
+- Credential selection is the only cause of the retry failure → Step 1's failing test proves it; fallback: amend before Step 3.
+- **Expected to break first**: Step 1 — the retry path may need a seam before it can be tested.
+
 ## Done means
 | Criterion | Verification | Pass rule |
 |---|---|---|

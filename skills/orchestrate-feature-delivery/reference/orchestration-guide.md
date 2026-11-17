@@ -2,22 +2,25 @@
 
 Tables read by the orchestration capabilities and **agent-recovery**. Statuses and readiness: **reference/state-machine.md**; index schema: **reference/delivery-index-format.md**; briefs: **reference/dispatch-briefs.md**.
 
-## Agent dispatch
+## Do it yourself, or dispatch
 
-| Task | Delegated agent | Applies | Result |
-|---|---|---|---|
-| Answer a question (L0) | orchestrator reads the record | **investigation-triage** | answer, no artifacts |
-| Investigate a code fact (L1) | **code-investigator** | **investigate-code** | evidence answer with `file:line` |
-| Revise one ADR (L2) | **adr-writer** | **draft-adr** | revised ADR, in place |
-| Spike decisions (L3; incl. rework) | **spike-conductor** | **conduct-spike** | rewritten ADRs; optional notes or overview |
-| Plan a cell | **planner** | **plan-development-task** | `plan.md` + `context.md` |
-| Execute a cell | **executor** | **execute-plan** | code changes + commits; push + PR |
-| Verify a cell | **code-reviewer** | **review-code** | spec-compliance + trust verdict |
-| Update the solution doc | **solution-doc-writer** | **write-solution-doc** | revised sections, in place |
+Dispatch buys one of three things: **isolation** (bulk context stays out of yours), **independence** (a verdict you cannot give on your own work), or **authorship** (an artifact that carries a decision's voice). Anything else, do yourself.
+
+| Work | Goes to | Dispatch when |
+|---|---|---|
+| Answer a question — index, ADR, plan, prior verdict, git log (L0) | **you** | never |
+| Locate a code fact (L1) | **you** or **code-investigator** | read it yourself when bounded; dispatch when it spans areas or would flood your context |
+| Plan a cell | **planner** | always — plan files are planner-owned |
+| Execute a cell | **executor** | always |
+| Verify a cell | **code-reviewer** | always, never the executor — independence is the point |
+| Revise one ADR (L2) | **adr-writer** | always — authorship of a decision |
+| Spike decisions (L3; incl. rework) | **spike-conductor** | on a stated trigger |
+| Update the solution doc | **solution-doc-writer** | always — authorship |
 
 - **One cell per agent**; the planner writes the feature folder's `plan.md` + `context.md`, the executor runs that plan.
-- **Artifact updates are delegated too** — `solution-doc-writer` / `adr-writer`; never edited from the orchestrator.
-- Use the platform's agent mechanism; if none exists, ask the user — never fall back to doing the work.
+- **You never write code, a plan, or an ADR** — your writes stay inside `deliveries/**`, and only `index.md`.
+- Use the platform's agent mechanism; if none exists, ask the user — never fall back to writing the artifact yourself.
+- A cheap read you skip is a dispatch you pay for twice: once to send it, once to read the answer back.
 
 ## Parallel gating
 
@@ -30,17 +33,14 @@ Tables read by the orchestration capabilities and **agent-recovery**. Statuses a
 
 ## Recovery ladder
 
-A stall, question, or failure is the orchestrator's problem before it is the user's — it holds the record the agent needs. Match the signal to the cheapest rung that clears it; one rung per attempt.
+A stall, question, or failure is the orchestrator's problem before it is the user's — it holds the record the agent needs. Four rungs; take the highest one that clears it.
 
-| Rung | Signal | Action | Extra dispatches |
+| Rung | Signal | Action | Dispatches |
 |---|---|---|---|
-| **1 Answer** | The agent asks what the record already settled (index, ADR, `context.md`, plan, prior verdicts) | Reply with the digest and let the agent continue — no re-dispatch | 0 |
-| **2 Investigate** | A code fact is missing, contradicted, or guessed | Dispatch **code-investigator** (L1) with that question; feed the evidence back | 1 |
-| **3 Re-brief** | A path, intake field, dependency contract, or convention was missing — the agent searched or re-asked | Return the corrected brief to the same agent; completed steps stay done | 0 |
-| **4 Re-route** | Wrong agent or rung, or a pending plan step is wrong or obsolete | Planner **amends** the same `plan.md`; ADR drift → **adr-writer**; cell stays **in-progress** — no new plan folder, file, or cell | 1 |
-| **5 Clear record** | Stale status, missing plan file, wrong base or branch, unrecorded dependency | Correct the index or dispatch order, then continue — never code | 0 |
-| **6 Retry** | Transient error, no diagnosis, work unchanged | Re-dispatch the same brief once | 1 |
-| **Escalate** | A trigger below | Ask with the trail and a recommendation; **blocked** only when the cell cannot proceed without the answer | 0 |
+| **1 Answer** | The agent asks what the record already settled (index, ADR, `context.md`, plan, prior verdicts) | Reply with the digest and let it continue | 0 |
+| **2 Do** | A code fact is missing, contradicted, or guessed | Read it yourself when the read is bounded; otherwise dispatch **code-investigator** and feed the evidence back | 0–1 |
+| **3 Re-brief / re-route** | A path, intake field, dependency contract, or convention was missing — or the wrong agent or rung ran | Return the corrected brief to the same agent; a pending plan step wrong or obsolete → **planner** amends the same `plan.md`; ADR drift → **adr-writer**; cell stays **in-progress** — no new folder, file, or cell | 0–1 |
+| **4 Retry → escalate** | Transient error, no diagnosis, work unchanged | Re-dispatch the same brief once; then ask with the trail and a recommendation — **blocked** only when the cell cannot proceed | 1 |
 
 - A rung that already failed for the same cause is never repeated; two attempts on one cause, or a spec gap recurring after a gate round (**verification-gate** cap), ends recovery.
 - Never invent an answer: a question the record does not settle is rung 2 or an escalation.
@@ -50,15 +50,17 @@ A stall, question, or failure is the orchestrator's problem before it is the use
 
 ## Escalation triggers (the only interrupts)
 
-- The **epic's** scope changes: feature set, wave order, a cell's done-means, priority, or an accepted `Assumption`. Enabling work inside a cell is delegated — see **Delegated scope**.
+- The **epic's** scope changes: feature set, wave order, a cell's done-means, priority, or an accepted `Assumption`.
 - A governing ADR decision is challenged, or a trade-off needs choosing — **adr-writer** drafts, the user decides.
 - POC **adopted** / **rejected**; a gate waiver; push, PR, or merge approval.
-- Credentials, access, cost, or capacity the orchestrator cannot obtain.
+- Credentials, access, cost, or capacity you cannot obtain.
 - An irreversible or destructive action outside the plan.
 - Evidence conflict that an independent verifier cannot settle.
 
 An escalation carries the cell, the attempt trail, the decision needed, options with cost, and one recommendation.
 Batch escalations at the next wave boundary; interrupt immediately only when a cell cannot proceed, or the pending action is irreversible.
+
+**Not an interrupt**: evidence that contradicts a pending, unexecuted step. Amend it — dispatch the planner, hold the boundary, and report in the next update. Asking the user to approve a plan fix they cannot evaluate spends their attention on your bookkeeping.
 
 ## Delegated scope
 

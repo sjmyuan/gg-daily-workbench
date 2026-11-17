@@ -1,6 +1,6 @@
 # Write-Boundary Guide
 
-Backs the **write-boundary** knowledge entry and the delivery write-boundary check. The orchestrator maintains delivery docs only — it never writes code or any file outside the delivery folder.
+Backs the **write-boundary** knowledge entry and the delivery write-boundary check. The orchestrator maintains delivery docs only — it never writes code or any file outside the delivery folder. It may read anything.
 
 ## Allowed vs forbidden writes
 
@@ -39,5 +39,7 @@ The delta also catches in-window shell writes — the compensating control for `
 
 ## Implementation is delegated, never done here
 
-Code changes are produced only by the dispatched **executor** (execute-plan); planning is delegated to the **planner**.
+Code changes are produced only by the dispatched **executor** (execute-plan); planning and ADR authorship are delegated to the **planner** / **adr-writer**.
 When a plan or execution surfaces a change outside the delivery docs, dispatch the owning agent per **agent-dispatch** — never write it from the orchestrator.
+
+Reads are not writes. Reading the code, running read-only commands, and reasoning across cells' contracts is orchestration, not implementation — and it is how the orchestrator stays able to judge what it receives.

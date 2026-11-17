@@ -28,7 +28,7 @@ Keywords "split", "too big" → **Refactor** (internal restructuring, no new beh
 # Plan: split-data-imported-handler — one service per transformation concern
 **Type**: refactor
 **Branch**: `split-data-imported-handler` off `main`
-**TDD variant**: Green-to-green — existing tests prove behavior is preserved; characterization tests only where coverage is missing.
+**Test strategy**: characterization-first — existing tests prove behavior is preserved; add characterization only where coverage is missing.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
 
 ## Scope Boundary
@@ -36,6 +36,10 @@ Keywords "split", "too big" → **Refactor** (internal restructuring, no new beh
 **Expected files**: `DataImportedHandler`, `CategoryMappingService`, `PriceTransformationService`, tests (advisory)
 **Must not change**: observable behavior, other handlers
 **Protected zones**: none added
+
+## Risk
+- Category mapping holds no hidden state → Step 2 pins it by characterization; fallback: extract the state first.
+- **Expected to break first**: Step 3 — the split may move a transaction boundary.
 
 ## Steps
 
@@ -101,4 +105,4 @@ Keywords "split", "too big" → **Refactor** (internal restructuring, no new beh
 - [x] No step introduces a failing test — behavior stays unchanged
 - [x] Extraction uses `copy` with an origin and adaptation list, not retyping from memory
 - [x] Every step is one six-field block with a `⏳` status
-- [x] 7 steps — under the refactor cap of 20
+- [x] Structural moves and their proof share steps; no step exists only to re-verify

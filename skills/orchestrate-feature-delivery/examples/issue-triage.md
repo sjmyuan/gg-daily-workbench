@@ -1,7 +1,7 @@
 # Example: Triage an Issue Before Dispatching
 
 **Scenario**: Epic `wallet-migration` is in delivery. Cell `order-service/F2` is **done** and merged. The user raises four issues in sequence, each one rung higher than the last.
-Every issue passes **request-intake** first; issues 1–3 restate to zero inferences and pass at once, so the gate is shown once — at Issue 4, where it changes the outcome.
+Every issue passes `clarify-request`'s gate first; issues 1–3 restate to zero inferences and pass at once, so the gate is shown once — at Issue 4, where it changes the outcome.
 
 **Applies**: **triage-issue** → **handle-post-implementation-issue**
 
@@ -23,7 +23,7 @@ The orchestrator checks the index, `context.md`, the governing ADR, and `plan.md
 
 **Rung L1 — One evidence check.**
 
-A code fact is missing, so the orchestrator dispatches one read-only **code-investigator** with `context.md` and the ADR by path.
+A code fact is missing, and the answer sits in one file. The orchestrator reads it itself — a bounded read needs no brief and no round-trip. A repo-wide hunt would have gone to **code-investigator**.
 
 **Answer**: "`wallet-service/retry.ts:41` uses `maxAttempts = 3`; the Helm value is ignored. The record was stale — L0 could not settle this."
 
@@ -41,7 +41,7 @@ A sibling `rework-<date>.md` is planned and executed by the normal planner/execu
 
 ## Issue 4 — "Maybe our whole failure-handling approach is wrong across payment and wallet"
 
-**Intake gate — request-intake, round 1.** Restatement: "In your words: the failure-handling decision may be wrong across payment and wallet.
+**Intake gate — `clarify-request`, round 1.** Restatement: "In your words: the failure-handling decision may be wrong across payment and wallet.
 Inferred: (i) both services are in scope; (ii) a recorded decision is suspect, not the code."
 
 **Q1 · Scope · blocking** — "across payment and wallet" is one service or two.

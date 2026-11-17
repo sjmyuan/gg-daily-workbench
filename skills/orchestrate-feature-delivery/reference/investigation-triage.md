@@ -1,22 +1,23 @@
 # Investigation Triage (L0–L3)
 
 Backs **triage-issue**; consumed by **handle-post-implementation-issue**, **orchestrate-delivery**, and **resume-delivery**.
-Pick the cheapest rung that actually answers the question — the spike is the exception, not the default.
+Pick the cheapest rung that actually answers the question, and take it yourself when you can — the spike is the exception, not the default.
 
 ## Ladder
 
-The **intake gate** runs before any rung: restate the ask, show every inference, and ask when anything was inferred (see **request-intake**).
+The **intake gate** runs before any rung: restate the ask, show every inference, and ask when anything was inferred (see `clarify-request`).
 It costs nothing and ends only when nothing was inferred — a precondition, not a rung.
 
 | Rung | Answers | Test | Action | Dispatches | Artifacts |
 |---|---|---|---|---|---|
 | **L0 Answer** | What did we decide, why, or what is the status? | Index, `context.md`, plan/rework, ADR, findings/evidence, git log settle it | Read in-session and answer | 0 | none |
-| **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | One read-only `code-investigator` with the L1 brief below | 1 | none |
+| **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | Read it yourself when the read is bounded (one module, a few files, a named symbol); otherwise one `code-investigator` with the L1 brief below | 0–1 | none |
 | **L2 Decision** | Was exactly one ADR decision wrong or incomplete? | One decision changes; no new options | `adr-writer` revises in place; `solution-doc-writer` only if target state changes | 1–2 | ADR (+ solution section) |
 | **L3 Spike** | Which option should we choose across decisions? | ≥2 decisions/areas, new options, or formal findings required | `spike-conductor`, **delta** scope — never its internal area agents | ≥3 | spike artifacts |
 
 ## L1 brief
 
+A dispatch is for breadth or isolation, not for tidiness: read it yourself when one pass over a module answers, and dispatch when the search spans areas or would flood the context you need for orchestration.
 The investigator receives everything L0 already established, so it never re-reads the record:
 
 - **Question** — one sentence, restated at intake.
@@ -69,6 +70,8 @@ A brief carrying all five **is** the intake gate's result: the investigator adop
 | Anti-pattern | Why it costs | Instead |
 |---|---|---|
 | "Investigate" always means `spike-conductor` | A full conductor for a one-line answer | L0 or L1 |
+| Dispatching a one-file read | A round-trip for an answer you can read in a minute | L1 in-session |
+| Reading forty files yourself | Floods the context orchestration needs | Dispatch the L1 investigator |
 | Classifying an ambiguous report | The rung answers the wrong question | Restate expected versus actual first (intake) |
 | Deciding "is this ambiguous?" first | The misreading is what the intake gate exists to catch | Count the inferences: zero → proceed, else show the list |
 | Recording an assumption in `context.md` | Only the planner and executor write it | Record it in the index cell brief |
@@ -82,7 +85,7 @@ A brief carrying all five **is** the intake gate's result: the investigator adop
 - [ ] Request restated, every inference itemized, and the list shown before any rung was chosen.
 - [ ] Question stated in one sentence.
 - [ ] L1 brief carries the intake record, the L0 record digest, known locations, and absolute paths.
-- [ ] Recorded artifacts checked before any dispatch.
+- [ ] Recorded artifacts checked before any read or dispatch; an in-session read recorded with its `file:line`.
 - [ ] Rung and justification stated.
 - [ ] L3 has a named trigger.
 - [ ] Artifact scope matches the rung — none at L0/L1.

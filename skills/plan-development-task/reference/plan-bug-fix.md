@@ -1,19 +1,25 @@
 # plan-bug-fix
 
-1. **Prepare Environment (Prerequisites)**: Apply **plan-prerequisites** from the SKILL.md — ensure the feature branch exists, named per the **repo's branch convention** (detect from existing branches / git config / team docs, or ask the user; never assume a prefix), based on the correct base; no uncommitted changes overlapping the plan's work; dependencies and toolchain installed; the gate commands (`build` / `test` / `lint-type`) discovered from repo evidence (`file:line`) and run on the base, with `baseline: green` or the named failures recorded. Raise only necessary blockers to the user before continuing.
-2. Break down the identified bug root cause into specific, independently testable issues.
-3. **Define Scope Boundary**: Apply **define-scope-boundary** — derive the **May change**/**Must not change** behaviors from the bug scope and the governing ADR (for **orchestrate-feature-delivery** cells); present to the user for ratification.
-4. Map out dependencies between issues to establish an efficient bug-fixing sequence.
-5. **Consolidate Steps**: Group related issues together when they share context or can be tested together, reducing the total step count while maintaining clarity.
-6. Load **reference/tdd-approach-selection.md** to select the appropriate TDD variant for each issue. Document the rationale.
-7. Create a detailed step-by-step bug-fixing plan using the template in **reference/plan-file-format.md** — title + metadata, the ratified `## Scope Boundary`, optional `## Decisions`, then one six-field `### Step N: <title> ⏳` block per step. For each issue, include the following steps:
-   1. **Write Focused Tests**: Create precise tests for one bug issue that name the break they catch and assert real behavior — see **reference/test-quality.md**.
-   2. **Confirm Test Failure (RED)**: Run the tests and confirm each **fails** — not errors — for the expected reason because the behavior is missing. A test that passes immediately tests existing behavior: rewrite it. A test that errors: fix it and re-run until it fails correctly.
-   3. **Materialize Fix**: restore the target from the step's `Source` ref or minimally edit; generate only when the fix is genuinely new (see **reference/provenance-first.md**).
-   4. **Verify Fix**: Re-run all tests to confirm the fix works successfully. Debug and refine as necessary to ensure correctness.
-   5. **Clean Up Unused Code**: Remove any obsolete or redundant code that is no longer needed after the bug fix.
-   6. **Clean Up Tests**: Update or remove tests that are no longer relevant due to the bug fix, ensuring the test suite remains accurate and effective.
-   7. **Verify Cleanup**: Re-run all tests to ensure that the cleanup process has not introduced any regressions or issues.
-   8. **Exit Gate**: Run every recorded gate command — build, full suite, lint/type. All exit 0 with zero failures; red → repair twice, then stop and ask. See **reference/exit-gate.md**.
-8. **Validate Plan Quality**: Load **reference/plan-quality-checklist.md** and verify — every identified issue has a corresponding fix step, the selected TDD variant is documented with rationale, dependencies between issues are correctly ordered, the total step count does not exceed 20, and every **Exit Gate** item passes. Confirm that all verification checkpoints (Confirm Test Failure, Verify Fix, Verify Cleanup) are included for each issue.
-9. Summarize the complete plan to the user.
+Judgment capability: diagnose before planning, then shape the plan yourself.
+The diagnosis, the acceptance evidence, and the gate are not negotiable; the step list is.
+
+1. **Diagnose from evidence.** Read the code on the symptom's path and state the root cause with the `file:line` proving it, plus the hypotheses ruled out. A symptom-only request has no root cause yet — ask what "correct" looks like before planning.
+2. **Choose the test strategy** per **test-strategy** — usually `test-first`; name the test that catches this exact break and the unit that owns it.
+3. **Ratify the scope boundary** per **define-scope-boundary**. A fix needing an unrelated refactor first is two plans, not one.
+4. **Derive units, not phases.** One unit per independent defect or observable outcome. "Confirm RED", "clean up", and "verify cleanup" are phases of a unit — fold each into that unit's `Validation` or the Exit gate. Keep only the order that matters: proof before fix.
+5. **Write the plan** per **reference/plan-file-format.md** — header, ratified `## Scope Boundary`, `## Risk`, optional `## Decisions`, unit steps, Exit gate.
+6. **Leave what the code decides open.** When the fix's shape depends on an unread module, write the step as a check with a fallback and say so in `## Risk` — never invent a diff.
+7. **Self-check** against **plan-rubric**; the test and gate rows are pass/fail, the rest are graded.
+8. **Present the risk route**, not the step list, per **plan-rubric**'s presentation row.
+
+```markdown
+### Step 2: Publish the source ID ⏳
+**Objective**: Outgoing events carry the record's own ID.
+**Files**: `DataImportedHandler.java`, `DataImportedHandlerTest.java`
+**Source**: edit · n/a · behavior-equal
+**Implementation**: Test asserts the captured payload's ID equals the record ID; replace `transformedData.getId()` with `record.getId()`.
+**Validation**: New test fails on the source ID before the change, passes after; handler suite green.
+**Status**: ⏳ Pending
+```
+
+One step, because test and fix share one verdict. A unit whose proof and change are separable stays two.

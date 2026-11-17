@@ -48,8 +48,8 @@ F2 and F3 become develop-ready (F1 planned; contract-first allows planning in pa
 - **Planner B** → plan `order-service/F2`
 - **Planner C** → plan `api-gateway/F3`
 
-> **Delegation rule in action**: when any agent's plan or execution surfaces a solution-doc or ADR change, the orchestrator dispatches a **solution-doc-writer** / **adr-writer** agent.
-> It never edits artifacts itself.
+> **Authorship rule in action**: when a plan or execution surfaces a solution-doc or ADR change, the orchestrator dispatches a **solution-doc-writer** / **adr-writer** — those artifacts carry a decision's voice, not a status edit.
+> The orchestrator never writes them, and never writes code.
 
 ## 4b. Unblock without interrupting
 
@@ -57,7 +57,7 @@ F2 and F3 become develop-ready (F1 planned; contract-first allows planning in pa
 |---|---|---|
 | Executor A asks whether the envelope version may bump | **1 Answer** | Solution-doc §3 fixes the contract as additive; reply with the digest and let it continue — no re-plan, no user |
 | Planner B searched the repo for the branch convention | **3 Re-brief** | The brief omitted it; send the detected convention and base ref back; Planner B keeps its drafted plan |
-| Executor A cannot locate the envelope codegen entry point | **2 Investigate** | L1 locates it (`file:line`); the evidence goes back to Executor A, which resumes at the failed step |
+| Executor A cannot locate the envelope codegen entry point | **2 Do** | The orchestrator greps for it — one bounded read — and replies with `file:line`; Executor A resumes at the failed step. A repo-wide hunt would be dispatched instead |
 | Executor A needs a serializer helper beside the planned DTOs | **4 Re-route** | Enabling, additive, same repo and ADR — approve; the planner amends `plan.md` and the delta joins the verifier brief |
 | Planner C asks to fold the ledger migration into F3 | **Escalate** | It changes F3's scope and agreed done means — ask the user with the trail, options, and a recommendation |
 
@@ -66,8 +66,8 @@ Status-changing recoveries were recorded in `## Notes` as `<cell> — <cause> �
 
 ## 5. Verify the gate
 
-F1's execution completes → the orchestrator applies **verify-cell**: a fresh **code-reviewer** gets the recorded range, `plan.md`, `context.md`, the governing ADR, and the cell digest.
-It returns spec-compliance and trust verdicts.
+F1's execution completes → the orchestrator applies **verify-cell**: F1 delivers a contract, so the tier is **Full**. A fresh **code-reviewer** gets the recorded range, `plan.md`, `context.md`, the governing ADR, the cell digest, and the tier.
+It returns spec, trust, and quality verdicts with one merge recommendation.
 F1 advances to **verified** (see **examples/cell-verification-gate.md**). Never mark a cell **done** without this gate.
 
 ## 6. Push approval + merge + update index

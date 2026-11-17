@@ -27,7 +27,7 @@ Keywords "extract interface", "easier to mock" → **Refactor** (structural chan
 # Plan: extract-event-publisher-interface — handler depends on an abstraction
 **Type**: refactor
 **Branch**: `extract-event-publisher-interface` off `main`
-**TDD variant**: Green-to-green — interface extraction changes no behavior; existing tests are the proof.
+**Test strategy**: characterization-first — interface extraction changes no behavior; existing tests are the proof.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
 
 ## Scope Boundary
@@ -35,6 +35,10 @@ Keywords "extract interface", "easier to mock" → **Refactor** (structural chan
 **Expected files**: `EventPublisher`, `EventPublisherImpl`, `DataImportedHandler`, Spring config, `FakeEventPublisher`, tests (advisory)
 **Must not change**: observable publishing behavior, other modules
 **Protected zones**: none added
+
+## Risk
+- One caller depends on the concrete type → Step 2 confirms every call site; fallback: extend the interface rather than cast.
+- **Expected to break first**: Step 4 — a test double may pin the old signature.
 
 ## Steps
 
@@ -91,5 +95,5 @@ Keywords "extract interface", "easier to mock" → **Refactor** (structural chan
 
 - [x] No failing test is introduced — the change is behavior-neutral
 - [x] Every step is one six-field block with a `⏳` status
-- [x] 6 steps — under the refactor cap of 20
+- [x] Structural moves and their proof share steps; no step exists only to re-verify
 - [x] The final gate proves no call site still depends on the implementation

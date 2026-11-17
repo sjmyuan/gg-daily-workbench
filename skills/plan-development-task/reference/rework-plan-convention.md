@@ -9,7 +9,7 @@ is never modified.
   in place via **amend-plan**.
 - Opens with `# Rework <date> — <trigger>`, a `**Mode**`/`**Cell**` line, a `**Branch**` line, the
   ADR focus, and the inherited `**Gate**` line, then its own **Scope Boundary**, **Done means**,
-  and six-field delta steps.
+  **Risk**, and six-field delta steps.
 - Carries only the delta — never restates the original plan or the charter; inherits `context.md`
   **Must hold** / **Pointers** by reference and never creates a second `context.md`.
 - Inherits and tightens the original **Scope Boundary** to the governing ADR decision.

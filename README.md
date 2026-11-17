@@ -62,8 +62,8 @@ Each file uses native **OpenCode V2** frontmatter per the
 | `code-reviewer.md` | **Primary** — read-only code review | `review-code` |
 | `executor.md` | Execute an existing plan (never plans) | `execute-plan` |
 | `learner.md` | Extract knowledge from history (self-dispatch for parallelism) | `learn-from-history` |
-| `orchestrate-delivery.md` | **Primary** — delivery orchestrator that dispatches the plan/execute/spike/ADR/solution-doc sub-agents and tracks the delivery index | `orchestrate-feature-delivery` |
-| `planner.md` | Produce + persist a TDD plan (never executes) | `plan-development-task`, `investigate-code` |
+| `orchestrate-delivery.md` | **Primary** — delivery orchestrator: reads and reasons in-session, dispatches the plan/execute/spike/ADR/solution-doc sub-agents, tracks the delivery index | `orchestrate-feature-delivery` |
+| `planner.md` | Diagnose the change, choose its evidence, and persist a plan an executor can run (never executes) | `plan-development-task`, `investigate-code` |
 | `findings-doc-writer.md` | Compile question-style findings docs (resource index, topic blocks, `file:line` evidence ledger) | `document-findings` |
 | `solution-doc-writer.md` | Compile solution documents (C4, sequence, RAID/RACI) | `write-solution-doc` |
 | `spike-area-analyst.md` | One spike area end to end — investigate to sufficiency, draft problem ADRs, gate each ADR — in one session | `investigate-code`, `draft-adr` |

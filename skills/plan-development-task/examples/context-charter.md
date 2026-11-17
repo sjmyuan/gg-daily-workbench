@@ -16,7 +16,7 @@ mixes background, plan rationale, investigation evidence, and execution history.
 | Install-aware filter table | Implementation detail | `plan.md` steps + code |
 | Hard constraints (user-cut) | Keep | `Must hold` |
 | Plan decisions PD1–PD12 | Duplicate | `plan.md` `## Decisions` — delete |
-| TDD rationale | Duplicate | `plan.md` `**TDD variant**` line — delete |
+| TDD rationale | Duplicate | `plan.md` `**Test strategy**` line — delete |
 | Grounded pre-flight findings (32 lines) | Investigation | Resolved → plan decision; unresolved → `Unknowns`; raw table deleted |
 | Success criteria → verification | Keep | `Done means` |
 | Constraints for the executor | Keep | `Must hold` |

@@ -1,6 +1,6 @@
 # Change Type Classification
 
-Used by **classify-change-type** and **plan-quality-checklist**.
+Used by **classify-change-type** and **plan-rubric**.
 
 Classify the request into one type; a mechanical target is detected first and routes to
 **plan-mechanical-restore**.

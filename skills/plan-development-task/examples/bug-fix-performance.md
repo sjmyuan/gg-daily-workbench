@@ -28,7 +28,7 @@ Keywords "slow", "performance degradation" → **Bug Fix** (performance). *User 
 # Plan: fix-product-search-n-plus-one — 100-product search under 500 ms
 **Type**: bug-fix
 **Branch**: `fix-product-search-n-plus-one` off `main`
-**TDD variant**: Full cycle with benchmarks — a performance bug needs a failing timing and query-count assertion.
+**Test strategy**: test-first, benchmarked — the proof is a failing timing and query-count assertion.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
 
 ## Scope Boundary
@@ -36,6 +36,10 @@ Keywords "slow", "performance degradation" → **Bug Fix** (performance). *User 
 **Expected files**: `ProductRepository` + its tests (advisory)
 **Must not change**: serializer behavior, controller behavior, other endpoints
 **Protected zones**: none added
+
+## Risk
+- The slowdown is query count, not payload size → Step 2 measures both; fallback: re-plan against render time.
+- **Expected to break first**: Step 2 — a timing assertion is the flakiest proof in the suite.
 
 ## Steps
 
@@ -47,47 +51,23 @@ Keywords "slow", "performance degradation" → **Bug Fix** (performance). *User 
 **Validation**: Gate commands on `main` — `baseline: green`; baseline p99 recorded in the step note.
 **Status**: ⏳ Pending
 
-### Step 2: Write the performance test ⏳
-**Objective**: Assert 500 ms and ≤3 queries for 1, 10, and 100 results.
-**Files**: `ProductRepositoryPerformanceTest.java`
-**Source**: generate · n/a · behavior-equal
-**Implementation**: Parametrized benchmark plus a SQL counter interceptor; assert returned data is unchanged.
-**Validation**: Test compiles and joins the suite.
-**Status**: ⏳ Pending
-
-### Step 3: Confirm test failure (RED) ⏳
-**Objective**: Prove the test fails on query count and latency.
-**Files**: none
-**Source**: no-op · n/a · n/a
-**Implementation**: Run only the new benchmark under the current implementation.
-**Validation**: Fails at ~201 queries, above the 3-query assertion — not an error.
-**Status**: ⏳ Pending
-
-### Step 4: Eager-load the associations ⏳
-**Objective**: Fetch products, categories, and tags in one query.
-**Files**: `ProductRepository.java`
+### Step 2: Prove and fix the N+1 ⏳
+**Objective**: Keep 1, 10, and 100 results at ≤3 queries and under 500 ms.
+**Files**: `ProductRepositoryPerformanceTest.java`, `ProductRepository.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**: Rewrite the search query with `JOIN FETCH` for `category` and `tags`.
-**Validation**: Step 2 test passes; repository suite green.
+**Implementation**: Parametrized benchmark plus a SQL counter interceptor (asserting returned data is unchanged), then rewrite the search query with `JOIN FETCH` for `category` and `tags`. One step because the proof and the change serve one verdict; the failing run is recorded in `Validation`.
+**Validation**: Benchmark fails at ~201 queries before the change and passes at every size after — ≤3 queries, under 500 ms; repository suite green.
 **Status**: ⏳ Pending
 
-### Step 5: Verify result-size scaling ⏳
-**Objective**: Prove the query count no longer grows with result size.
-**Files**: none
-**Source**: no-op · n/a · n/a
-**Implementation**: Run the parametrized benchmark at 1, 10, and 100 results.
-**Validation**: Every size stays at ≤3 queries and under 500 ms.
-**Status**: ⏳ Pending
-
-### Step 6: Clean up ⏳
-**Objective**: Remove caches that masked the N+1 pattern.
+### Step 3: Remove the workarounds the fix makes obsolete ⏳
+**Objective**: Drop caches and assertions that existed only to hide the N+1.
 **Files**: `ProductRepository.java`, search tests
 **Source**: edit · n/a · behavior-equal
-**Implementation**: Delete the ad-hoc caching workaround and tests asserting lazy loading.
-**Validation**: Repository and search suites green.
+**Implementation**: Delete the ad-hoc caching workaround and the tests asserting lazy loading.
+**Validation**: Repository and search suites green; query counts unchanged from Step 2.
 **Status**: ⏳ Pending
 
-### Step 7: Exit gate ⏳
+### Step 4: Exit gate ⏳
 **Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a
@@ -100,5 +80,5 @@ Keywords "slow", "performance degradation" → **Bug Fix** (performance). *User 
 
 - [x] The failing test asserts both latency and query count — a correctness-only test would pass today
 - [x] Result-size variation is covered, so the fix cannot regress on larger pages
-- [x] Every step is one six-field block with a `⏳` status
-- [x] 7 steps — under the bug-fix cap of 20
+- [x] Steps are units: prove-and-fix, remove-what-it-obsoletes, gate
+- [x] The failing run is evidence inside Step 2, not a step

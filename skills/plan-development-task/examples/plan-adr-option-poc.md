@@ -18,7 +18,7 @@
 # Plan: poc-redis-cache-option — Redis caching layer behind the wallet read path
 **Type**: poc
 **Branch**: `poc-adr-caching-01-redis` off `main`
-**TDD variant**: Full cycle — the slice must behave like production code for the MR to be evaluable.
+**Test strategy**: test-first — the slice must behave like production code for the MR to be evaluable.
 **Gate**: build=`./mvnw -q compile` · test=`./mvnw test` · lint-type=`./mvnw spotless:check` — `pom.xml:112`
 **ADR**: `adr-caching-01-cache-option.md` · **Option**: Redis
 **Success criteria**: p99 < 50 ms at 2k rps; ≤3 new ops dependencies
@@ -28,6 +28,10 @@
 **Expected files**: read path, cache layer, their tests (advisory)
 **Must not change**: in-process option, other ADRs, unrelated modules
 **Protected zones**: none added
+
+## Risk
+- The cache abstraction is shared with the other option → Step 2 tests only this option's contract; fallback: narrow the slice.
+- **Expected to break first**: Step 2 — the option may need a surface the slice does not expose.
 
 ## Steps
 
@@ -39,39 +43,23 @@
 **Validation**: Gate commands on `main` — `baseline: green` (build=0 · 96 passed · lint=0).
 **Status**: ⏳ Pending
 
-### Step 2: Write cache behavior tests ⏳
-**Objective**: Assert get, set, and evict through the cache facade.
-**Files**: `RedisCacheFacadeTest.java`
+### Step 2: Implement the cache facade behind its tests ⏳
+**Objective**: Get, set, and evict work through a Redis-backed facade with the ADR's TTL and key prefix.
+**Files**: `RedisCacheFacadeTest.java`, `RedisCacheFacade.java`, cache configuration
 **Source**: generate · n/a · behavior-equal
-**Implementation**: New tests against a containerized Redis; no production facade exists yet.
-**Validation**: Tests compile and join the suite.
+**Implementation**: Tests first against a containerized Redis (they fail on the missing facade), then the minimal client and facade. No prior source; TTL and prefix come from the ADR option.
+**Validation**: Tests fail on the absent facade, then pass; no other suite moves.
 **Status**: ⏳ Pending
 
-### Step 3: Confirm test failure (RED) ⏳
-**Objective**: Prove the facade behavior is missing.
-**Files**: none
-**Source**: no-op · n/a · n/a
-**Implementation**: Run only the new tests.
-**Validation**: Fails on missing facade — not an error.
-**Status**: ⏳ Pending
-
-### Step 4: Implement the cache layer ⏳
-**Objective**: Add the minimal Redis client and cache facade.
-**Files**: `RedisCacheFacade.java`, cache configuration
-**Source**: generate · n/a · behavior-equal
-**Implementation**: New code — no prior source; TTL and key prefix come from the ADR option.
-**Validation**: Step 2 tests pass.
-**Status**: ⏳ Pending
-
-### Step 5: Wire the read path ⏳
-**Objective**: Serve wallet reads through the cache.
+### Step 3: Wire the read path ⏳
+**Objective**: Wallet reads serve through the cache and fall back to the repository.
 **Files**: `WalletQueryService.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**: Read-through cache with fallback to the existing repository.
-**Validation**: Wallet-service suite green; cache tests pass.
+**Implementation**: Read-through cache with fallback to the existing repository; add the hit/miss assertion to the existing service test.
+**Validation**: Cache tests pass; wallet-service suite green; a cold read still returns repository data.
 **Status**: ⏳ Pending
 
-### Step 6: Exit gate ⏳
+### Step 4: Exit gate ⏳
 **Objective**: Prove the build, full suite, and static checks are green for the slice.
 **Files**: none
 **Source**: no-op · n/a · n/a
@@ -90,5 +78,5 @@
 
 - [x] POC is planned as a feature, not a probe harness
 - [x] Success criteria stay out of the step list
-- [x] Every step is one six-field block with a `⏳` status
-- [x] 6 steps — under the feature/POC cap of 25
+- [x] Units, not phases: the facade and its wiring each carry their own proof
+- [x] The slice is reviewable on its own — the user's MR review is the evaluation
