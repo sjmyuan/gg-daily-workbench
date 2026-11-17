@@ -115,7 +115,7 @@ Load on demand — one row per trigger.
 7. Apply **challenging-the-change** to the change's structure and record the resulting challenges.
 8. Assign severity per **severity-and-confidence** and prepare Issue, Impact, Recommendation, and Confidence.
 9. Anchor each finding per **finding-anchors**.
-10. Format the report per [review-output-format.md](reference/review-output-format.md), loading a matching example — and for a multi-file or multi-area review, brief per `brief-human-reviewer` (route over the highest-risk diffs, one prediction, one self-check) before delivering.
+10. Format the report per [review-output-format.md](reference/review-output-format.md), loading a matching example — and for a multi-file or multi-area review, brief before delivering: a route over the highest-risk diffs, one prediction, one self-check.
 11. **Validate**: (a) one anchor, quoted line, severity, and Confidence per finding; (b) every referent grounded;
     (c) blocking challenges set the verdict; (d) Failure Modes Checked and Positive Highlights present;
     (e) no empty severity sections; (f) non-expert test passed; (g) merge verdict present;

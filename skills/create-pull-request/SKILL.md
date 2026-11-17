@@ -88,7 +88,7 @@ Read the `origin` remote; never assume GitHub.
 **Objective**: Create the request after approval and return its reference.
 
 1. Verify the branch is pushed to the intended remote and its head commit matches the reviewed commit; if not, stop and route to the caller's push approval.
-2. Brief before approval per `brief-human-reviewer` — a route over the riskiest hunks and the draft claims they support, one prediction, one self-check — then present the **approval-gate** block; record `reviewed` or `waived` with the returned reference.
+2. Brief before approval — a route over the riskiest hunks and the draft claims they support, one prediction, one self-check — then present the **approval-gate** block; record `reviewed`, or `waived` when the user declines to read, with the returned reference.
 3. Detect the forge CLI and create the request with the approved values.
 4. Never merge, approve, or enable auto-merge.
 5. Validate: the URL resolves; repository, base, and title match the approved draft; no merge or approve action was taken.
@@ -100,5 +100,5 @@ Read the `origin` remote; never assume GitHub.
 <rule> When the change may already exist, apply **find-related-pulls** before drafting. </rule>
 <rule> When a draft is needed, apply **compose-pull-request** — never freehand a title or body. </rule>
 <rule> When the draft is approved, apply **publish-pull-request**. </rule>
-<rule> When presenting the draft for approval, brief per `brief-human-reviewer` first — a PR body is public prose, never opened as a wall. </rule>
+<rule> When presenting the draft for approval, brief first — a PR body is public prose, never opened as a wall. </rule>
 </rules>

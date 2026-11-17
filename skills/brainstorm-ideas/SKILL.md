@@ -129,7 +129,7 @@ End the session with a traceable, actionable plan. Details: [reference/plan-outp
 3. Map each confirmed challenge to its impact and mitigation.
 4. Write numbered next steps: verb + object, output, done-when, and the goal or risk it serves.
 5. Verify the plan against the quality bar; fix every failed criterion before presenting.
-6. Brief before presenting per `brief-human-reviewer` — a route over the goals and challenges the plan derives from, one prediction, one self-check — then present the plan in plain language and ask the user to confirm or amend.
+6. Brief before presenting — a route over the goals and challenges the plan derives from, one prediction, one self-check — then present the plan in plain language and ask the user to confirm or amend.
 </compile-actionable-plan>
 <iterate-session>
 **Objective**: Run a second round — deepen, combine, or pivot.

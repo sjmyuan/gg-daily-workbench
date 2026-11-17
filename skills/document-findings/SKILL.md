@@ -134,7 +134,7 @@ Pipeline: an area investigation → doc pair → `draft-adr` → `write-solution
 5. Check every human-doc topic claim appears in the ledger, and every ledger row links back to a topic.
 6. Check IDs are unique, area-scoped, and unrenumbered; citation format is valid.
 7. Check no target-state or decision content leaked in; validate every diagram via `draw-mermaid-diagrams` (0 errors).
-8. Report findings by severity (🚫 Blocker / 🔴 Major / 🟡 Minor / 🟢 Nit) and fix before saving; when the pair goes to the user, the Orientation section supplies the review route per `brief-human-reviewer` — never a second navigation artifact.
+8. Report findings by severity (🚫 Blocker / 🔴 Major / 🟡 Minor / 🟢 Nit) and fix before saving; when the pair goes to the user, the Orientation section supplies the review route — never a second navigation artifact.
 </validate-findings-doc>
 
 </capabilities>

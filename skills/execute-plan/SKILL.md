@@ -115,7 +115,7 @@ Every plan carries a **green-only exit gate** — the plan is the contract, not 
 </review-post-execution>
 <request-push-approval>
 1. Confirm the **Exit gate** receipt matches the current head; stale or red → re-run or stop.
-2. Summarize branch, commits, and distance from base; past a few commits, brief per `brief-human-reviewer` — a route over the 2–3 riskiest commits, one prediction, one check.
+2. Summarize branch, commits, and distance from base; past a few commits, brief first — a route over the 2–3 riskiest commits, one prediction, one check.
 3. Ask "Push branch [name] to remote?" and wait; a decline leaves it local. A PR request → apply **create-pull-request** after the push and record its reference in `## Execution`.
 </request-push-approval>
 </capabilities>

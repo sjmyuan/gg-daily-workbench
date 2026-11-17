@@ -65,7 +65,7 @@ Scope model: **reference/spike-scope-guide.md**.
 </spike-lifecycle>
 <review-pacing>
 The ADR set is the one artifact review: each chosen option, its winning drivers, its cost, what stays unverified.
-Apply `brief-human-reviewer` when the set is large or code-dense.
+When the set is large or code-dense, brief first: a route over the ADRs that carry the decision, one prediction, one self-check.
 </review-pacing>
 <adr-uncertainty-signals>
 Offer a spike when a decision hinges on what reasoning alone cannot settle:
@@ -85,7 +85,6 @@ Offer a spike when a decision hinges on what reasoning alone cannot settle:
 | Scoping, decomposing, or continuing a spike | `scope.md` skeleton, area/problem split, statuses | [reference/spike-scope-guide.md](reference/spike-scope-guide.md) |
 | Choosing in-session work or a dispatch | Thresholds, area brief, return contract | [reference/scale-and-dispatch.md](reference/scale-and-dispatch.md) |
 | Someone asked for notes or an architecture overview | Consumer tests, notes shape, handoff map | [reference/consumer-artifacts.md](reference/consumer-artifacts.md) |
-| An ADR review reaches the user | Route, prediction, self-check | `brief-human-reviewer` skill |
 </context-loading-guide>
 </knowledge>
 <capabilities>

@@ -113,7 +113,7 @@ Load only the example directly relevant to the current scenario to minimize cont
    - **S**mall — deliverable within a single sprint; if not, split it
    - **T**estable — acceptance criteria are specific enough to verify
    - If the story fails any criterion, revise it before presenting for final approval.
-4. **Present for Final Approval**: Brief per `brief-human-reviewer` — a route over the story's scope and edge-case decisions, one prediction, one self-check — then share the complete draft, ask the user to review and confirm, and offer to refine any section based on feedback.
+4. **Present for Final Approval**: Brief first — a route over the story's scope and edge-case decisions, one prediction, one self-check — then share the complete draft, ask the user to review and confirm, and offer to refine any section based on feedback.
 </draft-user-story>
 
 <update-user-story-in-tracker>
