@@ -7,7 +7,7 @@ internal ownership belong to the spike skill; this copy carries only what delive
 
 | Plane | Artifacts | Question |
 |---|---|---|
-| **Spike — knowledge** | `scope.md` · findings pair · ADRs · `solution.md` | Why, what exists, what was decided, what is the target? |
+| **Spike — knowledge** | `scope.md` · ADRs · optional notes · optional `solution.md` | Why, what was decided, what exists, what is the target? |
 | **Delivery — execution** | `index.md` · `context.md` · `plan.md` · `rework-<date>.md` | Where is the epic, why this cell, how is it executed? |
 | **Record** | git / PR / CI | What happened, and can it be reproduced? |
 

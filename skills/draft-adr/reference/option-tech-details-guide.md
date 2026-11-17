@@ -5,7 +5,7 @@ Tech details make each option implementable in the repo: the target-state diagra
 ## Evidence base (grounding contract)
 
 Determine the evidence base before producing anything:
-- **Existing evidence**: the area's evidence doc from the `conduct-spike` pipeline (`docs/evidence-<area>.md` — entry points, key locations, call chains, evidence ledger). Use it directly — do not re-scan covered code.
+- **Existing evidence**: the area's cited evidence from the `conduct-spike` pipeline (its ADR citations or `notes-<area>.md` — entry points, key locations, call chains). Use it directly — do not re-scan covered code.
 - **No evidence, code accessible**: build a lightweight evidence map on demand via the `investigate-code` skill — entry points, key locations with `file:line`, call chains for the affected flows.
 - **No evidence, no code access**: produce architectural-level change profiles; mark every location/scope **unverified**; recommend a spike (`conduct-spike`) before relying on them.
 

@@ -10,12 +10,12 @@ description: Guide users through drafting well-structured ADRs, visualizing cont
 - User wants each option evaluated by its technical implementation (diagrams + code changes with locations + an implementation plan)
 - User needs to structure rough notes into an ADR
 - User wants to compile an ADR from raw discussion points
-- A decision problem with drivers and a cited evidence doc needs its options evaluated and drafted into an ADR
+- A decision problem with drivers and cited evidence needs its options evaluated and drafted into an ADR
 </when-to-use-this-skill>
 
 <knowledge>
 <seeded-brief>
-A seeding brief supplies the problem, decision drivers, candidate and rejected options, the evidence doc with cited `file:line`, and sibling constraints. Those are settled intake: run the flow headlessly from them — never re-derive the drivers, re-ask the user, re-read code for a cited location, or search for your own inputs. Return the ADR plus the cited evidence it relies on, any decision resting on an accepted assumption, and any constraint the evidence doc lacks.
+A seeding brief supplies the problem, decision drivers, candidate and rejected options, cited `file:line` evidence (its own citations, a notes doc, or a code location), and sibling constraints. Those are settled intake: run the flow headlessly from them — never re-derive the drivers, re-ask the user, re-read code for a cited location, or search for your own inputs. Return the ADR plus the cited evidence it relies on, any decision resting on an accepted assumption, and any constraint the evidence doc lacks.
 </seeded-brief>
 
 <option-labeling>
@@ -82,7 +82,7 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 </evaluate-options>
 
 <detail-options-tech>
-1. Determine the evidence base: investigation findings (e.g., a `conduct-spike` findings doc) and code accessibility.
+1. Determine the evidence base: investigation notes or citations (e.g., from a `conduct-spike` ADR) and code accessibility.
 2. If no evidence but code is accessible, build an evidence map via `investigate-code`: entry points, key locations with `file:line`, call chains.
 3. Number every required change `C1`, `C2`, … per option; reuse those numbers in the option card and the implementation plan.
 4. Per option, draw target-state diagrams per **reference/diagram-contract.md**: the current state evolved to this option's to-be with every node marked NEW, CHANGED, or REMOVED, plus sequence diagram(s) for the changed flow including its failure path. Never reuse another option's diagram.

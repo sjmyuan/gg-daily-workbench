@@ -9,7 +9,7 @@ Tables read by the orchestration capabilities and **agent-recovery**. Statuses a
 | Answer a question (L0) | orchestrator reads the record | **investigation-triage** | answer, no artifacts |
 | Investigate a code fact (L1) | **code-investigator** | **investigate-code** | evidence answer with `file:line` |
 | Revise one ADR (L2) | **adr-writer** | **draft-adr** | revised ADR, in place |
-| Spike decisions (L3; incl. rework) | **spike-conductor** | **conduct-spike** | focused findings / solution-doc updates |
+| Spike decisions (L3; incl. rework) | **spike-conductor** | **conduct-spike** | rewritten ADRs; optional notes or overview |
 | Plan a cell | **planner** | **plan-development-task** | `plan.md` + `context.md` |
 | Execute a cell | **executor** | **execute-plan** | code changes + commits; push + PR |
 | Verify a cell | **code-reviewer** | **review-code** | spec-compliance + trust verdict |

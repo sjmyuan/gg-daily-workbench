@@ -11,7 +11,7 @@ description: Orchestrate a spiked epic's delivery: decompose spike output, seque
 - User reports an ADR decision changed mid-delivery
 - User asks to revert, restore, or keep the base version
 - User wants to prove an ADR option with a POC
-- Do NOT load before a spike's solution doc / ADRs exist — conduct-spike produces them first
+- Do NOT load before a spike's ADRs exist — the solution doc is optional and may not exist
 - Do NOT load for a single, already-scoped change — plan-development-task and execute-plan own single cells
 - Do NOT load to run a standalone spike — conduct-spike runs spikes
 </when-to-use-this-skill>
@@ -52,7 +52,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 <capabilities>
 <decompose-change-into-features>
 1. Gate the ask per **request-intake**; show every inference before grouping.
-2. Load the spike artifacts: solution doc, ADRs, findings.
+2. Load the spike artifacts: ADRs (required), then the solution doc and investigation notes when present.
 3. Group target-state changes into features by ADR traceability and module boundary.
 4. Block on any contradiction between an ADR and the solution doc — nothing splits against a stale decision.
 5. Assign `F1…`, a kebab-case name, and a one-line description.

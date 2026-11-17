@@ -66,8 +66,8 @@ Each file uses native **OpenCode V2** frontmatter per the
 | `planner.md` | Produce + persist a TDD plan (never executes) | `plan-development-task`, `investigate-code` |
 | `findings-doc-writer.md` | Compile question-style findings docs (resource index, topic blocks, `file:line` evidence ledger) | `document-findings` |
 | `solution-doc-writer.md` | Compile solution documents (C4, sequence, RAID/RACI) | `write-solution-doc` |
-| `spike-area-analyst.md` | One spike area end to end — investigate, findings pair, problem ADRs — in one session | `investigate-code`, `document-findings`, `draft-adr` |
-| `spike-conductor.md` | **Primary** — orchestrate spike investigations + verify sub-agent results | `conduct-spike`, `question-everything` |
+| `spike-area-analyst.md` | One spike area end to end — investigate to sufficiency, draft problem ADRs, gate each ADR — in one session | `investigate-code`, `draft-adr` |
+| `spike-conductor.md` | **Primary** — run decision-first spikes, dispatch area sessions at scale, verify results | `conduct-spike`, `question-everything` |
 | `svg-assistant.md` | Create, edit, and upgrade PPT-quality SVG diagrams | `edit-svg` |
 
 ### Opencode V2 agent contract (summary)
@@ -141,7 +141,7 @@ Dispatching agents and their targets:
 | Agent | Dispatches |
 |---|---|
 | `orchestrate-delivery` | code-investigator, planner, executor, code-reviewer, spike-conductor, adr-writer, solution-doc-writer |
-| `spike-conductor` | code-investigator, findings-doc-writer, adr-writer, solution-doc-writer |
+| `spike-conductor` | spike-area-analyst, code-investigator, solution-doc-writer |
 | `learner` | learner (self-dispatch) |
 | `code-reviewer` | code-reviewer (fan-out) |
 | `code-investigator` | code-investigator (fan-out) |
