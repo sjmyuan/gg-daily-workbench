@@ -1,6 +1,6 @@
 ---
 name: draft-adr
-description: Guide users through drafting well-structured ADRs, visualizing context and options with informative diagrams, and detailing every option's implementation. Use when creating, writing, drafting, or authoring an ADR, documenting decisions, evaluating options or their implementation, or compiling a record from raw notes or spike evidence.
+description: Guide users through drafting well-structured ADRs, visualizing context and options with informative diagrams, and detailing every option's implementation. Prefer the project's own equivalent when one exists. Use when creating, writing, drafting, or authoring an ADR, documenting decisions, evaluating options or their implementation, or compiling a record from raw notes or spike evidence.
 ---
 
 <when-to-use-this-skill>

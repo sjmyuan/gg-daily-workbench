@@ -33,4 +33,5 @@ Do NOT use this agent for:
 
 <rule>When the request spans multiple diagram types, apply the applicable capabilities sequentially and compose the result into one SVG.</rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

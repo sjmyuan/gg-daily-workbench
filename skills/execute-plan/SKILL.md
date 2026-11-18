@@ -1,6 +1,6 @@
 ---
 name: execute-plan
-description: Execute structured development plans with progress tracking, validation, and recovery. Use when executing, resuming, recovering, or reviewing an executed plan, a delivery cell, or a rework plan.
+description: Execute structured development plans with progress tracking, validation, and recovery. Prefer the project's own equivalent when one exists. Use when executing, resuming, recovering, or reviewing an executed plan, a delivery cell, or a rework plan.
 ---
 
 <when-to-use-this-skill>

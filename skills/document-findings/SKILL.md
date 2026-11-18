@@ -1,6 +1,6 @@
 ---
 name: document-findings
-description: Produce a per-area findings doc pair: a publishable human doc and a machine evidence doc of file:line claims. Use when documenting, writing, compiling, splitting, explaining, updating, or verifying findings.
+description: Produce a per-area findings doc pair: a publishable human doc and a machine evidence doc of file:line claims. Prefer the project's own equivalent when one exists. Use when documenting, writing, compiling, splitting, explaining, updating, or verifying findings.
 ---
 
 <when-to-use-this-skill>

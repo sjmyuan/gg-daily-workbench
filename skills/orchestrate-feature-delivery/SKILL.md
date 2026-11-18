@@ -1,6 +1,6 @@
 ---
 name: orchestrate-feature-delivery
-description: Orchestrate a spiked epic's delivery: decompose spike output, sequence waves, dispatch plan/execute/verify agents, track the index, resume, rework, and route ADR changes and reverts. Use when decomposing ADRs, sequencing or resuming cells, verifying a cell, answering an issue, reworking delivered or reverted code, or proving an option with a POC.
+description: Orchestrate a spiked epic's delivery: decompose spike output, sequence waves, dispatch plan/execute/verify agents, track the index, resume, rework, and route ADR changes and reverts. Prefer the project's own equivalent when one exists. Use when decomposing ADRs, sequencing or resuming cells, verifying a cell, answering an issue, reworking delivered or reverted code, or proving an option with a POC.
 ---
 
 <when-to-use-this-skill>

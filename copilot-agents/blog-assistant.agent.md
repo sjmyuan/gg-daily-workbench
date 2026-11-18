@@ -30,4 +30,5 @@ Do NOT use this agent for:
 <rule>When the user asks for an actual illustration, apply the skill's **generate-illustrations**.</rule>
 <rule>When composing or reviewing a draft, also apply the skill's **suggest-images**.</rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

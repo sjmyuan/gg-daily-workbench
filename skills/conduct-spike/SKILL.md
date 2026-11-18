@@ -1,6 +1,6 @@
 ---
 name: conduct-spike
-description: Run decision-first spikes that investigate just enough and produce template-conformant ADRs passing an acceptance gate, with investigation notes and architecture docs only for a named consumer. Use when running, scoping, continuing, or re-investigating a spike, or deciding a question that reasoning alone cannot settle.
+description: Run decision-first spikes that investigate just enough and produce template-conformant ADRs passing an acceptance gate, with investigation notes and architecture docs only for a named consumer. Prefer the project's own equivalent when one exists. Use when running, scoping, continuing, or re-investigating a spike, or deciding a question that reasoning alone cannot settle.
 ---
 
 <when-to-use-this-skill>

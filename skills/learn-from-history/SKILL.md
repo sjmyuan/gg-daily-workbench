@@ -1,6 +1,6 @@
 ---
 name: learn-from-history
-description: Extract reusable knowledge, rules, and procedures from chat sessions, PRs, git history, and team transcripts. Use when distilling lessons, analyzing change history, mining chat, extracting procedures, checking for insights, or refining skills/agents/memory.
+description: Extract reusable knowledge, rules, and procedures from chat sessions, PRs, git history, and team transcripts. Prefer the project's own equivalent when one exists. Use when distilling lessons, analyzing change history, mining chat, extracting procedures, checking for insights, or refining skills/agents/memory.
 ---
 
 <when-to-use-this-skill>

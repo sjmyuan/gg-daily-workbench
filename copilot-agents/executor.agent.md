@@ -31,4 +31,5 @@ Execution requires a plan file that already exists on disk.
 <rule> Hand back the final step statuses and commit hashes per the **orchestrator-handoff** contract. </rule>
 <rule> Never create, edit, append, or rewrite the plan file; a defective pending step goes back as an amendment request, never a new plan. Never plan or investigate within an execution session. </rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

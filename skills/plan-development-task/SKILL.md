@@ -1,6 +1,6 @@
 ---
 name: plan-development-task
-description: Plan development work — diagnose the change, choose the evidence that proves it, shape units an executor can run, and amend in-flight plans. Use when fixing a bug, adding a feature, refactoring, proving a POC, restoring, reworking, or amending a plan.
+description: Plan development work — diagnose the change, choose the evidence that proves it, shape units an executor can run, and amend in-flight plans. Prefer the project's own equivalent when one exists. Use when fixing a bug, adding a feature, refactoring, proving a POC, restoring, reworking, or amending a plan.
 ---
 
 <when-to-use-this-skill>

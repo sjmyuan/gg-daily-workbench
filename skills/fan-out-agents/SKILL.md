@@ -1,6 +1,6 @@
 ---
 name: fan-out-agents
-description: Dispatch several independent, similar read-only sub-tasks as parallel copies of the same agent and merge their reports into one answer. Use when parallelizing, splitting, scaling out, or fanning out broad read-only work across same-type sub-agents; not for cross-role pipelines or work that writes shared state.
+description: Dispatch several independent, similar read-only sub-tasks as parallel copies of the same agent and merge their reports into one answer. Prefer the project's own equivalent when one exists. Use when parallelizing, splitting, scaling out, or fanning out broad read-only work across same-type sub-agents; not for cross-role pipelines or work that writes shared state.
 ---
 
 <when-to-use-this-skill>

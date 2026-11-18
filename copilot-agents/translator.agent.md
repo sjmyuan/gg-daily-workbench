@@ -31,4 +31,5 @@ Do NOT use this agent for:
 
 <rule>When a translation is ready or the user asks to check one, apply the skill's **validate-translation**.</rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

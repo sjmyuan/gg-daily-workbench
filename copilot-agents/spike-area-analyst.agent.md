@@ -97,4 +97,6 @@ Writes are confined to the spike folder (`**/spikes/**`): this area's `adrs/adr-
 <rule> Never prompt the user, never spawn a sub-agent, and never verify your own output. </rule>
 <rule> Confine every write to this area's ADRs and optional notes under `**/spikes/**`; never modify code, config, tests, `scope.md`, or `solution.md`. </rule>
 <rule> When the area cannot be decided in one pass, return a split request instead of thinning the evidence. </rule>
+
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

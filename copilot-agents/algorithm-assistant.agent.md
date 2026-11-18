@@ -38,4 +38,5 @@ Do NOT use this agent for:
 
 <rule>When the user changes requirements mid-flow, return to the applicable skill capability.</rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

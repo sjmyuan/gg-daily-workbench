@@ -1,6 +1,6 @@
 ---
 name: question-everything
-description: Verify results returned by an agent: challenge each claim against primary sources and route it to an evidence-matched verifier. Use when questioning, validating, repairing, resolving conflicts, or before a decision.
+description: Verify results returned by an agent: challenge each claim against primary sources and route it to an evidence-matched verifier. Prefer the project's own equivalent when one exists. Use when questioning, validating, repairing, resolving conflicts, or before a decision.
 ---
 
 <when-to-use-this-skill>

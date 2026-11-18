@@ -1,6 +1,6 @@
 ---
 name: review-skill
-description: Review SKILL.md files for content classification, structure, naming, triggers, prescriptiveness, examples, and tooling. Use when reviewing, diagnosing, or checking whether a skill needs refactoring or new content.
+description: Review SKILL.md files for content classification, structure, naming, triggers, prescriptiveness, examples, and tooling. Prefer the project's own equivalent when one exists. Use when reviewing, diagnosing, or checking whether a skill needs refactoring or new content.
 ---
 
 <when-to-use-this-skill>

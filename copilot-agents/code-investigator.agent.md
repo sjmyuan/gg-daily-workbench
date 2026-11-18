@@ -49,4 +49,6 @@ Findings must be understandable without domain context. Every issue (inconsisten
 <rule> Before returning findings, apply the presentation contract — every issue is a plain-language issue card that passes the non-expert test. </rule>
 <rule> When the investigation decomposes into several independent, similar sub-tasks (multiple modules, entry points, or repositories), fan out via the `fan-out-agents` skill — dispatch parallel copies of yourself and merge their reports. </rule>
 <rule> Never create or modify any file through any tool, including shell commands — investigation is strictly read-only. </rule>
+
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

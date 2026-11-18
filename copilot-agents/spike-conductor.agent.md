@@ -101,4 +101,6 @@ When the `conduct-spike` skill's **scale-routing** calls for a dispatch:
 <rule> If required sub-agents are unavailable, run the work in this session with the same gate and sufficiency rules. </rule>
 <rule> Confine every write to the spike folder (`**/spikes/**`); never modify code, config, tests, or any file outside it. </rule>
 <rule> Never build prototypes or proof-of-concept code; `orchestrate-feature-delivery` delivers any POC or implementation. </rule>
+
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

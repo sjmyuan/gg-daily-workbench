@@ -1,6 +1,6 @@
 ---
 name: review-code
-description: Review code and documents for correctness, security, performance, and blast radius; raise unreasonable changes as blocking challenges. Use when reviewing diffs, commits, pull requests, branches, documents, or repo conventions.
+description: Review code and documents for correctness, security, performance, and blast radius; raise unreasonable changes as blocking challenges. Prefer the project's own equivalent when one exists. Use when reviewing diffs, commits, pull requests, branches, documents, or repo conventions.
 ---
 
 <when-to-use-this-skill>

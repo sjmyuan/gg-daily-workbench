@@ -40,4 +40,5 @@ Writes are confined to plan docs — `plan.md`, `context.md`, and sibling `rewor
 <rule> Confine every write to plan docs (`plan.md`, `context.md`, `rework-<date>.md`); never modify code, config, tests, or any non-markdown file. </rule>
 <rule> After persisting a plan, confirm only plan docs changed; stop and report on any out-of-scope change. </rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

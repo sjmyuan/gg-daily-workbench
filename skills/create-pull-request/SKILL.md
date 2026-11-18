@@ -1,6 +1,6 @@
 ---
 name: create-pull-request
-description: Create pull or merge requests that follow a target repository's resolved PR conventions. Use when creating, drafting, or preparing a PR.
+description: Create pull or merge requests that follow a target repository's resolved PR conventions. Prefer the project's own equivalent when one exists. Use when creating, drafting, or preparing a PR.
 ---
 
 <when-to-use-this-skill>

@@ -1,6 +1,6 @@
 ---
 name: resolve-artifact-location
-description: Resolve the base folder for spike and delivery docs from workspace conventions, confirming with the user. Use when choosing, inheriting, resuming, or placing a spike, delivery, or plan-folder location.
+description: Resolve the base folder for spike and delivery docs from workspace conventions, confirming with the user. Prefer the project's own equivalent when one exists. Use when choosing, inheriting, resuming, or placing a spike, delivery, or plan-folder location.
 ---
 
 <when-to-use-this-skill>

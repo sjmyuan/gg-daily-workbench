@@ -1,6 +1,6 @@
 ---
 name: develop-miniprogram
-description: Develop WeChat Miniprogram features following platform conventions and best practices. Use this skill when adding pages, components, or features to a WeChat Miniprogram project, debugging platform-specific runtime errors, or configuring routing, TabBar, or subpackage structure.
+description: Develop WeChat Miniprogram features following platform conventions and best practices. Prefer the project's own equivalent when one exists. Use this skill when adding pages, components, or features to a WeChat Miniprogram project, debugging platform-specific runtime errors, or configuring routing, TabBar, or subpackage structure.
 ---
 
 <when-to-use-this-skill>

@@ -1,6 +1,6 @@
 ---
 name: craft-prompt
-description: Craft and refine prompts and agent files for copilot, claude, or opencode by applying the SKR framework. Use when creating, refining, or improving a prompt, agent, or persona definition.
+description: Craft and refine prompts and agent files for copilot, claude, or opencode by applying the SKR framework. Prefer the project's own equivalent when one exists. Use when creating, refining, or improving a prompt, agent, or persona definition.
 ---
 
 <when-to-use-this-skill>

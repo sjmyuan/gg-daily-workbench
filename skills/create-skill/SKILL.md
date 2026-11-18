@@ -1,6 +1,6 @@
 ---
 name: create-skill
-description: Author, edit, and validate skill files (SKILL.md), plus the examples, references, and scripts they ship. Use when creating, authoring, generating, building, extracting, editing, improving, revising, refactoring, or validating a skill.
+description: Author, edit, and validate skill files (SKILL.md), plus the examples, references, and scripts they ship. Prefer the project's own equivalent when one exists. Use when creating, authoring, generating, building, extracting, editing, improving, revising, refactoring, or validating a skill.
 ---
 
 <when-to-use-this-skill>

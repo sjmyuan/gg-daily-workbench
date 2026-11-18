@@ -1,6 +1,6 @@
 ---
 name: resolve-conventions
-description: Resolve a target repository's conventions for a named domain into an evidence-backed card. Use when resolving, discovering, or checking repo conventions before acting.
+description: Resolve a target repository's conventions for a named domain into an evidence-backed card. Prefer the project's own equivalent when one exists. Use when resolving, discovering, or checking repo conventions before acting.
 ---
 
 <when-to-use-this-skill>

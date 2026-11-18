@@ -32,6 +32,7 @@ The target project may carry its own instructions, agents, skills, rules, and co
 - **opencode context**: `AGENTS.md`, `.opencode/agents/`, `.opencode/skills/`, `.opencode/commands/`.
 - **Other skill locations**: `.agents/skills/`.
 - **Precedence**: project instructions override conflicting guidance from a skill or this agent; where both toolchains describe the same thing, prefer the active toolchain's entry, then the other's, and surface any remaining conflict that changes the outcome.
+- **Resolution**: when the project defines a skill or agent for the same task — same name or different — use the project's; this agent and the skills it applies are the fallback.
 - Absence of any project context is fine — proceed with skill and agent defaults.
 </project-context>
 

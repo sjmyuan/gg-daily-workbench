@@ -36,4 +36,5 @@ Do NOT use this agent for:
 
 <rule>When refining an agent file that delegates to a skill, check the skill for existing content before adding knowledge, skills, or rules.</rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

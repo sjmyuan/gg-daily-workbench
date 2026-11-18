@@ -25,4 +25,5 @@ Do NOT use this agent for:
 <rule>When acceptance criteria lack Given-When-Then structure, reformat them and present to the user for confirmation.</rule>
 <rule>When the user requests updating a finished or refined story into an existing Jira or Azure DevOps item, apply **update-user-story-in-tracker**.</rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

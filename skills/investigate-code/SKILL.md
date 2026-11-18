@@ -1,6 +1,6 @@
 ---
 name: investigate-code
-description: Investigate codebases to answer how functionality, architecture, and cross-system dependencies work. Use when investigating, understanding, tracing, visualizing, documenting code, discovering patterns, grounding a decision, building an ADR evidence map, or splitting a broad investigation across parallel areas.
+description: Investigate codebases to answer how functionality, architecture, and cross-system dependencies work. Prefer the project's own equivalent when one exists. Use when investigating, understanding, tracing, visualizing, documenting code, discovering patterns, grounding a decision, building an ADR evidence map, or splitting a broad investigation across parallel areas.
 ---
 
 <when-to-use-this-skill>

@@ -34,6 +34,65 @@ by an earlier version) with a link.
 Source folders (linked whole): `copilot-agents/`, `opencode-agents/`,
 `claude-agents/` for agents; `skills/` for skills.
 
+## Project precedence: these skills are the fallback
+
+These skills and agents are the general-purpose layer. A project's own copy for
+the same task wins — same name or different — and this repo's copy is what
+applies when the project has none.
+
+### What each platform does on a name collision
+
+| Platform | Skills | Agents |
+|---|---|---|
+| opencode | By ID, **last write wins** (`config/plugin/skill.ts:152-157`). Load order ends with the project, nearest ancestor last (`config.ts:368-378`, `config/discovery.ts:81,144-151`), so a project skill with the same ID **replaces** this copy — it is not a lower-priority fallback, the workspace text is gone. | By ID, **field-by-field merge** (`config/plugin/agent.ts:75-107`, `agent.ts:80-85`). Only declared fields override; `permissions` append and the last matching rule wins, so an omitted `permissions` block silently inherits these grants. |
+| Claude Code, Copilot | Verify per install; do not rely on shadowing. | Same. |
+
+Two consequences shape the policy:
+
+- **Override by ID is free but total.** A project copy that shares a name must be
+  complete, or the half it omits has no fallback to fall back to.
+- **Differently-named equivalents are not resolved by any loader.** Both are
+  listed, and the choice is made from `description` text alone — hence the
+  clauses below.
+
+### Override mode by the skill's purpose
+
+| Skill purpose | Project copy should | Why |
+|---|---|---|
+| Produces or judges project artifacts — `conduct-spike`, `orchestrate-feature-delivery`, `plan-development-task`, `execute-plan`, `document-findings`, `write-solution-doc`, `draft-adr`, `resolve-artifact-location`, `resolve-conventions`, `create-pull-request`, `maintain-doc`, `review-code`, `investigate-code`, `question-everything`, `create-skill`, `review-skill`, `learn-from-history`, `craft-prompt`, `fan-out-agents`, `develop-miniprogram`, `draft-user-story` | **Same ID, complete file** | The project owns the templates, gates, and folder layout; a partial copy is worse than none. |
+| Adds criteria to one of the above without replacing the workflow | **Distinct ID** (`acme-review`), named from the project's instruction file | Both stay visible; forking a body into a project drifts forever. |
+| Language, media, and ideation — `correct-english`, `translate-en-cn`, `write-blog`, `draw-mermaid-diagrams`, `edit-svg`, `brainstorm-ideas`, `design-algorithm`, `clarify-request` | Leave alone, or override by ID if the project truly differs | No project-specific equivalent exists; a clause would only dilute the trigger. |
+
+### How the rule is carried
+
+- **`description` clause** — the 21 artifact skills above carry the sentence
+  `Prefer the project's own equivalent when one exists.` immediately before their
+  `Use when …` trigger, so the trigger stays last. It states precedence without
+  adding trigger verbs. Check coverage with
+  `grep -L "project's own equivalent" skills/*/SKILL.md`; the 8 language and
+  ideation skills are expected in that output.
+- **Agent context** — every agent in `opencode-agents/` and `claude-agents/`
+  carries the same `**Resolution**` bullet in its `<project-context>` block, and
+  every `copilot-agents/` agent carries the equivalent `<rule>`: a project skill
+  or agent for the same task wins, under any name, and the agent plus the skills
+  it applies are the fallback. It sits beside the existing `**Precedence**`
+  bullet because it answers a different question — project-vs-workspace, not
+  instructions-vs-agent.
+- **Dispatch** — no agent declares a `subagent` permission. `mode` decides what
+  can be dispatched: the subagent tool rejects a `primary` target
+  (`tool/plugin/subagent.ts:142`) and enforces a depth limit (`:136`), so any
+  `subagent` or `all` agent is reachable, including one the project defines.
+  What `mode` cannot do is keep a *specific* agent out. With no matching rule the
+  action resolves through the agent's base `{ action: "*", resource: "*" }` allow
+  (`schema/src/agent.ts:39-50`), so dispatch is silent unless a project or global
+  rule narrows it.
+
+### Verifying which copy won
+
+`OPENCODE_LOG_LEVEL=debug` logs `skill source loaded` with each source and its
+resolved IDs (`config/plugin/skill.ts:140-145`). A shadowed skill simply stops
+appearing; opencode has no `skills` listing command.
+
 ## opencode-agents
 
 Opencode-format copies of the agents in [`claude-agents/`](./claude-agents/).
@@ -81,7 +140,7 @@ Each file uses native **OpenCode V2** frontmatter per the
 
 ### Permission rules in these files
 
-Each agent declares its tool set explicitly — `read`, `glob`, `grep`, `edit`, `shell`, `webfetch`, `websearch`, `skill`, and `subagent` — so the frontmatter states the agent's access instead of leaving it to inherited defaults. `webfetch` and `websearch` are denied everywhere: no agent reaches the network.
+Each agent declares its tool set explicitly — `read`, `glob`, `grep`, `edit`, `shell`, `webfetch`, `websearch`, and `skill` — so the frontmatter states the agent's access instead of leaving it to inherited defaults. `subagent` is deliberately left undeclared: `mode` decides who is dispatchable. `webfetch` and `websearch` are denied everywhere: no agent reaches the network.
 
 | Agent pattern | Rules |
 |---|---|
@@ -89,9 +148,9 @@ Each agent declares its tool set explicitly — `read`, `glob`, `grep`, `edit`, 
 | Read-only — `code-investigator`, `code-reviewer` | `edit *` deny; discovery, shell, skills allowed |
 | Text-only — `english-corrector`, `translator` | `edit *` and `shell *` denied; discovery and skills allowed |
 | Folder-scoped writers — `orchestrate-delivery` (`deliveries`), `spike-conductor` and `spike-area-analyst` (`spikes`) | `edit *` deny, then `edit */deliveries/*` allow (V1 `**/deliveries/**` translated literally; same for `spikes`), plus a `deliveries/*` / `spikes/*` allow for in-project paths |
-| Dispatch-restricted — `orchestrate-delivery`, `spike-conductor` | `subagent *` deny, then one `subagent <id>` allow per target |
+| Dispatch — every agent | no `subagent` rule: `mode` decides (`primary` cannot be dispatched, `subagent` and `all` can); an unmatched action resolves through the base `*` allow |
 | No network — **every** agent | `webfetch *` and `websearch *` deny |
-| Full access — `executor`, `learner` | every action above allowed; `learner` also allows `subagent` for self-dispatch |
+| Full access — `executor`, `learner` | every action above allowed; `learner` also dispatches its own copies, which it reaches through `mode` |
 
 - Per V2's base policy, actions not listed (`question`, `external_directory`, Code Mode's `execute`, MCP tools) remain allowed.
 
@@ -115,7 +174,7 @@ Adoption belongs to the **dispatching parent**, not to the agent doing the work.
 
 - Claude frontmatter (`name:` / `tools:` / `model: inherit`) → opencode `mode:` + `permissions:`; the Claude tool list maps to V2 actions: `Glob/Grep/Read` → `glob`/`grep`/`read`, `Write/Edit` → `edit`, `Bash/KillShell/BashOutput` → `shell`, `WebFetch` → `webfetch`, `WebSearch` → `websearch`, skill tool → `skill`.
 - V1 → V2: `permission:` map → ordered `permissions:` list; `bash` → `shell`; `task` → `subagent`; `write`/`patch` → `edit`; `list`, `lsp`, `todowrite` dropped.
-- Every V1 `allow`/`deny` is carried over 1:1, including `executor` and `learner`, which previously listed no tools and now spell out their set (from their `claude-agents/` tool list and prior behavior).
+- Every V1 `allow`/`deny` was carried over 1:1 at conversion, including `executor` and `learner`, which previously listed no tools and now spell out their set (from their `claude-agents/` tool list and prior behavior). The `subagent` rules were removed afterwards: dispatch now follows `mode` alone, so a project-defined agent needs no allowlist entry.
 - V1 path globs translate literally, one rule per V1 pattern: `"*": deny` + `"*.md": allow`, and `**/deliveries/**` → `*/deliveries/*` (both `*`s collapse to the same "any characters" wildcard). Every file is an exact permission translation — verified rule by rule against `git show HEAD`.
 - Because V2 resolves in-project write paths as Location-relative, `*/deliveries/*` does not match `deliveries/<epic>/index.md` when the artifact base is the project root. That reproduces V1's behavior; to allow it, add `{ action: "edit", resource: "deliveries/*", effect: "allow" }` (after the deny) to `orchestrate-delivery.md`. The spike agents carry the equivalent `spikes/*` rule.
 - Claude paths → opencode: `CLAUDE.md` → `AGENTS.md`, `.claude/agents/` → `.opencode/agents/`, `.claude/skills/` → `.opencode/skills/`, `.claude/rules/` → project instructions.
@@ -123,7 +182,7 @@ Adoption belongs to the **dispatching parent**, not to the agent doing the work.
 ### Notes
 
 - Skills must be discoverable by opencode (`.opencode/skills/<name>/SKILL.md`, `.claude/skills/`, `.agents/skills/`, or the matching global locations) for the `skill` tool to load them.
-- Subagent dispatch tables (in `spike-conductor.md` and `learner.md`) reference agents by name — those names resolve to the other files in this folder once installed.
+- Subagent dispatch tables (in `spike-conductor.md` and `learner.md`) reference agents by name — those names resolve to the other files in this folder once installed. With same-ID project overrides, that name resolves to the project's copy instead.
 - Every agent in `opencode-agents/` **and** `claude-agents/` loads project context from **both** toolchains via **load-project-context**: instructions (`AGENTS.md`, `CLAUDE.md`), agents, skills, rules, and commands under `.opencode/` and `.claude/`, plus `.agents/skills/`. The path mapping above applies to frontmatter and the agent's own defaults, not to context discovery — a project set up for either tool wins over conflicting agent defaults. Neither toolchain's agents adopt a work dir themselves; the dispatching parent places each unit at the target repo (see above).
 
 ## Agent dispatch per platform
@@ -132,7 +191,7 @@ An agent that dispatches sub-agents must declare the capability in its frontmatt
 
 | Platform | Mechanism | Declaration |
 |---|---|---|
-| opencode | `subagent` permission allowlist | `{ action: "subagent", resource: "*", effect: "deny" }` then `{ action: "subagent", resource: "<agent>", effect: "allow" }` |
+| opencode | agent `mode` — no permission rule | `mode: subagent` or `all` is dispatchable; `mode: primary` is rejected as a subagent target. No `subagent` rule means the base `*` allow applies, so dispatch does not prompt |
 | Claude Code | `Task` tool (renamed `Agent`; `Task` remains an alias) | include `Task` (or `Agent`) in the comma-separated `tools:` list |
 | VS Code Copilot | `agents` list + the `agent` tool | `agents: ['planner', ...]` (omit `tools` to keep all tools) |
 
@@ -146,8 +205,9 @@ Dispatching agents and their targets:
 | `code-reviewer` | code-reviewer (fan-out) |
 | `code-investigator` | code-investigator (fan-out) |
 
-- **Self-dispatch / fan-out**: opencode and Claude allow an agent to invoke itself; a V2 `subagent *` deny blocks it, so self-dispatching agents must allow their own ID. VS Code Copilot requires the `chat.subagents.allowInvocationsFromSubagents` setting for a self-referential `agents` entry.
-- opencode V2 allows unspecified actions by default; explicit `subagent` allowlists exist only where dispatch is restricted (`orchestrate-delivery`, `spike-conductor`).
+- **Self-dispatch / fan-out**: with no `subagent` rule, an agent can invoke itself; the depth limit is what stops recursion. VS Code Copilot still requires an `agents` entry and the `chat.subagents.allowInvocationsFromSubagents` setting for a self-referential dispatch.
+- opencode V2 dispatches on `mode` alone; any `subagent` or `all` agent is a valid target, so a project-defined agent needs no edit to this repo. Only `spike-area-analyst` states "never spawn a sub-agent" in prose now — that is a rule the agent follows, not one the runtime enforces.
+- Claude and Copilot still gate dispatch on a declared capability (`Task` in `tools:`, or the `agents` list); dropping those would disable dispatch rather than relax a rule. On Copilot a differently-named project agent must be added to `agents:` to be reachable.
 
 
 ## Skill self-containment

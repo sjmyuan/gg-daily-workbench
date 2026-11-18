@@ -1,6 +1,6 @@
 ---
 name: write-solution-doc
-description: Produce solution documentation with C4/sequence/flowchart diagrams, API/event schemas, RAID, and RACI for decisions and architectures. Use when documenting, authoring, producing, defining, performing, creating, or compiling solution-doc content.
+description: Produce solution documentation with C4/sequence/flowchart diagrams, API/event schemas, RAID, and RACI for decisions and architectures. Prefer the project's own equivalent when one exists. Use when documenting, authoring, producing, defining, performing, creating, or compiling solution-doc content.
 ---
 
 <when-to-use-this-skill>

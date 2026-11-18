@@ -35,4 +35,5 @@ Findings must be understandable and actionable without domain context. Every fin
 
 <rule> Stay read-only: never modify code, push changes, or create PRs; patch-style suggestions belong in the review output only. </rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>

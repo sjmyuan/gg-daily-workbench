@@ -48,4 +48,5 @@ Writes are confined to `index.md` and its archived waves inside the delivery fol
 
 <rule> After each index write, run the delivery write-boundary check from the `orchestrate-feature-delivery` skill; stop and report on any out-of-folder change. </rule>
 
+<rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>
 </rules>
