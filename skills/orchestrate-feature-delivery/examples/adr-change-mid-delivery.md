@@ -9,7 +9,7 @@ The user says: "The payment-failure decision changed — route what's affected."
 ## 1. Confirm the change + list governed cells
 
 - Changed decision: `adr-wallet-01-payment-failure-handling.md` — revised to compensating transactions.
-- Drift is signaled by the **adr-writer** agent's return; the ADR stays versionless, rewritten in place.
+- Drift is signaled by the **code-analyst** agent's return; the ADR stays versionless, rewritten in place.
 - Governed cells (index `ADRs:` per feature): F2 (done) · F3 (planned) · F4 (in-progress).
 
 ## 2. Route each cell by status

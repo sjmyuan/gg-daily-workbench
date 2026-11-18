@@ -9,11 +9,11 @@ Dispatch buys one of three things: **isolation** (bulk context stays out of your
 | Work | Goes to | Dispatch when |
 |---|---|---|
 | Answer a question — index, ADR, plan, prior verdict, git log (L0) | **you** | never |
-| Locate a code fact (L1) | **you** or **code-investigator** | read it yourself when bounded; dispatch when it spans areas or would flood your context |
+| Locate a code fact (L1) | **you** or **code-analyst** (`investigate`) | read it yourself when bounded; dispatch when it spans areas or would flood your context |
 | Plan a cell | **planner** | always — plan files are planner-owned |
 | Execute a cell | **executor** | always |
 | Verify a cell | **code-reviewer** | always, never the executor — independence is the point |
-| Revise one ADR (L2) | **adr-writer** | always — authorship of a decision |
+| Revise one ADR (L2) | **code-analyst** (`adr-rewrite`) | always — authorship of a decision |
 | Spike decisions (L3; incl. rework) | **spike-conductor** | on a stated trigger |
 | Update the solution doc | **solution-doc-writer** | always — authorship |
 
@@ -38,8 +38,8 @@ A stall, question, or failure is the orchestrator's problem before it is the use
 | Rung | Signal | Action | Dispatches |
 |---|---|---|---|
 | **1 Answer** | The agent asks what the record already settled (index, ADR, `context.md`, plan, prior verdicts) | Reply with the digest and let it continue | 0 |
-| **2 Do** | A code fact is missing, contradicted, or guessed | Read it yourself when the read is bounded; otherwise dispatch **code-investigator** and feed the evidence back | 0–1 |
-| **3 Re-brief / re-route** | A path, intake field, dependency contract, or convention was missing — or the wrong agent or rung ran | Return the corrected brief to the same agent; a pending plan step wrong or obsolete → **planner** amends the same `plan.md`; ADR drift → **adr-writer**; cell stays **in-progress** — no new folder, file, or cell | 0–1 |
+| **2 Do** | A code fact is missing, contradicted, or guessed | Read it yourself when the read is bounded; otherwise dispatch **code-analyst** and feed the evidence back | 0–1 |
+| **3 Re-brief / re-route** | A path, intake field, dependency contract, or convention was missing — or the wrong agent or rung ran | Return the corrected brief to the same agent; a pending plan step wrong or obsolete → **planner** amends the same `plan.md`; ADR drift → **code-analyst**; cell stays **in-progress** — no new folder, file, or cell | 0–1 |
 | **4 Retry → escalate** | Transient error, no diagnosis, work unchanged | Re-dispatch the same brief once; then ask with the trail and a recommendation — **blocked** only when the cell cannot proceed | 1 |
 
 - A rung that already failed for the same cause is never repeated; two attempts on one cause, or a spec gap recurring after a gate round (**verification-gate** cap), ends recovery.
@@ -51,7 +51,7 @@ A stall, question, or failure is the orchestrator's problem before it is the use
 ## Escalation triggers (the only interrupts)
 
 - The **epic's** scope changes: feature set, wave order, a cell's done-means, priority, or an accepted `Assumption`.
-- A governing ADR decision is challenged, or a trade-off needs choosing — **adr-writer** drafts, the user decides.
+- A governing ADR decision is challenged, or a trade-off needs choosing — **code-analyst** drafts, the user decides.
 - POC **adopted** / **rejected**; a gate waiver; push, PR, or merge approval.
 - Credentials, access, cost, or capacity you cannot obtain.
 - An irreversible or destructive action outside the plan.
@@ -81,7 +81,7 @@ A cell often needs enabling work its plan did not list. Approve it and continue 
 
 ## ADR changes
 
-ADRs are **versionless** — drift is signaled by the **adr-writer** return or the user's report, never by diffing the ADR. Route governed cells by status:
+ADRs are **versionless** — drift is signaled by the **code-analyst** return or the user's report, never by diffing the ADR. Route governed cells by status:
 
 | Status | Route |
 |---|---|

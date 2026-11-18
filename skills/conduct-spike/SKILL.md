@@ -1,6 +1,6 @@
 ---
 name: conduct-spike
-description: Run decision-first spikes that investigate just enough and produce template-conformant ADRs passing an acceptance gate, with investigation notes and architecture docs only for a named consumer. Prefer the project's own equivalent when one exists. Use when running, scoping, continuing, or re-investigating a spike, or deciding a question that reasoning alone cannot settle.
+description: Run decision-first spikes that investigate just enough and produce template-conformant ADRs passing an acceptance gate, with an architecture overview only for a named consumer. Prefer the project's own equivalent when one exists. Use when running, scoping, continuing, or re-investigating a spike, or deciding a question that reasoning alone cannot settle.
 ---
 
 <when-to-use-this-skill>
@@ -9,8 +9,8 @@ description: Run decision-first spikes that investigate just enough and produce 
 - Decide a one-off technical question that needs code evidence — the fast path, one ADR
 - Continue a prior spike into unresolved areas, or turn pre-existing investigation notes into ADRs
 - Re-investigate a decided ADR after implementation revealed a problem
-- Produce investigation notes or an architecture overview that has a named consumer
-- Do NOT load for one code fact (`investigate-code`) or an ADR from settled evidence (`draft-adr`)
+- Produce an architecture overview that has a named consumer
+- Do NOT load for one code fact (`investigate-code`), and do NOT re-run a spike for a settled ADR — rewrite it via **continue-spike** step 4
 - Do NOT load to build a POC or deliver a feature (`orchestrate-feature-delivery`)
 </when-to-use-this-skill>
 <knowledge>
@@ -22,13 +22,12 @@ A spike settles decisions; documents are a by-product. Investigate only until th
 |---|---|---|
 | ADR per problem | Always | Passes **adr-acceptance**; the primary output |
 | `scope.md` | When ≥2 problems or a continuation is likely | The fast path keeps the scope in the ADR's Context |
-| Investigation notes | Optional | One human doc, only when evidence must outlive the session or a consumer asked |
 | Architecture overview (`solution.md`) | Optional | Only for a named consumer; references ADRs, never mirrors them |
 
 Never write production code, config, tests, or a POC — a spike ends at decisions.
 </spike-definition>
 <spike-layout>
-`<base>/spikes/<spike-name>/` holds `scope.md`, `adrs/`, optional `notes-<area>.md` and `solution.md`.
+`<base>/spikes/<spike-name>/` holds `scope.md`, `adrs/`, and optional `solution.md`.
 Writes stay inside `**/spikes/**`; unresolved root → `resolve-artifact-location`. Detail: **reference/consumer-artifacts.md**.
 </spike-layout>
 <adr-contract>
@@ -45,11 +44,6 @@ Enough evidence: every claim that could flip the chosen option is verified again
 - Verify only what the decision turns on; never present inference as fact.
 Detail and anti-patterns: **reference/evidence-sufficiency.md**.
 </evidence-sufficiency>
-<investigation-notes>
-Optional, one `notes-<area>.md`, readable top-down: what exists, entry points, flows, constraints.
-Claims cite `file:line` inline; tag confidence only where it flips a decision; never a claim ledger or paired doc.
-Notes never restate a decision. Detail: **reference/consumer-artifacts.md**.
-</investigation-notes>
 <scale-routing>
 Default: run in-session. Dispatch only when areas ≥2, or one area's reading would crowd the orchestrator's context.
 
@@ -84,7 +78,7 @@ Offer a spike when a decision hinges on what reasoning alone cannot settle:
 | Deciding how much investigation is enough | Sufficiency test, confidence tags, verification depth | [reference/evidence-sufficiency.md](reference/evidence-sufficiency.md) |
 | Scoping, decomposing, or continuing a spike | `scope.md` skeleton, area/problem split, statuses | [reference/spike-scope-guide.md](reference/spike-scope-guide.md) |
 | Choosing in-session work or a dispatch | Thresholds, area brief, return contract | [reference/scale-and-dispatch.md](reference/scale-and-dispatch.md) |
-| Someone asked for notes or an architecture overview | Consumer tests, notes shape, handoff map | [reference/consumer-artifacts.md](reference/consumer-artifacts.md) |
+| Someone asked for an architecture overview | Consumer test, overview brief, handoff map | [reference/consumer-artifacts.md](reference/consumer-artifacts.md) |
 </context-loading-guide>
 </knowledge>
 <capabilities>
@@ -114,16 +108,17 @@ Offer a spike when a decision hinges on what reasoning alone cannot settle:
 </accept-adrs>
 <continue-spike>
 **Objective**: Add, re-investigate, or reverse decisions without redoing settled work.
-1. Load the existing ADRs and notes; treat `verified` claims and adopted decisions as settled.
+1. Load the existing ADRs; treat `verified` claims and adopted decisions as settled.
 2. Re-investigate only the delta; re-open the scope gate only when the question itself changes.
 3. Rewrite the ADR in template form with options re-evaluated against the new evidence; re-run **adr-acceptance**.
-4. Update each artifact that already cites the changed ADR; produce a new one only if a consumer now exists.
+4. When nothing new is known and only the ADR text must change, dispatch `code-analyst` with `Output: adr-rewrite` and the settled digest — no re-investigation, no reopened scope.
+5. Update each artifact that already cites the changed ADR; produce a new one only if a consumer now exists.
 **Gate**: changed ADRs pass the gate; no settled claim is re-verified without new evidence.
 </continue-spike>
 <produce-optional-artifact>
-**Objective**: Produce notes or an architecture overview only when a consumer needs them.
+**Objective**: Produce an architecture overview only when a consumer needs it.
 1. Name the consumer and what they will do with the artifact. No consumer → produce nothing, and say so.
-2. Notes → **investigation-notes** shape. Overview → `write-solution-doc`, citing decisions, never mirroring them.
+2. Apply `write-solution-doc`, citing decisions, never mirroring them.
 3. Link the artifact from the handoff; never let it become a second decision record.
 **Gate**: a named consumer exists, and no decision is restated as new content.
 </produce-optional-artifact>
@@ -138,8 +133,8 @@ Offer a spike when a decision hinges on what reasoning alone cannot settle:
 <rule>When reasoning cannot settle a question, run **define-spike-scope**, **decide-spike-problems**, **accept-adrs**.</rule>
 <rule>Every ADR passes **reference/adr-acceptance.md** before presentation or adoption — never partial or abridged.</rule>
 <rule>Before presenting any ADR set, apply **review-pacing**; the ADR review is the only artifact checkpoint.</rule>
-<rule>Before notes or an overview, apply **produce-optional-artifact** — a named consumer or nothing.</rule>
-<rule>When the user resumes, supplies notes, or a fact changes, apply **continue-spike**.</rule>
+<rule>Before an architecture overview, apply **produce-optional-artifact** — a named consumer or nothing.</rule>
+<rule>When the user resumes, supplies notes, a fact changes, or only a settled ADR must be rewritten, apply **continue-spike**.</rule>
 <rule>Dispatch only at areas ≥2 or heavy reading volume; never split an area's phases across agents.</rule>
 <rule>When an ADR hinges on unverified evidence, apply **suggest-spike** before adopting it.</rule>
 <rule>When an ADR must change, apply `draft-adr` — never hand-edit — and gate the result here.</rule>

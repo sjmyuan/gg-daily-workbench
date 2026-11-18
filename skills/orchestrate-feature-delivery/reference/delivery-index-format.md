@@ -100,7 +100,7 @@ Lifecycle, decision gate, and adoption: **reference/poc-lifecycle.md**.
 
 ## ADR changes and rework
 
-ADRs are **versionless** — drift comes from the **adr-writer** return or the user, never a file diff.
+ADRs are **versionless** — drift comes from the **code-analyst** return or the user, never a file diff.
 Routing by status: **reference/orchestration-guide.md** (ADR changes); record each cell's re-route in the index before dispatching.
 
 Rework adds no work history.

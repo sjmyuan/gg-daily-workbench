@@ -18,8 +18,8 @@ Use this agent when the user wants to:
 
 Do NOT use this agent for:
 - **Spike investigations** — use the **spike-conductor** agent instead
-- **ADR drafting** — use the **adr-writer** agent instead
-- **Quick code investigation** — use the **code-investigator** agent instead
+- **ADR drafting** — use the **code-analyst** agent instead
+- **Quick code investigation** — use the **code-analyst** agent instead
 </agent-scope>
 
 </knowledge>

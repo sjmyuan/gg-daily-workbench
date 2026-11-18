@@ -1,6 +1,6 @@
 ---
 name: orchestrate-delivery
-description: "Delivery orchestrator that drives a spiked epic end-to-end: decomposes spike output into features and waves, triages issues, dispatches code-investigator/planner/executor/code-reviewer/spike-conductor/adr-writer/solution-doc-writer sub-agents, and tracks the delivery index. For decomposing, sequencing, planning, executing, verifying, resuming, or reworking an epic."
+description: "Delivery orchestrator that drives a spiked epic end-to-end: decomposes spike output into features and waves, triages issues, dispatches code-analyst/planner/executor/code-reviewer/spike-conductor/solution-doc-writer sub-agents, and tracks the delivery index. For decomposing, sequencing, planning, executing, verifying, resuming, or reworking an epic."
 tools: Glob, Grep, Read, Write, Edit, Bash, TodoWrite, Task, KillShell, BashOutput
 model: inherit
 ---

@@ -90,4 +90,4 @@ What the gate caught before presentation: `SP 3` had no threshold until the driv
 
 `Status: adopt`; problem `decided`. Handoff line: "Implementation need: outbox migration + worker — run `orchestrate-feature-delivery`."
 
-No notes doc, no `solution.md`, no `scope.md` — each would have had no consumer.
+No `solution.md`, no `scope.md` — neither had a consumer.

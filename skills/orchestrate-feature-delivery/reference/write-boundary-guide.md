@@ -17,7 +17,7 @@ Gate findings go straight to the planner; the index tracks status only.
 | Layer | Where | Strength |
 |---|---|---|
 | `edit` permission — `"*": "deny"`, `"**/deliveries/**": "allow"` | Orchestrator agent | Hard block |
-| `task` allowlist — code-investigator / planner / executor / code-reviewer / spike-conductor / adr-writer / solution-doc-writer | Orchestrator agent | Blocks unexpected agents |
+| `task` allowlist — code-analyst / planner / executor / code-reviewer / spike-conductor / solution-doc-writer | Orchestrator agent | Blocks unexpected agents |
 | Write-boundary doctrine + rules | Skill and agent files (all platforms) | Intent |
 | Boundary check (own-writes snapshot delta) | After each index write | Detection |
 
@@ -39,7 +39,7 @@ The delta also catches in-window shell writes — the compensating control for `
 
 ## Implementation is delegated, never done here
 
-Code changes are produced only by the dispatched **executor** (execute-plan); planning and ADR authorship are delegated to the **planner** / **adr-writer**.
+Code changes are produced only by the dispatched **executor** (execute-plan); planning and ADR authorship are delegated to the **planner** / **code-analyst**.
 When a plan or execution surfaces a change outside the delivery docs, dispatch the owning agent per **agent-dispatch** — never write it from the orchestrator.
 
 Reads are not writes. Reading the code, running read-only commands, and reasoning across cells' contracts is orchestration, not implementation — and it is how the orchestrator stays able to judge what it receives.

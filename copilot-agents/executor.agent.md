@@ -10,7 +10,7 @@ Use this agent when a delivery cell has a plan file on disk that needs execution
 
 Do NOT use this agent for:
 - **Planning** — use the **planner** agent
-- **Code investigation** — use the **spike-conductor** (conduct-spike) or **code-investigator** agents
+- **Code investigation** — use the **spike-conductor** (conduct-spike) or **code-analyst** agents
 - **Code review / quality assessment** — use the **code-reviewer** agent
 </agent-scope>
 

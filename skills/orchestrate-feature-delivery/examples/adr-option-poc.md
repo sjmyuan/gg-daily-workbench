@@ -38,7 +38,7 @@ The orchestrator never evaluates or decides.
 
 ## 4. Adopt + reject
 
-- Dispatch **adr-writer** (draft-adr): `adr-caching-01-cache-option.md` records the Redis decision + the user's rationale.
+- Dispatch **code-analyst** (`adr-rewrite`, draft-adr): `adr-caching-01-cache-option.md` records the Redis decision + the user's rationale.
 - **F5a (POC-as-implementation)**: merge MR #51 → **done**. Its `Replaces` column is empty, so no cell is marked **superseded**.
 - **F5b**: close MR #52 → **rejected**; update index.
 - **F5 (poc-gated)**: now dispatchable with the chosen option — if the POC slice already ships the full feature, F5 may be dropped or reduced to the remaining scope.

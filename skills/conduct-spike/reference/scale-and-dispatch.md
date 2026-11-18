@@ -29,6 +29,9 @@ One brief per area. Every path absolute. Fill every bracket; a brief that carrie
 ```markdown
 # Area brief — <area>
 
+## Mode
+`adr` — write the ADRs, nothing else.
+
 ## Mission
 Settle <area>'s problems with ADRs that pass the acceptance gate, then return once.
 
@@ -59,11 +62,42 @@ Settle <area>'s problems with ADRs that pass the acceptance gate, then return on
 - Options the evidence ruled out, and why
 
 ## Constraints
-- Write only `adrs/adr-<area>-<NN>-<problem>.md` and, if a consumer was named, `notes-<area>.md`.
+- Write only `adrs/adr-<area>-<NN>-<problem>.md`.
 - Never write `scope.md`, `solution.md`, code, config, or tests.
 - Never prompt the user; the orchestrator owns the review.
 - Never verify your own output and never dispatch a sub-agent.
 ```
+
+## Rewrite brief
+
+A settled decision only needs its ADR rewritten. Hand over the digest and the target path — no investigation task, no scope file, no re-evaluation.
+
+```markdown
+# Rewrite brief — <ADR>
+
+## Mode
+`adr-rewrite` — rewrite in place, never investigate.
+
+## Decision
+- Chosen option: <Option N> — the drivers it wins, with metric and threshold
+- Evidence: <file:line> per driver-impact row
+- Still unverified: <claim → what would settle it>
+
+## Task
+Rewrite <absolute ADR path> in place with `draft-adr`, in template order, from the decision above.
+Re-run the acceptance gate on the changed sections only.
+
+## Constraints
+- Never investigate; every claim above is settled input.
+- Never add an option this digest does not name.
+- Never write `scope.md`, `solution.md`, code, config, or tests.
+- Never prompt the user, never spawn a sub-agent, and never verify your own output.
+
+## Return
+ADR path · sections changed · gate result on the changed sections · unverified claims
+```
+
+The digest is the question. A brief with no chosen option means the decision is not settled — run the spike instead.
 
 ## Return contract
 

@@ -46,37 +46,6 @@ Tags appear only on claims the decision rests on. A document with a tag on every
 
 Verification is per claim, never per document. A blanket "looks right" is not a verdict.
 
-## Optional notes document
-
-Write `notes-<area>.md` only when one of these is true:
-
-- the evidence must outlive the session and cannot fit in the ADR's citations,
-- a later spike or a delivery cell will consume it,
-- the user asked for an explanation of the current state.
-
-Shape:
-
-```markdown
-# <Area> — current state
-
-<TL;DR: what exists, in 2–3 sentences.>
-
-## <Question the reader would ask>
-
-<Answer in prose or a table. Claims cite `file:line` inline.>
-
-| Concern | Today |
-|---|---|
-| <entry point / flow / constraint> | <fact with `file:line`> |
-```
-
-Rules:
-
-- Human-readable first: prose, tables, and short diagrams, ordered by what a reader needs.
-- No claim-ID ledger, verdict table, coverage section, or paired evidence document.
-- No searched-negative log unless a later investigation would repeat the search — then one short list.
-- Notes and ADR never duplicate each other: notes describe what exists, the ADR decides what to do.
-
 ## Anti-patterns
 
 | Anti-pattern | Why it fails | Move |

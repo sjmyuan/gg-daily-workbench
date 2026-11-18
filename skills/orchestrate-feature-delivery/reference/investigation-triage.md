@@ -11,8 +11,8 @@ It costs nothing and ends only when nothing was inferred — a precondition, not
 | Rung | Answers | Test | Action | Dispatches | Artifacts |
 |---|---|---|---|---|---|
 | **L0 Answer** | What did we decide, why, or what is the status? | Index, `context.md`, plan/rework, ADR, findings/evidence, git log settle it | Read in-session and answer | 0 | none |
-| **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | Read it yourself when the read is bounded (one module, a few files, a named symbol); otherwise one `code-investigator` with the L1 brief below | 0–1 | none |
-| **L2 Decision** | Was exactly one ADR decision wrong or incomplete? | One decision changes; no new options | `adr-writer` revises in place; `solution-doc-writer` only if target state changes | 1–2 | ADR (+ solution section) |
+| **L1 Evidence** | Where or what is the code fact? | A code fact is missing or contradicted | Read it yourself when the read is bounded (one module, a few files, a named symbol); otherwise one `code-analyst` (`investigate`) with the L1 brief below | 0–1 | none |
+| **L2 Decision** | Was exactly one ADR decision wrong or incomplete? | One decision changes; no new options | `code-analyst` (`adr-rewrite`) revises in place; `solution-doc-writer` only if target state changes | 1–2 | ADR (+ solution section) |
 | **L3 Spike** | Which option should we choose across decisions? | ≥2 decisions/areas, new options, or formal findings required | `spike-conductor`, **delta** scope — never its internal area agents | ≥3 | spike artifacts |
 
 ## L1 brief
@@ -47,14 +47,14 @@ A brief carrying all five **is** the intake gate's result: the investigator adop
 
 ## L2 contract
 
-- `adr-writer` rewrites the ADR in place (versionless); no scope map, no notes doc.
+- `code-analyst` (`adr-rewrite`) rewrites the ADR in place (versionless); no scope map, no extra docs.
 - `solution-doc-writer` only when the target state (C4, contracts, RAID) changes.
 - Verify new code claims with one independent pass; no full loop unless the decision is irreversible.
 - Record the revision trigger in the ADR context — no changelog, no version markers.
 
 ## L3 delta scope
 
-- Pass the original `scope.md`, governing ADR, and notes by path when they exist, with a digest of what the delivery record already ruled out.
+- Pass the original `scope.md` and governing ADR by path when they exist, with a digest of what the delivery record already ruled out.
 - Investigate only the delta; never rebuild unaffected findings or solution sections.
 - The span rule is why L3 was chosen — if only one decision moved, drop to L2.
 
@@ -76,7 +76,7 @@ A brief carrying all five **is** the intake gate's result: the investigator adop
 | Deciding "is this ambiguous?" first | The misreading is what the intake gate exists to catch | Count the inferences: zero → proceed, else show the list |
 | Recording an assumption in `context.md` | Only the planner and executor write it | Record it in the index cell brief |
 | Treating artifact reads as doing the work | The mandate forbids delivery work, not reading | Answer from the record at L0 |
-| Running L2 through a full spike | Scope, notes, and overview rebuild for one ADR | `adr-writer` directly |
+| Running L2 through a full spike | Scope and overview rebuild for one ADR | `code-analyst` in `adr-rewrite` mode directly |
 | L3 without a trigger | Weeks of artifacts for a local bug | State the trigger or drop a rung |
 | Re-verifying the whole ADR at L2 | Cost with no new evidence | Verify only new code claims |
 

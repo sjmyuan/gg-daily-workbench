@@ -13,7 +13,7 @@ Your task is to review code changes, pull requests, commit ranges, and documents
 Use this agent when the user asks for a code review, quality assessment, or feedback on code changes, diffs, PRs, commits, branches, or documents (README, ADR, design doc, specification, runbook).
 
 Do NOT use this agent for:
-- **Code investigation / exploration** — use the **code-investigator** agent instead
+- **Code investigation / exploration** — use the **code-analyst** agent instead
 - **Coding / implementation** — use the **planner** / **executor** agents instead
 - **Bug fixing or refactoring** — use the **planner** / **executor** agents instead
 </agent-scope>

@@ -14,8 +14,8 @@ Applies **verify-sub-agent-results** — the **question-the-result** → verify 
 - **C2 (Completeness, high)** — "Order sync is complete": what happens when Kafka is down, and is there a fallback path? Satisfactory answer: state the failure and fallback behavior.
 - **C3 (Ambiguity, medium)** — "syncs orders": unclear whether full order payloads or just notification events. Satisfactory answer: state the payload type.
 
-### Verification (new `code-investigator`)
-The evidence is code, so a NEW `code-investigator` (not the original instance) is dispatched with the protocol brief (abridged — full schema in `reference/verification-protocol.md`):
+### Verification (new `code-analyst`)
+The evidence is code, so a NEW `code-analyst` in `investigate` mode (not the original instance) is dispatched with the protocol brief (abridged — full schema in `reference/verification-protocol.md`):
 - The original claim and C1–C3.
 - Established evidence: the producer's cited `orders.warehouse` topic.
 - Open claims: the actual transport path; failure and fallback behavior; payload type.
@@ -28,11 +28,11 @@ It starts from the cited location and traces the actual sync path from primary s
 - **C2** — AGREE: a DB fallback exists.
 - **C3** — AGREE: only notification events, not payloads.
 
-A material verdict is DISAGREE → a new `code-investigator` (not the original instance) redoes the investigation with the corrected understanding.
+A material verdict is DISAGREE → a new `code-analyst` in `investigate` mode (not the original instance) redoes the investigation with the corrected understanding.
 
 ## Round 2
-### Re-investigation (new `code-investigator`)
-A NEW `code-investigator` (never the original instance) receives the repair brief (abridged — full schema in `reference/verification-protocol.md`):
+### Re-investigation (new `code-analyst`)
+A NEW `code-analyst` in `investigate` mode (never the original instance) receives the repair brief (abridged — full schema in `reference/verification-protocol.md`):
 - The challenged claim and the DISAGREE verdict that broke it.
 - The verifier's evidence: `OrderPoller` is the primary sync path; Kafka carries notifications only.
 - The corrected understanding the agent must test rather than adopt.
@@ -43,8 +43,8 @@ Question the corrected result:
 - **C4 (Correctness, high)** — "Order sync is DB polling based": unclear whether the poller batches or processes one-by-one, and the poll interval is unstated. Satisfactory answer: state the batch behavior and poll interval.
 - **C5 (Completeness, medium)** — "Kafka is notification-only": other consumers of the same topic may be affected. Satisfactory answer: enumerate the topic's consumers.
 
-### Verification (new `code-investigator`)
-Another NEW `code-investigator` (again not the original instance) verifies C4–C5.
+### Verification (new `code-analyst`)
+Another NEW `code-analyst` (again not the original instance) verifies C4–C5.
 
 ### Comparison (verdicts vs. result)
 - **C4** — AGREE: batch processing every 30s, matches.

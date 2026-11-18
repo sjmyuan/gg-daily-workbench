@@ -40,7 +40,7 @@ Use this agent when a delivery cell needs a plan, or when the user asks for a pl
 
 Do NOT use this agent for:
 - **Execution** — use the **executor** agent
-- **Deep / spike code investigation** — use the **spike-conductor** (conduct-spike) or **code-investigator** agents (lightweight plan-grounding investigation is the planner's own job via **investigate-change-area**)
+- **Deep / spike code investigation** — use the **spike-conductor** (conduct-spike) or **code-analyst** agents (lightweight plan-grounding investigation is the planner's own job via **investigate-change-area**)
 - **Code review / quality assessment** — use the **code-reviewer** agent
 </agent-scope>
 

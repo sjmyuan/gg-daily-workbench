@@ -18,7 +18,7 @@ The user says: "We found an issue in the delivered checkout rework — investiga
 |---|---|---|
 | Triage | orchestrator (L3 by trigger) | **triage-issue** |
 | Focused spike on `adr-wallet-01-payment-failure-handling.md` | **spike-conductor** | **conduct-spike** |
-| ADR revision (decision changes) | **adr-writer** | **draft-adr** |
+| ADR revision (decision changes) | **code-analyst** (`adr-rewrite`) | **draft-adr** |
 | Solution-doc refresh (target state changes) | **solution-doc-writer** | **write-solution-doc** |
 | Write rework plan | **planner** | **plan-development-task** |
 | Execute rework plan | **executor** | **execute-plan** |

@@ -2,7 +2,7 @@
 
 **Applies**: `detect-learning-signals` (agent orchestration path) → `provision-lessons`
 
-**Scenario**: A team lead wants to extract reusable lessons from three sources simultaneously: a recent PR implementing a payment feature (with its user story), the last month of git history for the payment module, and Slack transcripts from the #backend channel where payment-related discussions happened. The platform has a `code-investigator` agent and an `Explore` agent available.
+**Scenario**: A team lead wants to extract reusable lessons from three sources simultaneously: a recent PR implementing a payment feature (with its user story), the last month of git history for the payment module, and Slack transcripts from the #backend channel where payment-related discussions happened. The platform has a `code-analyst` agent and an `Explore` agent available.
 
 ---
 
@@ -23,12 +23,12 @@ Extract anything reusable — patterns, constraints, decisions, procedures.
 
 **Platform scan**: Two suitable agents detected:
 - `Explore` — description: "Fast read-only codebase exploration and Q&A subagent"
-- `code-investigator` — description: "Read-only code investigator that explores codebases, answers questions, traces flows, diagrams architecture, and discovers patterns"
+- `code-analyst` — description: "Code analyst that investigates a code area and produces the artifact the request names — a tagged answer, a gated ADR, a findings doc pair, or notes"
 
-**Suitability assessment**: Both match the code analysis keywords ("explore codebase", "investigate", "discover patterns"). The `code-investigator` is a stronger match for PR analysis (it explicitly discovers patterns). No communication-mining agent found.
+**Suitability assessment**: Both match the code analysis keywords ("explore codebase", "investigate", "discover patterns"). The `code-analyst` is a stronger match for PR analysis — it investigates the PR and can write the findings doc in the same session. No communication-mining agent found.
 
 **Decision**:
-- PR #342 + story → dispatch to `code-investigator` (best fit for pattern discovery)
+- PR #342 + story → dispatch to `code-analyst` (best fit for pattern discovery)
 - Git history → dispatch to `Explore` (good fit for codebase exploration)
 - Slack transcripts → no suitable agent; fall back to internal `analyze-communication-history`
 
@@ -36,7 +36,7 @@ Extract anything reusable — patterns, constraints, decisions, procedures.
 
 ## Step 2-3: Dispatch
 
-### Agent 1: code-investigator (PR analysis)
+### Agent 1: code-analyst (PR analysis)
 
 **Prompt constructed** following the code analysis agent prompt template from `reference/agent-orchestration-pattern.md`, populated with the PR #342 source material (story text, diff, review comments) and instructed to scan for story-implementation gaps, PR discussion insights, and implementation recipes.
 
@@ -54,7 +54,7 @@ Runs internally since no communication-mining agent is available.
 
 ## Step 3 (continued): Collect and Merge Results
 
-### Agent 1 (code-investigator) returns:
+### Agent 1 (code-analyst) returns:
 
 ```
 CANDIDATE LESSONS FROM PR #342:

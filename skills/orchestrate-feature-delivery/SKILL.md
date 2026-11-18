@@ -42,7 +42,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 | **agent-dispatch** | Dispatch for isolation, independence, a long run, or an artifact-owning specialty; otherwise do it yourself. | [orchestration-guide](reference/orchestration-guide.md), [dispatch-briefs](reference/dispatch-briefs.md) |
 | **agent-recovery** | Clear a stall or failure before the user — answer, do, re-brief, retry once; escalate on a listed trigger. | [orchestration-guide](reference/orchestration-guide.md) |
 | **rework-modes** | Append-only sibling `rework-<date>.md` carrying the delta; `plan.md` frozen; post-merge adds a feature. | [rework-modes](reference/rework-modes.md) |
-| **adr-change** | Versionless — drift comes from **adr-writer** or the user; route governed cells by status. | [orchestration-guide](reference/orchestration-guide.md) |
+| **adr-change** | Versionless — drift comes from **code-analyst** (`adr-rewrite`) or the user; route governed cells by status. | [orchestration-guide](reference/orchestration-guide.md) |
 | **concise-writing** | The index is a board: **≤8,000 chars / ≤120 lines**, table-first, no narration | [delivery-index-format](reference/delivery-index-format.md), [writing-style](reference/writing-style.md) |
 </delivery-standards>
 <context-loading-guide>
@@ -55,7 +55,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 <capabilities>
 <decompose-change-into-features>
 1. Gate per `clarify-request`; show every inference before grouping.
-2. Load ADRs (required), then the solution doc and notes when present.
+2. Load ADRs (required), then the solution doc when present.
 3. Group target-state changes by ADR traceability and module boundary.
 4. Block on any ADR–solution contradiction — nothing splits against a stale decision.
 5. Assign `F1…`, a kebab-case name, and a one-line description.
@@ -115,11 +115,11 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 1. Name the affected cell, its governing ADR, and its status; restate expected versus actual.
 2. Classify it as mechanical (revert / restore / copy / keep) per **reference/mechanical-restore.md**, or behavioral.
 3. Apply **triage-issue**, scope to that decision, and present the rung for confirmation.
-4. Plan → **planner** (`rework-<date>.md`), execute → **executor**, L2 → **adr-writer**, L3 → **spike-conductor**.
+4. Plan → **planner** (`rework-<date>.md`), execute → **executor**, L2 → **code-analyst** (`adr-rewrite`), L3 → **spike-conductor**.
 5. Apply **update-delivery-index** — post-merge adds a rework feature; pre-merge changes no row.
 </handle-post-implementation-issue>
 <handle-adr-change>
-1. Confirm the changed ADR and its decision from the user or **adr-writer**; list governed cells from the index's `ADRs:` entries.
+1. Confirm the changed ADR and its decision from the user or **code-analyst**; list governed cells from the index's `ADRs:` entries.
 2. Route by status per **reference/orchestration-guide.md**, surface in-flight POCs, then confirm.
 </handle-adr-change>
 <define-poc-scope>
@@ -138,7 +138,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 <rule> An issue after implementation → **handle-post-implementation-issue**; never re-decompose the epic. </rule>
 <rule> A revert, restore, copy, or keep request → a mechanical rework with a `Source`. </rule>
 <rule> Any investigation starts at **triage-issue** — answer from the record and read a bounded file yourself; dispatch when it spans areas or needs isolation. </rule>
-<rule> An ADR change or **adr-writer** revision → **handle-adr-change**; never dispatch on a stale decision. </rule>
+<rule> An ADR change or **code-analyst** revision → **handle-adr-change**; never dispatch on a stale decision. </rule>
 <rule> An ADR option needs proof → **define-poc-scope**. </rule>
 <rule> A POC reaches **poc-ready** → never evaluate; wait for the user's recorded **adopted** / **rejected**. </rule>
 </rules>

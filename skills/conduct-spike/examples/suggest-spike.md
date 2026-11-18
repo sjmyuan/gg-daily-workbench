@@ -38,7 +38,7 @@ Fast path, no `scope.md`:
 | Options | Option 1: vendor local SDK · Option 2: edge-cached evaluation |
 | Boundaries | Read the edge runtime and the vendor SDK only; no implementation |
 
-One gate confirmation, one problem, no notes doc.
+One gate confirmation, one problem, no extra artifacts.
 
 ---
 

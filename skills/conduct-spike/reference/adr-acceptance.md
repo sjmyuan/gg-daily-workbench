@@ -59,7 +59,7 @@ A `REVISE` verdict blocks presentation and adoption. Re-run the gate on the chan
 | Drivers read as a wish list | No metric, threshold, or measurement | Rewrite each driver as a testable statement or drop it |
 | Comparison is a feature list | Driver-impact rows carry no measured value | Measure or mark **unverified** — never leave the cell empty |
 | A confident decision with no citations | Evidence lived in a separate doc the ADR never cites | Cite `file:line` at the claim; re-read what the decision turns on |
-| The ADR only makes sense after reading the notes doc | Investigation detail leaked into the decision | Move the narrative to notes; keep the decision and its citations |
+| The ADR only makes sense after reading an external document | Investigation detail leaked into the decision | Keep the decision and its citations inline; drop narrative the decision does not need |
 | Twelve-page ADR for a reversible choice | Volume mistaken for rigor | Keep the evaluation; cut prose, not checks; prefer the cheaper option when drivers tie |
 
 ## Fast-path minimum

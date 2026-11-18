@@ -44,7 +44,7 @@ Verification decides whether a challenged result may be accepted. **Independence
 |---|---|
 | **Primary sources** | Code, docs, data, logs — never the result itself. |
 | **Fresh instances** | A NEW agent on every dispatch. |
-| **Evidence-matched verifiers** | Code → `code-investigator` (or the closest code-reading agent); non-code → a NEW producer-type agent. |
+| **Evidence-matched verifiers** | Code → a NEW `code-analyst` in `investigate` mode (or the closest code-reading agent); non-code → a NEW producer-type agent. |
 | **Depth by blast radius** | Skip structure; fidelity-check synthesis; single pass for new facts; full loop only for load-bearing decisions. |
 
 Full rules: **reference/verification-protocol.md**.
@@ -90,7 +90,7 @@ Template: **reference/verification-protocol.md**.
 1. Load [reference/verification-protocol.md](reference/verification-protocol.md).
 2. Apply **question-the-result** to raise prioritized challenges on the returned result.
 3. Route each material challenge to an evidence-matched verifier — never the original instance.
-4. Match the verifier to the evidence: code claims → `code-investigator` (or the closest code-reading agent); non-code → a NEW agent of the producer's type.
+4. Match the verifier to the evidence: code claims → a NEW `code-analyst` in `investigate` mode (or the closest code-reading agent); non-code → a NEW agent of the producer's type.
 5. Carry the known context per **brief-context** with every brief.
 6. If no evidence-matched verifier is available, verify each challenge directly against primary sources.
 7. Collect per-challenge verdicts (AGREE / DISAGREE / UNCERTAIN), each traceable to its challenge and citing its primary source.

@@ -78,6 +78,6 @@ Consumer named (delivery planning), so:
 3. Verify fidelity: no changed chosen option, no invented component; one correction (the overview drew a shared ledger, contradicting Wallet's ADR).
 4. Save as `solution.md`; link it in the handoff.
 
-**Declined**: `notes-<area>.md` — no consumer asked, and each ADR already cites what it needs. Saying so took one line.
+**Declined**: no separate current-state doc — each ADR already cites what it needs. Saying so took one line.
 
 **Handoff**: ADR paths → feature rows; `solution.md` → `## Spike References`; P2's unverified throughput and the cutover load test → the delivery cell's context.

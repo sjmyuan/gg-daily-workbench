@@ -19,8 +19,8 @@ Prioritized challenges:
 - **C2 (Completeness, high)** — Password change invalidates cached tokens: only the `TokenCacheService` path is covered; if the refresh-token path skips this cache, invalidation is incomplete. Satisfactory answer: confirm the refresh flow also invalidates, or explain why it need not.
 - **C3 (Ambiguity, medium)** — "Invalidates cached tokens": unclear whether access and refresh tokens are both covered and whether the cache is keyed by `userId` or by token. Satisfactory answer: state the token types and cache keying.
 
-## Verification (new `code-investigator`)
-The evidence is code, so a NEW `code-investigator` (not the original instance) is dispatched with the protocol brief (abridged — full schema in `reference/verification-protocol.md`):
+## Verification (new `code-analyst`)
+The evidence is code, so a NEW `code-analyst` in `investigate` mode (not the original instance) is dispatched with the protocol brief (abridged — full schema in `reference/verification-protocol.md`):
 - The original claims and C1–C3.
 - Established evidence: the producer's cited `TokenCacheService.java:42`.
 - Open claims: reachability from every password-change path; token types covered.

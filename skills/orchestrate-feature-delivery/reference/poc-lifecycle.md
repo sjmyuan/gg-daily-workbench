@@ -31,7 +31,7 @@ The orchestrator never evaluates or decides.
 At **poc-ready**, the user reviews/tests the MR — optionally against `success-criteria` — and records **adopted** or **rejected** directly in the index, with a one-line rationale in `## Notes`.
 If the governing ADR changes while the POC is in flight, its criteria may be moot — surface the change to the user first (see **handle-adr-change**). Once recorded, the orchestrator reacts:
 
-1. Dispatch **adr-writer** (draft-adr) to record the outcome in the ADR.
+1. Dispatch **code-analyst** (`adr-rewrite`, draft-adr) to record the outcome in the ADR.
 2. **Adopted** — apply the matching adoption model below.
 3. **Rejected** — close the cell and the MR (ask the user); delivery proceeds on another option.
 4. Apply **update-delivery-index**.

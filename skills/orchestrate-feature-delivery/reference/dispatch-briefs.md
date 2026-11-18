@@ -42,7 +42,7 @@ A brief is complete when **nothing the orchestrator holds is missing from it**.
 | **verifier** | Cell digest (done means, decided behaviour), recorded `base7..head7`, governing ADR, prior-round verdicts | Digest + inline |
 | **L1 investigator** | The question, the record artifacts already read and what they established, known locations, already-searched | Digest |
 | **spike conductor (L3)** | Delta scope, the trigger that chose L3, prior artifacts and the findings they already cover | Path + digest |
-| **adr-writer / solution-doc-writer** | Decision digest, affected sections, which cells the change governs | Digest + path |
+| **code-analyst (`adr-rewrite` / `findings`) / solution-doc-writer** | Decision digest, affected sections, which cells the change governs, the `Output` mode | Digest + path + mode |
 
 ## Self-locating brief
 
@@ -60,7 +60,7 @@ Dispatched skills run their own intake gate and refuse to act on a private readi
 |---|---|
 | **planner** | Change type, expected behavior, triggering input, done criteria (plus the ref, for a restore) |
 | **executor** | Plan path, active rework file, base ref, expected outcome |
-| **code-investigator (L1)** | System, scope, depth, consumer |
+| **code-analyst (`investigate`, L1)** | System, scope, depth, consumer |
 | **spike-conductor (L3)** | Spike goal, affected areas or delta scope, boundaries, brownfield/greenfield |
 
 A brief carrying these fields **is** the gate result: the agent adopts them, asks nothing, and explores only what they leave open. An unfilled field becomes the agent's guess and an extra pass.

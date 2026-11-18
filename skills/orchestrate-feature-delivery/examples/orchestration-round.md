@@ -48,7 +48,7 @@ F2 and F3 become develop-ready (F1 planned; contract-first allows planning in pa
 - **Planner B** → plan `order-service/F2`
 - **Planner C** → plan `api-gateway/F3`
 
-> **Authorship rule in action**: when a plan or execution surfaces a solution-doc or ADR change, the orchestrator dispatches a **solution-doc-writer** / **adr-writer** — those artifacts carry a decision's voice, not a status edit.
+> **Authorship rule in action**: when a plan or execution surfaces a solution-doc or ADR change, the orchestrator dispatches a **solution-doc-writer** / **code-analyst** — those artifacts carry a decision's voice, not a status edit.
 > The orchestrator never writes them, and never writes code.
 
 ## 4b. Unblock without interrupting

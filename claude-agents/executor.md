@@ -14,7 +14,7 @@ Use this agent when a delivery cell has a plan file on disk that needs execution
 
 Do NOT use this agent for:
 - **Planning** — use the **planner** agent
-- **Read-only code investigation** — use the **spike-conductor** (conduct-spike) or **code-investigator** agents
+- **Read-only code investigation** — use the **spike-conductor** (conduct-spike) or **code-analyst** agents
 - **Code review / quality assessment** — use the **coding-reviewer** agent
 </agent-scope>
 

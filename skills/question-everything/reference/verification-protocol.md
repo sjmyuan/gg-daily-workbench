@@ -32,11 +32,11 @@ Route each challenge to the agent that can read the evidence that would settle i
 
 | Evidence that settles the challenge | Verifier |
 |---|---|
-| Code / current-state behavior (source, symbols, `file:line`) | `code-investigator` (or the platform's closest code-reading agent) |
+| Code / current-state behavior (source, symbols, `file:line`) | a NEW `code-analyst` in `investigate` mode (or the platform's closest code-reading agent) |
 | Non-code (research comparables, decision reasoning, document structure/format) | A NEW agent of the same type as the producer |
 
 - **Per challenge, not per result** — one result's challenges may split across verifiers.
-- **Documents are not evidence** — a producer-type agent re-reading its own doc type cannot verify code claims; route those to `code-investigator`.
+- **Documents are not evidence** — a producer-type agent re-reading its own doc type cannot verify code claims; route those to a NEW `code-analyst` in `investigate` mode — never the instance that wrote the document or produced the claim.
 - **Structure and format** stay with the owning skill's checklist, not the evidence loop.
 - **Greenfield** — no code exists, so the verification evidence is non-code and the producer's type applies.
 
@@ -61,6 +61,9 @@ Carry every established fact with the brief so the verifier starts from the prod
 ## Brief template
 
 ```markdown
+## Mode
+`investigate` — verify and report; write no file.
+
 ## Context
 <the original result and its key claims>
 
@@ -95,7 +98,7 @@ Return a per-challenge verdict, each citing its primary source (file:line, doc, 
 
 ## Repair loop
 
-- Dispatch a NEW evidence-matched agent — `code-investigator` to re-investigate a wrong code fact; the producer's type to recompile a document — never the original instance.
+- Dispatch a NEW evidence-matched agent — `code-analyst` (`investigate`) to re-investigate a wrong code fact; the producer's type to recompile a document — never the original instance.
 - The brief carries: the challenged claims, each DISAGREE verdict with its cited source and evidence, and the corrected understanding.
 - The agent redoes only the affected work and must address every divergence — not rubber-stamp the earlier result.
 - The repaired result is questioned again; another new evidence-matched verifier confirms **only the changed claims**. Settled claims are not re-verified.
@@ -107,7 +110,7 @@ Return a per-challenge verdict, each citing its primary source (file:line, doc, 
 - Handing over "these are verified" with no settled-vs-open split — name the open Inferred/Assumption/Gap claims so the verifier targets them
 - Treating handed-over locations as exhaustive — the verifier must be free to go beyond them
 - Reusing the original agent instance in verification or re-investigation — it will defend or anchor on its own output; always dispatch a new agent
-- Verifying code claims with the producer's type — a findings/ADR/solution-doc agent cannot read code; route code challenges to `code-investigator`
+- Verifying code claims with the producing instance — route code challenges to a NEW `code-analyst` in `investigate` mode, which writes nothing
 - Sending only the verdict back in re-investigation — the agent needs the verifier's evidence and corrected understanding to redo its investigation
 - Treating "same wording" as agreement — compare substance and evidence, not phrasing
 - Verifying low-priority challenges — dispatch only material (high/medium) challenges; low-priority ones are noted, not verified

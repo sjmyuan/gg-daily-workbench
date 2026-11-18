@@ -21,8 +21,8 @@ Use this agent when the user wants to:
 - Run a multi-source learning sweep across heterogeneous sources simultaneously
 
 Do NOT use this agent for:
-- **Code investigation without a learning goal** — use the **code-investigator** agent instead
-- **ADR drafting** — use the **adr-writer** agent instead
+- **Code investigation without a learning goal** — use the **code-analyst** agent instead
+- **ADR drafting** — use the **code-analyst** agent instead
 - **Solution documentation** — use the **solution-doc-writer** agent instead
 - **Spike investigations** — use the **spike-conductor** agent instead
 - **Code changes or bug fixes** — use the **planner** / **executor** agents instead

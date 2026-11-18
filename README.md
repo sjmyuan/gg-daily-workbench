@@ -116,16 +116,13 @@ Each file uses native **OpenCode V2** frontmatter per the
 | `user-story-writer.md` | **Primary** — conversational user-story writer that drafts, refines, and updates user stories (incl. Jira/Azure DevOps) | `draft-user-story` |
 | `prompt-engineer.md` | **Primary** — crafts and refines effective prompts and agent files by applying the SKR framework | `craft-prompt` |
 | `skill-creator.md` | **Primary** — creates, edits, and reviews skills (SKILL.md) by applying the create-skill / review-skill workflows | `create-skill`, `review-skill` |
-| `adr-writer.md` | Draft Architecture Decision Records | `draft-adr` |
-| `code-investigator.md` | **Primary** — read-only codebase investigation | `investigate-code` |
+| `code-analyst.md` | Turn a code area into the named artifact — tagged answer, gated ADR, ADR rewrite, or findings pair — in one session | `investigate-code`, `draft-adr`, `document-findings` |
 | `code-reviewer.md` | **Primary** — read-only code review | `review-code` |
 | `executor.md` | Execute an existing plan (never plans) | `execute-plan` |
 | `learner.md` | Extract knowledge from history (self-dispatch for parallelism) | `learn-from-history` |
 | `orchestrate-delivery.md` | **Primary** — delivery orchestrator: reads and reasons in-session, dispatches the plan/execute/spike/ADR/solution-doc sub-agents, tracks the delivery index | `orchestrate-feature-delivery` |
 | `planner.md` | Diagnose the change, choose its evidence, and persist a plan an executor can run (never executes) | `plan-development-task`, `investigate-code` |
-| `findings-doc-writer.md` | Compile question-style findings docs (resource index, topic blocks, `file:line` evidence ledger) | `document-findings` |
 | `solution-doc-writer.md` | Compile solution documents (C4, sequence, RAID/RACI) | `write-solution-doc` |
-| `spike-area-analyst.md` | One spike area end to end — investigate to sufficiency, draft problem ADRs, gate each ADR — in one session | `investigate-code`, `draft-adr` |
 | `spike-conductor.md` | **Primary** — run decision-first spikes, dispatch area sessions at scale, verify results | `conduct-spike`, `question-everything` |
 | `svg-assistant.md` | Create, edit, and upgrade PPT-quality SVG diagrams | `edit-svg` |
 
@@ -133,7 +130,7 @@ Each file uses native **OpenCode V2** frontmatter per the
 
 - One markdown file per agent; **the filename becomes the agent ID** (e.g. `code-reviewer.md` → `code-reviewer`). There is no `name:` field.
 - `description` explains the purpose; opencode shows it to the model choosing a subagent.
-- `mode`: `primary` | `subagent` | `all` — V2 defaults a new custom agent to `primary`. `algorithm-assistant.md`, `blog-assistant.md`, `english-corrector.md`, `orchestrate-delivery.md`, `prompt-engineer.md`, `skill-creator.md`, `translator.md`, and `user-story-writer.md` are `primary`; `code-investigator.md`, `code-reviewer.md`, and `spike-conductor.md` are `all` (usable as primary or dispatched); `adr-writer.md`, `executor.md`, `findings-doc-writer.md`, `learner.md`, `planner.md`, `solution-doc-writer.md`, `spike-area-analyst.md`, and `svg-assistant.md` are `subagent` (dispatch targets only).
+- `mode`: `primary` | `subagent` | `all` — V2 defaults a new custom agent to `primary`. `algorithm-assistant.md`, `blog-assistant.md`, `english-corrector.md`, `orchestrate-delivery.md`, `prompt-engineer.md`, `skill-creator.md`, `translator.md`, and `user-story-writer.md` are `primary`; `code-analyst.md`, `code-reviewer.md`, and `spike-conductor.md` are `all` (usable as primary or dispatched); `executor.md`, `learner.md`, `planner.md`, `solution-doc-writer.md`, and `svg-assistant.md` are `subagent` (dispatch targets only).
 - `permissions` is an **ordered list** of `{ action, resource, effect }` rules; the **last matching rule wins**, so broad rules precede exceptions.
 - Action names are V2 strings: `read`, `edit`, `glob`, `grep`, `shell`, `subagent`, `skill`, `question`, `webfetch`, `websearch`, `external_directory`, MCP tools. `bash`, `task`, `write`, `patch` are V1 names; `list`, `lsp`, and `todowrite` are not V2 permission actions.
 - The markdown body is the agent's system prompt.
@@ -144,10 +141,10 @@ Each agent declares its tool set explicitly — `read`, `glob`, `grep`, `edit`, 
 
 | Agent pattern | Rules |
 |---|---|
-| Doc-only writers — `adr-writer`, `findings-doc-writer`, `planner`, `solution-doc-writer` | `edit *` deny, then `edit *.md` allow; everything else allowed |
-| Read-only — `code-investigator`, `code-reviewer` | `edit *` deny; discovery, shell, skills allowed |
+| Doc-only writers — `planner`, `solution-doc-writer` | `edit *` deny, then `edit *.md` allow; everything else allowed |
+| Read-only — `code-reviewer` | `edit *` deny; discovery, shell, skills allowed |
 | Text-only — `english-corrector`, `translator` | `edit *` and `shell *` denied; discovery and skills allowed |
-| Folder-scoped writers — `orchestrate-delivery` (`deliveries`), `spike-conductor` and `spike-area-analyst` (`spikes`) | `edit *` deny, then `edit */deliveries/*` allow (V1 `**/deliveries/**` translated literally; same for `spikes`), plus a `deliveries/*` / `spikes/*` allow for in-project paths |
+| Folder-scoped writers — `orchestrate-delivery` (`deliveries`), `spike-conductor` and `code-analyst` (`spikes`) | `edit *` deny, then `edit */deliveries/*` allow (V1 `**/deliveries/**` translated literally; same for `spikes`), plus a `deliveries/*` / `spikes/*` allow for in-project paths. `code-analyst` additionally allows `*/findings-*.md` and `*/evidence-*.md` for a findings pair written outside a spike |
 | Dispatch — every agent | no `subagent` rule: `mode` decides (`primary` cannot be dispatched, `subagent` and `all` can); an unmatched action resolves through the base `*` allow |
 | No network — **every** agent | `webfetch *` and `websearch *` deny |
 | Full access — `executor`, `learner` | every action above allowed; `learner` also dispatches its own copies, which it reaches through `mode` |
@@ -199,14 +196,14 @@ Dispatching agents and their targets:
 
 | Agent | Dispatches |
 |---|---|
-| `orchestrate-delivery` | code-investigator, planner, executor, code-reviewer, spike-conductor, adr-writer, solution-doc-writer |
-| `spike-conductor` | spike-area-analyst, code-investigator, solution-doc-writer |
+| `orchestrate-delivery` | code-analyst, planner, executor, code-reviewer, spike-conductor, solution-doc-writer |
+| `spike-conductor` | code-analyst, solution-doc-writer |
 | `learner` | learner (self-dispatch) |
 | `code-reviewer` | code-reviewer (fan-out) |
-| `code-investigator` | code-investigator (fan-out) |
+| `code-analyst` | code-analyst (fan-out, one area and one artifact path per clone) |
 
 - **Self-dispatch / fan-out**: with no `subagent` rule, an agent can invoke itself; the depth limit is what stops recursion. VS Code Copilot still requires an `agents` entry and the `chat.subagents.allowInvocationsFromSubagents` setting for a self-referential dispatch.
-- opencode V2 dispatches on `mode` alone; any `subagent` or `all` agent is a valid target, so a project-defined agent needs no edit to this repo. Only `spike-area-analyst` states "never spawn a sub-agent" in prose now — that is a rule the agent follows, not one the runtime enforces.
+- opencode V2 dispatches on `mode` alone; any `subagent` or `all` agent is a valid target, so a project-defined agent needs no edit to this repo.
 - Claude and Copilot still gate dispatch on a declared capability (`Task` in `tools:`, or the `agents` list); dropping those would disable dispatch rather than relax a rule. On Copilot a differently-named project agent must be added to `agents:` to be reachable.
 
 

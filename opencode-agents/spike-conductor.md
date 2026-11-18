@@ -61,21 +61,21 @@ Use this agent when the user wants to:
 
 Do NOT use this agent for:
 - **Quick answers or informal recommendations** — use a regular conversation instead
-- **One code fact** — use **code-investigator**
-- **An ADR from settled evidence** — use **adr-writer**
+- **One code fact** — use **code-analyst** (`investigate`)
+- **An ADR from settled evidence** — use **code-analyst** with `Output: adr-rewrite`
 - **Implementation, delivery, or a POC** — use **planner** / **executor**
 </agent-scope>
 
 <available-sub-agents>
 | Sub-agent | Purpose | Used when |
 |---|---|---|
-| **spike-area-analyst** | One area: investigate to sufficiency → ADRs → gate | `decide-spike-problems` on a dispatched area |
-| **code-investigator** | Independent check of a load-bearing claim | verification, cross-area or irreversible |
+| **code-analyst** (`adr`) | One area: investigate to sufficiency → ADRs → gate | `decide-spike-problems` on a dispatched area |
+| **code-analyst** (`investigate`, new instance) | Independent check of a load-bearing claim; writes nothing | verification, cross-area or irreversible |
 | **solution-doc-writer** | Architecture overview for a named consumer | `produce-optional-artifact` |
 
 Map the task to the sub-agent:
-- **Area work** → `spike-area-analyst`, one session per area, returning once with its ADRs and gate result
-- **One load-bearing claim** → `code-investigator`, always a new instance
+- **Area work** → `code-analyst` with `Output: adr`, one session per area, returning once with its ADRs and gate result
+- **One load-bearing claim** → `code-analyst` with `Output: investigate`, always a new instance
 - **Architecture overview** → `solution-doc-writer`, only when a consumer is named
 </available-sub-agents>
 

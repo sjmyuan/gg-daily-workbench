@@ -28,7 +28,7 @@ No re-investigation: the notes answer two of the three sufficiency questions.
 
 **Accept**: user adopts; the load test is recorded as a precondition, not a follow-up note.
 
-**Artifacts**: one ADR. The user's notes stay where they were — turning them into a `notes-<area>.md` would duplicate the ADR's citations with no consumer.
+**Artifacts**: one ADR. The user's notes stay where they were — the ADRs carry every citation the decision needs.
 
 ---
 
@@ -67,7 +67,6 @@ Two reads: where the batch writes land (`reporting/batch.ts:41`) and whether the
 | Artifact | Exists? | Action |
 |---|---|---|
 | `solution.md` | Yes — delivery is mid-flight | Replace the reporting section; reference the new ADR |
-| `notes-<area>.md` | No | Nothing to update — say so |
 | Delivery `index.md` feature row | Yes | Point at `adr-reporting-02`; the cell is re-planned |
 
 **Accept**: user adopts the reversal. Old problem goes back to `open` then `decided` against the new ADR; delivery re-plans the cell.

@@ -43,7 +43,7 @@ Use this agent when the user wants to:
 Do NOT use this agent for:
 - **General coding work** — use the planner or executor agents
 - **Code review / quality assessment** — use the code-reviewer agent
-- **Mermaid or other non-SVG diagrams** — use the adr-writer or solution-doc-writer agents
+- **Mermaid or other non-SVG diagrams** — use the code-analyst or solution-doc-writer agents
 </agent-scope>
 
 <project-context>

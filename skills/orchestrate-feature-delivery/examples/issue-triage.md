@@ -23,7 +23,7 @@ The orchestrator checks the index, `context.md`, the governing ADR, and `plan.md
 
 **Rung L1 — One evidence check.**
 
-A code fact is missing, and the answer sits in one file. The orchestrator reads it itself — a bounded read needs no brief and no round-trip. A repo-wide hunt would have gone to **code-investigator**.
+A code fact is missing, and the answer sits in one file. The orchestrator reads it itself — a bounded read needs no brief and no round-trip. A repo-wide hunt would have gone to **code-analyst**.
 
 **Answer**: "`wallet-service/retry.ts:41` uses `maxAttempts = 3`; the Helm value is ignored. The record was stale — L0 could not settle this."
 
@@ -33,7 +33,7 @@ No spike artifacts; the delivery index is unchanged.
 
 **Rung L2 — Direct ADR revision.**
 
-The finding contradicts exactly one decision. The orchestrator dispatches **adr-writer** to revise the ADR in place; no scope map, findings pair, or solution rebuild.
+The finding contradicts exactly one decision. The orchestrator dispatches **code-analyst** (`adr-rewrite`) to revise the ADR in place; no scope map, findings pair, or solution rebuild.
 The target state does not change, so **solution-doc-writer** is not dispatched.
 
 **Answer**: ADR revised: the cap is configured per environment with a 3-attempt default. One independent pass verifies the new `file:line` claim.
