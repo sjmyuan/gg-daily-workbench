@@ -12,9 +12,9 @@ When producing the final ADR document, use the exact structure below. Wrap place
 
 ## Context and Problem Statement
 
-**Decision:** [ one-line takeaway — the decision question this ADR answers and its outcome — ≤15 words ]
+**Problem:** [ one-line takeaway — the question this ADR answers, stated without its outcome — ≤15 words ]
 
-[ ≤3 sentences, SCQA: Situation → Complication → Question → Answer. Never lead with background. ]
+[ ≤3 sentences, SCQA up to the Question: Situation → Complication → Question. Stop at the question — no chosen option, verdict, or result here; the answer belongs only to `## Decision Outcome`. Never lead with background. ]
 
 ![Context diagram: system(s) in scope, actors, volumes, and external dependencies]({{DIAGRAM:context}})
 [ Embed the C4 context diagram drawn during define-problem, plus any flowchart or sequence diagram used to zoom into the context. For architecture diagrams use C4 Models see https://c4model.com ]

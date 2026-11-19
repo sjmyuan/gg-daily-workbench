@@ -4,7 +4,8 @@ Loaded by **compile-adr** step 7. Pass every item before presenting the ADR; fix
 
 ## Decision
 
-- [ ] Problem statement is clear, scoped, unambiguous, ≤3 sentences in SCQA order
+- [ ] Problem statement is clear, scoped, unambiguous, ≤3 sentences in SCQA order, ending at the question
+- [ ] Context and Problem Statement names no option, verdict, or outcome; the answer appears only in `## Decision Outcome`
 - [ ] Every driver has a metric, a threshold, and a measurement, tagged `HC n` / `SP n`
 - [ ] Hard constraints and soft preferences are separated
 - [ ] The chosen option's justification names the drivers it wins on

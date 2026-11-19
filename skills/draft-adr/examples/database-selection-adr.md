@@ -13,9 +13,9 @@
 
 ## Context and Problem Statement
 
-**Decision:** Cloud SQL for PostgreSQL — the only option meeting every hard constraint.
+**Problem:** Which managed database serves order history and ACID payments within an early-stage budget?
 
-The service handles ~10,000 orders/day on GCP and must support complex order-history queries and ACID payment transactions. Which managed database satisfies all constraints within an early-stage budget?
+The service handles ~10,000 orders/day on GCP and needs complex order-history queries with ACID payment writes. ACID writes, sub-100ms lookups, and a ≤$400/month budget rarely hold together on managed GCP services. Which managed database satisfies all constraints within an early-stage budget?
 
 ![C4 context diagram: customer, order service, database candidate, payment processor, GCP IAM, with volumes and protocols](diagrams/context.png)
 

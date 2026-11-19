@@ -6,6 +6,7 @@ Applies to all prose in ADRs and solution documents. Detail lives in **carriers*
 - Open every section with the conclusion in one line, then the why.
 - Under each heading, the first line is a **bolded one-line takeaway** (e.g., `**Verdict:** …`, `**Trade-off:** …`).
 - Never lead with evidence, background, or analysis.
+- In `## Context and Problem Statement` the takeaway is the question, not its answer.
 
 ## Detail carriers
 - A cap is never a reason to omit a fact the reader needs to picture or implement the option.

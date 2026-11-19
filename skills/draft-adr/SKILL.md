@@ -95,7 +95,7 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 <compile-adr>
 1. Gather confirmed outputs: problem statement, drivers, considered options, evaluations, and change sets.
 2. Prompt for metadata: title, owners, and status (draft | adopt | declined | superseded).
-3. Load **reference/adr-template.md** and populate it, using the recommended option in the `**Chosen:**` field with a synthesized justification, and include each option's `#### Tech Details`.
+3. Load **reference/adr-template.md** and populate it, using the recommended option in the `**Chosen:**` field with a synthesized justification, and include each option's `#### Tech Details`. Keep `## Context and Problem Statement` to the situation, the complication, and the question — never the outcome, which belongs only to `## Decision Outcome`.
 4. Build the chosen option's `## Implementation Plan`: ordered change IDs, what must exist before each change, and a verification plus rollback line per change — reference the diffs, never restate them.
 5. Draw the target-state C4/flowchart view per **reference/diagram-contract.md** and embed it with the session's diagrams.
 6. Fill the Consequences section from the evaluated pros/cons and risks.
