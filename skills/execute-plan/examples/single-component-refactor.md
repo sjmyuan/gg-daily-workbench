@@ -24,22 +24,7 @@
 **Objective**: Create a dedicated validator class for data record validation
 **Files**: `domain/validation/DataValidator.java`
 **Source**: generate · n/a · behavior-equal
-**Implementation**:
-```java
-@Component
-public class DataValidator {
-    public void validate(DataRecord record) {
-        validateNotNull(record);
-        validateId(record.getId());
-        validateName(record.getName());
-        validateValue(record.getValue());
-    }
-    private void validateNotNull(DataRecord record) { /* throws if null */ }
-    private void validateId(String id) { /* required + matches ^[A-Z0-9-]+$ */ }
-    private void validateName(String name) { /* required, non-blank */ }
-    private void validateValue(BigDecimal value) { /* required, non-negative */ }
-}
-```
+**Implementation**: `DataValidator` with one `validate(DataRecord)` entry point and a private null, id, name, and value check each; no prior source.
 **Validation**: Class compiles successfully
 **Status**: ✅ Completed · Steps 2–7 ⏳
 
@@ -66,14 +51,7 @@ public class DataValidator {
 **Objective**: Replace inline validation with a `validator.validate()` call
 **Files**: `application/service/DataImportedHandler.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**:
-```java
-public void handle(DataImported event) {
-    dataValidator.validate(event.getRecord());  // one line replaces the 40-line block
-    ExternalApiData transformed = dataTransformer.transform(event.getRecord());
-    eventPublisher.publishDataTransformed(transformed);
-}
-```
+**Implementation**: `handle()` reduces to validating the record, transforming it, and publishing — one call replaces the 40-line inline block.
 **Validation**: Handler compiles and runs successfully; code reduced 70 → 35 lines
 **Status**: ✅ Completed · Steps 5–7 ⏳
 

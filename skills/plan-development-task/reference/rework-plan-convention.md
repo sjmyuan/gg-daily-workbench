@@ -8,8 +8,8 @@ is never modified.
 - Applies only when executed or delivered behavior must change; pending-step defects are amended
   in place via **amend-plan**.
 - Opens with `# Rework <date> — <trigger>`, a `**Mode**`/`**Cell**` line, a `**Branch**` line, the
-  ADR focus, and the inherited `**Gate**` line, then its own **Scope Boundary**, **Done means**,
-  **Risk**, and six-field delta steps.
+  inherited `**Test strategy**` line, the ADR focus, and the inherited `**Gate**` line, then its own
+  **Scope Boundary**, **Done means**, **Risk**, and six-field delta steps.
 - Carries only the delta — never restates the original plan or the charter; inherits `context.md`
   **Must hold** / **Pointers** by reference and never creates a second `context.md`.
 - Inherits and tightens the original **Scope Boundary** to the governing ADR decision.

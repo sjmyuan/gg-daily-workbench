@@ -10,7 +10,7 @@ The acceptance evidence and the gate are not negotiable; the step list is.
 5. **Derive units, not phases.** One unit per observable outcome. A small unit carries its test and its implementation in one step; a complex one may need several. Never emit "confirm RED", "refactor", "clean up", or "verify cleanup" as standalone steps — they are phases, not units.
 6. **Order by dependency.** Each step's precondition is the base or an earlier step; contract before consumer.
 7. **Write the plan** per **reference/plan-file-format.md** — header, `## Scope Boundary`, `## Risk`, optional `## Decisions`, unit steps, Exit gate.
-8. **Leave what the code decides open.** Name the check that closes the step, not a guessed diff. An unread seam is not an unresolved guarantee: that one was decided in step 2.
+8. **Leave what the code decides open.** Name the check that closes the step, not a guessed change. An unread seam is not an unresolved guarantee: that one was decided in step 2.
 9. **Self-check** against **plan-rubric**; present the risk route per its presentation row.
 
 Worked miss to avoid: "retries must never double-notify" planned as a config change plus a dedupe step, with "the transport cannot deliver then fail" written as an assumption. The plan implements a guarantee it never decided — it passes every box and fails the one thing the user asked for.

@@ -24,20 +24,7 @@
 **Objective**: Create domain model class for Category with validation
 **Files**: `domain/model/Category.java` (new)
 **Source**: generate · n/a · behavior-equal
-**Implementation**:
-```java
-public class Category {
-    private final String id;
-    private final String name;
-    private final String parentId;
-    public Category(String id, String name, String parentId) {
-        validateCategory(id, name);
-        this.id = id; this.name = name; this.parentId = parentId;
-    }
-    private void validateCategory(String id, String name) { /* both required */ }
-    // getters
-}
-```
+**Implementation**: `Category` value object with `id`, `name`, `parentId`; the constructor rejects a blank id or name.
 **Validation**: Class compiles with validation logic
 **Status**: ✅ Completed · Steps 2–7 ⏳
 
@@ -55,20 +42,7 @@ public class Category {
 **Objective**: Create adapter to fetch category data from external API
 **Files**: `infrastructure/adapter/CategoryAdapterImpl.java` (new)
 **Source**: generate · n/a · behavior-equal
-**Implementation**:
-```java
-@Component
-public class CategoryAdapterImpl implements CategoryAdapter {
-    @Override
-    public List<Category> fetchCategories(List<String> categoryIds) {
-        ResponseEntity<CategoryResponse> response = restTemplate.getForEntity(
-            url + "?where=id in (\"" + String.join("\",\"", categoryIds) + "\")",
-            CategoryResponse.class);
-        return response.getBody().getResults().stream()
-            .map(this::toDomainCategory).collect(Collectors.toList());
-    }
-}
-```
+**Implementation**: `fetchCategories` sends the ids as an OData `where=id in (...)` filter and maps `CategoryResponse` results to domain `Category`.
 **Validation**: Adapter compiles and correctly maps API responses
 **Status**: ✅ Completed · Steps 4–7 ⏳
 
@@ -104,23 +78,7 @@ public class CategoryAdapterImpl implements CategoryAdapter {
 **Objective**: Create end-to-end integration test for category transformation
 **Files**: `presentation/CategoryTransformationIntegrationTest.java` (new)
 **Source**: generate · n/a · behavior-equal
-**Implementation**:
-```java
-@SpringBootTest
-@AutoConfigureMockMvc
-class CategoryTransformationIntegrationTest {
-    @Test
-    void shouldTransformDataWithCategories() throws Exception {
-        mockMvc.perform(post("/api/transform")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    { "id": "TEST-001", "name": "Test Data Record",
-                      "categoryIds": ["cat1", "cat2"] }"""))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.categories.length()").value(2));
-    }
-}
-```
+**Implementation**: MockMvc posts a record with two category ids to `/api/transform`; asserts 200 and two mapped categories in the response.
 **Validation**: Integration test passing ✓
 **Status**: ✅ Completed
 

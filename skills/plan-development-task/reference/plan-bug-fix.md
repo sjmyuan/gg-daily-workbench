@@ -9,7 +9,7 @@ The diagnosis, the acceptance evidence, and the gate are not negotiable; the ste
 4. **Ratify the scope boundary** per **define-scope-boundary**. A fix needing an unrelated refactor first is two plans, not one.
 5. **Derive units, not phases.** One unit per independent defect or observable outcome. "Confirm RED", "clean up", and "verify cleanup" are phases of a unit — fold each into that unit's `Validation` or the Exit gate. Keep only the order that matters: proof before fix.
 6. **Write the plan** per **reference/plan-file-format.md** — header, ratified `## Scope Boundary`, `## Risk`, optional `## Decisions`, unit steps, Exit gate.
-7. **Leave what the code decides open.** When the fix's shape depends on an unread module, write the step as a check with a fallback and say so in `## Risk` — never invent a diff. An unread seam is not an unresolved guarantee: that one is decided above.
+7. **Leave what the code decides open.** When the fix's shape depends on an unread module, write the step as a check with a fallback and say so in `## Risk` — never invent a change. An unread seam is not an unresolved guarantee: that one is decided above.
 8. **Self-check** against **plan-rubric**; the test and gate rows are pass/fail, the rest are graded.
 9. **Present the risk route**, not the step list, per **plan-rubric**'s presentation row.
 

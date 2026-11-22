@@ -95,7 +95,7 @@ Every plan carries a **green-only exit gate** — the plan is the contract, not 
 </run-validation-checkpoints>
 <place-tests>
 1. Locate existing tests for the changed code — same class, same level — then apply **execution-conventions**: covered → add nothing, a home → extend, none → mirror the class.
-2. Record the decision in the step note and run the affected tests.
+2. Record the placement in `Status` and run the affected tests.
 </place-tests>
 <verify-prerequisites>
 1. Verify the feature branch — created only if the plan requires it and the user confirms name and base — then dependencies, toolchain, and the affected baseline.

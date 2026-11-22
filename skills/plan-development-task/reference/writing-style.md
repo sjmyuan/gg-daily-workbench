@@ -20,7 +20,7 @@ Applies to all prose in investigation reports and development plans, including t
 | Sentence | ≤20 words, one clause |
 
 ## Plan files (plan.md / context.md)
-- **plan.md**: `## Scope Boundary` bullets = one claim each; each step = one 1-sentence objective; step notes = one line per fact.
+- **plan.md**: `## Scope Boundary` bullets = one claim each; each step = one 1-sentence objective; step `Status` = one line per fact.
 - **context.md**: a **charter**, target **40–60 lines** (ceiling 8,000 chars / 120; see **[doc-budgets.md](doc-budgets.md)**); one-line outcome; constraints as bullets; references as compact bullets.
 - **No duplication:** do not restate Scope Boundary, TDD rationale, or plan decisions — link to `plan.md`.
 - **No logs:** no commit tables, per-step test matrices, deviation narratives, incidents, or per-round sections; git/PR are the history.

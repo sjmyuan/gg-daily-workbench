@@ -39,6 +39,7 @@ The original `plan.md` is never modified; the rework inherits the original bound
 # Rework 2026-08-10 — compensating rollback credential retry
 **Mode**: post-merge · **Cell**: order-service/F2-r1
 **Branch**: `rework-f2r1-rollback-credentials` off `main`
+**Test strategy**: test-first — a wrong-credential retry needs a failing test that pins it.
 **ADR focus**: `adr-wallet-01-payment-failure-handling.md`
 **Gate**: inherited from `plan.md` — build=`./mvnw -q compile` · test=`./mvnw test` · lint-type=`./mvnw spotless:check`
 
@@ -49,7 +50,7 @@ The original `plan.md` is never modified; the rework inherits the original bound
 **Protected zones**: none added
 
 ## Risk
-- Credential selection is the only cause of the retry failure → Step 1's failing test proves it; fallback: amend before Step 3.
+- Credential selection is the only cause of the retry failure → Step 1's failing test proves it; fallback: amend before Step 2.
 - **Expected to break first**: Step 1 — the retry path may need a seam before it can be tested.
 
 ## Done means
@@ -65,18 +66,10 @@ The original `plan.md` is never modified; the rework inherits the original bound
 **Files**: `CompensatingRollbackClientTest.java`
 **Source**: generate · n/a · behavior-equal
 **Implementation**: New test asserts the retry uses the failing payment's credentials.
-**Validation**: Test compiles and joins the suite.
+**Validation**: Fails on the credential assertion, not an error.
 **Status**: ⏳ Pending
 
-### Step 2: Confirm test failure (RED) ⏳
-**Objective**: Prove the retry test fails for the wrong-credential reason.
-**Files**: none
-**Source**: no-op · n/a · n/a
-**Implementation**: Run only the new test.
-**Validation**: Fails on the credential assertion — not an error.
-**Status**: ⏳ Pending
-
-### Step 3: Fix credential selection on retry ⏳
+### Step 2: Fix credential selection on retry ⏳
 **Objective**: Select the rollback credentials from the failing payment, not the default client.
 **Files**: `payment-gateway/CompensatingRollbackClient.java`
 **Source**: edit · n/a · behavior-equal
@@ -84,7 +77,7 @@ The original `plan.md` is never modified; the rework inherits the original bound
 **Validation**: Step 1 test passes; gateway suite green.
 **Status**: ⏳ Pending
 
-### Step 4: Cover credential rotation ⏳
+### Step 3: Cover credential rotation ⏳
 **Objective**: Pin credential selection across rotation and repeated failures.
 **Files**: `CompensatingRollbackClientTest.java`
 **Source**: generate · n/a · behavior-equal
@@ -92,7 +85,7 @@ The original `plan.md` is never modified; the rework inherits the original bound
 **Validation**: All new cases pass against the fix.
 **Status**: ⏳ Pending
 
-### Step 5: Exit gate ⏳
+### Step 4: Exit gate ⏳
 **Objective**: Prove the build, full suite, and static checks are green.
 **Files**: none
 **Source**: no-op · n/a · n/a

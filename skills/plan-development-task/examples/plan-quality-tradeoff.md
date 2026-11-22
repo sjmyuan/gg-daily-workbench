@@ -7,6 +7,8 @@ Request: *"CSV export drops the last row when the file has no trailing newline."
 
 ## Weak plan (conformant, not ready)
 
+(abridged — the omissions are the point; full schema in [plan-file-format.md](../reference/plan-file-format.md))
+
 ```markdown
 # Plan: csv-export — fix missing final row
 **Type**: bug-fix
@@ -48,6 +50,8 @@ Request: *"CSV export drops the last row when the file has no trailing newline."
 
 ## Strong plan (same request)
 
+(abridged — Steps 1 and 4 show their verdict only; full schema in [plan-file-format.md](../reference/plan-file-format.md))
+
 ```markdown
 # Plan: csv-export — a file without a trailing newline exports every row
 **Type**: bug-fix
@@ -76,7 +80,7 @@ Request: *"CSV export drops the last row when the file has no trailing newline."
 **Files**: `CsvExporterTest.java`
 **Source**: generate · n/a · behavior-equal
 **Implementation**: Two cases — with and without a trailing newline — over the same three rows; assert parsed row count and last-row content.
-**Validation**: The no-newline case fails on a missing row; the other passes. Both statements recorded in the note.
+**Validation**: The no-newline case fails on a missing row; the other passes.
 **Status**: ⏳ Pending
 
 ### Step 3: Segment records without a terminator ⏳

@@ -14,7 +14,7 @@ Spike artifacts and their owners are out of scope here; a decision-changing fact
 - **rework = delta.** It holds only changed steps; it inherits the charter by reference.
 - **git / PR / CI = record.** History and reproducible proof — never copied into a doc.
 
-Flow: `index` → dispatch brief → `context` + `plan` → execute → plan step notes + latest `## Execution` → git/PR → `rework` (plan stays frozen).
+Flow: `index` → dispatch brief → `context` + `plan` → execute → step `Status` lines + latest `## Execution` → git/PR → `rework` (plan stays frozen).
 
 ## Evidence routing
 

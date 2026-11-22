@@ -54,6 +54,6 @@ written justification and user ratification.
 
 - [ ] Every step declares `Source` — `no-op · n/a · n/a` when nothing changes
 - [ ] `Ref` is a SHA or tag, never a moving branch
-- [ ] Equality proof recorded in the step note
+- [ ] Equality proof recorded in the step `Status`
 - [ ] No step uses `generate` for a request phrased as revert, keep, restore, or copy
 - [ ] Restored paths listed under `Must match` in the Scope Boundary

@@ -45,15 +45,7 @@ Applying **review-code** skill on all changed files:
 **Objective**: Ensure `validateNotNull` runs before any field access.
 **Files**: `domain/validation/DataValidator.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**:
-```java
-public void validate(DataRecord record) {
-    validateNotNull(record);      // ← moved to first
-    validateId(record.getId());
-    validateName(record.getName());
-    validateValue(record.getValue());
-}
-```
+**Implementation**: `validate()` calls `validateNotNull` first, then the id, name, and value checks — the null guard no longer runs after `record.getId()`.
 **Validation**: All existing tests still pass.
 **Status**: ✅ Completed
 
@@ -73,19 +65,7 @@ public void validate(DataRecord record) {
 **Objective**: Cover null input and invalid ID format in `DataValidatorTest`.
 **Files**: `test/DataValidatorTest.java`
 **Source**: generate · n/a · behavior-equal
-**Implementation**:
-```java
-@Test
-void validate_throwsWhenRecordIsNull() {
-    assertThrows(ValidationException.class, () -> validator.validate(null));
-}
-
-@Test
-void validate_throwsWhenIdHasInvalidFormat() {
-    DataRecord record = new DataRecord("invalid id!", "name", BigDecimal.ONE);
-    assertThrows(ValidationException.class, () -> validator.validate(record));
-}
-```
+**Implementation**: Two tests — a null record and an id with invalid characters — each expecting `ValidationException`.
 **Validation**: All 7 tests pass including the 2 new ones.
 **Status**: ✅ Completed
 

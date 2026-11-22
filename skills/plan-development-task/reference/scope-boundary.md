@@ -17,6 +17,7 @@ An opt-in **Must match** zone adds reference equality for paths that must be res
 
 Default protected zones apply to every plan unless **May change** names them; list additions only.
 **Must match** is the only zone that permits byte-equality validation; omit it unless the request is a revert, restore, or port.
+Zone order in a plan: **May change** · **Must match** · **Expected files** · **Must not change** · **Protected zones**.
 
 ## Materiality test
 Stop and ask only when a change answers **yes** to any question:

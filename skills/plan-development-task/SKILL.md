@@ -1,6 +1,6 @@
 ---
 name: plan-development-task
-description: Plan development work — diagnose the change, choose the evidence that proves it, shape units an executor can run, and amend in-flight plans. Prefer the project's own equivalent when one exists. Use when fixing a bug, adding a feature, refactoring, proving a POC, restoring, reworking, or amending a plan.
+description: Plan development work — diagnose the change, choose the evidence that proves it, shape units an executor can run, and amend in-flight plans. Prefer the project's own equivalent when one exists. Use when fixing a bug, adding a feature, refactoring, proving a POC, restoring, porting, reworking, or amending a plan.
 ---
 
 <when-to-use-this-skill>
@@ -37,9 +37,6 @@ Record in `context.md`: the restatement becomes the objective; each default beco
 | **plan-quality** | Grade every plan against the rubric: rows 1 and 7 pass/fail, the rest graded. | **reference/plan-rubric.md** |
 | **concise-writing** | BLUF and hard caps; `context.md` is a 40–60-line charter, never steps or logs. | **reference/doc-budgets.md**, **reference/writing-style.md** |
 </named-standards>
-<write-boundary>
-Produces a **plan**, never executes it; writes only `plan.md`, `context.md`, `rework-<date>.md` — never code or config. Confirm only plan docs changed.
-</write-boundary>
 <capability-regimes>
 **Judgment** — classify, scope, plan, amend: you own the path (units, order, granularity, what to leave open); graded by **plan-rubric**, never scripted.
 **Contractual** — mechanical restore, export: exact fields and sequence; deviate only by asking.
@@ -125,7 +122,7 @@ Load **reference/plan-poc.md**; shape the plan per its judgment guidance.
 <rule> When a rework would materially change the original **Must not change** behavior or touch a protected zone, refuse and ask — never write silently. </rule>
 <rule> When an in-flight plan has a defect in steps that have not run, apply **amend-plan** — never a second plan file or folder. </rule>
 <rule> When writing or validating a test step, apply **test-quality** — each test names the break it catches. </rule>
-<rule> When a step's shape depends on code not yet read, write a check and a fallback under `## Risk` — never a guessed diff; unit count is yours, never a cap. </rule>
+<rule> When a step's shape depends on code not yet read, write a check and a fallback under `## Risk` — never a guessed change; unit count is yours, never a cap. </rule>
 <rule> After the plan is confirmed, optionally apply **export-plan** to persist it for **execute-plan**. </rule>
-<rule> Confine every write to plan docs (`plan.md`, `context.md`, `rework-<date>.md`); never modify code, config, tests, or any non-markdown file. </rule>
+<rule> Produce a plan, never execute it: confine every write to plan docs (`plan.md`, `context.md`, `rework-<date>.md`); never modify code, config, tests, or any other file, and confirm only plan docs changed. </rule>
 </rules>

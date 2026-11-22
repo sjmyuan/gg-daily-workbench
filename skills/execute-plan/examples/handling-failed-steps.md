@@ -28,18 +28,7 @@
 **Objective**: Add defensive null checks to prevent null pointer exceptions
 **Files**: `application/service/DataImportedHandler.java`
 **Source**: edit · n/a · behavior-equal
-**Implementation**:
-```java
-public void handle(DataImported event) {
-    if (event == null || event.getRecord() == null) {
-        throw new InvalidDataEventException("Data event cannot be null");
-    }
-    if (event.getRecord().getId() == null) {
-        throw new InvalidDataException("Data record ID is required");
-    }
-    transformAndPublish(event.getRecord());
-}
-```
+**Implementation**: `handle()` rejects a null event or record with `InvalidDataEventException` and a missing record id with `InvalidDataException`, before `transformAndPublish`.
 **Validation**: Handler compiles and includes null checks
 **Status**: ✅ Completed · Steps 2–4 ⏳
 
@@ -89,21 +78,7 @@ import com.example.application.domain.exceptions.InvalidDataEventException;
 **Objective**: Create end-to-end test for null data handling
 **Files**: `presentation/DataTransformationIntegrationTest.java` (new)
 **Source**: generate · n/a · behavior-equal
-**Implementation**:
-```java
-@SpringBootTest
-@AutoConfigureMockMvc
-class DataTransformationIntegrationTest {
-    @Test
-    void shouldRejectNullDataEvent() throws Exception {
-        mockMvc.perform(post("/api/transform")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"record\": null}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Data event cannot be null"));
-    }
-}
-```
+**Implementation**: MockMvc posts `{"record": null}` to `/api/transform`; expects 400 with `error` = "Data event cannot be null".
 **Validation**: Integration test passing ✓
 **Status**: ✅ Completed · Steps 1–2 ✅ · Step 4 ⏳
 

@@ -1,7 +1,7 @@
 # Plan File Format and Template
 
-Single template for every plan this skill generates. The executor consumes it unchanged
-(**execute-plan** `step-tracking-format`) — never invent a variant.
+Single template for every plan this skill generates. **execute-plan** consumes the step block
+unchanged — its `step-tracking-format.md` mirrors this template. Never invent a variant.
 
 One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md` = execution ·
 `rework-<date>.md` = delta · git/PR = record. Budgets: **doc-budgets**.
@@ -30,7 +30,7 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 - **Expected to break first**: Step N — <why>
 
 ## Decisions
-- PD1 <decision> — <reason>                              (only when context.md cites a PD)
+- <decision> — <reason>                                  (only when context.md points to it)
 
 ## Steps
 
@@ -38,15 +38,15 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 **Objective**: <one sentence: what the step achieves>
 **Files**: none
 **Source**: no-op · n/a · n/a
-**Implementation**: <branch, dirt, and dependency checks; record the gate commands with `file:line`>
-**Validation**: <the gate commands run on the base — `baseline: green` or named failures>
+**Implementation**: <branch, dirt, and dependency checks>
+**Validation**: <the gate commands from `Gate` run on the base — `baseline: green` or named failures>
 **Status**: ⏳ Pending
 
 ### Step 2: <step title> ⏳
 **Objective**: <one sentence>
 **Files**: <created, modified, or deleted files>
 **Source**: <no-op|base|port|copy|edit|generate> · <pinned ref, origin path, or n/a> · <equality mode>
-**Implementation**: <key change or git operation — one line>
+**Implementation**: <approach in prose — one line; never code>
 **Validation**: <test or equality proof — one line>
 **Status**: ⏳ Pending
 
@@ -58,6 +58,9 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 **Validation**: `<build>` && `<test>` && `<lint-type>` — all exit 0, zero failures.
 **Status**: ⏳ Pending
 ```
+
+`**Status**` carries the record: the executor appends its one-line outcome there — receipt, counts,
+or a deviation. What landed is the commit and its diff; never restate it in `plan.md`.
 
 ## Template rules
 
@@ -72,15 +75,16 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 | Objective | One sentence, ≤20 words, imperative. |
 | Files | Concrete paths where known; `none` for no-edit steps. |
 | Source | Every step names `Source · Ref · Equality` per **change-provenance** — `no-op · n/a · n/a` when nothing changes; `generate` states its justification in `Implementation`, ratified when the user confirms the plan. |
+| Implementation | The **approach** in prose — which seam moves, what behavior results — one line. Never source code, a diff hunk, a signature, a file dump, or a TODO list; the only literals are a git operation for `base`/`port` or a path or identifier. Frozen — the executor never rewrites it. |
 | Validation | Behavioral or `Must match` equality; the exit gate's pass rule is every gate command exit 0 — never a commit hash. |
-| Status | Generated plans use `⏳`; the executor owns `🔄 ✅ ❌ 🚫`; the planner sets `⏭` only. |
+| Status | Generated plans use `⏳`; the executor owns `🔄 ✅ ❌ 🚫`; the planner sets `⏭` only. `**Status**` is canonical — the heading glyph mirrors it. |
 | Step shape | A step is a **unit with one verdict**, never a phase. Test, implement, refactor, and cleanup fold into the unit they serve; a step earns existence only when its `Validation` differs from its neighbour's. |
-| Open by design | A step whose shape depends on unread code states the check that closes it plus a fallback, and appears in `## Risk` — never a guessed diff. |
+| Open by design | A step whose shape depends on unread code states the check that closes it plus a fallback, and appears in `## Risk` — never a guessed change. |
 | Risk | Two or three assumptions, each naming the step that tests it; plus the step expected to break first. Six lines maximum. |
-| Exit gate | Final step, six fields, `Source: no-op · n/a · n/a`; its `Status` receipt carries commands, exit codes, and counts. Never abandoned or deferred — only a ratified waiver removes it. |
+| Exit gate | Final step, six fields, `Source: no-op · n/a · n/a`; its `Status` line carries the receipt — commands, exit codes, and counts. Never abandoned or deferred — only a ratified waiver removes it. |
 | Amendment | Append the next number or insert `3a`; never renumber (see **plan-amendment**). |
 
-Not in `plan.md`: requirement narrative, background, consolidation prose, per-step rationale, issue history, "key characteristics". Root cause → `context.md` **Why**; strategy rationale → the `Test strategy` line; decisions `context.md` must not restate → `## Decisions`; risk → `## Risk`.
+Not in `plan.md`: requirement narrative, background, consolidation prose, per-step rationale, issue history, "key characteristics", source code, diffs, snippets, signatures. Root cause → `context.md` **Why**; strategy rationale → the `Test strategy` line; decisions `context.md` must not restate → `## Decisions`; risk → `## Risk`.
 
 ## rework-<date>.md template
 
@@ -90,6 +94,7 @@ Written when executed behavior must change; `plan.md` stays frozen (see **rework
 # Rework <date> — <one-line trigger>
 **Mode**: pre-merge | post-merge · **Cell**: <cell>
 **Branch**: `<branch>` off `<base>`
+**Test strategy**: <inherited from plan.md, or the strategy for the delta> — <one-line why>
 **ADR focus**: `<adr path>`
 **Gate**: <inherited from `plan.md`, or discovered for the delta>
 
@@ -114,7 +119,7 @@ Written when executed behavior must change; `plan.md` stays frozen (see **rework
 **Objective**: <one sentence>
 **Files**: <files>
 **Source**: <source> · <ref> · <equality>
-**Implementation**: <delta change — one line>
+**Implementation**: <delta approach in prose — one line; never code>
 **Validation**: <proof — one line>
 **Status**: ⏳ Pending
 ```

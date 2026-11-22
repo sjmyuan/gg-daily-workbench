@@ -48,7 +48,7 @@ Keywords "slow", "performance degradation" → **Bug Fix** (performance). *User 
 **Files**: none
 **Source**: no-op · n/a · n/a
 **Implementation**: Branch off `main`; no overlapping dirt; dependencies resolve; gate commands confirmed against `pom.xml`.
-**Validation**: Gate commands on `main` — `baseline: green`; baseline p99 recorded in the step note.
+**Validation**: Gate commands on `main` — `baseline: green`.
 **Status**: ⏳ Pending
 
 ### Step 2: Prove and fix the N+1 ⏳
