@@ -1,18 +1,16 @@
 ---
 name: review-skill
-description: Review SKILL.md files for content classification, structure, naming, triggers, prescriptiveness, examples, and tooling. Prefer the project's own equivalent when one exists. Use when reviewing, diagnosing, or checking whether a skill needs refactoring or new content.
+description: Review skill files (SKILL.md) for content classification, structure, triggers, naming, prescriptiveness, examples, and tooling. Prefer the project's own equivalent when one exists. Use when reviewing or diagnosing a skill file's structure, triggers, naming, tooling, or prescriptiveness, or whether it needs refactoring; not for code, diffs, PRs, or documents (use review-code).
 ---
 
 <when-to-use-this-skill>
-- User asks to review a skill file (SKILL.md)
-- User asks to diagnose or get feedback on a skill file before improving it (review-only — edits are applied via `create-skill`)
-- User asks for feedback on content classification, section placement, or duplication in a skill file
-- User asks whether a SKILL.md is correctly structured
-- User asks whether a skill will trigger or activate correctly
-- User asks whether an existing skill needs refactoring or new content
+- User asks to review or diagnose a skill file (SKILL.md) before improving it — review only; edits go to `create-skill`
+- User asks whether a skill's structure, content classification, section placement, or duplication is correct
+- User asks whether a skill will trigger or activate correctly, or whether its description matches its scenarios
 - User asks whether a skill's name or capability names follow naming conventions
 - User asks whether a skill's scripts or CLI invocations are justified and safe
-- User asks whether a skill over-prescribes, micromanages the model, or fails to carry judgment guidance
+- User asks whether a skill over-prescribes, micromanages the model, or lacks judgment guidance
+- User asks whether an existing skill needs refactoring or new content
 </when-to-use-this-skill>
 
 <knowledge>
@@ -119,8 +117,7 @@ Steps cite these standards by name; load the Details file when one is listed.
 
 <rules>
 <rule>When reviewing a skill file, review only the user-provided file per **same-name-live-copy-ban** — never a same-named live copy in an installed skills folder.</rule>
-<rule>When the user submits a SKILL.md file for review or asks to diagnose what to fix in it, use **review-skill-file** — suggest only, never edit.</rule>
+<rule>When the user submits a SKILL.md file, asks what to fix in it, or asks whether it will trigger, use **review-skill-file** — suggest only, never edit; for a trigger question, run step 3 and stop there; for code, diffs, PRs, or project documents, route to `review-code`.</rule>
 <rule>When a request can be met by reshaping an element, recommend the refactor; add only when no reshape works.</rule>
 <rule>When the user wants an existing skill file edited or improved (not just diagnosed), do not apply edits here — route to `create-skill`'s **edit-skill**.</rule>
-<rule>When the user asks whether a skill will trigger or activate correctly, or whether its description matches its scenarios, use **review-skill-file** and focus on step 3.</rule>
 </rules>

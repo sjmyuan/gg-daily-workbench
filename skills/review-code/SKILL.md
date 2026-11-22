@@ -1,13 +1,13 @@
 ---
 name: review-code
-description: Review code and documents for correctness, security, performance, and blast radius; raise unreasonable changes as blocking challenges. Prefer the project's own equivalent when one exists. Use when reviewing diffs, commits, pull requests, branches, documents, or repo conventions.
+description: Review code and project documents for correctness, security, performance, maintainability, and blast radius. Prefer the project's own equivalent when one exists. Use when reviewing code, diffs, commits, PRs, branches, or project documents, challenging an unreasonable change, or checking it against repo conventions; not for skill files (use review-skill).
 ---
 
 <when-to-use-this-skill>
-- A user or another agent requests a code review of files, folders, diffs, commits, or pull requests
+- A user or another agent requests a review of code files, folders, diffs, commits, or pull requests
 - User asks for feedback on code quality, security, performance, or maintainability
 - User supplies one or two branch names for comparison
-- User asks to review a document (README, design doc, ADR, specification, runbook)
+- User asks to review a project document (README, design doc, ADR, specification, runbook) — not a SKILL.md
 - User asks whether a change is safe, or wants potential bugs and failure modes surfaced
 - A change looks unreasonable — misplaced, misnamed, out of scope, or restructured without evidence
 - A review must apply the target repo's own conventions, ADRs, or known constraints
@@ -139,7 +139,7 @@ Load on demand — one row per trigger.
 <rules>
 <rule>When the user submits files, folders, diffs, or commits, apply **gathering-review-context**, then **conducting-code-review**.</rule>
 <rule>When the user supplies branches, a pull request, or uncommitted changes, apply **preparing-review-checkout** then review inside it; skip no changed file.</rule>
-<rule>When the subject is a document, apply **reviewing-document** instead of **conducting-code-review**.</rule>
+<rule>When the subject is a project document, apply **reviewing-document** instead of **conducting-code-review**; when it is a skill file (SKILL.md), route to `review-skill`.</rule>
 <rule>When reviewing any repository, apply **surveying-repo-expertise** before judging conventions, placement, or severity.</rule>
 <rule>When a change looks unreasonable or two readings would change the verdict, apply **challenging-the-change**; never normalize it silently.</rule>
 <rule>When naming a path, package, symbol, flag, or config key, ground it per **referent-grounding** — never from a branch or ticket name.</rule>
