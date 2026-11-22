@@ -6,7 +6,7 @@ Every step is correct, and none of them changes what a capable model would alrea
 **Review Focus**: Prescriptiveness — regime, expert test, judgment content, behavioral evidence.
 **Applies**: **review-skill-file**
 
-## Code Review Summary
+## Skill Review Summary
 
 **Scope**: `skills/review-api-design/` — SKILL.md plus one example
 **Focus Areas**: Regime fit, expert test, judgment content, evaluation

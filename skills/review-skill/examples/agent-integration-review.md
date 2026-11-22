@@ -5,7 +5,7 @@
 **Review Focus**: Agent integration (Axis 2) — dispatch brief contract, output contract, verification, availability fallback, and self-containment for embedded execution. Skill-to-skill pipeline checks skipped (no cross-skill references).
 **Applies**: **review-skill-file**
 
-## Code Review Summary
+## Skill Review Summary
 
 **Scope**: `skills/parallel-doc-splitter/SKILL.md` — full skill file  
 **Focus Areas**: Sub-agent dispatch contract, output contract, verification, availability fallback, embedded-execution self-containment  

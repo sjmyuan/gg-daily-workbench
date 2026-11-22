@@ -6,7 +6,7 @@
 **Review Focus**: Full structural review — section semantics, capability naming, rules, and example coverage.
 **Applies**: **review-skill-file**
 
-## Code Review Summary
+## Skill Review Summary
 
 **Scope**: `skills/commit-message-writer/SKILL.md` — full skill file  
 **Focus Areas**: Section purpose compliance, duplication, naming, example coverage  

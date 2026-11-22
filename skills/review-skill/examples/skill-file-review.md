@@ -7,7 +7,7 @@
 
 **Canonical template**: every review output reproduces these sections in this order. A review with four or more findings may tabulate them (`# | Severity | Finding | Fix`); each row still carries a severity and an actionable fix.
 
-## Code Review Summary
+## Skill Review Summary
 
 **Scope**: `skills/develop-miniprogram/SKILL.md` — full skill file
 **Focus Areas**: Section purpose compliance, duplication, information placement

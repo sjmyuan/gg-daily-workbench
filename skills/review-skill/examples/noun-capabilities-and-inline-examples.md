@@ -6,7 +6,7 @@
 **Review Focus**: Skill structure correctness, with particular attention to capability naming, example format, and example coverage.
 **Applies**: **review-skill-file**
 
-## Code Review Summary
+## Skill Review Summary
 
 **Scope**: `skills/form-validator/SKILL.md` — full skill file  
 **Focus Areas**: Capability naming conventions, examples section format, example coverage  

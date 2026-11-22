@@ -8,7 +8,7 @@ file "fits the 150-line budget."
 only size gate) is met, and whether lines were merged to dodge it.
 **Applies**: **review-skill-file**
 
-## Code Review Summary
+## Skill Review Summary
 
 **Scope**: `skills/database-migration/SKILL.md` — full skill file
 **Focus Areas**: Size limits (char budget, line count, max line length),

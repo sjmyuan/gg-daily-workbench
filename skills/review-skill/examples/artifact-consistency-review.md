@@ -5,7 +5,7 @@
 **Review Focus**: Example-set consistency — one owner template, four step shapes across the examples, identifier and count continuity, plus the machine checker.
 **Applies**: **review-skill-file**
 
-## Code Review Summary
+## Skill Review Summary
 
 **Scope**: One skill — `reference/plan-file-format.md` (prose, no fenced skeleton) and eight examples emitting `plan.md`.
 **Focus Areas**: Template literalism, step/zone shape, abridged labelling, shared cross-skill example

@@ -6,7 +6,7 @@
 **Review Focus**: Trigger correctness — whether the frontmatter `description` and `<when-to-use-this-skill>` are consistent and complete.
 **Applies**: **review-skill-file**
 
-## Code Review Summary
+## Skill Review Summary
 
 **Scope**: `skills/sql-query-builder/SKILL.md` — full skill file  
 **Focus Areas**: Trigger correctness, description coverage, scenario alignment  

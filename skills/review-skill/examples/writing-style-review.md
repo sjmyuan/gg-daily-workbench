@@ -10,7 +10,7 @@ phrases, meta-commentary, and process narration in SKILL.md, its reference,
 and its example.
 **Applies**: **review-skill-file**
 
-## Code Review Summary
+## Skill Review Summary
 
 **Scope**: `skills/release-note-writer/` — SKILL.md + reference + example
 **Focus Areas**: Voice, BLUF, sentence caps, banned phrases, narration
