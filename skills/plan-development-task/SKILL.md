@@ -17,8 +17,8 @@ description: Plan development work — diagnose the change, choose the evidence 
 
 <knowledge>
 <request-intake>
-Gate through `clarify-request` before classifying: restate the ask, itemize every inference — type, expected behavior, input, done criteria, restore ref — and ask the top 3 with a default. A symptom-only request infers the expected behavior; ask it, never plan from a suspected cause.
-Record in `context.md`: the restatement becomes the objective; each default becomes `Assumption (user-accepted, unverified): <default> — Step N verifies — fallback <…>` under `## Unknowns`. A seeding brief with cell, type, behavior, inputs, and criteria **is** the gate result — adopt it.
+Gate through `clarify-request` before classifying: restate the ask, itemize every inference — type, expected behavior, input, done criteria, restore ref — and ask the top 3 with a default. A symptom-only request infers the expected behavior; ask it, never plan from a suspected cause. A seeding brief with cell, type, behavior, inputs, and criteria **is** the gate result — adopt it.
+The **settled request** — restatement and answers — is user input: the objective, a decision, or `## Why`, never an assumption. Only an **unanswered default** is an `Assumption (user-accepted, unverified)` under `## Unknowns`; a default the user answered is settled.
 </request-intake>
 <named-standards>
 | Standard | Rule | Details |

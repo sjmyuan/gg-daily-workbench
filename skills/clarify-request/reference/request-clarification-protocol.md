@@ -41,8 +41,8 @@ Round 2 fires only on a **re-challenge-trigger**. At the round cap, accept with 
 | `BLOCKED` | A blocking question has no safe default — ask, then re-run |
 
 - A request with **nothing inferred** passes on its restatement.
-- A request with **any inference** is shown back as a restatement plus the inference list — the user confirms or corrects it before any work starts.
-- A user "just do it" is a waiver of the *questions*, never of the list: show the inferences, record `ACCEPTED-WITH-ASSUMPTIONS`, keep the labeled defaults.
+- A request with **any inference** is shown back as a restatement plus the inference list — the user confirms or corrects it before any work starts. Showing it settles it unless corrected; a settled inference is never an assumption.
+- A user "just do it" is a waiver of the *questions*, never of the list: show the inferences, take the default for each non-blocking question, label each, and record `ACCEPTED-WITH-ASSUMPTIONS`. An inference neither confirmed nor defaulted is unresolved — ask it or drop it.
 
 ## Assumption lifecycle
 

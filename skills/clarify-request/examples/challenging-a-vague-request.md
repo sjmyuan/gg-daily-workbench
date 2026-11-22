@@ -61,7 +61,7 @@ Default if unanswered: A.
 |---|---|
 | Restatement | "Checkout is slow and you want a spike on options." |
 | Inferred | 3 — goal = perceived speed; surface = web checkout; "slow" = one latency path |
-| Questions | 3 asked — Q1 blocking and answered; Q2–Q3 defaulted |
+| Questions | 3 asked — Q1 blocking and answered; Q2 answered; Q3 defaulted |
 | Gate state | `ACCEPTED-WITH-ASSUMPTIONS` |
 | Accepted assumptions | A1 `Assumption (user-accepted, unverified)` — target is p95 first-token under 300ms, per the Q3 default |
 

@@ -58,6 +58,7 @@ Apply to every line in `context.md`:
 
 **Pre-flight findings are not context.** A resolved finding becomes a plan decision.
 An unresolved one becomes an **Unknown**. The raw investigation is not persisted.
+A settled request is not an Unknown either: its answer becomes the objective, `## Why`, or `Done means`; only an unanswered default is an `Assumption (user-accepted, unverified)`.
 
 Never write steps, plan decisions, feature status/branch/PR, pre-flight tables, commit tables,
 test matrices, deviation narratives, or incident retellings — those live in `plan.md`,

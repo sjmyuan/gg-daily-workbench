@@ -44,7 +44,8 @@ The gate is decided by the **inference count**, never by self-judged ambiguity:
 | Nothing — goal, scope, and done criteria all stated | `ACCEPTED`: state the restatement and proceed |
 | Anything | Show the restatement plus the inference list, then ask the material questions as options — never proceed on a private reading |
 
-`ACCEPTED-WITH-ASSUMPTIONS` is legal only after the list was shown; `BLOCKED` means a material question has no safe default.
+`ACCEPTED-WITH-ASSUMPTIONS` requires at least one default taken unanswered, after the list was shown; `BLOCKED` means a material question has no safe default.
+A shown restatement is `ACCEPTED` unless corrected, and a settled inference is never an assumption.
 Budget: ≤3 material questions per round, ≤2 rounds, then accept with assumptions and say so.
 Every question carries 2–3 options and a recommendation with its evidence; a default only for non-blocking questions.
 Protocol: **reference/request-clarification-protocol.md**.

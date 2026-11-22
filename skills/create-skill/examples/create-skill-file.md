@@ -18,10 +18,10 @@ User request: "Create a skill that writes consistent git commit messages with co
 | Knowledge | prefix table, 72-char wrap rule, footer format |
 | Rules | 1 rule routing commit-writing requests |
 | Reference needs | none — rubrics are small |
-| Gate state | `ACCEPTED-WITH-ASSUMPTIONS` — "consistent" inferred as subject-only, body only for breaking changes |
-| Accepted assumptions | `Assumption (user-accepted, unverified)`: subject-only commits; body added only for breaking changes |
+| Gate state | `ACCEPTED` — the request fixed prefixes, the 72-char subject, and "consistent"; no default was taken |
+| Design decisions | Subject-only commits; body added only for breaking changes — skill design, ratified with the draft |
 
-The gate ran before creation: the one inference was shown back in the restatement above and accepted, not assumed privately.
+The gate passed on the request as stated; the body/footer choice is a design decision, not an intake assumption.
 
 ## Classification (classify-skill-content)
 | Claim | Class | Route |

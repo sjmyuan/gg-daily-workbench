@@ -13,7 +13,15 @@
 Recommendation: A — "instead of the original" reads as unconditional.
 Default if unanswered: A.
 
-User: "A — unconditional." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 `Assumption (user-accepted, unverified)`: a defect, not an intended change.
+**Q2 · Intent · non-blocking** — defect or intended format change?
+  A) Defect — consumers always expected the source ID
+  B) Intended change — consumers migrate to the transformed ID
+Recommendation: A — the user reports it as "wrong".
+Default if unanswered: A.
+
+User: "Q1 A — unconditional; Q2 A — a defect." → `ACCEPTED`.
+
+Both answers are settled user input: Q1 becomes the plan objective and Q2 the transformer's **Must not change** behavior. Nothing here is an assumption — no default went unanswered.
 
 ## Classification
 
@@ -27,10 +35,9 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 **Agent gathers evidence** — reads `DataImportedHandler.java` and the publishing tests. The handler calls `dataTransformer.transform(record)` and passes `transformedData.getId()` instead of `record.getId()`.
 
 **Agent asks:**
-> 1. Should the outgoing message always carry the original source ID, or the transformed ID in some scenarios?
-> 2. Do existing tests cover the ID field in the published message?
+> Do existing tests cover the ID field in the published message?
 
-**User:** Always the original source ID. Existing tests check the message type but not the ID field.
+**User:** Existing tests check the message type but not the ID field. Q1's answer stands — always the original source ID.
 
 **Root cause confirmed:** the handler publishes the transformed ID; the transformation changes the ID format. *User confirms: ✅*
 

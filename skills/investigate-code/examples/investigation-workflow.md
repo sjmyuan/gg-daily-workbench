@@ -18,7 +18,7 @@ Inferred: (i) the full pipeline, not one field mapper; (ii) a `file:line` walkth
 Recommendation: A — "the process" names the pipeline, not one class.
 Default if unanswered: A.
 
-User: "A — full pipeline from event arrival to publishing." → `ACCEPTED-WITH-ASSUMPTIONS`; A1 💭 Assumption (user-accepted, unverified): a code walkthrough is wanted, not a C4 diagram.
+User: "A — full pipeline from event arrival to publishing." → `ACCEPTED`. The restatement's walkthrough and current-state readings stand; no assumption is recorded.
 
 **Entry point discovery** — grepping for listeners and handlers:
 

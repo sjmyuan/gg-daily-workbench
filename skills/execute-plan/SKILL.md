@@ -16,9 +16,9 @@ description: Execute structured development plans with progress tracking, valida
 
 <knowledge>
 <request-intake>
-Gate the request through `clarify-request`'s intake gate: restate the plan path, active rework, base ref, outcome, and itemize inferences. Zero inferences → **track-plan**; anything inferred → ask before step 1.
-A mid-execution request is gated the same way before it becomes a step or an amendment — never silently absorbed, never a reason to stop in-scope work. Accepted defaults go to `## Open concerns` as `Assumption (user-accepted, unverified)`.
-A seeding brief stating the plan path, rework, base ref, and outcome **is** the gate result: adopt it, ask nothing, never re-detect the folder.
+Gate through `clarify-request`: restate the plan path, active rework, base ref, outcome, and itemize inferences. Zero inferences → **track-plan**; anything inferred → ask before step 1.
+Gate a mid-execution request the same way before it becomes a step or amendment — never silently absorbed, never a reason to stop in-scope work. Accepted defaults go to `## Open concerns` as `Assumption (user-accepted, unverified)` (the charter is frozen).
+A seeding brief with the plan path, rework, base ref, and outcome **is** the gate result: adopt it, ask nothing, never re-detect the folder.
 </request-intake>
 <plan-format>
 Each feature owns a folder holding `plan.md` (live step tracking) and `context.md` (charter + handoff) — permanent; history lives in git/PR: **reference/feature-folder-structure.md**.
@@ -60,7 +60,7 @@ A rework is a sibling `rework-<date>.md` — only its steps: **reference/executi
 
 <capabilities>
 <track-plan>
-1. Gate per **request-intake**; ask before step 1 when anything was inferred.
+1. Gate per **request-intake** before step 1.
 2. Locate or create the feature folder, resuming an existing plan or its active `rework-<date>.md`; ask resume-or-fresh only for ❌/🚫 steps, never a second folder.
 3. Materialize steps and derive `context.md` per **plan-format** and **execution-conventions**.
 4. Show the full list after each step with files, `Source`, validation; only statuses, notes, and approved `⏭` markers change in `plan.md`.
