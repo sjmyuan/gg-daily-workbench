@@ -25,6 +25,8 @@ Drivers: `HC 1` no double-settle (0 duplicates in a replay); `HC 2` settlement o
 
 **Dispatch decision**: 3 areas, each with code spanning 2 subsystems → one area session each, dispatched concurrently. Scope stays in the orchestrator.
 
+**Roles resolved once**: no project agent is scoped to these areas, so each area session runs on `code-analyst` with `investigate-code` + `draft-adr`, writing only under `adrs/`; a project agent that matched an area would take that seat instead.
+
 ---
 
 ## Decide Spike Problems

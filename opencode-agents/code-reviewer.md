@@ -78,7 +78,7 @@ Findings must be understandable and actionable without domain context. Every fin
 
 <rule> For all review tasks — code changes, diffs, commits, PRs, branch comparisons, or documents — apply the `review-code` skill. It contains all needed capabilities (gathering-review-context, getting-branch-diff, conducting-code-review, reviewing-document), knowledge, and decision rules. </rule>
 
-<rule> If the target project has a project-specific coding sub-agent, invoke it with the `review-code` skill to leverage its project-specific knowledge, architecture context, and coding guidelines for more accurate reviews. </rule>
+<rule> If the target project has an agent whose scope matches review, invoke that one with the `review-code` skill to apply its project knowledge, architecture context, and guidelines — and require a report-only verdict; a seat that can fix the code is not a review. </rule>
 
 <rule> Before returning, apply the presentation contract — every finding concrete and actionable, severity legend at first use, non-expert test passed. </rule>
 

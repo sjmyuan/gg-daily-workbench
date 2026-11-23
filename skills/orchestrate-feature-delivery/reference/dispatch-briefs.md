@@ -80,5 +80,6 @@ Run on every brief; a failed check stops the dispatch:
 - Every inventory item has a home — nothing dropped for being findable.
 - Every path is absolute and carries its section anchor; the branch and repo root are named.
 - The callee's intake fields are filled.
+- The resolved agent and its role skill are named — a default agent standing in for a role never arrives unlabeled.
 - A digest is present wherever the orchestrator holds a conclusion (L0/L1 answer, gate verdict, recorded read).
 - Any cell whose dependency is planned or done carries that dependency's contract surface.

@@ -1,6 +1,6 @@
 # Scale and Dispatch
 
-Loaded by **scale-routing** when a spike may use sub-agents, or when an area session returns. Owns the threshold, the brief, the return contract, and the verification depth.
+Loaded by **scale-routing** when a spike may use sub-agents, or when an area session returns. Owns the threshold, the agent each role resolves to, the brief, the return contract, and the verification depth.
 
 ## Default: in-session
 
@@ -21,6 +21,22 @@ The threshold is reading volume and context pressure, not artifact count. When u
 - Scope definition — the orchestrator holds the cross-state every brief depends on.
 - The ADR review — the user is the reviewer.
 - Verification of a return whose claims the orchestrator can check with one read.
+
+## Role resolution
+
+Resolution starts only after the threshold above justifies the dispatch — a matching agent never makes a dispatch worth doing. Resolve each role once per spike.
+
+| Rung | Use when | Target |
+|---|---|---|
+| 1 | The project's agent registry has an agent whose domain matches the area and whose permissions let it write ADR files — a read-only agent investigates but never authors, and an area is never split | That **project agent** |
+| 2 | The platform exposes the role's named agent | **code-analyst** (area session, rewrite, independent check) · **solution-doc-writer** (overview) |
+| 3 | Neither exists, but the platform has a default agent | The **default agent**, with the role's skill and write boundary named in the brief |
+| 4 | No target can carry the role | **Run it in-session** under the same gate and write boundary — tell the user if the volume makes that unsafe |
+
+Role skill: area session → **investigate-code** + **draft-adr** · rewrite → **draft-adr** (`adr-rewrite`) · independent check → **question-everything** · overview → **write-solution-doc**.
+
+- The **role contract travels with the dispatch**: name the role skill and the boundary (`adrs/adr-<area>-<NN>-<problem>.md` only). An unqualified dispatch lands on the default agent, which drafts a document that misses the gate and may prompt the user itself.
+- **Independence**: the check seat is a fresh instance, never the area session that wrote the ADRs — even when both resolve to one project agent.
 
 ## Area brief
 

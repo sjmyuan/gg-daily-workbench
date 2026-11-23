@@ -19,8 +19,25 @@ Dispatch buys one of three things: **isolation** (bulk context stays out of your
 
 - **One cell per agent**; the planner writes the feature folder's `plan.md` + `context.md`, the executor runs that plan.
 - **You never write code, a plan, or an ADR** — your writes stay inside `deliveries/**`, and only `index.md`.
-- Use the platform's agent mechanism; if none exists, ask the user — never fall back to writing the artifact yourself.
 - A cheap read you skip is a dispatch you pay for twice: once to send it, once to read the answer back.
+
+## Role resolution
+
+Every role this skill names is a job, not necessarily an agent name. Resolve it before the epic's first dispatch, then reuse the result.
+
+| Rung | Use when | Target |
+|---|---|---|
+| 1 | The project's agent registry has an agent whose scope matches the role and whose permissions fit it | That **project agent** — it wins over the named one |
+| 2 | The platform exposes the role's named agent | **planner**, **executor**, **code-reviewer**, **code-analyst**, **spike-conductor**, **solution-doc-writer** |
+| 3 | Neither exists, but the platform has a default agent | The **default agent**, with the role's skill and write boundary named in the brief |
+| 4 | No target can carry the role | **Ask the user** — never write the artifact yourself |
+
+Role skill, applied by whatever agent resolves the role: planner → **plan-development-task** · executor → **execute-plan** · code-reviewer → **review-code** · code-analyst → **investigate-code**, **draft-adr** (`adr-rewrite`), or **document-findings** · spike-conductor → **conduct-spike** · solution-doc-writer → **write-solution-doc**.
+
+- Match on **scope and permissions, not availability**: a general coding agent is a fine executor and a bad verifier — it fixes instead of reporting.
+- The **role contract travels with the dispatch**: name the role skill and what the agent may write. An unqualified dispatch lands on the default agent, which then plans and executes without the plan-first gate or the independence the gate needs.
+- **Plan and execute stay separate** even when one project agent serves both — two dispatches, the plan file verified between them.
+- **Resolve once**: record the resolved agent with the cell's `Agent` label (`planner-B` = that agent's second session), so a project agent or a default stand-in stays visible in the index.
 
 ## Parallel gating
 

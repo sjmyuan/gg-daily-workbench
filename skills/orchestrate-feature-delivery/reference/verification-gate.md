@@ -93,6 +93,7 @@ Per-cell gates do not cover cross-cell interaction.
 ## Dispatch discipline
 
 - **Model**: choose the cheapest capable model per dispatch and state it explicitly; escalate a stuck fix round.
+- **Agent**: resolve the role per **reference/orchestration-guide.md** → *Role resolution*; name the resolved agent and its role skill in the brief. A default-agent stand-in never gets a **Sampled** gate.
 - **Gate tier**: state it in the brief; an unstated tier defaults to Full.
 - **Wait**: wait in bounded stretches; reconcile live children; chase any that finished silently.
 - **No subagents**: a dispatched worker never spawns reviewers or helpers — the orchestrator owns every review seat.

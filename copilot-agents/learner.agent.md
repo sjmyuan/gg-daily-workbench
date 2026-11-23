@@ -33,10 +33,11 @@ Two dispatch levels exist; do not confuse them:
 
 | Level | Trigger | Dispatch target | Output |
 |---|---|---|---|
-| **Agent (topic-parallel)** | User requests learning across multiple independent topics | `learner` (self) per topic | Candidate lessons + provision plans |
+| **Agent (topic-parallel)** | User requests learning across multiple independent topics | `learner` (self), or the resolved equivalent, per topic | Candidate lessons + provision plans |
 | **Skill (source-type parallel)** | A single topic's source is large or multi-type | Code/text-analysis agents detected by `detect-learning-signals` | Candidate lessons |
 
 The agent level partitions topics and dispatches to itself. Inside each dispatched learner, the skill's own `detect-learning-signals` may further dispatch source analysis to code/text-analysis agents — that is the skill's decision and runs automatically.
+Resolve a role before dispatching it at either level: a project agent that matches the role and can run the pipeline takes the seat, with `learn-from-history` named in the brief; else the named agent; else the default with the skill named — never a silent fallback to a generic agent.
 </dispatch-model>
 
 </knowledge>

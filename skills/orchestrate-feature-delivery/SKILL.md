@@ -26,7 +26,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 - **Plan-first, no exemption** — no executor before the plan file exists; never back-fill a plan; every cell runs planned then executed by separate agents.
 </orchestrator-role>
 <capability-regimes>
-**Judgment** — decompose, order, triage, issue/ADR change, POC scope: you own the route, read or answer first. **Contractual** — index and verify: exact statuses, fields, gate inputs.
+**Judgment** — decompose, order, triage, issue/ADR change, POC scope: you own the route. **Contractual** — index and verify: exact statuses, fields, gate inputs.
 </capability-regimes>
 <delivery-standards>
 | Standard | Rule | Details |
@@ -34,12 +34,12 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 | **write-boundary** | Only `index.md` inside `**/deliveries/**`; plan/context/rework files belong to the planner and executor. | [write-boundary-guide](reference/write-boundary-guide.md) |
 | **feature-definition** | Coherent, independently valuable, across repos: `F1…`, kebab-case, one line, one PR per repo (soft). | — |
 | **poc-definition** | One ADR option as a temporary MR the user evaluates; never measured. Adopt = merge; else close. | [poc-lifecycle](reference/poc-lifecycle.md) |
-| **delivery-layout** | `deliveries/<epic-name>/index.md` + one `<repo>/<feature-name>/` per cell; one branch per repo per cell, named by convention. | [delivery-layout](reference/delivery-layout.md), [artifact-map](reference/artifact-map.md) |
+| **delivery-layout** | `deliveries/<epic-name>/index.md` + one `<repo>/<feature-name>/` per cell; one branch per repo per cell by convention. | [delivery-layout](reference/delivery-layout.md), [artifact-map](reference/artifact-map.md) |
 | **dependency-edge-types** | Per pair A → B: **merge-blocked** (develop on A's contract) · **contract-first** (parallel on stubs) · **poc-gated** · **conflict** (serialize) · **independent**. | [dependency-ordering-guide](reference/dependency-ordering-guide.md) |
 | **delivery-state-machine** | `unplanned → planned → in-progress → verified → done`, plus `failed`, `blocked`, `superseded`; POCs fork to `poc-ready → adopted \| rejected`. | [state-machine](reference/state-machine.md) |
 | **verification-gate** | One independent gate owns spec **and** quality, risk-proportioned: full for contract or irreversible surfaces, sampled otherwise. | [verification-gate](reference/verification-gate.md) |
 | **investigation-triage** | Answer → evidence → decision → spike, first rung that answers; a bounded read is yours. | [investigation-triage](reference/investigation-triage.md) |
-| **agent-dispatch** | Dispatch for isolation, independence, a long run, or an artifact-owning specialty; otherwise do it yourself. | [orchestration-guide](reference/orchestration-guide.md), [dispatch-briefs](reference/dispatch-briefs.md) |
+| **agent-dispatch** | Resolve the role first, then dispatch only for the reasons in **orchestrator-role**. | [orchestration-guide](reference/orchestration-guide.md), [dispatch-briefs](reference/dispatch-briefs.md) |
 | **agent-recovery** | Clear a stall or failure before the user — answer, do, re-brief, retry once; escalate on a listed trigger. | [orchestration-guide](reference/orchestration-guide.md) |
 | **rework-modes** | Append-only sibling `rework-<date>.md` carrying the delta; `plan.md` frozen; post-merge adds a feature. | [rework-modes](reference/rework-modes.md) |
 | **adr-change** | Versionless — drift comes from **code-analyst** (`adr-rewrite`) or the user; route governed cells by status. | [orchestration-guide](reference/orchestration-guide.md) |
@@ -61,7 +61,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 5. Assign `F1…`, a kebab-case name, and a one-line description.
 </decompose-change-into-features>
 <map-features-to-repos>
-1. Inventory the repos each feature touches; build the feature × repo matrix — one cell per PR (soft), marking config/data/infra-only cells.
+1. Inventory the repos each feature touches; build the feature × repo matrix, marking config/data/infra-only cells.
 </map-features-to-repos>
 <order-feature-delivery>
 1. Classify each pair with **dependency-edge-types**; compute waves by topological order (**reference/dependency-ordering-guide.md**).
@@ -86,7 +86,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 2. Assess waves, ready cells, and blockers.
 3. **Plan**: dispatch the **planner** to each unplanned, develop-ready cell; verify each plan on disk.
 4. **Execute**: dispatch the **executor** to each planned cell with a verified plan, respecting gating and conflicts.
-5. Build each brief with scope, **spike references**, and **branch name**.
+5. Build each brief per **dispatch-briefs**.
 6. Gate merges on dependencies **done**; the executor pushes, opens the PR, and returns the reference.
 7. Apply **verify-cell**, then **update-delivery-index**, until all cells are **done** or the user pauses.
 8. All **done** → epic integration review per **reference/verification-gate.md**.
@@ -94,7 +94,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 <verify-cell>
 **Objective**: One independent review decides spec compliance, trust, and engineering quality before **verified**.
 1. Require the handoff and a fully ✅ `plan.md` ending in **Exit gate**.
-2. Size the gate by risk per **reference/verification-gate.md** — full review for a contract, API, schema, migration, or irreversible surface; sampled otherwise.
+2. Size the gate by risk per **reference/verification-gate.md** — Full for any protected surface.
 3. Dispatch a fresh **code-reviewer**, never the executor: **Spec** Missing/Extra/Misunderstood · **Trust** receipt matches `head7` · **Quality** blockers, majors, merge call.
 4. Pass → mark **verified** via **update-delivery-index**.
 5. A gap, Blocker, or Major → **planner** (`rework-<date>.md`) → **executor** → scoped re-review; stay **in-progress**.
@@ -108,7 +108,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 <triage-issue>
 **Objective**: Choose the cheapest rung that answers the issue — and take it yourself when you can.
 1. State the question and what may answer it: the record, a bounded read, or an area beyond your sight.
-2. Descend the ladder per **reference/investigation-triage.md**; stop at the first rung that answers. Read the code yourself when the read is bounded; dispatch when it spans areas or needs an independent pass.
+2. Descend the ladder per **reference/investigation-triage.md**; stop at the first rung that answers. Dispatch when it spans areas or needs an independent pass.
 3. Escalate one rung at a time, saying why the cheaper one failed; dispatch a specialist only on a stated trigger.
 </triage-issue>
 <handle-post-implementation-issue>
@@ -133,6 +133,7 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 <rule> No index yet → **decompose-change-into-features** → **map-features-to-repos** → **order-feature-delivery** → **produce-delivery-index**. </rule>
 <rule> Index exists → **orchestrate-delivery**, or **resume-delivery** for an interrupted epic. </rule>
 <rule> A cell's state changed → **update-delivery-index** before more dispatches; a read changes nothing. </rule>
+<rule> A dispatch names the resolved agent and its role skill; no role resolves silently. </rule>
 <rule> An agent stalls, asks, or fails → **agent-recovery**; escalate only on a listed trigger, with the attempt trail. </rule>
 <rule> Execution completes → **verify-cell** before the index advances; no **done** without a gate or waiver. </rule>
 <rule> An issue after implementation → **handle-post-implementation-issue**; never re-decompose the epic. </rule>

@@ -12,6 +12,9 @@
 
 ## 2. Dispatch — Phase 1 (planners only)
 
+> **Roles resolved once**: planner → `planner`, executor → `executor`, verifier → `code-reviewer`. No project agent matches these roles in this epic; one that did would win and carry the role skill in its brief.
+> Labels like **Planner A** are sessions of the resolved agent, not separate agents.
+
 - **Planner A** → plan `shared-contracts/F1` (plan-development-task)
   - Inventory first: the ask and its gate record, the F1 index row, the ADR already read at decompose time, the branch convention detected in `shared-contracts`, and the absolute epic path.
   - Brief (excerpts; contract in `reference/dispatch-briefs.md`):

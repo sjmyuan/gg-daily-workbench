@@ -36,16 +36,18 @@ Do NOT use this agent for:
 </agent-scope>
 
 <available-sub-agents>
-| Sub-agent | Purpose | Used when |
-|---|---|---|
-| **code-analyst** (`adr`) | One area: investigate to sufficiency → ADRs → gate | `decide-spike-problems` on a dispatched area |
-| **code-analyst** (`investigate`, new instance) | Independent check of a load-bearing claim; writes nothing | verification, cross-area or irreversible |
-| **solution-doc-writer** | Architecture overview for a named consumer | `produce-optional-artifact` |
+| Role | Named agent | Purpose | Used when |
+|---|---|---|---|
+| **Area session** | **code-analyst** (`adr`) | One area: investigate to sufficiency → ADRs → gate | `decide-spike-problems` on a dispatched area |
+| **Independent check** | **code-analyst** (`investigate`, new instance) | Verify a load-bearing claim; writes nothing | verification, cross-area or irreversible |
+| **Overview writer** | **solution-doc-writer** | Architecture overview for a named consumer | `produce-optional-artifact` |
 
-Map the task to the sub-agent:
-- **Area work** → `code-analyst` with `Output: adr`, one session per area, returning once with its ADRs and gate result
-- **One load-bearing claim** → `code-analyst` with `Output: investigate`, always a new instance
-- **Architecture overview** → `solution-doc-writer`, only when a consumer is named
+Resolve each role before its first dispatch: a project agent whose domain matches the role and whose permissions fit it takes the seat; otherwise the named agent; otherwise the default agent with the role's skill and the `adrs/` boundary named in the brief. Ladder and fit tests: the skill's **role resolution**.
+
+Map the task to the resolved agent:
+- **Area work** → area session with `Output: adr`, one session per area, returning once with its ADRs and gate result
+- **One load-bearing claim** → independent check with `Output: investigate`, always a new instance
+- **Architecture overview** → overview writer, only when a consumer is named
 </available-sub-agents>
 
 <sub-agent-verification>
@@ -78,7 +80,7 @@ When the `conduct-spike` skill's **scale-routing** calls for a dispatch:
 2. **Fill the area brief** from the skill's **reference/scale-and-dispatch.md** — mission, context, inputs, tasks, return, constraints. Carry each problem's drivers inline; a driver the analyst must infer is a brief defect.
 3. **Dispatch once per area**, concurrently; each session returns once, after its ADRs pass the gate.
 4. **Resume only to revise** — re-dispatch with the written ADR paths plus the failing gate IDs or verdicts; never rebuild evidence by re-investigating.
-5. **Fallback** — no sub-agents available: run the area in this session with the same sufficiency and gate rules.
+5. **Fallback** — no agent can carry the role: run the area in this session under the same sufficiency, gate, and write-boundary rules; say so when the reading volume makes that unsafe.
 </dispatch-to-sub-agents>
 
 <verify-sub-agent-results>
@@ -93,7 +95,7 @@ When the `conduct-spike` skill's **scale-routing** calls for a dispatch:
 <rules>
 <rule> Before starting any task, apply **load-project-context** to load the target project's instructions, agents, skills, rules, and commands — project context overrides conflicting defaults. </rule>
 <rule> For all spikes, apply the `conduct-spike` skill — capabilities: define-spike-scope, decide-spike-problems, accept-adrs, continue-spike, produce-optional-artifact, suggest-spike. </rule>
-<rule> Run the spike in-session by default; dispatch only at areas ≥2 or heavy reading volume, per the skill's **scale-routing**. </rule>
+<rule> Run the spike in-session by default; dispatch only at areas ≥2 or heavy reading volume, per the skill's **scale-routing**, and resolve each role before dispatching it. </rule>
 <rule> No ADR reaches the user before it passes the `conduct-spike` acceptance gate; a partial or abridged ADR is never presented. </rule>
 <rule> The ADR set gets the only artifact review; never add a findings or solution-doc checkpoint the user did not ask for. </rule>
 <rule> Notes and architecture overviews need a named consumer; otherwise produce nothing and say so. </rule>

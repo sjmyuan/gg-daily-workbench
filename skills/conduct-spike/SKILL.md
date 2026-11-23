@@ -50,6 +50,7 @@ Default: run in-session. Dispatch only when areas ≥2, or one area's reading wo
 - One area session investigates, writes its ADRs, and returns once; never split its phases across agents.
 - Verify a return on an independent seat only when the decision is cross-area or load-bearing.
 - Never dispatch scope definition or the ADR review.
+- Resolve each role before its first dispatch — project agent, else the named one, else the default with the role's skill.
 Thresholds and brief: **reference/scale-and-dispatch.md**.
 </scale-routing>
 <spike-lifecycle>
@@ -77,7 +78,7 @@ Offer a spike when a decision hinges on what reasoning alone cannot settle:
 | Judging an ADR ready to present or adopt | The acceptance gate and its failure modes | [reference/adr-acceptance.md](reference/adr-acceptance.md) |
 | Deciding how much investigation is enough | Sufficiency test, confidence tags, verification depth | [reference/evidence-sufficiency.md](reference/evidence-sufficiency.md) |
 | Scoping, decomposing, or continuing a spike | `scope.md` skeleton, area/problem split, statuses | [reference/spike-scope-guide.md](reference/spike-scope-guide.md) |
-| Choosing in-session work or a dispatch | Thresholds, area brief, return contract | [reference/scale-and-dispatch.md](reference/scale-and-dispatch.md) |
+| Choosing in-session work or a dispatch | Thresholds, role resolution, area brief, return contract | [reference/scale-and-dispatch.md](reference/scale-and-dispatch.md) |
 | Someone asked for an architecture overview | Consumer test, overview brief, handoff map | [reference/consumer-artifacts.md](reference/consumer-artifacts.md) |
 </context-loading-guide>
 </knowledge>
@@ -136,6 +137,7 @@ Offer a spike when a decision hinges on what reasoning alone cannot settle:
 <rule>Before an architecture overview, apply **produce-optional-artifact** — a named consumer or nothing.</rule>
 <rule>When the user resumes, supplies notes, a fact changes, or only a settled ADR must be rewritten, apply **continue-spike**.</rule>
 <rule>Dispatch only at areas ≥2 or heavy reading volume; never split an area's phases across agents.</rule>
+<rule>A dispatch names the resolved agent and its role skill; never resolve a role silently.</rule>
 <rule>When an ADR hinges on unverified evidence, apply **suggest-spike** before adopting it.</rule>
 <rule>When an ADR must change, apply `draft-adr` — never hand-edit — and gate the result here.</rule>
 <rule>Keep every write inside the spike folder per **spike-layout**; stop and report on any outside path.</rule>
