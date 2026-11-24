@@ -31,7 +31,7 @@ Never copy a spike artifact into `index.md`, `context.md`, or `plan.md` — link
 | Spike | Delivery |
 |---|---|
 | Areas × problems (decisions) | Features × repos (deliverable slices) |
-| A problem is a "How to …?" decision | A feature is a coherent, independently valuable slice |
+| A problem is a "How to …?" decision | A feature is a coherent, independently valuable unit |
 
 - One feature may span several ADRs/areas; one ADR may drive several features/cells.
 - The trace is **Feature → ADRs** and **Solution section → Feature**, never `Problem → Feature`.

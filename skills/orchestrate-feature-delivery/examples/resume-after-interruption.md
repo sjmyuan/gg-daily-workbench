@@ -29,7 +29,7 @@
   Spike references are embedded; a step needing more detail reloads the ADR or solution doc from the index's Spike References.
 - **Planner B** → amend `api-gateway/F3`'s existing `plan.md` (insert the missing step, mark obsolete pending steps ⏭) — same path, no second plan
 - **Executor B** → resume F3 at the first ⏳ step after the amendment (execute-plan), same cell
-- **Agent C** (`solution-doc-writer` / `code-analyst`) → update solution-doc §2 System Topology and §3 Interaction Details (wallet slice), plus the ADR if F2's execution surfaces artifact changes.
+- **Agent C** (`solution-doc-writer` / `code-analyst`) → update solution-doc §2 System Topology and §3 Interaction Details (wallet section), plus the ADR if F2's execution surfaces artifact changes.
   The orchestrator never edits them itself.
 - Both F4 cells wait
 

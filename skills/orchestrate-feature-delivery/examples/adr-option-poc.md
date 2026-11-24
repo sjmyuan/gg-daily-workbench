@@ -1,7 +1,7 @@
 # Example: Proving an ADR Option with Compare-POCs as MRs
 
 **Scenario**: `adr-caching-01-cache-option.md` weighs two cache options — **Redis** vs **in-process**.
-The team can't decide on drivers alone; the user says: "Implement each option as a temporary slice and open an MR. I'll try both and pick."
+The team can't decide on drivers alone; the user says: "Implement each option as a temporary implementation and open an MR. I'll try both and pick."
 
 **Applies**: **define-poc-scope** → **orchestrate-delivery** → **update-delivery-index**
 
@@ -11,8 +11,8 @@ Decomposition marks two POC cells (Wave 0, parallel) and one **poc-gated** imple
 
 | ID | Name | Wave | Repos | Dependencies | ADRs | Rework of | Type | Replaces | Compare | Goal |
 |---|---|---|---|---|---|---|---|---|---|---|
-| F5a | cache-redis | 0 | order-service | — | adr-caching-01 | — | poc | — | F5b | Redis option slice |
-| F5b | cache-in-process | 0 | order-service | — | adr-caching-01 | — | poc | — | F5a | In-process option slice |
+| F5a | cache-redis | 0 | order-service | — | adr-caching-01 | — | poc | — | F5b | Redis option |
+| F5b | cache-in-process | 0 | order-service | — | adr-caching-01 | — | poc | — | F5a | In-process option |
 | F5 | cache-productionize | 1 | order-service | F5a (poc-gated) | adr-caching-01 | — | feature | — | — | Ship the chosen option |
 
 `Replaces` names the existing feature the POC's adoption supersedes — filled only when one exists.
@@ -41,7 +41,7 @@ The orchestrator never evaluates or decides.
 - Dispatch **code-analyst** (`adr-rewrite`, draft-adr): `adr-caching-01-cache-option.md` records the Redis decision + the user's rationale.
 - **F5a (POC-as-implementation)**: merge MR #51 → **done**. Its `Replaces` column is empty, so no cell is marked **superseded**.
 - **F5b**: close MR #52 → **rejected**; update index.
-- **F5 (poc-gated)**: now dispatchable with the chosen option — if the POC slice already ships the full feature, F5 may be dropped or reduced to the remaining scope.
+- **F5 (poc-gated)**: now dispatchable with the chosen option — if the POC already ships the full feature, F5 may be dropped or reduced to the remaining scope.
 
 ## 5. Next actions
 

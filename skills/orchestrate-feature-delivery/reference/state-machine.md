@@ -27,6 +27,7 @@ The delivery index is the single source of truth; **update-delivery-index** and 
 - **verified** requires the independent verification gate (**verify-cell**) to pass.
 - POC cells fork: `verified → poc-ready → adopted | rejected`; adopted → promote → merge → `done`.
 - A replaced cell is **superseded**.
+- A plan-time split replaces a **planned** cell with its slices; each starts **planned** (see **reference/pr-size-slicing.md**).
 - The user records POC **adopted**/**rejected** in the index — the orchestrator never decides.
 
 ## Readiness predicates

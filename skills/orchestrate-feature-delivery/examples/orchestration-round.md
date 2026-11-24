@@ -23,7 +23,7 @@
     Plan location (path): /work/acme/deliveries/wallet-migration/shared-contracts/wallet-contracts/
     Governing ADR (path + digest): /work/acme/spikes/wallet-migration/adrs/adr-wallet-01-payment-failure-handling.md
       — decided: retries + idempotency keys at the client; contract-first, no server change
-    Solution doc (path): /work/acme/spikes/wallet-migration/solution.md §2 System Topology · §3 Interaction Details (wallet slice)
+    Solution doc (path): /work/acme/spikes/wallet-migration/solution.md §2 System Topology · §3 Interaction Details (wallet section)
     Spike evidence (digest): evidence-wallet#c1 failure paths (PaymentOrchestrator.java:88),
       #c4 no circuit breaker — settled, do not re-investigate
     Intake record: type feature · expected behavior: shared DTOs + envelope · triggering input:

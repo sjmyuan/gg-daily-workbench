@@ -38,5 +38,7 @@ Prefer the order that lets downstream cells merge right after, minimizing blocki
 
 ## Conflict resolution
 
-- Two features changing the same files in the same repo must be **serialized** or one slice **split** into its own feature.
+- Two features changing the same files in the same repo must be **serialized** or one of them **split** into its own feature.
+- **Slices of one feature** (`F3.1`, `F3.2`) are a **conflict** edge unless their file sets are disjoint.
+- A dependent names the exact slice (`F3.2`), never the series; budget and shapes: **reference/pr-size-slicing.md**.
 - Record the conflict edge explicitly in the delivery index so parallel agents do not run conflicting cells simultaneously.

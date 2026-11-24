@@ -43,6 +43,7 @@ Artifact base: `[<base>]` · [one-line epic scope]
 | F2 | wallet-service | 1 | repo-b | F1 (merge-blocked) | adr-wallet-01 | — | Wallet service + ledger |
 
 POC feature rows add `Type`, `Replaces`, and `Compare` columns — see **POC cells** below.
+A **sliced** feature gets one row per slice — `F3.1`, `F3.2` — in wave order; `Dependencies` names the slice. No new columns (**reference/pr-size-slicing.md**).
 
 ## Waves
 | Wave | Features | Merge gate |
@@ -86,7 +87,7 @@ Each cell carries a brief that seeds **plan-development-task** and every later d
 - **Dependency context**: what must merge before this cell's PR, plus the **delivered contract surface** of any planned/done dependency (interfaces, endpoints, PR, head) as a digest
 - **Known locations**: `file:line` and symbols already located for this cell — never re-searched by the agent
 - **Ruled out**: rungs already failed, options already rejected, questions already answered for this cell
-- **Constraints**: one PR per repo per feature (soft — may merge with other features when convenient)
+- **Constraints**: one PR per cell — a slice is a cell (`F3.1`), never a sub-PR; may merge with other features when convenient
 - **Delegated scope**: enabling-work bumps approved during delivery — `Scope +<what> (delegated, <date>)`; passed to the planner and the verifier
 - **Branch**: the branch name for this cell, per the repo's convention; created during the agent's Prepare Environment step, pushed only after user confirmation
 - **Integration**: push and open the PR after user approval; return the PR reference in the executor handoff

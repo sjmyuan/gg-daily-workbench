@@ -37,8 +37,8 @@ A brief is complete when **nothing the orchestrator holds is missing from it**.
 
 | Target | Beyond the cell brief, it must receive | Mode |
 |---|---|---|
-| **planner** | Drivers and constraints, the dependency cells' delivered contract surface, known code locations from L1, acceptance assumptions | Digest + inline |
-| **executor** | Verified plan path, base ref, active `rework-<date>.md`, branch name, prior-round gate findings | Path + inline |
+| **planner** | Drivers and constraints, the dependency cells' delivered contract surface, known code locations from L1, acceptance assumptions, the review budget | Digest + inline |
+| **executor** | Verified plan path, base ref, active `rework-<date>.md`, branch name, prior-round gate findings, the review budget | Path + inline |
 | **verifier** | Cell digest (done means, decided behaviour), recorded `base7..head7`, governing ADR, prior-round verdicts | Digest + inline |
 | **L1 investigator** | The question, the record artifacts already read and what they established, known locations, already-searched | Digest |
 | **spike conductor (L3)** | Delta scope, the trigger that chose L3, prior artifacts and the findings they already cover | Path + digest |
