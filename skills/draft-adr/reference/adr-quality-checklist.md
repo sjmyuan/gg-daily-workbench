@@ -22,6 +22,17 @@ Loaded by **compile-adr** step 7. Pass every item before presenting the ADR; fix
 - [ ] Every pro and con names the driver it moves
 - [ ] Drivers knocked out by a hard constraint say which constraint, on the option's own row
 
+## Concreteness
+
+- [ ] Every "What it is" and "How it works" names repo symbols or named technologies; swapping in a competitor's name does not leave a true sentence
+- [ ] Every flow step names the symbol it enters and the symbol it leaves
+- [ ] No unnumbered adjective ("scalable", "simple", "robust") survives
+- [ ] Every change carries a diff of real code — no `...`, placeholder, or prose inside a fence
+- [ ] Every `-` line exists at its `file:line`; every `+` line is code, not a comment about code
+- [ ] New files and config/DDL changes carry diffs too; a new file gets an added-only diff
+- [ ] A change with no read code is `unverified` with the check that closes it — never a fabricated diff
+- [ ] No guard, retry, timeout, or validation enters a diff without a driver or a failure the option introduces
+
 ## Diagrams
 
 - [ ] Every option has its own target-state diagram; no two options share one
@@ -35,7 +46,7 @@ Loaded by **compile-adr** step 7. Pass every item before presenting the ADR; fix
 ## Implementability
 
 - [ ] The chosen option has an ordered `## Implementation Plan` with change IDs
-- [ ] Every change names `file:line` + symbol, its diff or exact config value, and its confidence
+- [ ] Every change names `file:line` + symbol, its real diff, and its confidence
 - [ ] Every change has a verification step and a rollback line
 - [ ] New files, config keys, dependencies, and data migration are listed
 - [ ] An engineer who did not join the session can start at `C1` without asking a question

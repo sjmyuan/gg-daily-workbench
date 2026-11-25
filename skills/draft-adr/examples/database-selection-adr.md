@@ -1,6 +1,6 @@
 # Example: Compiled ADR — Database Selection
 
-**Scenario**: The document produced by **compile-adr** at the end of the database-selection walkthrough. Shows a complete template instance: measured drivers, an evidence-backed matrix, a full option card, the chosen option's implementation plan, and the abridged sibling cards.
+**Scenario**: Output of **compile-adr** for the database-selection walkthrough: a complete template instance, one full option card and two abridged.
 
 **Applies**: `compile-adr`; input walkthrough in [database-selection.md](database-selection.md).
 
@@ -118,20 +118,66 @@ A fully managed PostgreSQL instance on GCP, reached over private IP by a single 
 
 #### Tech Details
 
-No service code exists yet — every location below is **unverified**.
+Greenfield: no service code exists, so each diff is added-only and every entry stays **unverified** until the first build.
 
 **Code changes:**
 
 1. **`C1` — `build.gradle` dependencies** (unverified)
-   - Current: no PostgreSQL driver declared.
-   - How: add `org.postgresql:postgresql:42.7.4` to `implementation`.
+   - Current: JPA and H2 declared, no PostgreSQL driver.
+   - Diff:
+     ```diff
+     diff --git a/build.gradle b/build.gradle
+     --- a/build.gradle
+     +++ b/build.gradle
+     @@ -18,3 +18,4 @@ dependencies {
+          implementation 'org.springframework.boot:spring-boot-starter-web'
+          implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+     +    implementation 'org.postgresql:postgresql:42.7.4'
+          runtimeOnly 'com.h2database:h2'
+     ```
+   - How: add the PostgreSQL driver to `implementation`.
 2. **`C2` — `application.yml` datasource block** (unverified)
-   - Current: no datasource block.
-   - How: set `spring.datasource.url`, `username`, `password` from Secret Manager; `maximum-pool-size: 20`.
+   - Current: `spring` carries `application.name` only.
+   - Diff:
+     ```diff
+     diff --git a/src/main/resources/application.yml b/src/main/resources/application.yml
+     --- a/src/main/resources/application.yml
+     +++ b/src/main/resources/application.yml
+     @@ -1,3 +1,9 @@
+      spring:
+        application:
+          name: order-service
+     +  datasource:
+     +    url: jdbc:postgresql://${DB_HOST}:5432/orders
+     +    username: ${DB_USER}
+     +    password: ${DB_PASSWORD}
+     +    hikari:
+     +      maximum-pool-size: 20
+     ```
+   - How: values from Secret Manager; pool at 20 until load data says otherwise.
 3. **`C3` — `db/migration/V1__orders.sql`** (unverified, new file)
-   - How: create `orders` and `payments` tables with the FK and the `(customer_id, created_at)` index.
+   - Diff:
+     ```diff
+     diff --git a/db/migration/V1__orders.sql b/db/migration/V1__orders.sql
+     new file mode 100644
+     --- /dev/null
+     +++ b/db/migration/V1__orders.sql
+     @@ -0,0 +1,12 @@
+     +CREATE TABLE orders (
+     +  id           BIGSERIAL PRIMARY KEY,
+     +  customer_id  BIGINT NOT NULL,
+     +  total_cents  BIGINT NOT NULL,
+     +  created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+     +);
+     +CREATE TABLE payments (
+     +  id        BIGSERIAL PRIMARY KEY,
+     +  order_id  BIGINT NOT NULL REFERENCES orders(id),
+     +  status    TEXT NOT NULL
+     +);
+     +CREATE INDEX orders_customer_created ON orders (customer_id, created_at);
+     ```
 
-**New files:** `V1__orders.sql` — initial schema.
+**New files:** `V1__orders.sql` — initial schema, added-only diff under `C3`.
 **Config / dependencies:** `spring.datasource.*`; PostgreSQL driver.
 **Data changes:** schema creation only; no backfill.
 **Tests affected:** add `OrderRepositoryIT` against a Testcontainers PostgreSQL.
@@ -184,7 +230,7 @@ Stores JSON-like documents per collection and syncs clients in real time.
 * Moves `HC 1` negatively — no cross-collection transactions
 * Moves `HC 2` negatively — no JOINs, application-side assembly
 
-*(Options 2 and 3 abridged: Verdict, What it is, How it works, Pros, and Cons shown; Driver impact, Concerns, and Tech Details follow the Option 1 shape.)*
+*(Options 2–3 abridged: Driver impact, Concerns, and Tech Details follow Option 1's shape.)*
 
 ## Implementation Plan
 
@@ -199,5 +245,4 @@ Stores JSON-like documents per collection and syncs clients in real time.
 
 **New files:** `V1__orders.sql` — initial schema.
 
-## References
 ```

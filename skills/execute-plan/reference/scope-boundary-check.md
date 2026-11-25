@@ -41,6 +41,10 @@ Also incidental: extra fixup commits, a commit message or hash that differs from
 
 Note format in the step: `Deviation: <what> — cosmetic, no behavior change`.
 
+## Defensive changes
+
+A new guard, validation, retry, or fallback alters behavior — it fails, blocks, or retries where nothing did. It is in scope only when **May change** names the case, and the code's existing rigor is the baseline. An inherited gap the request does not name goes to the plan note as an accepted gap, never into a fix step or a new test. No reachable trigger → no guard.
+
 ## Asking
 
 - One ask per blocking event: state the changed behavior, why it is material, and the options — extend the boundary, file a follow-up, proceed with a recorded deviation.
@@ -60,5 +64,6 @@ Note format in the step: `Deviation: <what> — cosmetic, no behavior change`.
 | "An out-of-scope path changed, so stop" | Check behavior first; expected files are advisory |
 | "The commit hash differs" | Compare content, never identity |
 | "Ask to be safe" | The stop list is closed; log the rest |
+| "The code could crash on a null or empty input" | Only if a caller, the request, or a test can supply it |
 | "Ignore it, it is small" | Cosmetic is ignorable; a behavior change is not |
 | "The hand-written version behaves the same" | Behavior equality is not `Must match`; diff against the pinned ref |

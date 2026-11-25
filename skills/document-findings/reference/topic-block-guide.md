@@ -31,7 +31,7 @@ Pick the shape that best explains the answer — diagram-first.
 | Branch or decision logic | **Diagram** (flowchart) |
 | A comparison of the same thing across flows/variants | **Comparison table** (rows = compared items); add one diagram per flow when each flow's shape matters |
 | A list of homogeneous facts (config, stores, dependencies) | **Table** with the required columns |
-| Reasoning / "why" / a single fact | **Short prose** (or nothing) |
+| Reasoning / "why" / a single fact | **Short prose** — it still names the value, key, or symbol it is about |
 
 - Multiple diagrams per topic are allowed; split a crowded view instead of compressing it.
 - Pick the type from the question: order/flow → sequence, branch → flowchart, structure → C4, lifecycle → state.
@@ -55,9 +55,20 @@ Pick the shape that best explains the answer — diagram-first.
 - Annotate diagram elements with `file:line`; name a concrete symbol (`Class#member`) or module (`module.function`).
 - Hold no claim bullets, claim IDs, or confidence tags — those live only in `evidence-<area>.md`.
 
+## Concreteness test
+
+Run on every topic before publishing. A topic that survives a rename of the area is a summary, not a finding.
+
+- **Rename the module.** Substitute another module's name for every concrete noun; a sentence that still reads true is generic — replace it with the symbol, key, or value.
+- **Every topic carries at least one fact**: a symbol (`ChargeService#authorize`), a config key (`retry.attempts`), a table, a topic, an endpoint, or a stored value — with `file:line`, or for something absent, the named search that found nothing.
+- **Config and constants carry the real key path, value, and default** — never "configured" or "several settings".
+- **A flow names its real call targets**, not layers: `ChargeService#authorize` → `GatewayClient#post`, never "the service → the gateway".
+- **No unnumbered adjective.** "Robust", "flexible", "simple" become the number, flag, or mechanism that earns the claim.
+
 ## Coverage of behavior
 - Cover failure and edge paths where they change the answer — add `alt` branches to the diagram, or a dedicated failure topic.
 - Do not diagram every error branch — only those a reader must know.
+- A handled-and-logged retry is not a gotcha: a failure path earns a place only when it changes what a reader does.
 
 ## Anchors
 - Never use vague references ("the service layer"); name a concrete symbol or module.

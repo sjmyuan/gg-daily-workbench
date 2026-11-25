@@ -73,9 +73,9 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 </define-considered-options>
 
 <evaluate-options>
-1. For each option, ask the user its main strengths and its main disadvantages, risks, and trade-offs.
+1. For each option, ask its strengths and the risks this mechanism introduces — never a generic risk list.
 2. Apply **detail-options-tech** to every option whose code is accessible — do not wait to be asked; apply its no-access branch otherwise.
-3. Present the option's fixed card per **reference/adr-template.md** — Verdict, What it is, How it works, Driver impact, Concerns, Pros, Cons, Tech Details — with its own target-state diagram, then confirm.
+3. Present the option's fixed card per **reference/adr-template.md** — Verdict, What it is, How it works, Driver impact, Concerns, Pros, Cons, Tech Details — with its own target-state diagram, then confirm. Its description names repo symbols; a sentence that would fit a competitor is a defect.
 4. Fill the driver-impact table per driver: the mark, the measured value, the evidence reference, and the confidence.
 5. After all options, fill the comparison matrix table; add a matrix diagram or an elimination tree only when each knock-out changes the next question, labelling each edge with the deciding evidence.
 6. Ask: "Given the evaluations, which option best satisfies the decision drivers?"
@@ -85,10 +85,10 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 1. Determine the evidence base: investigation notes or citations (e.g., from a `conduct-spike` ADR) and code accessibility.
 2. If no evidence but code is accessible, build an evidence map via `investigate-code`: entry points, key locations with `file:line`, call chains.
 3. Number every required change `C1`, `C2`, … per option; reuse those numbers in the option card and the implementation plan.
-4. Per option, draw target-state diagrams per **reference/diagram-contract.md**: the current state evolved to this option's to-be with every node marked NEW, CHANGED, or REMOVED, plus sequence diagram(s) for the changed flow including its failure path. Never reuse another option's diagram.
-5. Per option, build its change set per **reference/option-tech-details-guide.md**: location (`file:line` + symbol), current code, git-style diff, and a 1–2 sentence how-to per change; list new files briefly.
+4. Per option, draw target-state diagrams per **reference/diagram-contract.md**: the current state evolved to this option's to-be with every node marked NEW, CHANGED, or REMOVED, plus sequence diagram(s) for the changed flow with the failure path it adds, or `none new`. Never reuse another option's diagram.
+5. Per option, build its change set per **reference/option-tech-details-guide.md**: location (`file:line` + symbol), the real lines, a git-style diff of them, and a 1–2 sentence how-to per change; new files get added-only diffs.
 6. Ground every entry to the evidence map, tag confidence **verified / inferred / unverified**, and never invent APIs, symbols, or files — mark unverifiable changes **unverified**.
-7. If no evidence and no code access: produce architectural-level profiles, mark locations **unverified**, and recommend a `conduct-spike` spike.
+7. If no evidence and no code access: show each change's added-only diff, mark locations **unverified**, and recommend a `conduct-spike` spike.
 8. Present each option's tech details and ask whether any need correction or deeper investigation.
 </detail-options-tech>
 
@@ -120,6 +120,6 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 <rule>After each user confirmation, update any in-progress ADR draft so nothing is lost.</rule>
 <rule>When the user corrects confirmed content or reveals new context, apply **sync-diagrams** to update affected diagrams and add new ones.</rule>
 <rule>When explaining context or a solution, draw the matching diagram without being asked — mechanics via `draw-mermaid-diagrams`, content per **reference/diagram-contract.md**.</rule>
-<rule>Never present an option without its mechanism flow, its own target-state diagram, and — when code is accessible — its change set.</rule>
+<rule>Never present an option without its mechanism flow, its own target-state diagram, and — when code is accessible — a change set whose every entry carries a real diff; no guard, retry, or timeout without the driver or failure it answers.</rule>
 <rule>When the problem restatement or the completed ADR goes for confirmation, brief first: a route over the 2–3 items that carry the decision, one prediction, one self-check — never present a large artifact cold.</rule>
 </rules>

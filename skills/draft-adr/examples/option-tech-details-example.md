@@ -1,6 +1,6 @@
 # Example: Tech Details Per Option — Inter-Service Communication
 
-**Scenario**: While drafting the "Inter-service communication" ADR from a payment-monolith spike, the agent applies **detail-options-tech** so every option shows its target state and grounded change set before the user chooses.
+**Scenario**: Drafting the "Inter-service communication" ADR from a payment-monolith spike; **detail-options-tech** renders each option's target state and grounded change set before the user chooses.
 
 **Applies**: `detail-options-tech` (inside `evaluate-options`), rendered by `compile-adr`.
 
@@ -8,25 +8,17 @@
 
 ## Input / Context
 
-### Options being evaluated
+**Options**: 1 Synchronous REST (HTTP calls), 2 Async events (Kafka), 3 Hybrid (REST queries, event commands).
 
-| Option | Mechanism |
-|---|---|
-| Option 1: Synchronous REST | HTTP calls between services |
-| Option 2: Async events (Kafka) | Event stream between services |
-| Option 3: Hybrid | REST for queries, events for commands |
-
-### Evidence base — findings doc evidence map (from the spike)
+### Evidence map (from the spike)
 
 | Location | Symbol | Role |
 |---|---|---|
 | `PaymentOrchestrator.java:142` | `processPayment(Order)` | In-process calls to bank transfer + wallet credit |
-| `BankTransferService.java:88` | `transfer(TransferRequest)` | Executes bank-transfer DB writes |
-| `WalletService.java:120` | `credit(WalletCredit)` | Executes wallet-credit DB writes |
-| `pom.xml:21` | dependencies | Spring Boot starters (verified: no Kafka) |
-| `application.yml:52` | `payment.services` | Service URL config |
+| `BankTransferService.java:88` | `transfer(TransferRequest)` | Bank-transfer DB writes |
+| `WalletService.java:120` | `credit(WalletCredit)` | Wallet-credit DB writes |
 
-Current state: one monolith — `PaymentOrchestrator` calls both services in-process against one `Payment DB`.
+Current state: one monolith; `PaymentOrchestrator` calls both services in-process against one `Payment DB`.
 
 ---
 
@@ -78,15 +70,16 @@ sequenceDiagram
      diff --git a/src/main/java/com/pay/BankTransferService.java b/src/main/java/com/pay/BankTransferService.java
      --- a/src/main/java/com/pay/BankTransferService.java
      +++ b/src/main/java/com/pay/BankTransferService.java
-     @@ -1,4 +1,6 @@
+     @@ -1,2 +1,4 @@
      +@RestController
      +@RequestMapping("/transfer")
       @Service
       public class BankTransferService {
-     @@ -88,7 +92,12 @@ public class BankTransferService {
-      public void transfer(TransferRequest req) {
-        ...
-      }
+     @@ -88,5 +92,10 @@ public class BankTransferService {
+       public void transfer(TransferRequest req) {
+         validate(req);
+         bankTransferRepository.save(req);
+       }
      +
      +  @PostMapping
      +  public void transferEndpoint(@RequestBody TransferRequest req) {
@@ -94,7 +87,7 @@ sequenceDiagram
      +  }
       }
      ```
-   - How: annotate the class with `@RestController` + `@RequestMapping("/transfer")`, add a thin REST wrapper delegating to `transfer`.
+   - How: annotate the class, add a thin REST wrapper delegating to `transfer`.
 
 2. **`C2` — `PaymentOrchestrator.java:142` `processPayment(Order)`** (verified)
    - Current: `bankTransferService.transfer(req)` — direct in-process call.
@@ -103,7 +96,7 @@ sequenceDiagram
      diff --git a/src/main/java/com/pay/PaymentOrchestrator.java b/src/main/java/com/pay/PaymentOrchestrator.java
      --- a/src/main/java/com/pay/PaymentOrchestrator.java
      +++ b/src/main/java/com/pay/PaymentOrchestrator.java
-     @@ -142,7 +142,7 @@ public class PaymentOrchestrator {
+     @@ -142,1 +142,1 @@ public class PaymentOrchestrator {
      -    bankTransferService.transfer(req);
      +    restTemplate.postForObject(btUrl + "/transfer", req, Void.class);
      ```
@@ -116,7 +109,7 @@ sequenceDiagram
      diff --git a/src/main/resources/application.yml b/src/main/resources/application.yml
      --- a/src/main/resources/application.yml
      +++ b/src/main/resources/application.yml
-     @@ -52,4 +52,5 @@ payment:
+     @@ -52,2 +52,3 @@ payment:
        services:
      +    bank-transfer: http://bank-transfer:8080
      ```
@@ -176,7 +169,7 @@ sequenceDiagram
      diff --git a/pom.xml b/pom.xml
      --- a/pom.xml
      +++ b/pom.xml
-     @@ -21,6 +21,9 @@
+     @@ -21,4 +21,8 @@
        <dependency>
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-starter-web</artifactId>
@@ -195,11 +188,11 @@ sequenceDiagram
      diff --git a/src/main/java/com/pay/PaymentOrchestrator.java b/src/main/java/com/pay/PaymentOrchestrator.java
      --- a/src/main/java/com/pay/PaymentOrchestrator.java
      +++ b/src/main/java/com/pay/PaymentOrchestrator.java
-     @@ -142,7 +142,7 @@ public class PaymentOrchestrator {
+     @@ -142,1 +142,1 @@ public class PaymentOrchestrator {
      -    bankTransferService.transfer(req);
      +    kafkaTemplate.send("payment-commands", new PaymentCommand(order));
      ```
-   - How: publish a command event instead of calling in-process; the response becomes `202 Accepted`.
+   - How: publish a command event; the response becomes `202 Accepted`.
 
 3. **`C3` — `BankTransferService.java:88` `transfer(TransferRequest)`** (verified)
    - Diff:
@@ -207,10 +200,11 @@ sequenceDiagram
      diff --git a/src/main/java/com/pay/BankTransferService.java b/src/main/java/com/pay/BankTransferService.java
      --- a/src/main/java/com/pay/BankTransferService.java
      +++ b/src/main/java/com/pay/BankTransferService.java
-     @@ -88,7 +88,13 @@ public class BankTransferService {
-      public void transfer(TransferRequest req) {
-        ...
-      }
+     @@ -88,5 +88,10 @@ public class BankTransferService {
+       public void transfer(TransferRequest req) {
+         validate(req);
+         bankTransferRepository.save(req);
+       }
      +
      +  @KafkaListener(topics = "payment-commands")
      +  public void onPaymentCommand(PaymentCommand cmd) {
@@ -220,8 +214,20 @@ sequenceDiagram
      ```
    - How: add a listener that delegates to the existing `transfer`.
 
-4. **`C4` — `application.yml:10` `spring` block** (inferred: shape read, new location)
-   - How: add `spring.kafka.bootstrap-servers: kafka:9092` under the existing `spring` block.
+4. **`C4` — `application.yml:10` `spring` block** (inferred: shape read, new key)
+   - Current: the `spring` block carries `application.name` only.
+   - Diff:
+     ```diff
+     diff --git a/src/main/resources/application.yml b/src/main/resources/application.yml
+     --- a/src/main/resources/application.yml
+     +++ b/src/main/resources/application.yml
+     @@ -10,2 +10,4 @@ spring:
+        application:
+          name: payment-service
+     +  kafka:
+     +    bootstrap-servers: kafka:9092
+     ```
+   - How: add the broker address under the existing `spring` block.
 
 **New files:** `PaymentCommand` DTO — **unverified**, flagged for follow-up.
 
@@ -231,4 +237,4 @@ sequenceDiagram
 
 **Data changes:** none.
 
-*(Option 3: Hybrid is omitted — it composes the two shapes above; the compiled ADR still carries its own diagram and change set.)*
+*(Option 3: Hybrid omitted — it composes the two shapes above.)*

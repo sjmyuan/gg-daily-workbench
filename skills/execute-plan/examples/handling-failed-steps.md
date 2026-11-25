@@ -7,7 +7,7 @@
 ## User Request
 "Implement the bug fix plan we created for the null pointer exception in data transformation"
 ## Plan to Execute
-1. Add null checks in DataImportedHandler
+1. Reject a null event in DataImportedHandler
 2. Update unit tests
 3. Add integration test
 4. Update error handling documentation
@@ -20,16 +20,18 @@
 **Protected zones**: none added
 ```
 
+The null guard is the request's scope. The executor adds no other input case — no empty, malformed, or concurrent check rides along.
+
 ## Initial Plan Status
 **Status**: Step 1 ⏳ · Step 2 ⏳ · Step 3 ⏳ · Step 4 ⏳
 
-### Step 1: Add Null Checks ✅
+### Step 1: Reject a null event ✅
 
-**Objective**: Add defensive null checks to prevent null pointer exceptions
+**Objective**: A null event is rejected with a typed error before transformation.
 **Files**: `application/service/DataImportedHandler.java`
 **Source**: edit · n/a · behavior-equal
 **Implementation**: `handle()` rejects a null event or record with `InvalidDataEventException` and a missing record id with `InvalidDataException`, before `transformAndPublish`.
-**Validation**: Handler compiles and includes null checks
+**Validation**: Handler compiles; a null event raises the typed error
 **Status**: ✅ Completed · Steps 2–4 ⏳
 
 ### Step 2: Update Unit Tests ❌

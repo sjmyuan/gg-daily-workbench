@@ -32,7 +32,7 @@ A findings doc pair explains what exists in a code **area** today: a human findi
 - Template: **reference/structure-and-template.md**.
 </human-doc-structure>
 <topic-block-format>
-- Each topic answers one reader question: TL;DR → primary artifact → short prose.
+- Each topic answers one reader question: TL;DR → primary artifact → short prose; every topic names a concrete symbol, key, or value.
 - Pick the representation diagram-first per **reference/topic-block-guide.md**.
 - Draw diagrams via `draw-mermaid-diagrams`; this skill owns the `file:line` annotations and topic framing.
 </topic-block-format>
@@ -83,7 +83,7 @@ Pipeline: an area investigation → doc pair → `draft-adr` → `write-solution
 **Objective**: Write the publishable human findings doc for an area.
 1. Write the YAML frontmatter (title, area, status) and a `**Summary:**` per **reference/structure-and-template.md**.
 2. Write the Orientation index with a "Start here" pointer.
-3. For each confirmed question, write one topic block per **reference/topic-block-guide.md**.
+3. For each confirmed question, write one topic block per **reference/topic-block-guide.md**, passing its concreteness test.
 4. Draw every diagram in those blocks via `draw-mermaid-diagrams` (`author-mermaid-diagram`).
 5. Keep `file:line` anchors inline for checking; add no claim IDs, confidence tags, or link to the evidence doc.
 6. Apply **validate-findings-doc** (it validates diagrams via `draw-mermaid-diagrams`); fix findings and re-validate.

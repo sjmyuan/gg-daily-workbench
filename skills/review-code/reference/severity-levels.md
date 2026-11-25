@@ -19,7 +19,7 @@ Apply consistently when categorizing review findings.
 
 ## 🟡 Minor (Nice to fix, but can be deferred if time-constrained)
 - Code duplication or maintainability issues
-- Non-critical edge cases not handled
+- Non-critical edge cases not handled — only when a real caller or input can reach them
 - Suboptimal patterns that work but could be improved
 - Missing/incomplete documentation
 - Inefficiencies that don't impact current use cases

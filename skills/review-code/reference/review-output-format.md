@@ -44,7 +44,7 @@ Standard template for all review output. Every finding anchors to one line — s
 ```
 - **Issue**: [Clear description of what's wrong and why it matters]
 - **Impact**: [Specific consequence if not fixed]
-- **Recommendation**: [Concrete fix with code snippet if helpful]
+- **Recommendation**: [the fix — for a code change, the current line and its replacement as a code block, never "consider X"]
 
 ### 🔴 Major Issues
 
@@ -107,8 +107,7 @@ Standard template for all review output. Every finding anchors to one line — s
 ---
 ## Risks & Assumptions
 
-*Only assumptions that need no answer. Anything whose answer could change the verdict belongs in
-Challenges & Questions instead — never here.*
+*Only assumptions that need no answer; anything whose answer could change the verdict belongs in Challenges & Questions.*
 
 ---
 ## Recommended Next Steps
@@ -118,25 +117,26 @@ Challenges & Questions instead — never here.*
 ````
 
 **Formatting guidelines**:
-- Fill every summary field; write `none` when a field is genuinely empty. Never drop `**Ready to merge?**` or the challenge count.
-- Always give a clear merge verdict (`Yes | No | With fixes`) with a one-line reason — never leave the requester to infer readiness from the findings
-- Anchor, relate, and quote each finding per **finding-anchors.md** — one `path:LINE`, never a `#L10-L15` range
-- Label every finding with **Confidence** per **severity-levels.md**: `Confirmed`, `Suspected`, or `Needs runtime check`
+- Fill every summary field (`none` when genuinely empty) and always give a clear merge verdict (`Yes | No | With fixes`) with a one-line reason — never drop `**Ready to merge?**` or the challenge count, never leave readiness to inference
+- Anchor, relate, and quote each finding per **finding-anchors.md** — one `path:LINE`, never a `#L10-L15` range — and label it with **Confidence** per **severity-levels.md**
 - Write every finding in plain language: the **Issue** names the exact behavior and why it's wrong,
-  the **Impact** is a specific consequence, and the **Recommendation** is a concrete fix or next step.
+  the **Impact** is a specific consequence, and the **Recommendation** is the replacement code for a code change.
   Every finding gets a Recommendation — one without it is incomplete
 - For clean reviews with no findings in a severity tier, omit that section rather than writing "None identified"
 - Put Challenges & Questions before Findings; a blocking challenge must agree with the merge verdict, and the summary must count both open challenges and unverified referents
 - Ground every path, package, symbol, flag, and config key per **referent-grounding.md** — a referent you did not read is labeled `unverified` with the failed search, never presented as fact
 
 ## Plain-language presentation: the non-expert test
-Before delivering, read each finding as the developer who must act on it. Pass means each finding lets them state:
-1. What is wrong (plain language, no jargon)
-2. Why it matters (specific consequence)
-3. What to do (concrete fix or next step)
+Before delivering, read each finding as the developer who must act on it. Pass means each finding lets them state: (1) what is wrong, in plain language; (2) why it matters, as a specific consequence; (3) what to do, as replacement code or a named next step.
 
-Fail → tighten the vague field. Every finding must pass — not just the top ones. This is the same
-plain-language doctrine the document-findings pipeline applies; keep the wording local to this skill.
+Fail → tighten the vague field. Every finding must pass — not just the top ones; keep the wording local to this skill.
+
+## Recommendation patch
+
+A code finding's recommendation is the fix, not advice about it: quote the anchored line and its replacement in one code block, or a `diff` fence when several lines move.
+- Never "consider", "should probably", or a sentence describing the change instead of the code.
+- Fix depends on unread code → name the read that closes it; missing code → the code to insert plus its insertion point (`after line 74`).
+- A design or document finding recommends the decision, or the exact replacement sentence.
 
 ## Review quality grade
 
@@ -146,5 +146,5 @@ Grade the delivered review before returning it. Pass bar: **≥7/8 and no criter
 |---|---|---|---|
 | Evidence grounding | A finding names a path or symbol nobody resolved | Every finding is anchored; referents resolved or `unverified` | Anchors quote the line, and each unverified referent names its failed search |
 | Surface coverage | One dimension applied to the whole change | Most dimensions applied where relevant | Every dimension checked against the changed surfaces, gaps named |
-| Actionability | A finding states a preference | Issue and Impact stated, fix vague | Each finding states what is wrong, why it matters, and the next action |
+| Actionability | A finding states a preference | Issue and Impact stated, fix vague | Each finding states what is wrong, why it matters, and gives the replacement code or the exact next action |
 | Risk calibration | Severity asserted, no rubric | Severity follows the rubric | Severity follows the rubric, and repo expertise justifies any escalation |

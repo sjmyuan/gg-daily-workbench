@@ -12,13 +12,13 @@ A diagram earns its place by what it carries, not by how few nodes it has. Mecha
 | Data store | engine and owning service | `Payment DB — PostgreSQL — owned by payment` | Persistence decision invisible |
 | Delta | `NEW` / `CHANGED` / `REMOVED` against current state | `Wallet Service [CHANGED]` | Reader cannot see what the option does |
 | Quantity | the number behind every quantitative driver | `~10K orders/day`, `€380/month` | Options look equally good |
-| Failure | at least one failure or timeout path | `timeout 3 s → retry once → dead-letter` | Trade-off hidden |
+| Failure | the failure or timeout this option **introduces** — `none new` when it introduces none | `timeout 3 s → retry once → dead-letter` | Trade-off hidden |
 
 ## Per-view requirements
 
 - **C4 context**: actors, in-scope systems, external systems, volumes on the relationships.
 - **C4 container / component**: technology per container, protocol per relationship, every data store, and the delta marks.
-- **Sequence**: happy path plus a failure path; label new hops `(new)`; show the compensation or rollback message.
+- **Sequence**: happy path plus the failure path this option adds, or `none new` when it adds none; label new hops `(new)`; show the compensation or rollback message.
 - **Flowchart**: decision nodes carry the condition and its threshold, never bare "yes / no".
 
 ## Anti-patterns — drop the diagram instead
@@ -35,6 +35,6 @@ Run before presenting, and again after every sync:
 1. Every node names technology and responsibility.
 2. Every edge names verb, protocol, and sync/async.
 3. Every node is marked NEW / CHANGED / REMOVED, or belongs to the unchanged baseline.
-4. Every changed runtime flow shows at least one failure path.
+4. Every changed runtime flow shows the failure path the option introduces, or states `none new`.
 5. The diagram answers a question its surrounding table cannot.
 6. Every Mermaid block validates with 0 errors via `draw-mermaid-diagrams`.

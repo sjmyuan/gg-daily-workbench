@@ -13,6 +13,9 @@ Loaded by **validate-findings-doc**. Report each failed item by severity.
 - [ ] Diagrams label every element and annotate key elements with `file:line`.
 - [ ] Failure/edge behavior is covered where it changes the answer.
 - [ ] Tables follow **reference/table-guidelines.md**.
+- [ ] Every topic names a concrete symbol, key, table, endpoint, or value — with `file:line`, or the named search for an absent thing
+- [ ] Config facts carry the real key path, value, and default
+- [ ] Rename test passed: no sentence survives substituting another module's name
 - [ ] Every topic is a single reader question, ordered orientation → depth.
 - [ ] Every topic has a `**TL;DR:**` line (≤15 words) and renders its diagram/table.
 - [ ] Every Mermaid diagram passes `draw-mermaid-diagrams` validation (0 errors).

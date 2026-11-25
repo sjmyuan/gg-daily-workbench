@@ -27,6 +27,7 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 
 ## Risk
 - <assumption the code will test> → <step that tests it or the fallback>
+- Accepted gap: <case the request does not name> — <why it stays open>   (only when one exists)
 - **Expected to break first**: Step N — <why>
 
 ## Decisions
@@ -80,7 +81,7 @@ or a deviation. What landed is the commit and its diff; never restate it in `pla
 | Status | Generated plans use `⏳`; the executor owns `🔄 ✅ ❌ 🚫`; the planner sets `⏭` only. `**Status**` is canonical — the heading glyph mirrors it. |
 | Step shape | A step is a **unit with one verdict**, never a phase. Test, implement, refactor, and cleanup fold into the unit they serve; a step earns existence only when its `Validation` differs from its neighbour's. |
 | Open by design | A step whose shape depends on unread code states the check that closes it plus a fallback, and appears in `## Risk` — never a guessed change. |
-| Risk | Two or three assumptions, each naming the step that tests it; plus the step expected to break first. Six lines maximum. |
+| Risk | Two or three assumptions, each naming the step that tests it; the step expected to break first; accepted gaps named without a step. Six lines maximum. |
 | Exit gate | Final step, six fields, `Source: no-op · n/a · n/a`; its `Status` line carries the receipt — commands, exit codes, and counts. Never abandoned or deferred — only a ratified waiver removes it. |
 | Amendment | Append the next number or insert `3a`; never renumber (see **plan-amendment**). |
 

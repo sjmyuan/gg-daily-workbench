@@ -17,8 +17,8 @@ description: Plan development work — diagnose the change, choose the evidence 
 
 <knowledge>
 <request-intake>
-Gate through `clarify-request` before classifying: restate the ask, itemize every inference — type, expected behavior, input, done criteria, restore ref — and ask the top 3 with a default. A symptom-only request infers the expected behavior; ask it, never plan from a suspected cause. A seeding brief with cell, type, behavior, inputs, and criteria **is** the gate result — adopt it.
-The **settled request** — restatement and answers — is user input: the objective, a decision, or `## Why`, never an assumption. Only an **unanswered default** is an `Assumption (user-accepted, unverified)` under `## Unknowns`; a default the user answered is settled.
+Gate through `clarify-request` before classifying: restate the ask, itemize the inferences — type, expected behavior, input, done criteria, restore ref; ask the top 3 with a default. A symptom-only request infers the expected behavior; ask it, never plan from a suspected cause. A seeding brief with cell, type, behavior, inputs, and criteria **is** the gate result — adopt it.
+The **settled request** — restatement and answers — is user input: objective, decision, or `## Why`, never an assumption. Only an **unanswered default** becomes `Assumption (user-accepted, unverified)` under `## Unknowns`; an answered default is settled.
 </request-intake>
 <named-standards>
 | Standard | Rule | Details |
@@ -27,9 +27,9 @@ The **settled request** — restatement and answers — is user input: the objec
 | **change-type-classification** | mechanical · bug fix · feature · refactor · POC; two fits → one question. | **reference/change-type-classification.md** |
 | **test-strategy** | One evidence strategy per plan; unit granularity is yours; `test-first` never waived. | **reference/test-strategy.md** |
 | **test-quality** | Each planned test names the production change it catches and exercises real behavior, never mocks. | **reference/test-quality.md** |
-| **tdd-guardrails** | No behavior change without a failing test first; skipping needs a recorded justification. Hard-to-test work is a smell — refactor first. | **reference/tdd-guardrails.md** |
+| **tdd-guardrails** | No behavior change without a failing test first; skipping needs a recorded justification. Hard to test → refactor only when the requested behavior needs it. | **reference/tdd-guardrails.md** |
 | **plan-prerequisites** | Step 1 covers branch, dirt, toolchain, gate commands, and the baseline. | **reference/plan-prerequisites.md** |
-| **scope-boundary** | Gates on behavior, never paths: **May change** · **Must not change** · **Protected zones** · **Must match**; stop on material change. | **reference/scope-boundary.md** |
+| **scope-boundary** | Gates on behavior, never paths — a new guard included: **May change** · **Must not change** · **Protected zones** · **Must match**; stop only on material change. | **reference/scope-boundary.md** |
 | **poc-plan-definition** | A POC is a feature plan for one ADR option: it implements, never measures; the MR is the evaluation vehicle. | **reference/plan-poc.md** |
 | **plan-amendment** | Amend in place: ✅ frozen, letter suffixes for insertions, `⏭ abandoned — <reason>`, never renumber. | **reference/plan-amendment.md** |
 | **rework-plan-convention** | Sibling `rework-<date>.md` holds only the delta; `plan.md` stays frozen. | **reference/rework-plan-convention.md** |
@@ -65,15 +65,15 @@ The **settled request** — restatement and answers — is user input: the objec
 4. Route through **define-scope** to **plan-mechanical-restore** · **plan-bug-fix** · **plan-feature-implementation** · **plan-refactor**, or to **plan-poc**.
 </classify-change-type>
 <plan-mechanical-restore>
-1. Record the trigger verbatim, the pinned `Ref`, and `Source`/`Equality` per path; ask for the source ref when the request names none.
+1. Record the trigger verbatim, the pinned `Ref`, and `Source`/`Equality` per path; ask for the ref when none is named.
 2. List every restored path under `Must match` with its ref.
 3. Skip RED/GREEN and record the non-behavioral justification per **tdd-guardrails**.
 4. Write six-field steps per **reference/plan-file-format.md**: prepare environment → per-path restore naming the git operation → equality proof → exit gate.
 5. Validate against the restore checks in **reference/provenance-first.md**.
 </plan-mechanical-restore>
 <define-scope>
-1. **Bug fix**: analyze root-cause patterns and test hypotheses by inspecting code. **Feature / refactor**: turn each loaded term and silent premise into a question. **Mechanical**: confirm the ref and paths.
-2. Ask the material questions, each with options and a default; stop when the scope is decidable, not when it is complete.
+1. **Bug fix**: analyze root-cause patterns and test hypotheses by inspecting code. **Feature / refactor**: question each loaded term and each premise that changes what is built. **Mechanical**: confirm the ref and paths.
+2. Ask the material questions with options and a default; stop when the scope is decidable, not when complete.
 3. Present the root cause with its reasoning, or the scope summary; hand it to the plan capability and **define-scope-boundary**.
 </define-scope>
 <plan-bug-fix>
@@ -103,9 +103,9 @@ Load **reference/plan-poc.md**; shape the plan per its judgment guidance.
 <export-plan>
 1. A feature folder already holding `plan.md` → apply **amend-plan** instead of a second plan.
 2. After confirmation, ask whether to persist the plan for **execute-plan**.
-3. Resolve the location: a delivery cell uses `deliveries/<epic-name>/{repo}/{feature-name}/`; else **resolve-artifact-location** gives `{base}/feature-implementations/`.
+3. A delivery cell uses `deliveries/<epic-name>/{repo}/{feature-name}/`; else **resolve-artifact-location** gives `{base}/feature-implementations/`.
 4. Write `plan.md` per **reference/plan-file-format.md** and `context.md` per **doc-budgets**; refuse a plan whose gate is missing, narrowed, or unratified.
-5. Curate `context.md` to the charter: the **admission test** turns pre-flight evidence into a decision or an Unknown, never a paste; over budget → remove duplication with `plan.md`.
+5. Curate `context.md` to the charter: the **admission test** turns pre-flight evidence into a decision or an Unknown, never a paste; over budget → cut duplication with `plan.md`.
 6. Grade the plan per **plan-rubric** — no Fail row, and rows 1 and 7 pass — then report the saved location so the user can invoke **execute-plan**.
 </export-plan>
 </capabilities>
@@ -124,5 +124,5 @@ Load **reference/plan-poc.md**; shape the plan per its judgment guidance.
 <rule> When writing or validating a test step, apply **test-quality** — each test names the break it catches. </rule>
 <rule> When a step's shape depends on code not yet read, write a check and a fallback under `## Risk` — never a guessed change; unit count is yours, never a cap. </rule>
 <rule> After the plan is confirmed, optionally apply **export-plan** to persist it for **execute-plan**. </rule>
-<rule> Produce a plan, never execute it: confine every write to plan docs (`plan.md`, `context.md`, `rework-<date>.md`); never modify code, config, tests, or any other file, and confirm only plan docs changed. </rule>
+<rule> Produce a plan, never execute it: confine writes to plan docs (`plan.md`, `context.md`, `rework-<date>.md`); never modify code, config, tests, or any other file, and confirm only those changed. </rule>
 </rules>

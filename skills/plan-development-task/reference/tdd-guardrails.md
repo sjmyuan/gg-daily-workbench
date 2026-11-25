@@ -39,11 +39,11 @@ Applies to bug fixes, features, and behavior-changing refactors.
 
 ## Testability Is a Design Signal
 
-Hard-to-test work is a design smell. Surface it during scope definition and route to a refactor first.
+Hard-to-test work is a design smell — a reason to reshape the plan, never to widen the change. Refactor only when the difficulty blocks the proof of the behavior the request names; a case the request never names does not justify one.
 
 | Planning symptom | Design signal | Action |
 |---|---|---|
 | Don't know how to test it | Unclear interface | Write the wished-for API first; plan a refactor |
 | Test setup is huge | Too many dependencies | Extract or inject dependencies (refactor first) |
-| Must mock everything | Tight coupling | Apply **plan-refactor** before **plan-feature-implementation** |
+| Must mock everything | Tight coupling | Apply **plan-refactor** only if the requested behavior cannot be proven without that seam |
 | Test too complicated | Design too complicated | Simplify the interface before implementing |

@@ -84,3 +84,14 @@ Every `##` section opens with a `**Takeaway:**` line (≤15 words). Every diagra
 - Use tables for structured data and fenced code blocks for Mermaid/JSON/YAML. Never restate what a table or diagram shows.
 - For any section explicitly skipped, mark it as `[Skipped]`.
 - Validate every Mermaid diagram via `draw-mermaid-diagrams` (`validate-diagram-syntax`); fix to 0 errors.
+
+## Concreteness test
+
+Run before presenting. A section that survives a swap of the solution's name documents the category, not this solution.
+
+- **Every component, service, topic, endpoint, and config key is a real name** from the repo or the decided ADR — never "the service", "a queue", or "some cache".
+- **Every §2 element reappears downstream**: each NEW or CHANGED container is named in a §3 flow or a §4 contract, with its interface.
+- **Every §3 flow names protocol, sync/async, and both endpoints**; a flow step that would fit any system is a defect.
+- **Every §4 contract is a schema code block**; a field-description table is metadata, never the schema.
+- **Every §8 item names the mechanism and the trigger**: "Pool exhaustion when concurrent writers exceed `maximum-pool-size: 20`", never "Risk: performance".
+- **No unnumbered adjective**, and no sentence that would also describe a different product.

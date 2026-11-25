@@ -123,16 +123,20 @@ Walk every changed behavior through each mode; mark it `verified` or `not verifi
 | Error path | Is the error propagated, logged, and translated into the caller's contract? |
 | Rollback / undo | Can the change be reversed without data loss? |
 
+### Relevance gate
+
+A mode becomes a finding only when the change makes it reachable by a real caller, input, or event; a caller contract, requirement, or repo rule names it; or the surrounding code defends that boundary and the change drops the defence. Otherwise record it `not applicable` with the reason. The baseline is the code's existing rigor, not the table above: a repo that never retries does not fail for having no retry. An unreachable mode reported as a defect is a false positive, and it costs the review its credibility.
+
 ## Negative space
 
-List what the change should have included but does not.
+List what the change should have included but does not. A row is a finding only when the change makes the artifact necessary — a new external input entering the boundary, an irreversible operation with no rollback. "Good practice elsewhere" is not evidence.
 
 | Missing artifact | Present when |
 |---|---|
 | Regression test | A bug fix ships without a failing-first test |
 | Migration | A schema change ships without a versioned migration |
 | Cleanup / eviction | An unbounded cache, set, listener, or subscription is added |
-| Validation | New external input (request, file, env, message) enters without checks |
+| Validation | New external input enters without the check the repo applies at that boundary |
 | Rollback path | A destructive or irreversible operation is introduced |
 | Observability | A new external call, cache, queue, or job ships without logs or metrics |
 | Documentation | A config key, flag, endpoint, or env var is added |

@@ -3,8 +3,8 @@
 Judgment capability: decompose the requirement, then shape the plan yourself.
 The acceptance evidence and the gate are not negotiable; the step list is.
 
-1. **Decompose the requirement** into independently observable behaviors. Every term the user left silent becomes a question or a labeled assumption (see **define-scope**).
-2. **Resolve the stated guarantee.** When the ask says never, always, exactly, or once, name the failure boundary that can break it — an ambiguous transport outcome, a retry after a partial write, a concurrent caller — and decide it: which side the plan takes, the test that proves it, and the fallback. Choosing "the library handles it" is a decision too; write it down. An open question on a stated guarantee is never an `Assumption` — it is a decision the plan makes or a question it asks before step 4 (see **plan-rubric** row 6).
+1. **Decompose the requirement** into independently observable behaviors. Each term or premise that changes what is built becomes a question or a labeled assumption (see **define-scope**).
+2. **Resolve the stated guarantee — only the stated one.** When the ask says never, always, exactly, or once, name the failure boundary that can break it *and that the code you read can actually produce*, then decide it: which side the plan takes, the test that proves it, and the fallback. A hypothetical race no caller can create is not a decision. An open question on the user's guarantee is never an `Assumption` — it is a decision the plan makes or a question it asks before step 4. A gap the current code already leaves open and the request does not name is an accepted gap under `## Risk`, never a step (see **scope-boundary**).
 3. **Choose the test strategy** per **test-strategy** — prefer one across the plan, and name each unit's proof.
 4. **Ratify the scope boundary** per **define-scope-boundary**.
 5. **Derive units, not phases.** One unit per observable outcome. A small unit carries its test and its implementation in one step; a complex one may need several. Never emit "confirm RED", "refactor", "clean up", or "verify cleanup" as standalone steps — they are phases, not units.

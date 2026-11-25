@@ -82,13 +82,13 @@ Repeat the block below once per option, in `Option N` order, using the option's 
 
 #### What it is
 
-[ 1–2 sentences — the runtime shape: components, data store, protocol, deployment unit ]
+[ 1–2 sentences — the runtime shape: components, data store, protocol, deployment unit. Name this repo's classes, tables, topics, and deployment units; a sentence that would also fit a competitor is a defect ]
 
 #### How it works
 
-1. [ trigger or request → component → effect, naming the protocol ]
+1. [ real symbol → real symbol, naming the protocol and the element it creates, e.g. `processPayment` → `kafkaTemplate.send("payment-commands", …)` ]
 2. [ next step of the flow ]
-3. ...  <!-- 3–7 steps: the flow, not prose -->
+3. ...  <!-- 3–7 steps: the flow, not prose; every step names a symbol, never "the service" -->
 
 #### Driver impact
 
@@ -103,7 +103,7 @@ Repeat the block below once per option, in `Option N` order, using the option's 
 | New infrastructure | [ what must be provisioned ] |
 | Interfaces touched | [ endpoint, event, queue + payload shape ] |
 | Data and consistency | [ store, transaction scope, read model ] |
-| Failure behaviour | [ timeout, duplicate, partial-failure handling ] |
+| Failure behaviour | [ the failure or timeout this option introduces; `none new` when it introduces none ] |
 | Operational load | [ who runs it, alerts, on-call impact ] |
 | Cost model | [ number + unit ] |
 | Migration cost | [ steps, downtime, reversible? ] |
@@ -120,24 +120,13 @@ Repeat the block below once per option, in `Option N` order, using the option's 
 
 #### Tech Details <!-- include for every option whose code is accessible -->
 
-[ Target-state diagrams for this option per reference/diagram-contract.md: C4 delta (NEW / CHANGED / REMOVED) + sequence diagram(s) with the failure path. ]
+[ Target-state diagrams for this option per reference/diagram-contract.md: C4 delta (NEW / CHANGED / REMOVED) + sequence diagram(s) with the failure path it adds, or `none new` ]
 
 **Code changes** — one entry per change, using the IDs the Implementation Plan orders:
 
 1. **`C1` — `file:line` symbol** (confidence: verified / inferred / unverified)
-   - Current: [ what the code does today, quoted from the evidence ]
-   - Diff:
-
-   ```diff
-   diff --git a/<file> b/<file>
-   --- a/<file>
-   +++ b/<file>
-   @@ -<start>,<count> +<start>,<count> @@
-    context line
-   -removed line
-   +added line
-   ```
-
+   - Current: [ the real lines at that location ]
+   - Diff: [ the real lines, as a git-style diff — contract and rejected forms: **reference/option-tech-details-guide.md**; never a summary, placeholder, `...`, or English sentence inside the fence ]
    - How: [ 1–2 sentence instruction to make the change ]
 
 ## Implementation Plan
@@ -153,7 +142,7 @@ Repeat the block below once per option, in `Option N` order, using the option's 
 | `C1` | [ what changes ] | `file:line` symbol | — | [ command or assertion that proves it ] | [ revert or flag-off step ] |
 | `C2` | [ what changes ] | `file:line` symbol | `C1` | [ command or assertion ] | [ revert step ] |
 
-**New files:** [ name — purpose, one line each ]
+**New files:** [ name — purpose; its content appears as an added-only diff under its `C` id ]
 
 ## References <!-- optional -->
 ````

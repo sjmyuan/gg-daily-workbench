@@ -66,7 +66,7 @@ Before finishing, mentally mutate the production code; at least one test should 
 | Wrong branch handler | |
 | Missing state change or side effect | |
 | Empty or default return | |
-| Missing validation for zero, empty, nil, unauthorized, or malformed input | |
+| Missing validation for an input the request, a caller, or an existing test can actually supply | |
 
 A mutation nothing catches marks the behavior as unprotected — or the test as tautological.
 

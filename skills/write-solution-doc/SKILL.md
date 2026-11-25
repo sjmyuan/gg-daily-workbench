@@ -75,7 +75,7 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
 </clarify-business-context>
 
 <draw-c4-topology>
-1. From the confirmed context, identify the C2 containers involved.
+1. From the confirmed context, identify the C2 containers involved by their real service names.
 2. Ask 3–8 clarifying questions, one at a time, about:
    - Participating systems/services/applications.
    - Communication style (sync HTTP, async messaging, gRPC).
@@ -108,7 +108,7 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
    - Rate limiting, pagination, idempotency.
 3. Document each with endpoint/topic, method, request/response schema, auth, and error codes.
 4. Event schemas also include versioning and DLQ handling.
-5. Present schemas as tables or code blocks.
+5. Present each schema as a code block; tables carry field metadata and validation only.
 6. Ask the user to confirm each schema; refine from feedback.
 </design-api-event-schema>
 
@@ -153,7 +153,7 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
    - Assumptions: "Are we assuming <100ms upstream responses?"
    - Issues: "Any unresolved disagreements or missing specs?"
    - Dependencies: "Do we depend on another team before go-live?"
-4. Document each item: ID, Category, Description, Impact (H/M/L), Probability (Risks only), Mitigation, Owner, Status.
+4. Document each item: ID, Category, Description (mechanism + trigger), Impact (H/M/L), Probability (Risks only), Mitigation, Owner, Status.
 5. Present as a table per category.
 6. Ask the user to confirm and allow edits.
 </list-raids>
@@ -174,7 +174,7 @@ Prose follows BLUF, hard caps, atomic bullets, tables-over-prose, and single sou
 4. Mark explicitly skipped sections as `[Skipped]`.
 5. Validate every Mermaid block via `draw-mermaid-diagrams` (`validate-diagram-syntax`); fix to 0 errors.
 6. Match the user's language preference.
-7. Run the concise check (see **concise-writing**): ≤20-word sentences, no banned phrases, one claim per bullet, a takeaway per heading, no restated fact, ~20% cut.
+7. Run the concise check (see **concise-writing**): ≤20-word sentences, no banned phrases, one claim per bullet, a takeaway per heading, no restated fact, ~20% cut. Pass the **Concreteness test** in **reference/solution-doc-structure.md**.
 8. Brief before presenting — a route over the document's decision points and one self-check on a target-state claim — then present it and offer to refine any section; record `reviewed`, or `waived` when the user declines to read. In a seeding brief, return the route, prediction, and self-check instead of presenting; the caller briefs and records the state.
 </structure-solution-doc>
 

@@ -121,7 +121,7 @@ C4Context
 >
 > Option 3 is eliminated by `HC 1`; Option 2 fails `SP 1` and `SP 2`. Option 1 satisfies all hard constraints and 2 of 3 soft preferences.
 >
-> **detail-options-tech (no-code branch):** no service exists yet, so there is no evidence map. The change set is architectural — `C1`–`C3`, every location `unverified`.
+> **detail-options-tech (greenfield branch):** no service exists yet, so there is no evidence map. Every change still carries an added-only diff with real file content — `build.gradle`, `application.yml`, `V1__orders.sql` — and every location `unverified`.
 >
 > **Given the evaluations, which option best satisfies the decision drivers?**
 

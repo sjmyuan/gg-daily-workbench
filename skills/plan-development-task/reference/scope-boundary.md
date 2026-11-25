@@ -36,6 +36,13 @@ Formatting, whitespace, indentation, import order, line endings, lockfiles, gene
 
 Never incidental: a behavior change, a protected-zone edit, a deleted test, a dependency swap with runtime effect.
 
+## Defensive changes
+A guard, validation, retry, timeout, or fallback is a behavior change: it makes something fail, block, or retry that previously did not. It sits under **May change** like any other change.
+
+- **Baseline = the surrounding code's rigor.** Raise it only when the request names the case.
+- **Name the trigger.** Each new branch names the production input or event that reaches it. No reachable trigger → no branch, no test.
+- **Inherited gaps stay open.** A case the current code never handled and the request does not name is one line under `## Risk` as an accepted gap — never a step.
+
 ## Writing the block
 
 ```markdown
@@ -66,4 +73,5 @@ Never assert an unstated diff, a commit hash, or an unstated byte-identical file
 | "The commit message differs from the plan" | Messages are illustrative; follow repo convention |
 | "Ask just in case" | Ask only on material changes; log the rest |
 | "It is only a small behavior change" | Behavior changes are material at any size |
+| "The code could crash on a null or empty input" | Only if a caller, the request, or an existing test can supply it |
 | "The refactor is equivalent, so it matches" | Only a `Must match` path is checked for equality; equivalence is `behavior-equal` |

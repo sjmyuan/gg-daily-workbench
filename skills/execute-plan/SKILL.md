@@ -16,12 +16,12 @@ description: Execute structured development plans with progress tracking, valida
 
 <knowledge>
 <request-intake>
-Gate through `clarify-request`: restate the plan path, active rework, base ref, outcome, and itemize inferences. Zero inferences → **track-plan**; anything inferred → ask before step 1.
-Gate a mid-execution request the same way before it becomes a step or amendment — never silently absorbed, never a reason to stop in-scope work. Accepted defaults go to `## Open concerns` as `Assumption (user-accepted, unverified)` (the charter is frozen).
+Gate through `clarify-request`: restate the plan path, active rework, base ref, outcome, and itemize inferences. Zero inferences → **track-plan**; else ask before step 1.
+Gate a mid-execution request the same way before it becomes a step or amendment — never silently absorbed, never a reason to stop in-scope work. Accepted defaults go to `## Open concerns` as `Assumption (user-accepted, unverified)` (charter frozen).
 A seeding brief with the plan path, rework, base ref, and outcome **is** the gate result: adopt it, ask nothing, never re-detect the folder.
 </request-intake>
 <plan-format>
-Each feature owns a folder holding `plan.md` (live step tracking) and `context.md` (charter + handoff) — permanent; history lives in git/PR: **reference/feature-folder-structure.md**.
+Each feature owns a folder holding `plan.md` (live step tracking) and `context.md` (charter + handoff); history lives in git/PR: **reference/feature-folder-structure.md**.
 Steps are `### Step N: [Title] [emoji]` blocks — Objective / Files / Source / Implementation / Validation / Status: **reference/step-tracking-format.md**, **reference/plan-input-schema.md**.
 </plan-format>
 <scope-boundary-check>
@@ -31,7 +31,7 @@ The `## Scope Boundary` gates on **behavior**, not paths: **Must not change** is
 Every step carries a `Source` from `no-op` · `base` · `port` · `copy` · `edit` · `generate`, cheapest first; a revert, keep, copy, or port is proven by diff against its ref: **reference/provenance-proof.md**.
 </change-provenance>
 <destructive-operation-policy>
-A plan step is not consent for destruction — classify each shell command (catastrophic/irreversible/regenerable/reversible) and never write outside the worktree: **reference/destructive-operation-policy.md**.
+A plan step is not consent for destruction — classify each shell command (catastrophic/irreversible/regenerable/reversible); never write outside the worktree: **reference/destructive-operation-policy.md**.
 </destructive-operation-policy>
 <execution-conventions>
 Comments explain **why**, never the **what**; zero comments by default, a better name beats a comment: **reference/code-comment-style.md**.
@@ -63,7 +63,7 @@ A rework is a sibling `rework-<date>.md` — only its steps: **reference/executi
 1. Gate per **request-intake** before step 1.
 2. Locate or create the feature folder, resuming an existing plan or its active `rework-<date>.md`; ask resume-or-fresh only for ❌/🚫 steps, never a second folder.
 3. Materialize steps and derive `context.md` per **plan-format** and **execution-conventions**.
-4. Show the full list after each step with files, `Source`, validation; only statuses, notes, and approved `⏭` markers change in `plan.md`.
+4. Show the full list after each step, with files, `Source`, validation; only statuses, notes, and approved `⏭` markers change in `plan.md`.
 </track-plan>
 <execute-step>
 1. Mark 🔄, state the approach, and apply **check-scope-boundary**.
@@ -78,7 +78,7 @@ A rework is a sibling `rework-<date>.md` — only its steps: **reference/executi
 </handle-errors>
 <check-scope-boundary>
 1. Read the **Scope Boundary** — absent → infer **May change** — then classify the change by the behavior it alters.
-2. Incidental or in-boundary → proceed with a one-line `Deviation:` note. Material, `Must match` drift, or an unnamed protected zone → hold and ask once; ambiguity → batch at the step end.
+2. Incidental or in-boundary → proceed with a one-line `Deviation:` note. Material (a new guard or validation included), `Must match` drift, or an unnamed protected zone → hold and ask once; ambiguity → batch at the step end.
 </check-scope-boundary>
 <guard-destructive-operation>
 1. Split the command into segments and classify each with its resolved target paths per **destructive-operation-policy**.
@@ -89,7 +89,7 @@ Every plan carries a **green-only exit gate** — the plan is the contract, not 
 - **Autonomy**: tests per `**Autonomy**` — `stepwise` every step, `checkpoint` at milestones, `auto` when cheap; lint and type after changes.
 - **Gate line**: `build=` · `test=` · `lint-type=`, evidence-backed, one per module — never invented or narrowed.
 - **Baseline** in Step 1: those commands on the base — green, or red with named failures fixed by a restore step or a ratified exclusion.
-- **Exit Gate step** last: the commands run **locally** and exit 0 with zero failures; the receipt records commands, exit codes, and counts.
+- **Exit Gate step** last: commands run **locally** and exit 0 with zero failures; the receipt records commands, exit codes, and counts.
 - **Red** → repair twice, then `❌`/`🚫` and ask; never `✅`. **A subset, a skip, or a stale receipt is not a pass** — only a whole green gate counts.
 - **Waiver** is the only escape: scope- and item-named, user-ratified, dated. Never abandon or defer the gate.
 </run-validation-checkpoints>

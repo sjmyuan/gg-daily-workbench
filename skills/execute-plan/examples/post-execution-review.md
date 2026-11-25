@@ -1,6 +1,6 @@
 # Plan Executor: Post-Execution Review Example
 
-**Scenario**: All plan steps are ✅ complete. Demonstrates **review-post-execution** (applying review-code, adding fix steps for findings). The plan file and context file are kept as a permanent record.
+**Scenario**: All plan steps are ✅ complete. Demonstrates **review-post-execution** (applying review-code, adding a fix step for a Major finding, logging a Minor). The plan file and context file are kept as a permanent record.
 
 ## Context
 
@@ -30,14 +30,14 @@ Applying **review-code** skill on all changed files:
 - `DataValidator.java:L14` — `validateId(record.getId())` is called before `validateNotNull(record)` guards against a null record. If `record` is null, `record.getId()` throws a `NullPointerException` before the null-check runs.
 - **Recommendation**: Move `validateNotNull(record)` to be the first call inside `validate()`.
 
-**🟡 Minor — Test only covers happy path**
-- `DataValidatorTest.java` has one test for a valid record but no test for null input or invalid ID format.
+**🟡 Minor — Test only covers the valid record**
+- `DataValidatorTest.java` has one test for a valid record and none for a null record or an invalid ID.
+- **Disposition**: logged — a 🟡 never opens a fix step. The plan's tests are its deliverable; a coverage gap the request does not name stays an accepted gap.
 
-## Adding Fix Steps
+## Adding a Fix Step
 
 ```
 ### Step 6: Fix null-check ordering in DataValidator ⏳
-### Step 7: Add missing null and invalid-input tests for DataValidator ⏳
 ```
 
 ### Step 6: Fix Null-Check Ordering ✅
@@ -57,17 +57,7 @@ Applying **review-code** skill on all changed files:
 ### Step 4: Update handler tests ✅
 ### Step 5: Validate linting, formatting and type checking ✅
 ### Step 6: Fix null-check ordering in DataValidator ✅
-### Step 7: Add missing null and invalid-input tests for DataValidator ⏳
 ```
-
-### Step 7: Add Missing Tests ✅
-
-**Objective**: Cover null input and invalid ID format in `DataValidatorTest`.
-**Files**: `test/DataValidatorTest.java`
-**Source**: generate · n/a · behavior-equal
-**Implementation**: Two tests — a null record and an id with invalid characters — each expecting `ValidationException`.
-**Validation**: All 7 tests pass including the 2 new ones.
-**Status**: ✅ Completed
 
 ## Re-Running Code Reviewer
 
@@ -77,6 +67,6 @@ Applying **review-code** on `DataValidator.java` and `DataValidatorTest.java` ag
 
 ## Final Summary
 
-All 7 steps completed ✅. Post-execution review resolved 1 🔴 Major issue (null-check ordering) and 1 🟡 Minor (test coverage). Two 🟢 Nits noted for future consideration.
+All 6 steps completed ✅. Post-execution review resolved 1 🔴 Major issue (null-check ordering); the 🟡 coverage gap was logged, not stepped. Two 🟢 Nits noted for future consideration.
 
 The plan file and context file are kept as a permanent record of this implementation.

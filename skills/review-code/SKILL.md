@@ -108,12 +108,12 @@ Load on demand — one row per trigger.
 1. State the intent hypothesis and a failure hypothesis per changed behavior; read each changed file in full.
 2. Load the expertise card per **surveying-repo-expertise** and record its gaps before judging placement.
 3. Apply dimension 10 of [review-dimensions.md](reference/review-dimensions.md) — every caller, contract, consumer.
-4. Run the **Failure-mode enumeration** and **Negative space** passes over each changed behavior.
+4. Run the **Failure-mode enumeration** and **Negative space** passes over each changed behavior; report only modes the change makes reachable.
 5. Run the **Adversarial stance** pass, logging one hypothesis per changed function.
 6. Apply dimensions 1–9 to every relevant ✓ item, prioritizing by risk per **review-efficiency**;
    report every dimension-8 finding as both variants plus a decision.
 7. Apply **challenging-the-change** to the change's structure and record the resulting challenges.
-8. Assign severity per **severity-and-confidence** and prepare Issue, Impact, Recommendation, and Confidence.
+8. Assign severity per **severity-and-confidence** and prepare Issue, Impact, the replacement code, and Confidence.
 9. Anchor each finding per **finding-anchors**.
 10. Format the report per [review-output-format.md](reference/review-output-format.md), loading a matching example — and for a multi-file or multi-area review, brief before delivering: a route over the highest-risk diffs, one prediction, one self-check.
 11. **Validate**: (a) one anchor, quoted line, severity, and Confidence per finding; (b) every referent grounded;
