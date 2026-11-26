@@ -27,12 +27,14 @@ Rows 1 and 7 are **pass/fail gates** — a fail blocks the plan. The rest are **
 
 ## Presenting the plan
 
-A plan is the largest artifact a user approves before any code exists. Brief before the question:
+A plan is the largest artifact a user approves before any code exists. In interactive mode, brief before the question:
 
 - Give a route over the 2–3 steps that carry the risk — not a walk through all of them.
 - Ask the user which step they expect to break first, then reveal the plan's own answer from `## Risk`.
 - Offer one self-check they can falsify before approving: the riskiest step's `Validation`, or the `Gate` line's evidence.
 - Say what the plan deliberately left open, and what the executor will decide — that is the part the user is trusting.
+
+`Mode: delivery` returns the same content as a three-line report — risk route, riskiest step's `Validation`, what stays open — with no question and no quiz; the plan file is already persisted.
 
 ## Refusals
 

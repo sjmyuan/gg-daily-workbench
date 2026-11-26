@@ -71,7 +71,7 @@ Plan locations use the feature's **kebab-case name** (`wallet-contracts`), never
 **Branch**, **PR**, and **Commit** are pointers, always tracked and easy to verify; work history stays in `plan.md` / git.
 The branch is recorded when the cell is planned, the head **Commit** from the first execution handoff, the **PR** reference once opened — `—` until then.
 
-The index tracks **status only**: verification findings go straight to the planner/executor and the `rework-<date>.md` file is their record (see **verify-cell**).
+The index tracks **status only**: verification findings go straight to the planner/executor and the `rework.md` file is their record (see **verify-cell**).
 Statuses, transitions, and readiness predicates: **reference/state-machine.md**.
 
 ## Per-cell scope brief

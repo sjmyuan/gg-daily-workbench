@@ -19,36 +19,37 @@ description: Orchestrate a spiked epic's delivery: decompose spike output, seque
 <knowledge>
 <orchestrator-role>
 Persistent orchestrator for **one spiked epic**; the index is its source of truth. Owns its reasoning; delegates work needing isolation.
-- **May do in-session** — read any file, run read-only commands, answer what the record or a bounded read settles, reason across cells, diagnose, choose the rung.
+- **May do in-session** — read any file, run read-only commands, answer what the record or a bounded read settles, reason across cells, choose the rung.
 - **Must decide** — rung, agent, in-scope delegation, whether evidence is trustworthy, whether a cell is done.
 - **Must not** — write code, plans, or ADRs; evaluate a POC; widen the epic; merge; act on stale decisions.
 - **Dispatch when** the work needs bulk context out of yours, independence for trust, a long run, or an artifact-owning specialty.
-- **Plan-first, no exemption** — no executor before the plan exists; never back-fill one; every cell runs planned, then executed by separate agents.
+- **Plan-first, no exemption** — no executor before the plan exists; never back-fill one; plan and execute stay separate.
 </orchestrator-role>
 <capability-regimes>
-**Judgment** — decompose, order, triage, issue/ADR change, POC scope. **Contractual** — index and verify: exact fields and statuses.
+**Judgment** — decompose, order, triage, issue/ADR change, POC scope. **Contractual** — index and verify: fields and statuses.
 </capability-regimes>
 <delivery-standards>
 | Standard | Rule | Details |
 |---|---|---|
 | **write-boundary** | Only `index.md` inside `**/deliveries/**`; plan/context/rework files belong to the planner and executor. | [write-boundary-guide](reference/write-boundary-guide.md) |
-| **feature-definition** | Coherent, **mergeable and reviewable** alone: one PR per cell, ≤40 files; slice above. `F1…`/`F3.1`, kebab-case. | [pr-size-slicing](reference/pr-size-slicing.md) |
-| **poc-definition** | One ADR option as a temporary PR the user evaluates; never measured. Adopt = merge; else close. | [poc-lifecycle](reference/poc-lifecycle.md) |
-| **delivery-layout** | `deliveries/<epic-name>/index.md` + one `<repo>/<feature-name>/` per cell; one branch per cell by convention. | [delivery-layout](reference/delivery-layout.md), [artifact-map](reference/artifact-map.md) |
+| **feature-definition** | Coherent, **mergeable alone**: one PR per cell, ≤40 files; slice above. `F1…`/`F3.1`, kebab-case. | [pr-size-slicing](reference/pr-size-slicing.md) |
+| **poc-definition** | One ADR option as a temporary PR the user evaluates; adopt = merge, else close. | [poc-lifecycle](reference/poc-lifecycle.md) |
+| **delivery-layout** | `deliveries/<epic-name>/index.md` + one `<repo>/<feature-name>/` per cell; one branch per cell. | [delivery-layout](reference/delivery-layout.md), [artifact-map](reference/artifact-map.md) |
 | **dependency-edge-types** | Per pair A → B: **merge-blocked** (develop on A's contract) · **contract-first** (parallel on stubs) · **poc-gated** · **conflict** (serialize) · **independent**. | [dependency-ordering-guide](reference/dependency-ordering-guide.md) |
 | **delivery-state-machine** | `unplanned → planned → in-progress → verified → done`, plus `failed`, `blocked`, `superseded`; POCs fork to `poc-ready → adopted \| rejected`. | [state-machine](reference/state-machine.md) |
-| **verification-gate** | One independent gate owns spec **and** quality; full for contract or irreversible surfaces, else sampled. | [verification-gate](reference/verification-gate.md) |
-| **investigation-triage** | Answer → evidence → decision → spike, first rung that answers; a bounded read is yours. | [investigation-triage](reference/investigation-triage.md) |
-| **agent-dispatch** | Resolve the role first; dispatch only for **orchestrator-role**'s reasons. | [orchestration-guide](reference/orchestration-guide.md), [dispatch-briefs](reference/dispatch-briefs.md) |
-| **agent-recovery** | Clear a stall or failure before the user — answer, do, re-brief, retry once; escalate on a listed trigger. | [orchestration-guide](reference/orchestration-guide.md) |
-| **rework-modes** | Append-only sibling `rework-<date>.md` carrying the delta; `plan.md` frozen; post-merge adds a feature. | [rework-modes](reference/rework-modes.md) |
-| **adr-change** | Versionless — drift comes from **code-analyst** (`adr-rewrite`) or the user; route governed cells by status. | [orchestration-guide](reference/orchestration-guide.md) |
-| **concise-writing** | The index is a board: **≤8,000 chars / ≤120 lines**, table-first, no narration | [delivery-index-format](reference/delivery-index-format.md), [writing-style](reference/writing-style.md) |
+| **verification-gate** | One independent gate owns spec **and** quality; Full for protected surfaces, else Sampled. | [verification-gate](reference/verification-gate.md) |
+| **investigation-triage** | Answer → evidence → decision → spike, first rung that answers. | [investigation-triage](reference/investigation-triage.md) |
+| **plan-intake** | Six mechanical checks before **planned**; never a design review. | [plan-intake-check](reference/plan-intake-check.md) |
+| **agent-dispatch** | Resolve the role first; dispatch only for its stated reasons; the brief is a delta within budget. | [orchestration-guide](reference/orchestration-guide.md) |
+| **agent-recovery** | Clear a stall before the user: answer, do, re-brief, retry; escalate on a trigger. | [orchestration-guide](reference/orchestration-guide.md) |
+| **rework-modes** | Sibling `rework.md` (post-merge dated); `plan.md` frozen; post-merge adds a feature. | [rework-modes](reference/rework-modes.md) |
+| **adr-change** | Versionless — drift from **code-analyst** (`adr-rewrite`) or the user; route governed cells by status. | [orchestration-guide](reference/orchestration-guide.md) |
+| **concise-writing** | The index is a board: **≤8,000 chars / ≤120 lines**, table-first. | [delivery-index-format](reference/delivery-index-format.md), [writing-style](reference/writing-style.md) |
 </delivery-standards>
 <context-loading-guide>
 | Load when | Provides | File |
 |---|---|---|
-| Scenario walkthrough | Triage, decomposition, slicing, verification, resume, rework, POC | [examples/](examples/) |
+| Scenario walkthrough | Every flow | [examples/](examples/) |
 </context-loading-guide>
 </knowledge>
 
@@ -72,20 +73,20 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 2. Write `deliveries/<epic-name>/index.md` per **reference/delivery-index-format.md**.
 3. Fill **Spike References** and one brief per cell.
 4. Create `{repo}/{feature-name}/` with `plan.md` + `context.md`, marking cells **unplanned**.
-5. Run **Finalise**; confirm features, matrix, waves, and location in one pass.
+5. Run **Finalise**; confirm features, matrix, waves, location once.
 </produce-delivery-index>
 <update-delivery-index>
 1. After every result, record status, agent, branch, head, and PR per **reference/state-machine.md**.
-2. Mark **planned** only when the plan file exists; a missing file is **failed**.
+2. Mark **planned** only when the plan passes **plan-intake-check**; a missing file is **failed**.
 3. On merge, confirm the recorded head is in the PR with a green or waived receipt.
 4. A POC decision → record **adopted** / **rejected** and mark the replaced cell **superseded**.
-5. Verify a doubtful result per `question-everything`, then run the **Finalise** checklist.
+5. Verify a doubtful result per `question-everything`; run **Finalise**.
 </update-delivery-index>
 <orchestrate-delivery>
 1. Load the index, or create it per **decompose-change-into-features**.
 2. Assess waves, ready cells, and blockers.
-3. **Plan**: dispatch the **planner** to each unplanned, develop-ready cell; verify the plan on disk. Over budget, no PR → split (**pr-size-slicing**).
-4. **Execute**: dispatch the **executor** to each planned cell with a verified plan, respecting gating and conflicts.
+3. **Plan**: dispatch the **planner** to each unplanned, develop-ready cell; run **plan-intake-check** before the cell turns **planned**. Over budget → split (**pr-size-slicing**).
+4. **Execute**: dispatch the **executor** to each planned cell whose plan passed intake, respecting gating and conflicts.
 5. Build each brief per **dispatch-briefs**.
 6. Gate merges on dependencies **done**; the executor pushes, opens the PR, returns the reference.
 7. Apply **verify-cell**, then **update-delivery-index**, until all cells are **done** or the user pauses.
@@ -95,9 +96,9 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 **Objective**: One independent review decides spec compliance, trust, and engineering quality before **verified**.
 1. Require the handoff and a fully ✅ `plan.md` ending in **Exit gate**.
 2. Size the gate by risk per **reference/verification-gate.md** — Full for any protected surface.
-3. Dispatch a fresh **code-reviewer**, never the executor: **Spec** Missing/Extra/Misunderstood · **Trust** receipt matches `head7` · **Quality** blockers, majors, merge call.
+3. Dispatch a fresh **code-reviewer**, never the executor: **Spec** Missing/Extra/Misunderstood · **Trust** receipt matches `head7` · **Quality** blockers, majors, merge call, each labelled `mechanical`/`design`.
 4. Pass → mark **verified** via **update-delivery-index**.
-5. A gap, Blocker, or Major → **planner** (`rework-<date>.md`) → **executor** → scoped re-review; stay **in-progress**.
+5. Mechanical only: one **executor** repair (`Fix class: mechanical`, inline) → scoped re-review. Any design finding: **planner** `rework.md` → **executor** → scoped re-review. Stay **in-progress**.
 </verify-cell>
 <resume-delivery>
 1. Load the index from the recorded base.
@@ -115,12 +116,12 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 1. Name the affected cell, its ADR, and its status; restate expected versus actual.
 2. Classify it as mechanical (revert / restore / copy / keep) per **reference/mechanical-restore.md**, or behavioral.
 3. Apply **triage-issue** to that decision; present the rung for confirmation.
-4. Plan → **planner** (`rework-<date>.md`), execute → **executor**, L2 → **code-analyst** (`adr-rewrite`), L3 → **spike-conductor**.
+4. Plan → **planner** (rework file), execute → **executor**, L2 → **code-analyst** (`adr-rewrite`), L3 → **spike-conductor**.
 5. Apply **update-delivery-index** — post-merge adds a rework feature; pre-merge changes no row.
 </handle-post-implementation-issue>
 <handle-adr-change>
 1. Confirm the changed ADR and decision from the user or **code-analyst**; list governed cells from the index's `ADRs:` entries.
-2. Route by status per **reference/orchestration-guide.md**, surface in-flight POCs, then confirm.
+2. Route by status per **orchestration-guide**; surface in-flight POCs, then confirm.
 </handle-adr-change>
 <define-poc-scope>
 1. Flag `Type: poc` when an option needs a reviewable proof; fill `adr`, `option`, optional `success-criteria` (plan header), `Replaces`/`Compare` (index).
@@ -132,13 +133,13 @@ Persistent orchestrator for **one spiked epic**; the index is its source of trut
 <rule> Every inbound request passes `clarify-request`'s intake gate first. </rule>
 <rule> No index yet → **decompose-change-into-features** → **map-features-to-repos** → **order-feature-delivery** → **produce-delivery-index**. </rule>
 <rule> Index exists → **orchestrate-delivery**, or **resume-delivery** for an interrupted epic. </rule>
-<rule> A cell's state changed → **update-delivery-index** before more dispatches; a read changes nothing. </rule>
-<rule> A dispatch names the resolved agent and its role skill; no role resolves silently. </rule>
+<rule> A cell's state changed → **update-delivery-index**; a read changes nothing. </rule>
+<rule> A dispatch names the resolved agent, its role skill, and `Mode: delivery`; no role resolves silently, and no dispatched agent asks the user. </rule>
 <rule> An agent stalls, asks, or fails → **agent-recovery**; escalate only on a listed trigger, with the attempt trail. </rule>
-<rule> Execution completes → **verify-cell** before the index advances; no **done** without a gate or waiver. </rule>
-<rule> A verified plan over the review budget, with no PR yet → split into slices; once execution starts the diff stands — record the oversize. </rule>
+<rule> A plan returns → **plan-intake-check**; execution completes → **verify-cell**; no **done** without a gate or waiver. </rule>
+<rule> A verified plan over budget, no PR yet → split; once execution starts, record the oversize. </rule>
 <rule> An issue after implementation → **handle-post-implementation-issue**; never re-decompose for an issue. </rule>
-<rule> A revert, restore, copy, or keep request → a mechanical rework with a `Source`. </rule>
+<rule> A revert, restore, copy, or keep → a mechanical rework with a `Source`. </rule>
 <rule> Any investigation starts at **triage-issue** — answer from the record and read a bounded file yourself; dispatch when it spans areas or needs isolation. </rule>
 <rule> An ADR change or **code-analyst** revision → **handle-adr-change**; never dispatch on a stale decision. </rule>
 <rule> An ADR option needs proof → **define-poc-scope**. </rule>

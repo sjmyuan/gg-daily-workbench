@@ -4,7 +4,7 @@ Single template for every plan this skill generates. **execute-plan** consumes t
 unchanged — its `step-tracking-format.md` mirrors this template. Never invent a variant.
 
 One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md` = execution ·
-`rework-<date>.md` = delta · git/PR = record. Budgets: **doc-budgets**.
+the rework file = delta · git/PR = record. Budgets: **doc-budgets**.
 
 ## plan.md template
 
@@ -14,6 +14,7 @@ One artifact, one job: `index.md` = state · `context.md` = charter · `plan.md`
 **Branch**: `<branch>` off `<base>`
 **Test strategy**: test-first | characterization-first | type/config-only | none (mechanical) — <one-line why it fits; name the unit that departs>
 **Gate**: build=`<cmd>` · test=`<cmd>` · lint-type=`<cmd>`
+**Autonomy**: stepwise | checkpoint | auto — <one-line why; checkpoint when omitted>
 **Gate waiver**: <scope> — <named failures> — ratified by <user> on <date>   (only when ratified)
 **ADR**: `adr-<name>.md` · **Option**: <option>            (POC only)
 **Success criteria**: <user review checklist>            (POC only, optional)
@@ -70,6 +71,7 @@ or a deviation. What landed is the commit and its diff; never restate it in `pla
 | Title | `# Plan: <feature> — <outcome>`; one line. |
 | Metadata | `Type` (`bug-fix` · `feature` · `refactor` · `poc` · `restore`); `Branch` as `<branch>` off `<base>`; `Test strategy` (`test-first` · `characterization-first` · `type/config-only` · `none (mechanical)`) + why it fits; `ADR`/`Option`/`Success criteria` only for POC. |
 | Gate | One `**Gate**` line — `build=` · `test=` · `lint-type=`, each evidence-backed (`file:line`); monorepos repeat the line per module. `**Gate waiver**` only when user-ratified (see **exit-gate**). |
+| Autonomy | `stepwise` runs the gate every step, `checkpoint` at milestones with affected tests per step, `auto` when cheap. Omitted → `checkpoint`; `stepwise` is chosen, never defaulted into. |
 | Order | Title → metadata → `## Scope Boundary` → `## Risk` → `## Decisions` (optional) → `## Steps`. |
 | Scope Boundary | Zone order fixed per **scope-boundary**; write `Protected zones: none added` when nothing is added. |
 | Steps | One `### Step N: <title> <status>` block per step, in file order; all six field lines, in order. |
@@ -87,7 +89,7 @@ or a deviation. What landed is the commit and its diff; never restate it in `pla
 
 Not in `plan.md`: requirement narrative, background, consolidation prose, per-step rationale, issue history, "key characteristics", source code, diffs, snippets, signatures. Root cause → `context.md` **Why**; strategy rationale → the `Test strategy` line; decisions `context.md` must not restate → `## Decisions`; risk → `## Risk`.
 
-## rework-<date>.md template
+## Rework file template
 
 Written when executed behavior must change; `plan.md` stays frozen (see **rework-plan-convention**).
 

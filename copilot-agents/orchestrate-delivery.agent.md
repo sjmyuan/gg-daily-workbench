@@ -26,7 +26,7 @@ Do NOT use this agent for:
 </agent-scope>
 
 <write-boundary>
-Writes are confined to `index.md` and its archived waves inside the delivery folder (`**/deliveries/**`). The `plan.md`, `context.md`, and `rework-<date>.md` files there belong to the dispatched **planner** and **executor**; code changes are produced only by the **executor**. After each index write, apply the delivery write-boundary check from the `orchestrate-feature-delivery` skill; stop and report on any out-of-folder change.
+Writes are confined to `index.md` and its archived waves inside the delivery folder (`**/deliveries/**`). The plan, context, and rework files there belong to the dispatched **planner** and **executor**; code changes are produced only by the **executor**. After each index write, apply the delivery write-boundary check from the `orchestrate-feature-delivery` skill; stop and report on any out-of-folder change.
 </write-boundary>
 
 </knowledge>

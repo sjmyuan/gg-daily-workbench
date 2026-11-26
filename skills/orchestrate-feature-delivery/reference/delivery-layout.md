@@ -19,7 +19,7 @@ deliveries/<epic-name>/               # one folder per epic (epic-name = spike n
   The epic folder always carries a `deliveries/` path segment, anchoring the write boundary.
 - **Feature folders** are named by the feature's kebab-case name (e.g. `wallet-contracts`), never its ID (`F1`).
 - **context.md** carries the cell charter (why, must-hold, unknowns, done, pointers), the `## Reworks` manifest, and the latest handoff — never a copy of spike content.
-- **plan.md** is the original plan; each rework is a sibling `rework-<date>.md` (see **reference/rework-modes.md**), implemented steps never modified.
+- **plan.md** is the original plan; each rework is a sibling `rework.md` pre-merge, `rework-<date>.md` post-merge (see **reference/rework-modes.md**), implemented steps never modified.
 - **index.md** lives at the epic folder root (see **reference/delivery-index-format.md**).
 - **Handoff**: the gate reuses these docs — see the handoff contract in **reference/verification-gate.md**.
 - **Spike boundary**: spike artifacts stay under `spikes/<spike-name>/` and are referenced by path; delivery never copies them. Map: **reference/artifact-map.md**.

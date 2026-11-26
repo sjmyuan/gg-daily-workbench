@@ -8,7 +8,7 @@ The delivery index is the single source of truth; **update-delivery-index** and 
 | Status | Meaning |
 |---|---|
 | **unplanned** | No plan files yet |
-| **planned** | `plan.md` + `context.md` exist, verified on disk |
+| **planned** | `plan.md` + `context.md` exist and pass **plan-intake-check** |
 | **in-progress** | Execution running or complete, not yet verified |
 | **verified** | Independent verification gate passed; awaits merge |
 | **done** | PR merged (recorded head commit included) or user-confirmed |
@@ -35,7 +35,7 @@ The delivery index is the single source of truth; **update-delivery-index** and 
 | Predicate | Condition |
 |---|---|
 | **develop-ready** | All dependency cells are **planned** (contracts agreed) |
-| **execute-ready** | Cell is **planned** AND its plan file is verified on disk |
+| **execute-ready** | Cell is **planned** AND its plan passed **plan-intake-check** |
 | **verify-ready** | Cell is **in-progress** AND `plan.md` shows every step ✅ or ⏭ with the `## Execution` handoff recorded |
 | **merge-ready** | Cell is **verified** AND all dependency cells are **done** |
 

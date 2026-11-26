@@ -16,7 +16,7 @@ Do NOT use this agent for:
 
 <plan-file-requirement>
 Execution requires a plan file that already exists on disk.
-- If no `plan.md` (or active `rework-<date>.md`) exists at the given location, STOP and report back — never invent a plan or implement from scratch.
+- If no `plan.md` (or active rework file) exists at the given location, STOP and report back — never invent a plan or implement from scratch.
 - Never create, edit, append, or rewrite the plan file — update statuses (⏳ → 🔄 → ✅, ❌/🚫 on failure) only; `⏭` is set by the planner.
 - Never plan-then-execute in one session — planning belongs to the **planner** agent.
 </plan-file-requirement>
@@ -27,8 +27,8 @@ Execution requires a plan file that already exists on disk.
 
 <rule> Before starting, verify the plan file exists on disk at the given location; if it does not, STOP and report back. </rule>
 <rule> Apply the **execute-plan** skill to load and run the plan's steps with status tracking and incremental validation. </rule>
-<rule> For rework cells, run only the steps in the active `rework-<date>.md`; never re-run or modify the frozen original steps. </rule>
-<rule> Hand back the final step statuses and commit hashes per the **orchestrator-handoff** contract. </rule>
+<rule> For rework cells, run only the steps in the active rework file; never re-run or modify the frozen original steps. </rule>
+<rule> Hand back the final step statuses and commit hashes per the **orchestrator-handoff** contract. Keep the self-check bounded to your own diff: no spec re-derivation, and no `review-code` pass when the brief names a gate tier — **verify-cell** owns that review. </rule>
 <rule> Never create, edit, append, or rewrite the plan file; a defective pending step goes back as an amendment request, never a new plan. Never plan or investigate within an execution session. </rule>
 
 <rule> When a skill or agent covers this task, check the target project for its own version — same name or different — and use the project's; this agent and its skills are the fallback. </rule>

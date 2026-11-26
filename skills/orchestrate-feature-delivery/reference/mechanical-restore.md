@@ -36,7 +36,7 @@ Prefer reverting commits over restoring a path when unrelated commits touched it
 ## Orchestrator duty
 
 1. Classify mechanical vs behavioral and state it, quoting the trigger verbatim.
-2. Dispatch the **planner** to write a sibling `rework-<date>.md` carrying `Source`, `Ref` (a SHA or tag, never a moving branch), and `Equality`.
+2. Dispatch the **planner** to write a sibling rework file carrying `Source`, `Ref` (a SHA or tag, never a moving branch), and `Equality`.
 3. Keep `plan.md` frozen; the rework file is the delta.
 4. The **executor** runs the git operation and records the equality proof; the orchestrator records only state.
 

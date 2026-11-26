@@ -1,6 +1,6 @@
 # Example: Slicing an Oversized Feature
 
-**Scenario**: decomposition produced `F6 invoice-export` for `billing-service`; its plan is verified on disk and lists 61 files.
+**Scenario**: decomposition produced `F6 invoice-export` for `billing-service`; its plan passed **plan-intake-check** and lists 61 files.
 The files: CSV writer, export job, upload, historic backfill, endpoint switch, tests.
 The user says: "That's too big for one PR — split it, and we'll land it incrementally."
 
@@ -51,6 +51,6 @@ Replace the single F6 row; the slices are cells, so no new columns.
 ## 5. What keeps it honest
 
 - **Green, not partial**: F6.1 adds code nothing calls; F6.3 writes rows the old path ignores. No slice opens a broken window.
-- **Not a rework**: a gate gap in F6.2 becomes `rework-<date>.md` in the F6.2 folder; F6.3 waits.
+- **Not a rework**: a design gap in F6.2 becomes `rework.md` in the F6.2 folder; F6.3 waits.
 - **Window closes at execution**: once F6.1's executor pushes, no further split — an oversize is recorded in `## Notes` and the remainder routes as a new feature.
 - **Under budget**: a 31-file F6 stays whole. The split decision reads the plan's `Expected files`, never a hunch at decomposition.

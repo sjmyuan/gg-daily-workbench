@@ -8,7 +8,7 @@ internal ownership belong to the spike skill; this copy carries only what delive
 | Plane | Artifacts | Question |
 |---|---|---|
 | **Spike — knowledge** | `scope.md` · ADRs · optional `solution.md` | Why, what was decided, what exists, what is the target? |
-| **Delivery — execution** | `index.md` · `context.md` · `plan.md` · `rework-<date>.md` | Where is the epic, why this cell, how is it executed? |
+| **Delivery — execution** | `index.md` · `context.md` · `plan.md` · `rework.md` / `rework-<date>.md` | Where is the epic, why this cell, how is it executed? |
 | **Record** | git / PR / CI | What happened, and can it be reproduced? |
 
 `index` = state · `context` = charter · `plan` = execution · `rework` = delta · git/PR = record.
@@ -44,7 +44,7 @@ Never copy a spike artifact into `index.md`, `context.md`, or `plan.md` — link
 | Spike artifacts | the spike skill and its doc-owning skills | delivery agents |
 | `index.md` | orchestrator | planner, executor, spike agents |
 | `context.md` | planner (charter); executor (`State` / `Execution` / `Open concerns`) | orchestrator, spike agents |
-| `plan.md`, `rework-<date>.md` | planner; executor updates status | orchestrator, spike agents |
+| `plan.md`, `rework.md` | planner; executor updates status | orchestrator, spike agents |
 | Code | executor | spike, orchestrator, planner |
 
 ## Where does this fact go?
@@ -53,7 +53,7 @@ Never copy a spike artifact into `index.md`, `context.md`, or `plan.md` — link
 2. Epic status or sequencing? → `index.md`.
 3. Why, invariants, unknowns, done criteria for one cell? → `context.md`.
 4. How and in what order for one cell? → `plan.md`.
-5. Post-delivery delta? → `rework-<date>.md`.
+5. Post-delivery delta? → the rework file (`rework.md` pre-merge, `rework-<date>.md` post-merge).
 6. Reproducible history? → git / PR / CI.
 
 ## Do-not list

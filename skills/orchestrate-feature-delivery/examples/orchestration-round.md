@@ -30,14 +30,17 @@
       consumer call sites in order-service · done criteria: solution §3 contract satisfied
     Branch convention (inline): <ticket>-<slug> in this repo · base: main
     Gating (inline): wave 1 cells wait on F1's contract; no conflict constraint
+    Mode: delivery · Gate tier: Full (delivers a contract) · Push: batched
     ```
   - The planner starts from the decided contract instead of re-reading the ADR, the evidence doc, and the repo.
 
-> **Plan-first gate**: no executor may touch `F1` until Planner A's `plan.md` exists on disk. The gate forbids the reverse order — never implement first and back-fill a plan.
+> **Brief budget**: this is a delta over F1's index row. `plan.md`, `context.md`, the ADR, and the solution doc are opened by path — never restated in the brief.
+
+> **Plan-first gate**: no executor may touch `F1` until Planner A's `plan.md` exists and passes **plan-intake-check**. The gate forbids the reverse order — never implement first and back-fill a plan.
 
 ## 3. Verify the gate + update index
 
-- Planner A returns: `deliveries/wallet-migration/shared-contracts/wallet-contracts/plan.md` exists (verified on disk) → `F1` may advance.
+- Planner A returns: `deliveries/wallet-migration/shared-contracts/wallet-contracts/plan.md` exists and passes **plan-intake-check** (six rows) → `F1` turns **planned**.
 
 | Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|

@@ -14,7 +14,7 @@ The plan implements the option exactly like a feature. It never measures or eval
 1. **Prepare Environment**: apply **plan-prerequisites** — a branch per the repo's convention, no overlapping dirt, deps installed, the gate commands (`build` / `test` / `lint-type`) discovered and run on the base with the verdict recorded; raise necessary blockers only.
 2. Load the ADR: the option's **Tech Details** (draft-adr's **detail-options-tech** — target-state diagrams, change set with `file:line`, current code, proposed diff, how-to) and the `## Implementation Plan` (change order, verification, rollback).
 3. Clarify with the user: the option under proof, the **success criteria** (optional — the user's review checklist, not a plan step), and the standalone feature slice that demonstrates it.
-4. **Define Scope Boundary**: the option's target area is **May change**; other options, other ADRs, and unrelated modules are **Must not change**; ratify with the user.
+4. **Define Scope Boundary**: the option's target area is **May change**; other options, other ADRs, and unrelated modules are **Must not change**; ratify with the user, or under `Mode: delivery` adopt it and return.
 5. Load the ADR's change set before decomposing — the option's tech details are the closest thing to a plan the spike produced, and they usually settle the seam.
 6. Decompose and write exactly like **plan-feature-implementation** steps 2–8: one strategy per **test-strategy**, units rather than phases, `## Risk`, `plan-rubric` self-check.
 7. Set **Type** to `poc` and record the **ADR**, **Option**, and optional **Success criteria** in the metadata block.

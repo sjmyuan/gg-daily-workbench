@@ -65,7 +65,7 @@ The target project may carry its own instructions, agents, skills, rules, and co
 </project-context>
 
 <write-boundary>
-Writes are confined to `index.md` and its archived waves inside the delivery folder (`**/deliveries/**`) — the `edit` permissions deny everything else. The `plan.md`, `context.md`, and `rework-<date>.md` files there belong to the dispatched **planner** and **executor**; code changes are produced only by the **executor**. After each index write, apply the delivery write-boundary check from the `orchestrate-feature-delivery` skill; stop and report on any out-of-folder change.
+Writes are confined to `index.md` and its archived waves inside the delivery folder (`**/deliveries/**`) — the `edit` permissions deny everything else. The plan, context, and rework files there belong to the dispatched **planner** and **executor**; code changes are produced only by the **executor**. After each index write, apply the delivery write-boundary check from the `orchestrate-feature-delivery` skill; stop and report on any out-of-folder change.
 </write-boundary>
 
 </knowledge>

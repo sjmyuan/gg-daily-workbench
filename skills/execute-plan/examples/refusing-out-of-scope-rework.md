@@ -6,7 +6,7 @@
 
 ## Plan in Execution
 
-Excerpt of the active `rework-<date>.md`; header and `## Steps` heading are unchanged.
+Excerpt of the active `rework.md`; header and `## Steps` heading are unchanged.
 
 ```markdown
 ## Scope Boundary
@@ -37,4 +37,4 @@ Applying **check-scope-boundary**: the fix is material, so the executor holds th
 
 **User decision**: (a) extend the boundary.
 
-The executor returns `NEEDS_CONTEXT`; the **planner** rewrites the boundary in the active `rework-<date>.md` (planner-owned) and records the extension. The executor then resumes Step 2 — it never edits the boundary itself.
+The executor returns `NEEDS_CONTEXT`; the **planner** rewrites the boundary in the active `rework.md` (planner-owned) and records the extension. The executor then resumes Step 2 — it never edits the boundary itself.

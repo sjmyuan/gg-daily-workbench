@@ -37,7 +37,7 @@ The finding contradicts exactly one decision. The orchestrator dispatches **code
 The target state does not change, so **solution-doc-writer** is not dispatched.
 
 **Answer**: ADR revised: the cap is configured per environment with a 3-attempt default. One independent pass verifies the new `file:line` claim.
-A sibling `rework-<date>.md` is planned and executed by the normal planner/executor flow.
+A sibling `rework.md` is planned and executed by the normal planner/executor flow.
 
 ## Issue 4 — "Maybe our whole failure-handling approach is wrong across payment and wallet"
 

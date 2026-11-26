@@ -67,11 +67,11 @@ The orchestrator must verify spec compliance, report trust, and judge quality be
 
 ## 6. Fix-round variant
 
-Had the code-reviewer found a Missing requirement, a Critical finding, or a quality Major, the orchestrator dispatches the **planner** with the findings to write a sibling `rework-<date>.md`.
+Had the code-reviewer returned a **design** finding, the orchestrator dispatches the **planner** with the findings to write a sibling `rework.md`; a mechanical-only round skips the planner and goes to the **executor** as a gate repair.
 Then the **executor**, then a scoped re-review.
 The loop is capped at 2 rounds (see **reference/verification-gate.md**).
 
-- Findings travel **inline** in the fix-round brief; the scoped re-review receives them plus the new `rework-<date>.md` **path**.
+- Findings travel **inline** in the fix-round brief; the scoped re-review receives them plus the new `rework.md` **path**.
 - The cell stays **in-progress**; the rework file is the record.
 - A cell never reaches **verified** with an unresolved spec gap.
 - A recurring or unresolved finding escalates to the user immediately.

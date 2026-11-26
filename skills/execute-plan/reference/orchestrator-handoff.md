@@ -14,6 +14,8 @@ Used by **orchestrator-handoff** and the `context.md` writes in **track-plan** a
 
 Never edit a planner-owned section; report a needed change instead. Never write a log — git and the PR are the history. Target 40–60 lines, ceiling 8,000 chars / 120 lines.
 
+**One writer at a time**: the planner never amends a plan while its executor runs — amendments happen at a dispatch boundary; the executor never edits a planner-owned section, including `## Reworks`.
+
 ## Execution handoff
 
 Written into `## Execution` when the plan runs inside a dispatched agent:
@@ -23,7 +25,7 @@ Status: DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
 Range:  <base7>..<head7>   (base = branch point on first run, previous head for a rework)
 PR:     <reference | none>
 Gate:   build=0 · test=<N> passed · lint=0   (or the ratified waiver)
-Review: <one line>  (review-code outcome)
+Self-check: clean | fixed:<n>   (never a review-code pass when a gate follows)
 Needs:  <amendment request, only when NEEDS_CONTEXT>
 ```
 

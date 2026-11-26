@@ -18,15 +18,15 @@ The user says: "The payment-failure decision changed — route what's affected."
 |---|---|---|
 | order-service/F2 | done | post-merge rework — new `F2-r1` in a new wave (see **rework-modes**) |
 | api-gateway/F3 | planned | re-plan in place — dispatch **plan-development-task** against the revised ADR (nothing implemented; no history to preserve) |
-| order-service/F4 | in-progress | pre-merge rework — sibling `rework-<date>.md`, same cell, no new wave (see **rework-modes**) |
+| order-service/F4 | in-progress | pre-merge rework — sibling `rework.md`, same cell, no new wave (see **rework-modes**) |
 
 ## 3. Dispatch
 
 Rework mechanics — sibling file, append-only steps, execution — are walked through in `examples/post-implementation-rework.md` (post-merge) and `examples/pre-merge-rework.md` (pre-merge).
 
 - **Planner A** → re-plan `api-gateway/F3` (plan-development-task) against the revised decision.
-- **Planner B** → write the pre-merge rework for `order-service/F4` (plan-development-task), sibling `rework-2026-08-24.md`, original steps never modified.
-- **Executor B** → execute only `rework-2026-08-24.md` (execute-plan) on the unmerged work.
+- **Planner B** → write the pre-merge rework for `order-service/F4` (plan-development-task), sibling `rework.md`, original steps never modified.
+- **Executor B** → execute only `rework.md` (execute-plan) on the unmerged work.
 - **F2-r1** (post-merge): the ADR + solution doc are already revised — a **planner** writes the rework file, then an **executor** runs it.
 - No in-flight POC cells here — otherwise surface them to the user (the change may invalidate success criteria).
 

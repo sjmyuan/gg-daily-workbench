@@ -22,6 +22,7 @@ The single-repo workspace has no docs home or convention, so **resolve-artifact-
 **Branch**: `fix-null-pointer` off `main`
 **Test strategy**: test-first — a crash path needs a reproducing failing test.
 **Gate**: build=`./mvnw compile` · test=`./mvnw test` · lint-type=`./mvnw checkstyle:check` — `pom.xml:41`
+**Autonomy**: checkpoint — the suite is cheap at milestones; the build runs after each change.
 
 ## Scope Boundary
 **May change**: `DataImportedHandler` null-guard behavior

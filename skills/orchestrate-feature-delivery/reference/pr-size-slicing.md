@@ -48,7 +48,7 @@ Data variant: additive schema → dual write → backfill → read flip → drop
 ## Plan-time split
 
 The only legal re-decomposition. It runs when all three hold:
-- The cell is **planned** and its plan is verified on disk.
+- The cell is **planned** and its plan passed **plan-intake-check**.
 - `Expected files` plus the step `Files` lists exceed the budget.
 - No executor has pushed; no PR exists.
 

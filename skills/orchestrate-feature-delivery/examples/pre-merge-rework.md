@@ -15,11 +15,11 @@ The full rework-file shape and step format are shown there; this example shows o
 
 - Affected cell: `order-service/F4` — status **in-progress** (implemented, not pushed/merged)
 - Governing decision: `adr-wallet-01-payment-failure-handling.md` — **not challenged**; only the timeout error mapping is wrong
-- Mode: **pre-merge rework** (see **rework-modes**) — same append-only rule, but the rework stays on this cell
+- Mode: **pre-merge rework** (see **rework-modes**) — append-only within the round; the rework stays on this cell and reuses `rework.md`
 
 ## 2. Write the sibling rework file (never modify the original)
 
-`plan-development-task` writes a new sibling `deliveries/wallet-migration/order-service/order-wallet-integration/rework-2026-08-08.md` — `plan.md` is the frozen original and never gains a section.
+`plan-development-task` writes a new sibling `deliveries/wallet-migration/order-service/order-wallet-integration/rework.md` — `plan.md` is the frozen original and never gains a section.
 Same shape as `examples/post-implementation-rework.md` §4, with these differences:
 
 ```markdown
@@ -51,14 +51,14 @@ The rework file carries only the delta — trigger, Scope Boundary, Done means, 
 ## Reworks
 | Date | Mode | Cell | Trigger | File | Status |
 |---|---|---|---|---|---|
-| 2026-08-08 | pre-merge | F4 | checkout timeout error mapping | rework-2026-08-08.md | ⏳ |
+| 2026-08-08 | pre-merge | F4 | checkout timeout error mapping | rework.md | ⏳ |
 ```
 
 Original `plan.md` steps 1–N remain byte-for-byte unchanged.
 
 ## 3. Execute the rework file
 
-- Dispatch the **executor** (**execute-plan**) to run **only** `rework-2026-08-08.md` on the unmerged branch; original steps are never re-run or modified.
+- Dispatch the **executor** (**execute-plan**) to run **only** `rework.md` on the unmerged branch; original steps are never re-run or modified.
 - No push/PR — the branch stays local until the user approves.
 
 ## 4. Update the index
@@ -68,8 +68,8 @@ Original `plan.md` steps 1–N remain byte-for-byte unchanged.
 | order-service/F4 | 1234-f4 | — | d4e5f6a | in-progress | executor | deliveries/wallet-migration/order-service/order-wallet-integration/ |
 
 `F4` keeps its identity and **in-progress** status — no `F4-r1`, no new wave, no index change.
-The sibling `rework-2026-08-08.md` (listed in the `context.md` manifest) is the only record.
+The sibling `rework.md` (listed in the `context.md` manifest) is the only record.
 
 ## 5. Next actions
 
-The executor asks before pushing and opens the PR (per **delivery-layout**'s branch conventions); after the rework + original work merge, `F4` → **done** and its downstream cells unlock.
+The executor returns the branch and commits under `Push: batched`; the orchestrator asks once for the wave (per **delivery-layout**'s branch conventions) and opens the PR; after the rework + original work merge, `F4` → **done** and its downstream cells unlock.

@@ -12,7 +12,7 @@ Change what has **not run** → amend the plan. Change what **has run** → sibl
 | Defect in a pending, failed, or blocked step | Amend in place | Same `plan.md` + `## Amendments` row |
 | New step discovered before it runs | Amend in place | Same |
 | Boundary needs tightening | Amend in place | Same |
-| Executed ✅ behavior must change | Rework | `rework-<date>.md` |
+| Executed ✅ behavior must change | Rework | `rework.md` |
 | Post-merge issue | Rework as a new cell | `rework-<date>.md` |
 
 ## Step status: ⏭ Abandoned
@@ -30,7 +30,7 @@ A step that is deliberately not executed:
 
 1. Read the active plan, its statuses, and `context.md` `## Amendments`.
 2. Freeze every ✅ step and its notes byte-for-byte.
-3. Append new steps with the next number, or insert with a letter suffix (`3a`, `3b`) when the work must run before an existing pending step; file order is execution order; never renumber. New steps use the full six-field block from **plan-file-format**.
+3. Insert new steps **before the Exit gate** — the gate keeps its number and the last position. Use the next free letter suffix on the step before it (`6a`, `6b`); append with the next number only while no Exit gate exists yet. File order is execution order; never renumber. New steps use the full six-field block from **plan-file-format**.
 4. Mark obsolete pending steps `⏭ abandoned — <reason>`; keep the step's other fields and change only `Status`; never delete.
 5. Tighten the boundary freely; widen only with user ratification.
 6. Add one `## Amendments` row to `context.md`.

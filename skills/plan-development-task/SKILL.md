@@ -8,7 +8,7 @@ description: Plan development work — diagnose the change, choose the evidence 
 - User submits a requirement or new behavior that does not exist yet, or asks whether it is feasible
 - User wants a POC proving one ADR option — a standalone slice, never a snippet
 - User requests refactoring, cleanup, restructuring, or maintainability work without changing behavior
-- User wants to plan a rework for an already-implemented feature — a sibling `rework-<date>.md`
+- User wants to plan a rework for an already-implemented feature — a sibling `rework.md`
 - An in-flight plan needs steps added, removed, or reordered before they run
 - User asks to revert, restore, copy, or keep code, or port a change from another branch or commit
 
@@ -17,8 +17,9 @@ description: Plan development work — diagnose the change, choose the evidence 
 
 <knowledge>
 <request-intake>
-Gate through `clarify-request` before classifying: restate the ask, itemize the inferences — type, expected behavior, input, done criteria, restore ref; ask the top 3 with a default. A symptom-only request infers the expected behavior; ask it, never plan from a suspected cause. A seeding brief with cell, type, behavior, inputs, and criteria **is** the gate result — adopt it.
-The **settled request** — restatement and answers — is user input: objective, decision, or `## Why`, never an assumption. Only an **unanswered default** becomes `Assumption (user-accepted, unverified)` under `## Unknowns`; an answered default is settled.
+Gate through `clarify-request`: itemize inferences — type, behavior, input, done criteria, restore ref — and ask the top 3 with a default; a symptom-only request asks its expected behavior, never plans from a suspected cause. A seeding brief carrying cell, type, behavior, inputs, and criteria **is** the gate result — adopt it.
+The **settled request** is user input: objective, decision, or `## Why`, never an assumption. Only an **unanswered default** becomes `Assumption (user-accepted, unverified)` under `## Unknowns`.
+A brief marked `Mode: delivery` ratifies scope and persistence: never ask the user; persist and return.
 </request-intake>
 <named-standards>
 | Standard | Rule | Details |
@@ -32,7 +33,7 @@ The **settled request** — restatement and answers — is user input: objective
 | **scope-boundary** | Gates on behavior, never paths — a new guard included: **May change** · **Must not change** · **Protected zones** · **Must match**; stop only on material change. | **reference/scope-boundary.md** |
 | **poc-plan-definition** | A POC is a feature plan for one ADR option: it implements, never measures; the MR is the evaluation vehicle. | **reference/plan-poc.md** |
 | **plan-amendment** | Amend in place: ✅ frozen, letter suffixes for insertions, `⏭ abandoned — <reason>`, never renumber. | **reference/plan-amendment.md** |
-| **rework-plan-convention** | Sibling `rework-<date>.md` holds only the delta; `plan.md` stays frozen. | **reference/rework-plan-convention.md** |
+| **rework-plan-convention** | A sibling rework file holds only the delta; `plan.md` stays frozen. | **reference/rework-plan-convention.md** |
 | **exit-gate** | Green-only: evidence-backed `**Gate**` line, baseline in Step 1, final local run; red → `❌`/`🚫`, never `✅`; only a ratified waiver escapes. | **reference/exit-gate.md** |
 | **plan-quality** | Grade every plan against the rubric: rows 1 and 7 pass/fail, the rest graded. | **reference/plan-rubric.md** |
 | **concise-writing** | BLUF and hard caps; `context.md` is a 40–60-line charter, never steps or logs. | **reference/doc-budgets.md**, **reference/writing-style.md** |
@@ -92,17 +93,17 @@ Load **reference/plan-poc.md**; shape the plan per its judgment guidance.
 1. Derive the zones from the classified type, the confirmed scope, and — for a delivery cell — the governing ADR.
 2. Name **May change** and **Must not change** by observable behavior, not by path; add `Must match` per restored path, **Expected files** as advisory, and any **Protected zone**.
 3. Apply the materiality test (see **scope-boundary**) to every exclusion; keep stop triggers material-only.
-4. Present the zones, request ratification, and hand the ratified boundary to the plan and to **export-plan**.
+4. Present the zones; `Mode: delivery` ratifies them by default. Hand the boundary to the plan and **export-plan**.
 </define-scope-boundary>
 <amend-plan>
 1. Read the plan, its statuses, and `context.md` `## Amendments`; confirm the defect sits in pending steps, else **rework-plan-convention**.
-2. Freeze every ✅ step byte-for-byte. Add steps with the next number, or insert with a letter suffix (`3a`); mark obsolete pending steps `⏭ abandoned — <reason>`; never renumber or delete.
+2. Freeze every ✅ step byte-for-byte. Insert steps before the Exit gate with a letter suffix (`3a`); mark obsolete pending steps `⏭ abandoned — <reason>`; never renumber or delete.
 3. Tighten the boundary; widen it only with user ratification.
 4. Record one `## Amendments` row, keep `context.md` within **doc-budgets**, re-grade per **reference/plan-rubric.md**, and show the step diff.
 </amend-plan>
 <export-plan>
 1. A feature folder already holding `plan.md` → apply **amend-plan** instead of a second plan.
-2. After confirmation, ask whether to persist the plan for **execute-plan**.
+2. Persist for **execute-plan**; `Mode: delivery` skips the question, interactive mode asks.
 3. A delivery cell uses `deliveries/<epic-name>/{repo}/{feature-name}/`; else **resolve-artifact-location** gives `{base}/feature-implementations/`.
 4. Write `plan.md` per **reference/plan-file-format.md** and `context.md` per **doc-budgets**; refuse a plan whose gate is missing, narrowed, or unratified.
 5. Curate `context.md` to the charter: the **admission test** turns pre-flight evidence into a decision or an Unknown, never a paste; over budget → cut duplication with `plan.md`.
@@ -123,6 +124,6 @@ Load **reference/plan-poc.md**; shape the plan per its judgment guidance.
 <rule> When an in-flight plan has a defect in steps that have not run, apply **amend-plan** — never a second plan file or folder. </rule>
 <rule> When writing or validating a test step, apply **test-quality** — each test names the break it catches. </rule>
 <rule> When a step's shape depends on code not yet read, write a check and a fallback under `## Risk` — never a guessed change; unit count is yours, never a cap. </rule>
-<rule> After the plan is confirmed, optionally apply **export-plan** to persist it for **execute-plan**. </rule>
-<rule> Produce a plan, never execute it: confine writes to plan docs (`plan.md`, `context.md`, `rework-<date>.md`); never modify code, config, tests, or any other file, and confirm only those changed. </rule>
+<rule> A confirmed plan persists via **export-plan** for **execute-plan**. </rule>
+<rule> Produce a plan, never execute it: confine writes to plan docs (`plan.md`, `context.md`, `rework.md`); never modify code, config, tests, or any other file, and confirm only those changed. </rule>
 </rules>

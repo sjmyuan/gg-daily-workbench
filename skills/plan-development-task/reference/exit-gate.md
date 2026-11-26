@@ -56,7 +56,7 @@ Last step in `## Steps`, after cleanup:
 - Red → repair (maximum 2 attempts) → still red: `❌` or `🚫` and ask the user. Never `✅`.
 - `✅` requires a receipt in the `Status` line: command, exit code, counts
   (`build=0 · test=412 passed, 0 failed · lint=0`).
-- Placement is last. Any later step invalidates the receipt — re-run the gate.
+- Placement is last. Any later step invalidates the receipt — re-run the gate. An amendment inserts before it; the gate never moves.
 
 ## 4. No narrowing
 

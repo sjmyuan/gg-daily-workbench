@@ -1,7 +1,7 @@
 # Document Budgets
 
 Caps and responsibilities for the docs a cell carries: `index.md`, `context.md`, `plan.md`,
-and `rework-<date>.md`.
+and `rework.md` (post-merge: `rework-<date>.md`).
 
 ## Artifact responsibilities
 
@@ -26,7 +26,7 @@ There is **no `evidence-raw.md`**. Every piece of evidence has a consumer and a 
 | Decision | `adrs/adr-*.md` | Planner, executor, gate |
 | Target state | `solution.md` | Planner, gate |
 | Execution proof | The step's `Validation` line + the local gate receipt in `context.md` + commit | Executor, gate, human |
-| History | Git commits, PR, `rework-<date>.md` | Human, auditor |
+| History | Git commits, PR, the rework file | Human, auditor |
 | Deferred concern | `context.md` `## Open concerns` | Gate, integration review |
 
 - A reproducible test/build result is never transcribed — cite the command and the commit.
@@ -40,7 +40,7 @@ There is **no `evidence-raw.md`**. Every piece of evidence has a consumer and a 
 | `context.md` | 40–60 lines / 3–4k chars | 120 lines / 8k chars |
 | `index.md` | 60–100 lines / 4–6k chars | 120 lines / 8k chars |
 | `plan.md` | unit count, one verdict per step | no doc-size cap |
-| `rework-<date>.md` | delta only | no doc-size cap |
+| `rework.md` / `rework-<date>.md` | delta only | no doc-size cap |
 
 - **Chars are the gate** (≈ tokens × 4); lines are secondary. Measure: `wc -l`, `wc -m`.
 - **Filling the ceiling is a smell** — a charter at 8k is a workbook. Over the ceiling is a write failure.
@@ -97,7 +97,7 @@ Restated ADR text is a one-line decision + link.
 ## State
 | Field | Value |
 |---|---|
-| Active plan | `plan.md` or `rework-<date>.md` |
+| Active plan | `plan.md` or `rework.md` |
 
 ## Execution
 <latest handoff only — 5 rows; see below>
@@ -142,7 +142,7 @@ Never append a round to `context.md`.
 - [ ] `context.md` is 40–60 lines and ≤8,000 chars; every line passes the admission test.
 - [ ] `index.md` ≤8,000 chars / ≤120 lines; state only.
 - [ ] `plan.md` holds steps, TDD rationale, and decisions — context does not repeat them.
-- [ ] `rework-<date>.md` holds only the delta; the original plan is untouched.
+- [ ] The rework file holds only the delta; the original plan is untouched.
 - [ ] No log file exists; execution proof is a plan `Validation` line + the local gate receipt + commit.
 - [ ] A POC is a normal implementation; its MR is the evaluation vehicle — no report or verdict.
 - [ ] `## Execution` holds the latest round only; concerns persist in `## Open concerns`.

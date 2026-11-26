@@ -6,50 +6,59 @@ Cell-level content (feature, repo, scope, branch, plan location) is owned by **r
 
 ## Why it matters here
 
-The orchestrator holds state no dispatched agent can see: the index, the user's answers, L0/L1 findings, prior cells' delivered contracts, gate verdicts, and detected repo conventions.
-A brief that names only paths sends the agent back through the spike artifacts, the record, and the code to rediscover what is already settled — at full cost, in a context that cannot report it back.
+A brief that names only paths sends the agent back through the spike artifacts, the record, and the code to rediscover what is settled — at full cost, in a context that cannot report it back.
+The opposite failure costs the same: a brief that carries everything makes every dispatch pay to compose, send, and re-read facts that change nothing. **Both are brief defects.**
 
-## Context inventory before every brief
+## Brief budget
 
-A brief is complete when **nothing the orchestrator holds is missing from it**.
+| Brief | Cap | When over |
+|---|---|---|
+| Plan · execute · verify | ≤40 lines / 2,500 chars | Move the detail into the cell's `context.md`; pass the path |
+| Repair round (`Fix class: mechanical`) | ≤12 lines | Keep the labelled findings inline; drop what the plan already states |
 
-1. List every item: the user's ask and answers (gate record, `Assumption (user-accepted, unverified)` lines), the index rows (statuses, dependencies, waves, cell brief),
-   then each spike artifact already read with what it established.
-2. Add the L0/L1 answers, prior cells' delivered contracts and merge state, open gate findings, plan/rework state,
-   detected repo conventions (branch prefix, test command, layout), and the resolved absolute paths.
-2. Classify each item by fill mode (below) and place it in the brief.
-3. Drop an item only when the unit cannot need it — never because it is findable or cheap to re-read.
-4. Fail the brief when an item has no home: add the field instead of dropping the item.
+- The brief is a **delta**: the index cell row + the plan or rework path + what changed this round. `plan.md` and `context.md` are opened, never restated.
+- Compose **once per cell**; each dispatch changes only its delta.
+- Hard fields never leave the brief: absolute paths, intake fields, gate tier, `Fix class`, `Mode`/`Push`, the dependency contract surface.
+
+## What earns a place
+
+An item enters only if it can change this unit's next action. In order:
+
+1. Would the agent act differently without it? No → leave it out; a path in `context.md` covers discovery.
+2. Is it already in a file the agent opens (`plan.md`, `context.md`, the ADR, the index row)? → a path and anchor, never prose.
+3. Can the agent not open it (a prior verdict, a settled user answer, a merged cell's contract surface)? → a digest.
+4. Does it belong to another cell's dispatch? → not this brief's business.
+
+**Nothing irrelevant**, not "nothing missing", is the test. A missing hard field fails the check; a missing nicety does not.
 
 ## Three fill modes
 
 | Mode | Use when | Filled as |
 |---|---|---|
-| **Path** | The item is persisted and the agent needs its full detail | Absolute path + the section anchor to load; the agent reads it once |
-| **Digest** | The item is persisted **and** the orchestrator already holds a conclusion from it | That conclusion in 1–5 lines, marked `from <path#section>` — the agent acts on it and opens the file only to go deeper |
-| **Inline** | The item lives only in conversation, or the agent must write it into its output | The value itself |
+| **Path** | The item is persisted and the agent needs its full detail | Absolute path + section anchor |
+| **Digest** | The fact cannot be opened, or the conclusion differs from the file's text | 1–5 lines, marked `from <path#section>` |
+| **Inline** | It lives only in conversation, or the agent must write it into its output | The value itself |
 
-- **Digest is the anti-re-investigation mode**: located `file:line`, settled decisions, the contract surface a prior cell delivered, what a record read established, and what each rung ruled out.
-- **Never replace a path with a digest** — pass both. The digest removes the re-read; the path keeps the full detail reachable.
-- **Persist-once**: when unpersisted context is needed by several later dispatches, write it into the cell's `context.md` (planner-owned) or the index cell brief, then pass the path plus its digest.
+- **Digest is the anti-re-investigation mode** for what cannot be read: located `file:line`, a gate verdict, a settled decision, a delivered contract surface.
+- **A digest never accompanies a path the agent will read** — that is double payment; the path alone suffices.
+- **Persist-once**: context several later dispatches need goes into the cell's `context.md` (planner-owned) or the index cell brief, then travels as a path.
 
 ## Context per dispatch target
 
-| Target | Beyond the cell brief, it must receive | Mode |
+| Target | Beyond the cell brief | Mode |
 |---|---|---|
-| **planner** | Drivers and constraints, the dependency cells' delivered contract surface, known code locations from L1, acceptance assumptions, the review budget | Digest + inline |
-| **executor** | Verified plan path, base ref, active `rework-<date>.md`, branch name, prior-round gate findings, the review budget | Path + inline |
-| **verifier** | Cell digest (done means, decided behaviour), recorded `base7..head7`, governing ADR, prior-round verdicts | Digest + inline |
-| **L1 investigator** | The question, the record artifacts already read and what they established, known locations, already-searched | Digest |
-| **spike conductor (L3)** | Delta scope, the trigger that chose L3, prior artifacts and the findings they already cover | Path + digest |
-| **code-analyst (`adr-rewrite` / `findings`) / solution-doc-writer** | Decision digest, affected sections, which cells the change governs, the `Output` mode | Digest + path + mode |
+| **planner** | Drivers and constraints, dependency contract surface, known locations, acceptance assumptions, the review budget | Digest + inline |
+| **executor** | Plan path, base ref, active `rework.md`, branch, prior-round findings, gate tier, `Fix class` on a repair round, push mode | Path + inline |
+| **verifier** | Cell digest (done means, decided behaviour), recorded `base7..head7`, ADR path + decision digest, prior verdicts | Digest + inline |
+| **L1 investigator** | The question, what the record already established, known locations, already-searched | Digest |
+| **spike conductor (L3)** | Delta scope, the trigger that chose L3, prior artifacts and the findings they cover | Path + digest |
+| **code-analyst (`adr-rewrite` / `findings`) / solution-doc-writer** | Decision digest, affected sections, governed cells, the `Output` mode | Digest + path + mode |
 
 ## Self-locating brief
 
-The agent starts in its own context with no shared state.
-
-- **Absolute paths** for the feature folder, `plan.md`, `rework-<date>.md`, governing ADR, solution-doc section.
-- **Name the repo root, base ref, and branch** — the executor must not re-detect the epic folder or the branch convention; the planner must not search for the feature folder.
+- **Absolute paths** for the feature folder, `plan.md`, `rework.md`, governing ADR, solution-doc section.
+- **Repo root, base ref, branch** — the executor must not re-detect the epic folder or the branch convention; the planner must not search for the feature folder.
+- **`Mode: delivery`** — every dispatched planner and executor carries it. It forbids the interactive ritual: no user question, no plan quiz, no ratification pause, no per-cell push prompt. A planner persists and returns the path with its three-line risk report; an executor returns the branch and commit range. A question the record cannot settle returns as `NEEDS_CONTEXT` with options — never blocks on the user.
 - A sub-agent searching the filesystem for its inputs or re-detecting the repo's conventions is a brief defect, not agent behaviour.
 
 ## Callee intake records
@@ -67,19 +76,21 @@ A brief carrying these fields **is** the gate result: the agent adopts them, ask
 
 ## Cross-cell context
 
-- **Dependencies travel as contract surface**: a later cell receives its dependency's delivered interfaces, exported types, endpoints, PR reference, and merge state as a digest.
-  It never re-derives a dependency's implementation.
+- **Dependencies travel as contract surface**: interfaces, exported types, endpoints, PR reference, merge state — as a digest. Never the dependency's implementation.
 - **Same-wave siblings** receive the agreed stubs and interface names (contract-first), not each other's code.
-- **A rework** receives the cell charter by path plus the prior round's findings **inline**; implemented steps are never re-derived or re-read.
-- **A resumed cell** receives the index state, the active plan/rework path, and what was already completed — never a from-scratch brief.
+- **A rework** receives the charter by path plus the prior findings **inline**; implemented steps are never re-read.
+- **A resumed cell** receives the index state, the active plan/rework path, and what was completed — never a from-scratch brief.
 
 ## Completeness check before dispatch
 
-Run on every brief; a failed check stops the dispatch:
+Run on every brief; a failed hard field stops the dispatch:
 
-- Every inventory item has a home — nothing dropped for being findable.
-- Every path is absolute and carries its section anchor; the branch and repo root are named.
+- Every item that can change this unit's action is present; nothing else is.
+- Within budget: ≤40 lines; a repair round ≤12.
+- Paths are absolute with anchors; the repo root and branch are named.
 - The callee's intake fields are filled.
+- `Mode: delivery` is stated; push handling is `Push: batched` unless the user asked per cell.
+- The gate tier is stated (`Full`/`Sampled`), and the executor is told an independent gate follows — self-check only, no `review-code` pass.
+- A repair dispatch states `Fix class: mechanical` and carries the labelled findings inline; a design round names the `rework.md` path.
 - The resolved agent and its role skill are named — a default agent standing in for a role never arrives unlabeled.
-- A digest is present wherever the orchestrator holds a conclusion (L0/L1 answer, gate verdict, recorded read).
-- Any cell whose dependency is planned or done carries that dependency's contract surface.
+- Any dependency that is planned or done carries its contract surface.

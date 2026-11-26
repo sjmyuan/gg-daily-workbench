@@ -6,10 +6,10 @@ Backs the **write-boundary** knowledge entry and the delivery write-boundary che
 
 | May write — inside the delivery folder (`**/deliveries/**`) | Never write |
 |---|---|
-| `index.md` | code, config, tests, infrastructure, scripts, `plan.md` / `context.md` / `rework-<date>.md`, any file outside the delivery folder |
+| `index.md` | code, config, tests, infrastructure, scripts, the plan, context, and rework files, any file outside the delivery folder |
 
 The delivery folder always carries a `deliveries/` path segment (`<base>/deliveries/<epic-name>/`), which anchors the boundary.
-The `plan.md` / `context.md` / `rework-<date>.md` files inside it are owned by the dispatched **planner** and **executor** — the orchestrator never writes them.
+The plan, context, and rework files inside it are owned by the dispatched **planner** and **executor** — the orchestrator never writes them.
 Gate findings go straight to the planner; the index tracks status only.
 
 ## Enforcement layers

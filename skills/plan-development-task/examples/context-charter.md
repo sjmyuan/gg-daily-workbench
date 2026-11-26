@@ -70,7 +70,7 @@ is the differentiator. Option 3 adopted 2026-10-16 — do not re-litigate.
 ## State
 | Field | Value |
 |---|---|
-| Active plan | `plan.md` · `rework-2026-10-16.md` |
+| Active plan | `plan.md` · `rework.md` |
 
 ## Execution
 | Field | Value |
@@ -84,7 +84,7 @@ is the differentiator. Option 3 adopted 2026-10-16 — do not re-litigate.
 ## Reworks
 | Date | Mode | Cell | Trigger | File | Status |
 |---|---|---|---|---|---|
-| 2026-10-16 | pre-merge | F2 | gate round 2: F-1, F-2 | rework-2026-10-16.md | done |
+| 2026-10-16 | pre-merge | F2 | gate round 2: F-1, F-2 | rework.md | done |
 ```
 
 ## 3. What changed
@@ -108,7 +108,7 @@ unknowns, done criteria, pointers, concerns, and state.
 | `index.md` | Where is the epic now? | feature rows, waves, cell status |
 | `context.md` | Why, what must hold, what is unknown, how done is judged | charter + latest handoff |
 | `plan.md` | How, in what order | scope, TDD, decisions, steps |
-| `rework-<date>.md` | What changed after delivery | delta steps + fix criteria |
+| `rework.md` | What changed after delivery | delta steps + fix criteria |
 | Git / PR / CI | What happened, and can it be reproduced? | commits, diff, test logs |
 
 ## 5. Validation

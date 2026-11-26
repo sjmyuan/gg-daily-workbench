@@ -61,7 +61,7 @@ A stall, question, or failure is the orchestrator's problem before it is the use
 
 - A rung that already failed for the same cause is never repeated; two attempts on one cause, or a spec gap recurring after a gate round (**verification-gate** cap), ends recovery.
 - Never invent an answer: a question the record does not settle is rung 2 or an escalation.
-- Resume an interrupted agent from the last completed step in the active `rework-<date>.md` (or `plan.md`), skipping ✅ and ⏭.
+- Resume an interrupted agent from the last completed step in the active rework file (or `plan.md`), skipping ✅ and ⏭.
 - No follow-up channel → re-dispatch with the completed steps and the digest; a resumed cell never restarts.
 - Record `<cell> — <cause> → <rung>` in the index `## Notes` when the status changed; detail stays in the plan, rework file, and git.
 
@@ -76,6 +76,7 @@ A stall, question, or failure is the orchestrator's problem before it is the use
 
 An escalation carries the cell, the attempt trail, the decision needed, options with cost, and one recommendation.
 Batch escalations at the next wave boundary; interrupt immediately only when a cell cannot proceed, or the pending action is irreversible.
+**Push approval batches too**: the executor returns the branch and commit range under `Push: batched`, and the orchestrator asks once for the wave — never once per cell.
 
 **Not an interrupt**: evidence that contradicts a pending, unexecuted step. Amend it — dispatch the planner, hold the boundary, and report in the next update. Asking the user to approve a plan fix they cannot evaluate spends their attention on your bookkeeping.
 
