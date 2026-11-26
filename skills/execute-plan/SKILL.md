@@ -111,7 +111,7 @@ Every plan carries a **green-only exit gate** — the plan is the contract, not 
 <review-post-execution>
 1. Sweep your own diff against the plan's objectives and Scope Boundary — bounded to the changed files, no spec re-derivation.
 2. Run the full **review-code** pass only when no gate follows; a named gate tier means **verify-cell** owns it — both is a duplicated cost.
-3. Per Blocker/Major: **check-scope-boundary**; a design fix becomes a ⏳ step, a labelled **mechanical** finding is a **gate repair** — fixed in place and recorded as a `Gate repair:` line in `## Execution`; log 🟡/🟢 only.
+3. Per Blocker/Major: **check-scope-boundary** — inside the step's objective, fix and log the deviation; outside it, return `NEEDS_CONTEXT` for an amendment. Log 🟡/🟢 only.
 4. Re-run the **Exit gate** after the last fix; keep `plan.md` + `context.md` as the record.
 </review-post-execution>
 <request-push-approval>

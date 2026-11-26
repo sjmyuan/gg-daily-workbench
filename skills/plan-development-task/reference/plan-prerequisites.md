@@ -4,7 +4,7 @@ Used by **plan-prerequisites**, **plan-feature-implementation**, **plan-bug-fix*
 **plan-refactor**, and **plan-poc**.
 
 Every plan starts with a **Prepare Environment** step (Step 1) covering only the checks
-execution needs.
+execution needs. Under `Mode: delivery`, the brief already carries the branch, base, and gate commands; a missing one returns `NEEDS_CONTEXT` instead of asking.
 
 | Check | Not ready → |
 |---|---|

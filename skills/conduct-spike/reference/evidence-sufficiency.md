@@ -26,6 +26,8 @@ A claim outside these three is breadth. Breadth is optional; it becomes required
 
 One decision-flipping claim left **unverified** blocks adoption unless the ADR states what would settle it and the user accepts the risk explicitly.
 
+**Attempt budget** — a decision-flipping claim gets two reads or one run. Still unsettled → tag **unverified**, name the single action that would settle it, and decide with the risk stated. More searching is not more evidence.
+
 ## Confidence tags
 
 | Tag | Meaning | How it is earned |

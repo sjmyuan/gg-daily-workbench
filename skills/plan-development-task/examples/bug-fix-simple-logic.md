@@ -49,6 +49,7 @@ Keywords "wrong", "incorrect", "instead of original" → **Bug Fix**. *User conf
 **Branch**: `fix-publisher-id` off `main`
 **Test strategy**: test-first — a data-correctness bug needs proof of the break.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
+**Autonomy**: checkpoint — affected tests per step; the full suite at the exit gate.
 
 ## Scope Boundary
 **May change**: `DataImportedHandler` ID-passing behavior

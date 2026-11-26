@@ -76,10 +76,10 @@ is the differentiator. Option 3 adopted 2026-10-16 — do not re-litigate.
 | Field | Value |
 |---|---|
 | Status | `DONE_WITH_CONCERNS` |
-| Commits | `7ce6c4f..136a9b5` |
+| Range | `7ce6c4f..136a9b5` |
 | PR | pending approval |
 | Gate receipt | `node --test` 11/11; `tsc --noEmit` 0 |
-| Review outcome | clean; 2 Major fixed |
+| Self-check | `fixed:2` |
 
 ## Reworks
 | Date | Mode | Cell | Trigger | File | Status |

@@ -2,6 +2,7 @@
 
 Every plan ships a green-only **exit gate**: recorded commands, a proven baseline, one final step,
 and a receipt. The plan is the contract — the gate is never the executor's discretion.
+Under `Mode: delivery`, every "ask the user" below returns as `NEEDS_CONTEXT` instead — the planner never blocks on the user.
 
 ## 1. Gate commands (plan time)
 

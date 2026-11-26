@@ -60,7 +60,7 @@ Scope model: **reference/spike-scope-guide.md**.
 </spike-lifecycle>
 <review-pacing>
 The ADR set is the one artifact review: each chosen option, its winning drivers, its cost, what stays unverified.
-When the set is large or code-dense, brief first: a route over the ADRs that carry the decision, one prediction, one self-check.
+When the set is large (≥4 ADRs) or code-dense, brief first: a route over the ADRs that carry the decision, one prediction, one self-check; a smaller set gets the route and the decision request only.
 </review-pacing>
 <adr-uncertainty-signals>
 Offer a spike when a decision hinges on what reasoning alone cannot settle:
@@ -89,13 +89,13 @@ Offer a spike when a decision hinges on what reasoning alone cannot settle:
 1. Restate the question and its open inferences; propose `How to …?` problems, grouped into areas at ≥2.
 2. Run `clarify-request`'s intake gate once: ≤3 questions plus each problem's drivers and metrics.
 3. Record goal, boundaries, drivers, problems in `scope.md` or the ADR's Context; the transcript stays in the session.
-**Gate**: the user accepts the question and drivers; a problem without a driver is not ready to investigate.
+**Gate**: the question and drivers are settled — by the user's acceptance, or, when the request already states both with zero open inference, by the recorded drivers. A problem without a driver is not ready to investigate.
 </define-spike-scope>
 <decide-spike-problems>
 **Objective**: Settle each problem with an ADR that passes the gate.
 1. Investigate to sufficiency — trace only what the options need and verify what could flip the choice.
 2. Draft one ADR per problem with `draft-adr` from the accepted drivers; never infer a driver.
-3. Each option gets a target-state diagram; the winner's changes carry `file:line`, diff, confidence, verify, rollback.
+3. Each option gets a target-state view — its own when the topology changes, the shared topology plus a `Δ` for a substitute; the winner's changes carry `file:line`, diff, confidence, verify, rollback.
 4. Run **adr-acceptance** on each ADR; fix the ADR, not the checklist.
 5. Return the ADR set with its gate result, each unverified claim, and the options the evidence ruled out.
 **Gate**: every ADR passes **adr-acceptance**; an unverified decision-flipping claim blocks adoption unless the user accepts the risk.
@@ -103,7 +103,7 @@ Offer a spike when a decision hinges on what reasoning alone cannot settle:
 <accept-adrs>
 **Objective**: Get the decisions reviewed and adopted.
 1. Present the ADR set per **review-pacing**.
-2. On feedback, revise the ADR in place and re-run the gate on the changed sections only.
+2. On feedback, revise the ADR in place and re-run the gate on the changed sections only. After 2 revise rounds on one ADR, put the divergence (the driver or option in dispute) to the decider instead of rewriting again.
 3. Set `Status: adopt`, mark each problem `decided`, and record an implementation need as one handoff line.
 **Gate**: each ADR is accepted or explicitly waived, and every adopted ADR passes the gate.
 </accept-adrs>

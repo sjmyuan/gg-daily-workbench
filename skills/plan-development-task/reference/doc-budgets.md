@@ -125,10 +125,10 @@ Context must **shrink**, not only stop growing:
 | Field | Content |
 |---|---|
 | Status | `DONE` · `DONE_WITH_CONCERNS` · `BLOCKED` · `NEEDS_CONTEXT` |
-| Commits | `base7..head7` |
+| Range | `base7..head7` |
 | PR | number/URL, or `pending approval` |
 | Gate receipt | 1 line: commands + exit codes + counts (`build=0 · test=412 passed · lint=0`) |
-| Review outcome | 1 line: `review-code` result |
+| Self-check | 1 line: `clean | fixed:<n>` — never a review-code pass when a gate follows |
 
 Deferred concerns go to `## Open concerns` — they persist across rounds and are deleted when resolved.
 Never append a round to `context.md`.

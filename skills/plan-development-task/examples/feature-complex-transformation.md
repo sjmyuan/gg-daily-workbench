@@ -31,6 +31,7 @@ Keywords "transform", "reject invalid" → **Feature** (new behavior). *User con
 **Branch**: `localized-attributes` off `main`
 **Test strategy**: test-first — transformer and resolver share fixtures, so one unit can cover both.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
+**Autonomy**: checkpoint — affected tests per step; the full suite at the exit gate.
 
 ## Scope Boundary
 **May change**: locale transformation and fallback-resolution behavior; handler integration

@@ -30,7 +30,7 @@ Execution agents commit locally and small-step; they push and open the PR only a
 
 - One branch per repo per cell, named per the **repo's branch convention** (detect from existing branches / git config / team docs — or ask; never assume a prefix like `feat/`).
   The branch is created during the execution agent's **Prepare Environment** step.
-- The executor opens the PR after push approval, following the target repo's convention; the index records the returned reference.
+- The executor returns the branch and commits under `Push: batched`; the orchestrator asks once per wave, then the PR opens per the target repo's convention and the index records the returned reference.
 - Pushing and PR creation are separate approvals.
 - The index records the branch up front, the PR reference (number/URL) and **head commit** from the executor handoff — pointers only; work history stays in `plan.md` / git.
 - Commit after each ✅ step, with no AI-related wording (see **execute-plan** commit-conventions).

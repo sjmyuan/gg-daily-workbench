@@ -7,7 +7,7 @@ The user says: "We found a bug in the unmerged checkout work — fix it before w
 
 **Applies**: **handle-post-implementation-issue** → **update-delivery-index**
 
-**What makes this distinct**: the same append-only rework as **examples/post-implementation-rework.md**, but on an **unmerged** cell.
+**What makes this distinct**: the same rework discipline as **examples/post-implementation-rework.md**, but on an **unmerged** cell and in the reusable `rework.md`.
 The mode line, cell branch, and index handling change, and no new feature or wave appears.
 The full rework-file shape and step format are shown there; this example shows only the pre-merge differences.
 
@@ -26,7 +26,11 @@ Same shape as `examples/post-implementation-rework.md` §4, with these differenc
 # Rework 2026-08-08 — checkout timeout error mapping
 **Mode**: pre-merge · **Cell**: order-service/F4
 **Branch**: `1234-f4` (existing cell branch)
+**Test strategy**: inherited from `plan.md`
 **ADR focus**: `adr-wallet-01-payment-failure-handling.md`
+**Gate**: inherited from `plan.md`
+**Autonomy**: inherited from `plan.md`
+**Gate findings**: F-1 design — timeout maps to the wrong error code
 
 ## Scope Boundary
 **May change**: checkout timeout → error-code mapping behavior in the unmerged F4 work
@@ -42,6 +46,8 @@ Same shape as `examples/post-implementation-rework.md` §4, with these differenc
 2. Fix the mapping (edit) — `CheckoutErrorMapper.java`.
 3. Quality gate (no-op) — linting, formatting, type checking, full suite exit 0.
 ```
+
+*(Steps abridged — each becomes a full six-field block per **plan-file-format**.)*
 
 The rework file carries only the delta — trigger, Scope Boundary, Done means, changed steps. It inherits the cell's charter by reference and never creates a second `context.md`.
 

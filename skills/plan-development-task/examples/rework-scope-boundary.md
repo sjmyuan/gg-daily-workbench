@@ -42,6 +42,7 @@ The original `plan.md` is never modified; the rework inherits the original bound
 **Test strategy**: test-first — a wrong-credential retry needs a failing test that pins it.
 **ADR focus**: `adr-wallet-01-payment-failure-handling.md`
 **Gate**: inherited from `plan.md` — build=`./mvnw -q compile` · test=`./mvnw test` · lint-type=`./mvnw spotless:check`
+**Autonomy**: inherited `checkpoint` — the delta's test per step; the full suite before merge.
 
 ## Scope Boundary
 **May change**: original **May change** + `payment-gateway/` credential-retry behavior (user-approved extension)

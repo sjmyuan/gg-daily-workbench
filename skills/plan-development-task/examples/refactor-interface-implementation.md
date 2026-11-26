@@ -29,6 +29,7 @@ Keywords "extract interface", "easier to mock" → **Refactor** (structural chan
 **Branch**: `extract-event-publisher-interface` off `main`
 **Test strategy**: characterization-first — interface extraction changes no behavior; existing tests are the proof.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
+**Autonomy**: checkpoint — characterization at each step; the full suite at the exit gate.
 
 ## Scope Boundary
 **May change**: internal structure of event publishing (interface extraction, injection)

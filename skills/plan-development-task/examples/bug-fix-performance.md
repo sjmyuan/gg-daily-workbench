@@ -30,6 +30,7 @@ Keywords "slow", "performance degradation" → **Bug Fix** (performance). *User 
 **Branch**: `fix-product-search-n-plus-one` off `main`
 **Test strategy**: test-first, benchmarked — the proof is a failing timing and query-count assertion.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
+**Autonomy**: checkpoint — run the benchmark at each step; the full suite at milestones and the exit gate.
 
 ## Scope Boundary
 **May change**: `ProductRepository` search-query behavior (query count, latency)

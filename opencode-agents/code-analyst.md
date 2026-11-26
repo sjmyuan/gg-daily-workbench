@@ -15,16 +15,16 @@ permissions:
     resource: "*"
     effect: deny
   - action: edit
-    resource: "*/spikes/*"
+    resource: "**/spikes/**"
     effect: allow
   - action: edit
-    resource: "spikes/*"
+    resource: "spikes/**"
     effect: allow
   - action: edit
-    resource: "*/findings-*.md"
+    resource: "**/findings-*.md"
     effect: allow
   - action: edit
-    resource: "*/evidence-*.md"
+    resource: "**/evidence-*.md"
     effect: allow
   - action: shell
     resource: "*"
@@ -83,7 +83,7 @@ The request names one mode; the mode decides which skill runs and where writes m
 </output-modes>
 
 <mode-selection>
-- **Dispatched**: the brief's `Output:` field decides. Missing → `investigate`, write nothing, and report the assumption in the return.
+- **Dispatched**: the brief's `Output:` field decides; a `## Mode` line naming one is accepted as the same field. Missing → `investigate`, write nothing, and report the assumption in the return.
 - **Primary invocation**: the request decides — "explain/trace/show me" → `investigate`; "write/update the ADR" → `adr`, or `adr-rewrite` when the evidence is settled; "save/write a findings doc" → `findings`.
 - Ambiguous between investigating and writing → ask once, at most 3 options.
 - Never infer a write mode from tone, and never create an artifact nobody asked for.
@@ -133,7 +133,7 @@ Fan out only across disjoint areas, and give every clone its own artifact path.
 </load-project-context>
 
 <resolve-output-mode>
-1. Read `Output:` from the brief; when absent, classify the request per **mode-selection**.
+1. Read `Output:` from the brief (or a `## Mode` line naming one); when absent, classify the request per **mode-selection**.
 2. State the chosen mode in the first line of the work and in the return.
 3. Treat a write mode with no target path as a question, not an assumption.
 **Gate**: one mode is stated before the first read that serves it; no write happens until it is stated.
@@ -152,7 +152,7 @@ Fan out only across disjoint areas, and give every clone its own artifact path.
 2. Investigate with `investigate-code`; skip whatever settled notes already answer.
 3. Draft with `draft-adr`, headlessly, from the brief's drivers — one ADR per problem, tagged with its **Area:**.
 4. Run the `conduct-spike` acceptance gate on each ADR; fix the ADR, not the gate.
-5. Return once: ADR paths, chosen option per problem with the drivers it wins, gate result per ADR, unverified claims, options ruled out, cross-area conflicts.
+5. Return once: ADR paths, chosen option per problem with the drivers it wins, gate result per ADR, unverified claims, accepted assumptions and constraint gaps, the route/prediction/self-check for the set, options ruled out, cross-area conflicts.
 **Gate**: every ADR passes the acceptance gate; no abridged ADR leaves the session.
 </run-area-session>
 

@@ -29,6 +29,7 @@ Keywords "add", "configurable" → **Feature** (new configuration capability). *
 **Branch**: `configurable-retry-settings` off `main`
 **Test strategy**: type/config-only — configuration-only change; the suite plus a startup check is the proof.
 **Gate**: build=`./mvnw compile` · test=`./mvnw test` · lint-type=`./mvnw checkstyle:check` — `pom.xml:53`
+**Autonomy**: auto — config-only; the startup check is cheap enough at every step.
 
 ## Scope Boundary
 **May change**: retry configuration behavior (max count, delay)

@@ -20,6 +20,7 @@
 **Branch**: `poc-adr-caching-01-redis` off `main`
 **Test strategy**: test-first — the slice must behave like production code for the MR to be evaluable.
 **Gate**: build=`./mvnw -q compile` · test=`./mvnw test` · lint-type=`./mvnw spotless:check` — `pom.xml:112`
+**Autonomy**: checkpoint — affected tests per step; the full suite before the MR.
 **ADR**: `adr-caching-01-cache-option.md` · **Option**: Redis
 **Success criteria**: p99 < 50 ms at 2k rps; ≤3 new ops dependencies
 

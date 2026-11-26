@@ -113,10 +113,10 @@ Boundary: **plan.md** §Scope Boundary.
 | Field | Value |
 |---|---|
 | Status | — (not executed) |
-| Commits | — |
+| Range | — |
 | PR | — |
 | Gate receipt | — (not executed) |
-| Review outcome | — |
+| Self-check | — |
 
 ## Reworks
 

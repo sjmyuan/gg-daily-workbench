@@ -4,8 +4,7 @@ Loaded by **scale-routing** when a spike may use sub-agents, or when an area ses
 
 ## Default: in-session
 
-Run the spike in the orchestrating session unless a threshold below is met.
-Dispatching a spike that fits in one session costs a brief, a return, and a verification seat for work the orchestrator could have done while holding the context.
+Run the spike in the orchestrating session unless a threshold below is met. Dispatching a spike that fits in one session costs a brief, a return, and a verification seat for work the orchestrator could have done while holding the context.
 
 | Condition | Route |
 |---|---|
@@ -18,9 +17,7 @@ The threshold is reading volume and context pressure, not artifact count. When u
 
 ## What never dispatches
 
-- Scope definition — the orchestrator holds the cross-state every brief depends on.
-- The ADR review — the user is the reviewer.
-- Verification of a return whose claims the orchestrator can check with one read.
+Scope definition, the ADR review, and verification of a return whose claims the orchestrator can check with one read.
 
 ## Role resolution
 
@@ -38,50 +35,55 @@ Role skill: area session → **investigate-code** + **draft-adr** · rewrite →
 - The **role contract travels with the dispatch**: name the role skill and the boundary (`adrs/adr-<area>-<NN>-<problem>.md` only). An unqualified dispatch lands on the default agent, which drafts a document that misses the gate and may prompt the user itself.
 - **Independence**: the check seat is a fresh instance, never the area session that wrote the ADRs — even when both resolve to one project agent.
 
+## Brief budget
+
+The brief is a **delta over `scope.md`** — only what the agent cannot read there. ≤40 lines.
+
+- **Always**: the absolute scope path, the problems, each driver with metric and threshold, the Output mode, the return contract, the write boundary.
+- **Only if it changes the work**: known locations, already-searched queries, rejected options, sibling decisions, accepted assumptions.
+- **Never**: a restatement of `scope.md`, the ADR template, the acceptance gate, or guidance the role skill already carries.
+
 ## Area brief
 
-One brief per area. Every path absolute. Fill every bracket; a brief that carries only a goal and an output name makes the agent re-derive scope and repeat searches.
+One brief per area. Every path absolute. The four intake fields are mandatory; the rest earns its place per the budget above.
 
 ```markdown
 # Area brief — <area>
 
-## Mode
-`adr` — write the ADRs, nothing else.
+## Output
+`adr` — write the ADRs, nothing else. Return once, after the gate.
 
-## Mission
-Settle <area>'s problems with ADRs that pass the acceptance gate, then return once.
+## Intake
+- System: <repo / service> · Scope: <area problems>
+- Depth: C4 context + call stack at each cited location
+- Consumer: the acceptance gate and cross-area synthesis
 
 ## Context
-- Spike question: <one sentence>
-- Scope file: <absolute path> — problems <P1, P2>
+- Question: <one sentence> · Scope file: <absolute path> — problems <P1, P2>
 - Boundaries: <inside> · out: <sibling areas>
-- Accepted assumptions: <A1 → value> — a premise the ADRs may rely on
-- Sibling decisions: <area → ADR path, chosen option> — inherit, never contradict
+- Accepted assumptions: <A1 → value> · Sibling decisions: <area → ADR, option>
 
 ## Inputs
 - Drivers (mandatory): <P1: driver, metric, threshold; …> — never infer one
-- Known locations: <symbol / file:line already found>
-- Already searched: <query + root + outcome>
+- Known locations: <symbol / file:line> · Already searched: <query + root + outcome>
 - Candidate / rejected options: <named, with why rejected>
 - Notes (re-dispatch only): <absolute path> — verified claims are settled
 
 ## Tasks
-1. Investigate to sufficiency per the evidence-sufficiency reference.
-2. Draft one ADR per problem with `draft-adr`, headlessly, from the drivers above.
+1. Investigate to sufficiency.
+2. Draft one ADR per problem with `draft-adr`, headlessly, from these drivers.
 3. Run the acceptance gate on each ADR; fix the ADR, not the gate.
 4. Return once, after the gate.
 
 ## Return
-- ADR paths, per problem: chosen option, the drivers it wins, what is unverified
+- ADR paths, chosen option per problem, the drivers it wins, what is unverified
 - Gate result per ADR (`ACCEPT` or `REVISE` + failing IDs)
-- Gaps, cross-area conflicts, and anything contradicting another area
-- Options the evidence ruled out, and why
+- Accepted assumptions, constraint gaps, route · prediction · self-check
+- Gaps, cross-area conflicts, options ruled out and why
 
 ## Constraints
-- Write only `adrs/adr-<area>-<NN>-<problem>.md`.
-- Never write `scope.md`, `solution.md`, code, config, or tests.
-- Never prompt the user; the orchestrator owns the review.
-- Never verify your own output and never dispatch a sub-agent.
+- Write only `adrs/adr-<area>-<NN>-<problem>.md`; never `scope.md`, `solution.md`, code, config, tests.
+- Never prompt the user; the orchestrator owns the review. Never verify your own output or dispatch a sub-agent.
 ```
 
 ## Rewrite brief
@@ -91,7 +93,7 @@ A settled decision only needs its ADR rewritten. Hand over the digest and the ta
 ```markdown
 # Rewrite brief — <ADR>
 
-## Mode
+## Output
 `adr-rewrite` — rewrite in place, never investigate.
 
 ## Decision
@@ -102,15 +104,11 @@ A settled decision only needs its ADR rewritten. Hand over the digest and the ta
 ## Task
 Rewrite <absolute ADR path> in place with `draft-adr`, in template order, from the decision above.
 Re-run the acceptance gate on the changed sections only.
+Return: ADR path · sections changed · gate result · unverified claims.
 
 ## Constraints
-- Never investigate; every claim above is settled input.
-- Never add an option this digest does not name.
-- Never write `scope.md`, `solution.md`, code, config, or tests.
-- Never prompt the user, never spawn a sub-agent, and never verify your own output.
-
-## Return
-ADR path · sections changed · gate result on the changed sections · unverified claims
+- Never investigate; every claim above is settled input. Never add an option this digest does not name.
+- Never write `scope.md`, `solution.md`, code, config, or tests; never prompt the user, spawn a sub-agent, or verify your own output.
 ```
 
 The digest is the question. A brief with no chosen option means the decision is not settled — run the spike instead.
@@ -124,6 +122,8 @@ An area session returns once, after the ADRs are written. The ADRs are the durab
 | ADR paths + chosen option per problem | Yes |
 | Gate result per ADR | Yes |
 | Unverified claims and what would settle them | Yes |
+| Accepted assumptions, and constraints the brief lacked | Yes — a decision resting on one is carried forward |
+| Route · prediction · self-check for the ADR set | Yes — the caller briefs the review from it, never re-reads the ADR to build one |
 | Cross-area conflicts, gaps | When present |
 | Options ruled out and why | Yes — prevents a sibling re-proposing them |
 
@@ -135,14 +135,14 @@ An area session returns once, after the ADRs are written. The ADRs are the durab
 | Supporting claim | Check the cited `file:line` exists and says what is claimed |
 | Cross-area constraint | Check both sides; a conflict is surfaced to the user, never silently resolved |
 
-Verification is per claim; a stale `file:line` or an inference presented as verified is a defect worth a re-dispatch, a formatting nit is not.
+Verification is per claim; a stale `file:line` or an inference presented as verified is a defect worth a re-dispatch, a formatting nit is not. The verifier gets its own brief on `question-everything`'s **verification-protocol** template: the ADR path, the challenged claims, established `file:line`, open claims, searched-negatives, the scope slice, and the prior round's verdicts. `Output: investigate`; write nothing; return a verdict per claim.
 
 ## Re-dispatch
 
 Re-dispatch the same session (or a new analyst with the files) with:
 
-1. the written ADR paths,
-2. the failing gate IDs or the verification verdicts,
+1. the original `Output:` and write boundary, unchanged — a new instance defaults to `investigate` without it,
+2. the written ADR paths and the failing gate IDs or the verification verdicts,
 3. the specific claims to repair.
 
 Never rebuild evidence by re-investigating; never re-verify a claim the re-dispatch did not touch.

@@ -48,7 +48,10 @@ New **Wave 3**: `F2-r1` (after F2 merged). The rework traces to the revised `adr
 # Rework 2026-08-08 — compensating transactions on partial payment failure
 **Mode**: post-merge · **Cell**: order-service/F2-r1
 **Branch**: `rework-f2r1-compensating-transactions` off `main`
+**Test strategy**: inherited from `plan.md` — test-first for the delta.
 **ADR focus**: `adr-wallet-01-payment-failure-handling.md`
+**Gate**: inherited from `plan.md`
+**Autonomy**: inherited `checkpoint`
 
 ## Scope Boundary
 **May change**: wallet-service `application/` + `test/` behavior; compensating-transaction rollback per the revised ADR decision
@@ -124,5 +127,5 @@ Original `plan.md` steps 1–N remain byte-for-byte unchanged.
 
 ## 6. Next actions
 
-- After execution, update the index (`F2-r1` → in-progress → done after PR merge); the executor handles push approval and PR creation.
-- Pre-merge variant: when the cell is implemented but not pushed or merged (status **in-progress**), the rework stays **append-only** on the same cell — see **examples/pre-merge-rework.md**.
+- After execution, update the index (`F2-r1` → in-progress → done after PR merge); the executor returns the branch under `Push: batched`, and the orchestrator batches approval and records the PR.
+- Pre-merge variant: when the cell is implemented but not pushed or merged (status **in-progress**), the rework stays on the same cell in `rework.md`, append-only within the round — see **examples/pre-merge-rework.md**.

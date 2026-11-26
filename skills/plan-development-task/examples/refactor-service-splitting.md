@@ -30,6 +30,7 @@ Keywords "split", "too big" → **Refactor** (internal restructuring, no new beh
 **Branch**: `split-data-imported-handler` off `main`
 **Test strategy**: characterization-first — existing tests prove behavior is preserved; add characterization only where coverage is missing.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn spotless:check checkstyle:check` — `pom.xml:88`
+**Autonomy**: checkpoint — characterization at each step; the full suite at the exit gate.
 
 ## Scope Boundary
 **May change**: internal structure of `DataImportedHandler` (decomposition into two services)

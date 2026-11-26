@@ -17,7 +17,7 @@ No named consumer → produce nothing and say why. Silence is the correct output
 
 Target-state only, decision-referencing, produced by `write-solution-doc`.
 
-1. Dispatch `solution-doc-writer` with: the ADR set paths, the cited evidence, the audience, and which C4 levels matter.
+1. Dispatch `solution-doc-writer` with: the ADR set paths, the cited evidence, the audience, which C4 levels matter, and the absolute output path (`<spike-folder>/solution.md`).
 2. Instruct it to **reference** each ADR (`adr-<area>-<NN>-<problem>.md`, chosen option) rather than restate the decision; a restated decision is a second owner that will drift.
 3. Verify fidelity to the ADRs — no new decision, no changed chosen option, no invented component.
 4. Save as `<spike-folder>/solution.md`; link it from the handoff.

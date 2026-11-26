@@ -90,7 +90,7 @@ Each cell carries a brief that seeds **plan-development-task** and every later d
 - **Constraints**: one PR per cell — a slice is a cell (`F3.1`), never a sub-PR; may merge with other features when convenient
 - **Delegated scope**: enabling-work bumps approved during delivery — `Scope +<what> (delegated, <date>)`; passed to the planner and the verifier
 - **Branch**: the branch name for this cell, per the repo's convention; created during the agent's Prepare Environment step, pushed only after user confirmation
-- **Integration**: push and open the PR after user approval; return the PR reference in the executor handoff
+- **Integration**: return the branch and commits under `Push: batched`; push and open the PR after the wave's approval; return the PR reference in the executor handoff
 - **PR / Commit**: recorded **after** work, from the handoff — never dispatch context
 
 ## POC cells

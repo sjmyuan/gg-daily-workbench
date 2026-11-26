@@ -30,6 +30,7 @@ Ladder: rung 1 (`no-op`) fails — a retry block exists. Rung 2 (`base`) reaches
 **Branch**: `revert-order-poller-retries` off `main`
 **Test strategy**: none (mechanical) — an equality proof replaces RED/GREEN.
 **Gate**: build=`npm run build` · test=`npm test` · lint-type=`npm run lint` — `package.json:12`
+**Autonomy**: checkpoint — equality proof per path; the suite at the exit gate.
 
 ## Scope Boundary
 **May change**: `OrderPoller` retry behavior only

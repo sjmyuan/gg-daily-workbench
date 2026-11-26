@@ -17,7 +17,7 @@ Pass every blocking check and report each failure by its ID. Fix the ADR, never 
 | G7 | Driver coverage | Every driver appears for every option with mark, measured value, evidence, confidence | Only the winner is evaluated |
 | G8 | Matrix agreement | Comparison-matrix marks equal each card's Driver impact marks | Matrix shows ✅ where the card shows ⚠️ |
 | G9 | Evidence on the claim | Every decision-flipping claim carries `file:line`, or **unverified** plus what would settle it | Citations only in another document; inference stated as fact |
-| G10 | Tech details | Chosen option has ordered `C1…Cn` changes with `file:line`, diff, confidence, verify, rollback; every option has its own target-state diagram | No change set; one diagram shared across options |
+| G10 | Tech details | Chosen option has ordered `C1…Cn` changes with `file:line`, diff, confidence, verify, rollback; a topology-changing option has its own target-state diagram, a substitute carries the shared topology's `Δ` | No change set; a substitute with no `Δ`, or a diagram copied across differing topologies |
 | G11 | Standalone | A reader with no session context can decide and start at `C1` | Understanding the ADR requires a notes doc or another ADR |
 | G12 | Template checklist | `draft-adr`'s **adr-quality-checklist** run for prose, diagrams, and metadata | Checklist never run |
 

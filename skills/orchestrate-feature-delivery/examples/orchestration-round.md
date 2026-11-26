@@ -78,7 +78,7 @@ F1 advances to **verified** (see **examples/cell-verification-gate.md**). Never 
 
 ## 6. Push approval + merge + update index
 
-Per **delivery-layout**'s branch conventions, the executor pushes and opens the PR after user approval — F1 becomes **done** only after the PR merges with the recorded head commit.
+Per **delivery-layout**'s branch conventions, the executor returns the branch under `Push: batched`; the orchestrator asks once for the wave and the PR follows — F1 becomes **done** only after the PR merges with the recorded head commit.
 
 | Cell | Branch | PR | Commit | Status | Agent | Plan location |
 |---|---|---|---|---|---|---|

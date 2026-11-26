@@ -15,6 +15,7 @@ Request: *"CSV export drops the last row when the file has no trailing newline."
 **Branch**: `fix-csv-export` off `main`
 **Test strategy**: test-first — a correctness bug needs a test.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn checkstyle:check`
+**Autonomy**: stepwise — run the whole suite after every step (over-testing; the strong variant below is cheaper).
 
 ## Scope Boundary
 **May change**: CSV export
@@ -47,6 +48,7 @@ Request: *"CSV export drops the last row when the file has no trailing newline."
 | 3 Units | Fail | Steps 2, 3, 5, 6 exist only as phases; each buys a verification the executor already runs. |
 | 6 Risk | Fail | No `## Risk` block. The reader cannot tell what the planner was unsure about. |
 | 8 Open by design | Fail | Step 4 says "fix the row splitter" as if the seam were known. |
+| — (cost) | Waste | `Autonomy: stepwise` runs the full suite after each of six steps — six full runs for a one-line fix. Not a rubric row; a cost defect the rubric does not catch. |
 
 ## Strong plan (same request)
 
@@ -58,6 +60,7 @@ Request: *"CSV export drops the last row when the file has no trailing newline."
 **Branch**: `fix-csv-export` off `main`
 **Test strategy**: test-first — the break is a data-loss assertion on a plain string input; no benchmark needed.
 **Gate**: build=`mvn -q compile` · test=`mvn test` · lint-type=`mvn checkstyle:check` — `pom.xml:112`
+**Autonomy**: checkpoint — affected tests per step; the full suite at the exit gate.
 
 ## Scope Boundary
 **May change**: how `CsvExporter` segments records from a stream
@@ -104,5 +107,7 @@ Request: *"CSV export drops the last row when the file has no trailing newline."
 | Risk | Absent | Two assumptions, each with the step that tests it and a fallback |
 | Open by design | Pretended to know | Step 3 states the check and both branches |
 | Boundary | Path-shaped ("CSV export") | Behavior-shaped, with the memory profile protected |
+| Autonomy | `stepwise` — six full suite runs | `checkpoint` — affected tests per step, the suite once at the gate |
 
 Both plans are the same length to a checklist. Only one tells the executor what to do when the code disagrees — which is the case the plan exists for.
+The rubric grades whether a plan can be trusted; **Autonomy decides what executing it costs**. The weak plan is trustable and expensive; the strong one is both.

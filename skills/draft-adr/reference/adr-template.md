@@ -120,7 +120,7 @@ Repeat the block below once per option, in `Option N` order, using the option's 
 
 #### Tech Details <!-- include for every option whose code is accessible -->
 
-[ Target-state diagrams for this option per reference/diagram-contract.md: C4 delta (NEW / CHANGED / REMOVED) + sequence diagram(s) with the failure path it adds, or `none new` ]
+[ Target-state view for this option per reference/diagram-contract.md: its own C4 delta (NEW / CHANGED / REMOVED) + sequence diagram(s) with the failure path, or the shared topology's `Δ` strip for a substitute, or `none new` ]
 
 **Code changes** — one entry per change, using the IDs the Implementation Plan orders:
 

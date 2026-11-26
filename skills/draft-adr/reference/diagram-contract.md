@@ -21,6 +21,17 @@ A diagram earns its place by what it carries, not by how few nodes it has. Mecha
 - **Sequence**: happy path plus the failure path this option adds, or `none new` when it adds none; label new hops `(new)`; show the compensation or rollback message.
 - **Flowchart**: decision nodes carry the condition and its threshold, never bare "yes / no".
 
+## One view per option — or a shared topology
+
+Choose by the test, not by symmetry:
+
+| Option changes… | Diagram |
+|---|---|
+| Nodes, edges, data path, or a failure path (the delta is more than labels) | Its **own** target-state diagram |
+| Technology, capacity, or config inside the same nodes (a substitute or parameter variant) | The **shared** target-state topology plus a 1–3 line `Δ` strip in the option card |
+
+The shared view is still per-option: its `Δ` names this option's node labels, protocol, capacity, or config. Never let a shared diagram contradict an option's card, and never use "shared" to skip that option's change set.
+
 ## Anti-patterns — drop the diagram instead
 
 - A diagram that only re-encodes a list or table already in the ADR: a driver list, a comparison matrix, an option list, or an elimination tree whose edges restate matrix rows.

@@ -35,7 +35,7 @@ Loaded by **compile-adr** step 7. Pass every item before presenting the ADR; fix
 
 ## Diagrams
 
-- [ ] Every option has its own target-state diagram; no two options share one
+- [ ] Every topology-changing option has its own target-state diagram; a substitute carries the shared topology's `Δ`, never a copied diagram
 - [ ] The context diagram names volumes, protocols, and external systems
 - [ ] Every diagram satisfies **reference/diagram-contract.md**
 - [ ] No diagram only re-encodes a table or list already in the ADR

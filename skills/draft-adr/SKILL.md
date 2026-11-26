@@ -23,7 +23,7 @@ Label every option `Option N: <name>` once in **define-considered-options** — 
 </option-labeling>
 
 <diagram-content>
-A diagram is judged by what it carries, not by node count: nodes name technology and responsibility, edges name verb, protocol, and sync/async, and the view shows the delta plus a failure path. Contract: **reference/diagram-contract.md**.
+A diagram is judged by what it carries, not by node count: nodes name technology and responsibility, edges name verb, protocol, and sync/async, and the view shows the delta plus a failure path. One target-state view per option when the topology changes; a shared topology plus a delta strip for a substitute. Contract: **reference/diagram-contract.md**.
 </diagram-content>
 
 <context-loading-guide>
@@ -33,7 +33,7 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 | Compiling the final ADR document (**compile-adr** step 3) | ADR markdown template with placeholders | [reference/adr-template.md](reference/adr-template.md) |
 | Prompting for decision drivers or brainstorming options | Driver categories and option prompts | [reference/prompting-guide.md](reference/prompting-guide.md) |
 | Detailing or rendering an option's technical implementation | Per-option change-set format and grounding contract | [reference/option-tech-details-guide.md](reference/option-tech-details-guide.md) |
-| Drawing or reviewing any ADR diagram | Label, delta, failure-path, and anti-pattern contract | [reference/diagram-contract.md](reference/diagram-contract.md) |
+| Drawing or reviewing any ADR diagram | Label, delta, failure-path, per-option vs shared, anti-patterns | [reference/diagram-contract.md](reference/diagram-contract.md) |
 | Writing or reviewing any ADR prose | BLUF, caps, detail carriers, banned phrases | [reference/writing-style.md](reference/writing-style.md) |
 | Full walkthrough from a well-formed problem statement | Database-selection walkthrough (all capabilities) | [examples/database-selection.md](examples/database-selection.md) |
 | The finished ADR document for that walkthrough | Complete template instance: option cards, evidence matrix, implementation plan | [examples/database-selection-adr.md](examples/database-selection-adr.md) |
@@ -75,7 +75,7 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 <evaluate-options>
 1. For each option, ask its strengths and the risks this mechanism introduces — never a generic risk list.
 2. Apply **detail-options-tech** to every option whose code is accessible — do not wait to be asked; apply its no-access branch otherwise.
-3. Present the option's fixed card per **reference/adr-template.md** — Verdict, What it is, How it works, Driver impact, Concerns, Pros, Cons, Tech Details — with its own target-state diagram, then confirm. Its description names repo symbols; a sentence that would fit a competitor is a defect.
+3. Present the option's fixed card per **reference/adr-template.md** — Verdict, What it is, How it works, Driver impact, Concerns, Pros, Cons, Tech Details — with its target-state view, then confirm. Its description names repo symbols; a sentence that would fit a competitor is a defect.
 4. Fill the driver-impact table per driver: the mark, the measured value, the evidence reference, and the confidence.
 5. After all options, fill the comparison matrix table; add a matrix diagram or an elimination tree only when each knock-out changes the next question, labelling each edge with the deciding evidence.
 6. Ask: "Given the evaluations, which option best satisfies the decision drivers?"
@@ -85,7 +85,7 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 1. Determine the evidence base: investigation notes or citations (e.g., from a `conduct-spike` ADR) and code accessibility.
 2. If no evidence but code is accessible, build an evidence map via `investigate-code`: entry points, key locations with `file:line`, call chains.
 3. Number every required change `C1`, `C2`, … per option; reuse those numbers in the option card and the implementation plan.
-4. Per option, draw target-state diagrams per **reference/diagram-contract.md**: the current state evolved to this option's to-be with every node marked NEW, CHANGED, or REMOVED, plus sequence diagram(s) for the changed flow with the failure path it adds, or `none new`. Never reuse another option's diagram.
+4. Draw each option's target-state view per **reference/diagram-contract.md** — its own diagram when the topology changes, the shared topology plus a delta strip for a substitute. Mark nodes NEW / CHANGED / REMOVED; add sequence diagram(s) for the changed flow with the failure path, or `none new`.
 5. Per option, build its change set per **reference/option-tech-details-guide.md**: location (`file:line` + symbol), the real lines, a git-style diff of them, and a 1–2 sentence how-to per change; new files get added-only diffs.
 6. Ground every entry to the evidence map, tag confidence **verified / inferred / unverified**, and never invent APIs, symbols, or files — mark unverifiable changes **unverified**.
 7. If no evidence and no code access: show each change's added-only diff, mark locations **unverified**, and recommend a `conduct-spike` spike.
@@ -120,6 +120,6 @@ A diagram is judged by what it carries, not by node count: nodes name technology
 <rule>After each user confirmation, update any in-progress ADR draft so nothing is lost.</rule>
 <rule>When the user corrects confirmed content or reveals new context, apply **sync-diagrams** to update affected diagrams and add new ones.</rule>
 <rule>When explaining context or a solution, draw the matching diagram without being asked — mechanics via `draw-mermaid-diagrams`, content per **reference/diagram-contract.md**.</rule>
-<rule>Never present an option without its mechanism flow, its own target-state diagram, and — when code is accessible — a change set whose every entry carries a real diff; no guard, retry, or timeout without the driver or failure it answers.</rule>
+<rule>Never present an option without its mechanism flow, its target-state view, and — when code is accessible — a change set whose every entry carries a real diff; no guard, retry, or timeout without the driver or failure it answers.</rule>
 <rule>When the problem restatement or the completed ADR goes for confirmation, brief first: a route over the 2–3 items that carry the decision, one prediction, one self-check — never present a large artifact cold.</rule>
 </rules>

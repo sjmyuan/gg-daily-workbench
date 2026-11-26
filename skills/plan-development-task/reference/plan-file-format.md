@@ -77,7 +77,7 @@ or a deviation. What landed is the commit and its diff; never restate it in `pla
 | Steps | One `### Step N: <title> <status>` block per step, in file order; all six field lines, in order. |
 | Objective | One sentence, ≤20 words, imperative. |
 | Files | Concrete paths where known; `none` for no-edit steps. |
-| Source | Every step names `Source · Ref · Equality` per **change-provenance** — `no-op · n/a · n/a` when nothing changes; `generate` states its justification in `Implementation`, ratified when the user confirms the plan. |
+| Source | Every step names `Source · Ref · Equality` per **change-provenance** — `no-op · n/a · n/a` when nothing changes; `generate` states its justification in `Implementation`, ratified when the plan is confirmed (in delivery mode, by the intake check). |
 | Implementation | The **approach** in prose — which seam moves, what behavior results — one line. Never source code, a diff hunk, a signature, a file dump, or a TODO list; the only literals are a git operation for `base`/`port` or a path or identifier. Frozen — the executor never rewrites it. |
 | Validation | Behavioral or `Must match` equality; the exit gate's pass rule is every gate command exit 0 — never a commit hash. |
 | Status | Generated plans use `⏳`; the executor owns `🔄 ✅ ❌ 🚫`; the planner sets `⏭` only. `**Status**` is canonical — the heading glyph mirrors it. |
@@ -100,6 +100,8 @@ Written when executed behavior must change; `plan.md` stays frozen (see **rework
 **Test strategy**: <inherited from plan.md, or the strategy for the delta> — <one-line why>
 **ADR focus**: `<adr path>`
 **Gate**: <inherited from `plan.md`, or discovered for the delta>
+**Autonomy**: <inherited from `plan.md`, or the delta's own> — <one-line why>
+**Gate findings**: <one line per unresolved finding, each labelled mechanical/design>   (gate-triggered rounds only)
 
 ## Scope Boundary
 **May change**: <original May change, tightened or extended>
